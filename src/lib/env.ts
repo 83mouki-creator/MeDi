@@ -13,12 +13,16 @@ function optional(name: string, fallback = ''): string {
   return process.env[name]?.trim() || fallback;
 }
 
+import { resolveDatabaseUrl, resolveDirectUrl } from './db-url';
+
 export const env = {
   nodeEnv: process.env.NODE_ENV ?? 'development',
   isProduction: process.env.NODE_ENV === 'production',
 
-  databaseUrl: process.env.DATABASE_URL ?? '',
-  directUrl: process.env.DIRECT_URL ?? process.env.DATABASE_URL ?? '',
+  /** Connexion applicative (poolée). */
+  databaseUrl: resolveDatabaseUrl(),
+  /** Connexion directe (migrations) : DIRECT_URL, sinon DATABASE_URL_UNPOOLED, sinon dérivée. */
+  directUrl: resolveDirectUrl(),
 
   /** URL publique du site (liens de retour Wave, e-mails, partage). */
   appUrl: optional('APP_URL', 'http://localhost:3000'),

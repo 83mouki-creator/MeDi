@@ -54,6 +54,9 @@ photos et catalogue réels, configuration du stockage d'images et de la base Neo
   prix > 0), index de recherche, mouvements de stock, instantanés nom/référence/prix dans les lignes
   de commande.
 - Migrations SQL versionnées (`drizzle/0000_init.sql`, `0001_contact_messages.sql`).
+- Résolution automatique de la connexion directe (`src/lib/db-url.ts`) : compatible `DIRECT_URL`,
+  `DATABASE_URL_UNPOOLED` (intégration Neon/Vercel), `POSTGRES_URL_NON_POOLING`, ou dérivation depuis
+  l'URL poolée.
 - Transactions avec verrou `FOR UPDATE` sur le stock ; numérotation `MED-AAAA-NNNNN` par séquence.
 - Webhook Wave : signature HMAC, anti-rejeu, idempotence par événement, revérification du montant.
 - Tâche planifiée d'expiration des réservations protégée par `CRON_SECRET`.
