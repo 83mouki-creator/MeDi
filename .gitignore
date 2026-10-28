@@ -1,0 +1,26 @@
+node_modules
+.next
+out
+build
+dist
+coverage
+
+# Secrets — jamais versionnés
+.env
+.env.local
+.env.*.local
+.vercel
+
+# Base PostgreSQL locale de développement
+.localdb/
+
+# Téléversements locaux (en production : Cloudinary / stockage objet)
+public/uploads/*
+!public/uploads/.gitkeep
+
+# Divers
+.DS_Store
+*.log
+*.tsbuildinfo
+next-env.d.ts
+/test-results
