@@ -9,7 +9,7 @@ Voir [`NEON.md`](NEON.md). Récupérer `DATABASE_URL` (poolée) et `DIRECT_URL` 
 | Variable | Obligatoire | Remarque |
 | --- | --- | --- |
 | `DATABASE_URL` | oui | connexion poolée |
-| `DIRECT_URL` | oui | migrations |
+| `DIRECT_URL` | non* | migrations. *Facultative avec l'intégration Neon sur Vercel : `DATABASE_URL_UNPOOLED` est détectée automatiquement (voir `NEON.md`). |
 | `APP_URL` | oui | URL publique exacte (`https://…`), utilisée pour les liens Wave et le plan du site |
 | `WAVE_MODE` | oui | `MANUAL` tant que l'intégration Wave n'est pas validée |
 | `WAVE_API_KEY`, `WAVE_WEBHOOK_SECRET` | si `WAVE_MODE=AUTO` | secrets Wave Business |
