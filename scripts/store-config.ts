@@ -44,7 +44,7 @@ type ZoneSeed = {
  */
 const ZONES: ZoneSeed[] = [
   {
-    id: 'zone_pickup_daloa',
+    id: 'zone_medi_pickup',
     name: 'Retrait en boutique — Daloa',
     city: 'Daloa',
     isLocal: true,
@@ -54,7 +54,7 @@ const ZONES: ZoneSeed[] = [
     order: 0,
   },
   {
-    id: 'zone_daloa_centre',
+    id: 'zone_medi_daloa_centre',
     name: 'Daloa — livraison à domicile (centre)',
     city: 'Daloa',
     isLocal: true,
@@ -64,7 +64,7 @@ const ZONES: ZoneSeed[] = [
     order: 1,
   },
   {
-    id: 'zone_daloa_peripherie',
+    id: 'zone_medi_daloa_peripherie',
     name: 'Daloa — livraison à domicile (périphérie)',
     city: 'Daloa',
     isLocal: true,
@@ -74,7 +74,7 @@ const ZONES: ZoneSeed[] = [
     order: 2,
   },
   {
-    id: 'zone_abidjan',
+    id: 'zone_medi_abidjan',
     name: 'Abidjan — expédition',
     city: 'Abidjan',
     isLocal: false,
@@ -84,7 +84,7 @@ const ZONES: ZoneSeed[] = [
     order: 3,
   },
   {
-    id: 'zone_yamoussoukro',
+    id: 'zone_medi_yamoussoukro',
     name: 'Yamoussoukro — expédition',
     city: 'Yamoussoukro',
     isLocal: false,
@@ -94,7 +94,7 @@ const ZONES: ZoneSeed[] = [
     order: 4,
   },
   {
-    id: 'zone_bouake',
+    id: 'zone_medi_bouake',
     name: 'Bouaké — expédition',
     city: 'Bouaké',
     isLocal: false,
@@ -104,7 +104,7 @@ const ZONES: ZoneSeed[] = [
     order: 5,
   },
   {
-    id: 'zone_sanpedro',
+    id: 'zone_medi_sanpedro',
     name: 'San-Pédro — expédition',
     city: 'San-Pédro',
     isLocal: false,
@@ -114,7 +114,7 @@ const ZONES: ZoneSeed[] = [
     order: 6,
   },
   {
-    id: 'zone_autre',
+    id: 'zone_medi_autre',
     name: 'Autre ville — Côte d’Ivoire',
     city: 'Autre ville',
     isLocal: false,
@@ -212,15 +212,26 @@ async function main() {
     }
   }
 
-  // Les anciennes zones de démonstration (« (DÉMO) ») sont désactivées, jamais
-  // supprimées : des commandes passées peuvent y faire référence.
-  const legacy = await db.select({ id: deliveryZones.id, name: deliveryZones.name }).from(deliveryZones);
+  // Zones historiques (seed de démonstration) : désactivées, jamais supprimées,
+  // car des commandes passées peuvent y faire référence. Liste explicite pour ne
+  // jamais toucher aux zones créées plus tard par le propriétaire.
+  const LEGACY_ZONE_IDS = [
+    'zone_pickup_daloa',
+    'zone_daloa_domicile',
+    'zone_daloa_centre',
+    'zone_daloa_peripherie',
+    'zone_abidjan',
+    'zone_yamoussoukro',
+    'zone_bouake',
+    'zone_sanpedro',
+    'zone_autre',
+  ];
   let deactivated = 0;
-  for (const zone of legacy) {
-    if (zone.name.includes('DÉMO') && ZONES.every((entry) => entry.id !== zone.id)) {
-      await db.update(deliveryZones).set({ isActive: false, updatedAt: new Date() }).where(eq(deliveryZones.id, zone.id));
-      deactivated += 1;
-    }
+  for (const id of LEGACY_ZONE_IDS) {
+    const rows = await db.select({ isActive: deliveryZones.isActive }).from(deliveryZones).where(eq(deliveryZones.id, id)).limit(1);
+    if (!rows[0] || !rows[0].isActive) continue;
+    await db.update(deliveryZones).set({ isActive: false, updatedAt: new Date() }).where(eq(deliveryZones.id, id));
+    deactivated += 1;
   }
 
   console.log(`   zones de livraison : ${created} créée(s), ${updated} mise(s) à jour, ${ZONES.length} au total`);
