@@ -1,4 +1,16 @@
 {
+  "31900": {
+    "url": "/catalogue/31900.webp",
+    "checksum": "7f987cec319c991082db88a13d49787d28101ef340afaf6e7d340aa6df973b9c",
+    "width": 1000,
+    "height": 1000
+  },
+  "410323": {
+    "url": "/catalogue/410323.webp",
+    "checksum": "e74e417c0f316ce2282a094409ced80d971caa3501221f44b165636812ccaea4",
+    "width": 1000,
+    "height": 1000
+  },
   "EPCT091612": {
     "url": "/catalogue/epct091612.webp",
     "checksum": "3fe7ccb02da10f378b6be835c85adf73263953a36c465dfc58918b8a739d9daa",
@@ -230,6 +242,108 @@
   "MDL-SPR09W40-01": {
     "url": "/catalogue/mdl-spr09w40-01.webp",
     "checksum": "ef7d7d787a883a0220be4286b910699641f6d03182ddceba8555e6c880595919",
+    "width": 1000,
+    "height": 1000
+  },
+  "MDL-BUA4505W-6500": {
+    "url": "/catalogue/mdl-bua4505w-6500.webp",
+    "checksum": "f4cf00983ef8f1b9800fad09d1be9b7beaa7c554effe135eefbd30746fc13740",
+    "width": 1000,
+    "height": 1000
+  },
+  "MDL-DLM60R18W-03": {
+    "url": "/catalogue/mdl-dlm60r18w-03.webp",
+    "checksum": "b5a539b9e3a53f8fdf2a8520fa7ef65171da1bdd15b9ec8d8c5a9f07c1c2c02f",
+    "width": 1000,
+    "height": 1000
+  },
+  "MDL-STD12W-02-6500": {
+    "url": "/catalogue/mdl-std12w-02-6500.webp",
+    "checksum": "3329405b07b43c91ac28f65a7efaac9d7ad2391793aa7017416270a7c5d90c04",
+    "width": 1000,
+    "height": 1000
+  },
+  "EUPRDB/N": {
+    "url": "/catalogue/euprdb-n.webp",
+    "checksum": "bc45469b253d9a48a31e819e81881842721a4c2b46e82c8bcc39a2835bfa34df",
+    "width": 1000,
+    "height": 1000
+  },
+  "MDL-FLF200W-033000K": {
+    "url": "/catalogue/mdl-flf200w-033000k.webp",
+    "checksum": "f6c1578fc987809907643d9704090a2e78aacc18932267342c389a3e7fb4266f",
+    "width": 1000,
+    "height": 1000
+  },
+  "MDL-BUA6012W-6500": {
+    "url": "/catalogue/mdl-bua6012w-6500.webp",
+    "checksum": "aa132cc15f5780a8fa54a728ba7203bb9f10dc3ca06499350a71c49481321421",
+    "width": 1000,
+    "height": 1000
+  },
+  "MDL-BLL1245W": {
+    "url": "/catalogue/mdl-bll1245w.webp",
+    "checksum": "6bf148836002091f70e8f224d815aee9651a503b5be09144c3041e216cbab854",
+    "width": 1000,
+    "height": 1000
+  },
+  "MDL-DL40R12W-036K": {
+    "url": "/catalogue/mdl-dl40r12w-036k.webp",
+    "checksum": "a0a82ee1ac5e66cd0d4653942ef4d1374e4d3668a883c1cc6b5b1fb1b962a9ca",
+    "width": 1000,
+    "height": 1000
+  },
+  "MDL-FLS15W65-02": {
+    "url": "/catalogue/mdl-fls15w65-02.webp",
+    "checksum": "fa920ec3185f0e8e4f10f0d9d4794e2ce0bb5c1e639d44d10f97cb7346ddbb63",
+    "width": 1000,
+    "height": 1000
+  },
+  "MDL-STD8W-05": {
+    "url": "/catalogue/mdl-std8w-05.webp",
+    "checksum": "b13effe0b54227af1ad91e3fd427ab6264a8563035ad509e3f439eefc947d937",
+    "width": 1000,
+    "height": 1000
+  },
+  "MDL-DL35R08W-03": {
+    "url": "/catalogue/mdl-dl35r08w-03.webp",
+    "checksum": "a9e55c8114183f442a09c69c80e555bfd306b900e5f3678019018f1b16afc467",
+    "width": 1000,
+    "height": 1000
+  },
+  "APC10-B2": {
+    "url": "/catalogue/apc10-b2.webp",
+    "checksum": "96e2e02229115ef2e775c21df81522a99882a7266aebccf8be103242fc3ff1ee",
+    "width": 1000,
+    "height": 1000
+  },
+  "MDL-CLR12W-R-6500K": {
+    "url": "/catalogue/mdl-clr12w-r-6500k.webp",
+    "checksum": "2a6c812ec006ad01914f8ee0cd18e0196b3a968224453b468a1999f6f7e24dd7",
+    "width": 1000,
+    "height": 1000
+  },
+  "MDL-CLR24W-03": {
+    "url": "/catalogue/mdl-clr24w-03.webp",
+    "checksum": "fc718f49829e77171b4c8ec95b73a2758104a71cb4b592483c7ebf8f9e9ccbea",
+    "width": 1000,
+    "height": 1000
+  },
+  "MDL-BUA6015W-6500-B22": {
+    "url": "/catalogue/mdl-bua6015w-6500-b22.webp",
+    "checksum": "06bb1d7eb14456e1bfdaad666bd697b58596ccc053a336a41442f2a19f13a12b",
+    "width": 1000,
+    "height": 1000
+  },
+  "MDL-CLR36W-01": {
+    "url": "/catalogue/mdl-clr36w-01.webp",
+    "checksum": "d9ab6efdbcd5f1a48807338004092cfab1fbaf66f41a8611a7c9c8f0c7540ccc",
+    "width": 1000,
+    "height": 1000
+  },
+  "278111L": {
+    "url": "/catalogue/278111l.webp",
+    "checksum": "246ace9cbe73c6e1d21a22c6ded1f03783a7a66d502bf79486bc270e4be4b162",
     "width": 1000,
     "height": 1000
   }
