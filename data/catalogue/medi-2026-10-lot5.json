@@ -1,0 +1,379 @@
+{
+  "version": 1,
+  "fournisseur": "SODIS-MAD CI",
+  "date": "2026-10-29",
+  "lot": 5,
+  "note": "Lot 5 : protection électrique Schneider (Easy9, Compact NSX), poignées et serrures Griffe, colonnes et panneau de douche Griffe, fiches industrielles Megalec. Photos fournisseur retravaillées (bandeau MeDi + référence).",
+  "categories": [],
+  "sousCategoriesExistantes": [],
+  "produits": [
+    {
+      "sku": "C25F6TM250",
+      "sourceFile": "IMG-20261029-WA0143.jpg",
+      "name": "Disjoncteur compact 250 A 4P — Compact NSX250F",
+      "brand": "Schneider Electric",
+      "category": "protection-electrique",
+      "price": 385000,
+      "stock": 2,
+      "shortDescription": "Disjoncteur boîtier moulé 250 A, 4 pôles (3 phases + neutre), pouvoir de coupure 36 kA, déclencheur TM-D.",
+      "description": "Disjoncteur compact de puissance pour tableau général d'usine, d'immeuble ou de chantier : 250 A, 4 pôles dont neutre, pouvoir de coupure 36 kA, déclencheur thermique et magnétique TM-D réglable. Gamme Schneider Compact NSX250F, raccordement par bornes à vis.",
+      "attributes": {
+        "Calibre": "250 A",
+        "Pôles": "4P (3P + N)",
+        "Pouvoir de coupure": "36 kA",
+        "Déclencheur": "TM-D (thermique et magnétique)",
+        "Gamme": "Compact NSX250F",
+        "Montage": "Fixe, bornes à vis"
+      },
+      "keywords": ["disjoncteur", "compact", "boitier moule", "250a", "nsx250f", "4p", "36ka", "tm-d", "schneider", "tableau general", "industriel"]
+    },
+    {
+      "sku": "EZ9R32240",
+      "sourceFile": "IMG-20261029-WA0103.jpg",
+      "name": "Interrupteur différentiel 2P 40 A — 30 mA, Easy9",
+      "brand": "Schneider Electric",
+      "category": "protection-electrique",
+      "price": 35000,
+      "stock": 6,
+      "shortDescription": "Interrupteur différentiel 2 pôles 40 A, sensibilité 30 mA, gamme Easy9.",
+      "description": "Interrupteur différentiel modulaire à placer en tête de tableau ou en sortie de rangée : protège les personnes contre les fuites de courant vers la terre. 2 pôles, 40 A, 30 mA, gamme Schneider Easy9, montage sur rail DIN.",
+      "attributes": {
+        "Pôles": "2P",
+        "Calibre": "40 A",
+        "Sensibilité": "30 mA",
+        "Gamme": "Easy9",
+        "Montage": "Rail DIN"
+      },
+      "keywords": ["interrupteur differentiel", "differentiel", "ddr", "40a", "30ma", "easy9", "rail din", "schneider", "tableau", "protection"]
+    },
+    {
+      "sku": "EZ9L33620",
+      "sourceFile": "IMG-20261029-WA0104.jpg",
+      "name": "Parafoudre 1P+N 20 kA — 230 V, Easy9",
+      "brand": "Schneider Electric",
+      "category": "protection-electrique",
+      "price": 30000,
+      "stock": 6,
+      "shortDescription": "Parafoudre monophasé 1P+N, Imax 20 kA, 230 V, avec témoin de fin de vie, gamme Easy9.",
+      "description": "Parafoudre modulaire monophasé (phase + neutre) pour protéger le tableau et les appareils des surtensions dues à la foudre. Imax 20 kA, 230 V, témoin rouge de fin de vie, montage sur rail DIN. Gamme Schneider Easy9.",
+      "attributes": {
+        "Type": "Parafoudre 1P+N",
+        "Courant maximal": "20 kA",
+        "Tension": "230 V~",
+        "Gamme": "Easy9",
+        "Montage": "Rail DIN",
+        "Témoin": "Fin de vie (rouge)"
+      },
+      "keywords": ["parafoudre", "surtension", "foudre", "1p+n", "20ka", "230v", "easy9", "schneider", "tableau", "protection"]
+    },
+    {
+      "sku": "EZ9P32620",
+      "sourceFile": "IMG-20261029-WA0126.jpg",
+      "name": "Disjoncteur DPN 20 A — Easy9",
+      "brand": "Schneider Electric",
+      "category": "protection-electrique",
+      "price": 12000,
+      "stock": 12,
+      "shortDescription": "Disjoncteur phase + neutre 20 A, courbe C, un module, gamme Easy9.",
+      "description": "Disjoncteur DPN (phase + neutre) 20 A courbe C, tenant sur un seul module : protège un circuit d'éclairage ou de prises contre les surcharges et les courts-circuits, et coupe phase et neutre à la fois. Gamme Schneider Easy9.",
+      "attributes": {
+        "Type": "DPN (phase + neutre)",
+        "Calibre": "20 A",
+        "Courbe": "C",
+        "Modules": "1",
+        "Gamme": "Easy9",
+        "Montage": "Rail DIN"
+      },
+      "keywords": ["disjoncteur", "dpn", "20a", "courbe c", "easy9", "rail din", "schneider", "tableau", "protection"]
+    },
+    {
+      "sku": "EZ9F32225",
+      "sourceFile": "IMG-20261029-WA0108.jpg",
+      "name": "Disjoncteur modulaire 2P 25 A — Easy9",
+      "brand": "Schneider Electric",
+      "category": "protection-electrique",
+      "price": 15000,
+      "stock": 10,
+      "shortDescription": "Disjoncteur 2 pôles 25 A, courbe C, deux modules, gamme Easy9.",
+      "description": "Disjoncteur modulaire 2 pôles 25 A courbe C pour circuit de prises ou d'appareil : coupe les deux conducteurs en cas de surcharge ou de court-circuit. Gamme Schneider Easy9, montage sur rail DIN.",
+      "attributes": {
+        "Pôles": "2P",
+        "Calibre": "25 A",
+        "Courbe": "C",
+        "Modules": "2",
+        "Gamme": "Easy9",
+        "Montage": "Rail DIN"
+      },
+      "keywords": ["disjoncteur", "modulaire", "2p", "25a", "courbe c", "easy9", "rail din", "schneider", "protection"]
+    },
+    {
+      "sku": "S520620",
+      "sourceFile": "IMG-20261029-WA0128.jpg",
+      "name": "Bloc disjoncteur 20 A blanc — Odace",
+      "brand": "Schneider Electric",
+      "category": "protection-electrique",
+      "price": 15000,
+      "stock": 8,
+      "shortDescription": "Bloc disjoncteur 20 A à encastrer, blanc, gamme Odace, avec deux commandes repérées marche/arrêt.",
+      "description": "Bloc disjoncteur 20 A de la gamme Odace, à encastrer dans une boîte d'encastrement comme un appareillage classique : deux commandes repérées marche (vert) et arrêt (rouge), voyant de signalisation. Blanc, support à griffes fourni. Référence fournisseur indiquée « dismatique 20A » sur la photo d'origine.",
+      "attributes": {
+        "Calibre": "20 A",
+        "Gamme": "Odace",
+        "Montage": "Encastré",
+        "Couleur": "Blanc",
+        "Repérage": "Marche / arrêt (vert / rouge)",
+        "Référence constructeur": "S520620"
+      },
+      "keywords": ["disjoncteur", "bloc disjoncteur", "20a", "odace", "blanc", "encastre", "schneider", "protection", "dismatique"]
+    },
+    {
+      "sku": "MEG-013G",
+      "sourceFile": "IMG-20261029-WA0118.jpg",
+      "name": "Fiche industrielle mâle 3P 16 A IP44 — Megalec",
+      "brand": "Megalec",
+      "category": "prises-industrielles",
+      "price": 4000,
+      "stock": 15,
+      "shortDescription": "Fiche mâle mobile 3 pôles 16 A, IP44, repérage bleu (230 V), presse-étoupe.",
+      "description": "Fiche industrielle mâle 3 pôles 16 A, protection IP44, repérage bleu pour réseau 230 V monophasé. Corps isolant résistant aux chocs, presse-étoupe arrière pour câble souple.",
+      "attributes": {
+        "Type": "Fiche mâle mobile",
+        "Pôles": "3P",
+        "Courant": "16 A",
+        "Tension": "230 V~ (repérage bleu)",
+        "Protection": "IP44",
+        "Presse-étoupe": "Fourni"
+      },
+      "keywords": ["fiche", "prise", "industrielle", "male", "3p", "16a", "ip44", "230v", "bleu", "megalec"]
+    },
+    {
+      "sku": "MEG-015G",
+      "sourceFile": "IMG-20261029-WA0136.jpg",
+      "name": "Fiche industrielle mâle 5P 16 A IP44 — Megalec",
+      "brand": "Megalec",
+      "category": "prises-industrielles",
+      "price": 6000,
+      "stock": 10,
+      "shortDescription": "Fiche mâle mobile 5 pôles 16 A, IP44, repérage rouge (400 V), presse-étoupe.",
+      "description": "Fiche industrielle mâle 5 pôles 16 A (3 phases + neutre + terre), protection IP44, repérage rouge 400 V. Pour machines, groupes électrogènes et tableaux de chantier, presse-étoupe arrière fourni.",
+      "attributes": {
+        "Type": "Fiche mâle mobile",
+        "Pôles": "5P",
+        "Courant": "16 A",
+        "Tension": "400 V~ (repérage rouge)",
+        "Protection": "IP44",
+        "Presse-étoupe": "Fourni"
+      },
+      "keywords": ["fiche", "prise", "industrielle", "male", "5p", "16a", "ip44", "400v", "triphase", "megalec"]
+    },
+    {
+      "sku": "GF-1010",
+      "sourceFile": "IMG-20261029-WA0137.jpg",
+      "name": "Poignée de porte bronze doré avec cylindre — Luxe",
+      "brand": "Griffe",
+      "category": "serrurerie",
+      "price": 15000,
+      "stock": 8,
+      "shortDescription": "Poignée sur plaque bronze doré, décor ciselé, avec cylindre à canon et clés fournies.",
+      "description": "Poignée de porte sur plaque longue en finition bronze doré, béquille et plaque ciselées, avec cylindre à canon et jeu de clés. Pour porte d'entrée ou d'appartement. Série Luxe.",
+      "attributes": {
+        "Type": "Poignée sur plaque avec cylindre",
+        "Finition": "Bronze doré",
+        "Style": "Ciselé (série Luxe)",
+        "Clés fournies": "Oui",
+        "Usage": "Porte d'entrée, appartement"
+      },
+      "keywords": ["poignee", "porte", "bronze", "dore", "luxe", "cylindre", "canon", "cle", "serrurerie", "griffe"]
+    },
+    {
+      "sku": "GRIFFE-158",
+      "sourceFile": "IMG-20261029-WA0120.jpg",
+      "name": "Poignée de porte inox avec cylindre — série 123",
+      "brand": "Griffe",
+      "category": "serrurerie",
+      "price": 11000,
+      "stock": 10,
+      "shortDescription": "Poignée sur plaque inox brossé avec cylindre à canon et clés, pour porte d'entrée.",
+      "description": "Poignée de porte sur plaque en acier inoxydable brossé, béquille pleine, avec cylindre à canon et jeu de clés. Montage sur porte à serrure à mortaiser, série 123.",
+      "attributes": {
+        "Type": "Poignée sur plaque avec cylindre",
+        "Matière": "Acier inoxydable",
+        "Finition": "Brossée",
+        "Série": "123",
+        "Usage": "Porte d'entrée, porte de service"
+      },
+      "keywords": ["poignee", "porte", "inox", "cylindre", "canon", "cle", "serie 123", "serrurerie", "griffe"]
+    },
+    {
+      "sku": "GRIFFE-160",
+      "sourceFile": "IMG-20261029-WA0139.jpg",
+      "name": "Poignée inox avec serrure encastrée et cylindre",
+      "brand": "Griffe",
+      "category": "serrurerie",
+      "price": 22000,
+      "stock": 6,
+      "shortDescription": "Poignée inox sur plaque livrée avec son corps de serrure à mortaiser et cylindre à canon.",
+      "description": "Ensemble complet pour porte d'entrée : poignée sur plaque en inox brossé, corps de serrure à mortaiser avec pêne dormant et demi-tour, cylindre à canon et jeu de clés. Poignée fixée sur la platine de serrure.",
+      "attributes": {
+        "Type": "Poignée + serrure à mortaiser",
+        "Matière": "Acier inoxydable",
+        "Finition": "Brossée",
+        "Fourni": "Corps de serrure, cylindre, clés",
+        "Usage": "Porte d'entrée"
+      },
+      "keywords": ["poignee", "serrure", "encastree", "mortaiser", "inox", "cylindre", "cle", "porte d'entree", "serrurerie", "griffe"]
+    },
+    {
+      "sku": "GRIFFE-161",
+      "sourceFile": "IMG-20261029-WA0147.jpg",
+      "name": "Poignée de salle de bain inox avec condamnation",
+      "brand": "Griffe",
+      "category": "serrurerie",
+      "price": 8500,
+      "stock": 12,
+      "shortDescription": "Poignée sur plaque inox avec bouton de condamnation, pour porte de salle de bain ou WC.",
+      "description": "Poignée sur plaque en inox brossé avec bouton de condamnation à tourner (sans clé) : la porte se verrouille de l'intérieur et peut être ouverte de l'extérieur en cas d'urgence. Pour salle de bain et WC.",
+      "attributes": {
+        "Type": "Poignée avec bouton de condamnation",
+        "Matière": "Acier inoxydable",
+        "Finition": "Brossée",
+        "Usage": "Porte de salle de bain, WC"
+      },
+      "keywords": ["poignee", "salle de bain", "wc", "condamnation", "inox", "porte", "serrurerie", "griffe"]
+    },
+    {
+      "sku": "GF-11-1023",
+      "sourceFile": "IMG-20261029-WA0152.jpg",
+      "name": "Poignée de porte acajou avec cylindre — Luxe",
+      "brand": "Griffe",
+      "category": "serrurerie",
+      "price": 12000,
+      "stock": 10,
+      "shortDescription": "Poignée sur plaque finition acajou, béquille inox grainée, avec cylindre à canon et clés.",
+      "description": "Poignée de porte sur plaque longue finition acajou, associée à une béquille en inox grainée. Livrée avec cylindre à canon et jeu de clés. Série Luxe.",
+      "attributes": {
+        "Type": "Poignée sur plaque avec cylindre",
+        "Finition": "Acajou",
+        "Béquille": "Inox grainé",
+        "Clés fournies": "Oui",
+        "Usage": "Porte d'entrée, porte intérieure"
+      },
+      "keywords": ["poignee", "porte", "acajou", "marron", "luxe", "cylindre", "canon", "cle", "serrurerie", "griffe"]
+    },
+    {
+      "sku": "GF-11-1028",
+      "sourceFile": "IMG-20261029-WA0141.jpg",
+      "name": "Poignée de porte acajou avec cylindre — courbe",
+      "brand": "Griffe",
+      "category": "serrurerie",
+      "price": 12000,
+      "stock": 10,
+      "shortDescription": "Poignée sur plaque finition acajou, béquille inox courbe, avec cylindre à canon et clés.",
+      "description": "Poignée de porte sur plaque longue finition acajou avec béquille inox courbe et lisse. Livrée avec cylindre à canon et jeu de clés. Série Luxe.",
+      "attributes": {
+        "Type": "Poignée sur plaque avec cylindre",
+        "Finition": "Acajou",
+        "Béquille": "Inox courbe",
+        "Clés fournies": "Oui",
+        "Usage": "Porte d'entrée, porte intérieure"
+      },
+      "keywords": ["poignee", "porte", "acajou", "marron", "luxe", "cylindre", "canon", "cle", "serrurerie", "griffe"]
+    },
+    {
+      "sku": "GRIFFE-165",
+      "sourceFile": "IMG-20261029-WA0106.jpg",
+      "name": "Poignée noire avec serrure et cylindre — Luxe",
+      "brand": "Griffe",
+      "category": "serrurerie",
+      "price": 18000,
+      "stock": 6,
+      "shortDescription": "Poignée noire mate sur plaque, livrée avec son corps de serrure, cylindre doré et clés.",
+      "description": "Ensemble poignée et serrure en finition noire mate rehaussée de doré : plaque et béquille noires, cylindre doré, corps de serrure à mortaiser et jeu de clés fournis. Série Luxe, référence fournisseur 9069-A904.",
+      "attributes": {
+        "Type": "Poignée + serrure à mortaiser",
+        "Finition": "Noir mat et doré",
+        "Fourni": "Corps de serrure, cylindre, clés",
+        "Série": "Luxe (9069-A904)",
+        "Usage": "Porte d'entrée"
+      },
+      "keywords": ["poignee", "serrure", "noire", "dore", "luxe", "cylindre", "cle", "porte d'entree", "serrurerie", "griffe"]
+    },
+    {
+      "sku": "GRIFFE-168",
+      "sourceFile": "IMG-20261029-WA0134.jpg",
+      "name": "Poignée de porte dorée avec cylindre — Luxe",
+      "brand": "Griffe",
+      "category": "serrurerie",
+      "price": 20000,
+      "stock": 8,
+      "shortDescription": "Poignée sur plaque dorée satinée, béquille pleine, avec cylindre à canon et clés.",
+      "description": "Poignée de porte sur plaque longue en finition dorée satinée, béquille pleine et embout gravé, avec cylindre à canon et jeu de clés. Série Luxe, référence fournisseur 168 S52A.",
+      "attributes": {
+        "Type": "Poignée sur plaque avec cylindre",
+        "Finition": "Doré satiné",
+        "Béquille": "Pleine, embout gravé",
+        "Clés fournies": "Oui",
+        "Série": "Luxe (168 S52A)"
+      },
+      "keywords": ["poignee", "porte", "doree", "or", "luxe", "cylindre", "canon", "cle", "serrurerie", "griffe"]
+    },
+    {
+      "sku": "GS-G053",
+      "sourceFile": "IMG-20261029-WA0135.jpg",
+      "name": "Colonne de douche noire avec mitigeur et douchette téléphone",
+      "brand": "Griffe",
+      "category": "plomberie",
+      "price": 55000,
+      "stock": 4,
+      "shortDescription": "Colonne de douche noire : pommeau rond, douchette à main, tablette et mitigeur avec douchette téléphone.",
+      "description": "Colonne de douche complète en finition noire mate : pommeau de pluie rond sur bras réglable, douchette à main sur support coulissant, flexible souple, tablette de rangement et mitigeur mural avec douchette téléphone à flexible spiralé. Idéale pour salle de bain moderne.",
+      "attributes": {
+        "Finition": "Noir mat",
+        "Pommeau": "Rond sur bras réglable",
+        "Douchette": "À main + douchette téléphone",
+        "Équipement": "Tablette de rangement, mitigeur mural",
+        "Flexible": "Souple + spiralé"
+      },
+      "keywords": ["colonne de douche", "douche", "mitigeur", "pommeau", "douchette", "telephone", "tablette", "noir", "plomberie", "griffe"]
+    },
+    {
+      "sku": "GS-G120",
+      "sourceFile": "IMG-20261029-WA0142.jpg",
+      "name": "Colonne de douche noire — pommeau rectangulaire",
+      "brand": "Griffe",
+      "category": "plomberie",
+      "price": 45000,
+      "stock": 4,
+      "shortDescription": "Colonne de douche noire mate, pommeau rectangulaire, douchette à main et tablette.",
+      "description": "Colonne de douche en finition noire mate avec pommeau de pluie rectangulaire, douchette à main sur support coulissant, flexible souple, tablette de rangement et raccord mural. Réglage en hauteur du support de douchette.",
+      "attributes": {
+        "Finition": "Noir mat",
+        "Pommeau": "Rectangulaire",
+        "Douchette": "À main sur support coulissant",
+        "Équipement": "Tablette de rangement",
+        "Montage": "Colonne murale"
+      },
+      "keywords": ["colonne de douche", "douche", "pommeau", "rectangulaire", "douchette", "tablette", "noir", "plomberie", "griffe"]
+    },
+    {
+      "sku": "GS-G224SS",
+      "sourceFile": "IMG-20261029-WA0145.jpg",
+      "name": "Panneau de douche inox avec buses massantes",
+      "brand": "Griffe",
+      "category": "plomberie",
+      "price": 85000,
+      "stock": 3,
+      "shortDescription": "Panneau de douche en inox : pommeau de pluie, buses de massage, douchette à main et mitigeur.",
+      "description": "Panneau de douche mural en acier inoxydable : pommeau de pluie en tête, rampe de buses massantes sur toute la hauteur, douchette à main avec flexible et mitigeur deux sorties. Fixation murale, habillage inox brossé.",
+      "attributes": {
+        "Matière": "Acier inoxydable",
+        "Finition": "Inox brossé",
+        "Pommeau": "Pluie en tête",
+        "Jets": "Buses massantes + douchette à main",
+        "Mitigeur": "2 sorties",
+        "Montage": "Mural"
+      },
+      "keywords": ["panneau de douche", "colonne", "douche", "inox", "massant", "buses", "pommeau", "douchette", "mitigeur", "plomberie", "griffe"]
+    }
+  ]
+}

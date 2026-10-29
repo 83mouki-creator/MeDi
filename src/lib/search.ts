@@ -194,6 +194,18 @@ export async function suggest(rawQuery: string, limit = 8): Promise<Suggestion[]
   const like = `%${query}%`;
   const prefix = `${query}%`;
 
+  // Type-ahead : « differentiel 40 » ou « poignee bronze » doivent déjà proposer
+  // des résultats pendant la frappe. On exige que chaque mot saisi (2 lettres et
+  // plus) apparaisse dans le texte de recherche, sans imposer qu'ils se suivent.
+  const tokens = query.split(' ').filter((word) => word.length >= 2);
+  const productMatch =
+    tokens.length > 1
+      ? sql`(${sql.join(
+          tokens.map((word) => sql`(p.search_text LIKE ${`%${word}%`} OR lower(p.sku) LIKE ${`%${word}%`})`),
+          sql` AND `,
+        )})`
+      : sql`(p.search_text LIKE ${like} OR lower(p.sku) LIKE ${like} OR similarity(p.search_text, ${query}) > 0.25)`;
+
   const rows = await db.execute(sql`
     (
       SELECT 'product' AS kind, p.name AS label, '/produit/' || p.slug AS href,
@@ -206,7 +218,7 @@ export async function suggest(rawQuery: string, limit = 8): Promise<Suggestion[]
              END AS rank
       FROM products p
       WHERE p.is_active = true AND p.is_archived = false
-        AND (p.search_text LIKE ${like} OR lower(p.sku) LIKE ${like} OR similarity(p.search_text, ${query}) > 0.25)
+        AND ${productMatch}
       ORDER BY rank ASC, p.sold_count DESC
       LIMIT ${limit}
     )
