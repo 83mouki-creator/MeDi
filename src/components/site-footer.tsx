@@ -111,6 +111,7 @@ export async function SiteFooter() {
             <li><Link href="/paiement" className="hover:text-white">Paiement Wave</Link></li>
             <li><Link href="/suivi" className="hover:text-white">Suivre ma commande</Link></li>
             <li><Link href="/retours" className="hover:text-white">Retours et remboursements</Link></li>
+            <li><Link href="/retours#faq-retours" className="hover:text-white">FAQ retours et remboursements</Link></li>
             <li><Link href="/cgv" className="hover:text-white">Conditions générales de vente</Link></li>
             <li><Link href="/confidentialite" className="hover:text-white">Confidentialité</Link></li>
             <li><Link href="/contact" className="hover:text-white">Contact</Link></li>

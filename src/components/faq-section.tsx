@@ -1,31 +1,36 @@
 import { ChevronDown, MessageCircle } from 'lucide-react';
-import {
-  DELIVERY_FAQ,
-  deliveryFaqFallbackHref,
-  deliveryFaqHref,
-} from '@/lib/delivery-faq';
-import type { PublicSettings } from '@/lib/settings';
+import { faqHref, type FaqEntry } from '@/lib/faq';
+import { whatsappLink, type PublicSettings } from '@/lib/settings';
+
+type FaqSectionProps = {
+  /** Ancre de la section, utilisée par les liens profonds (/livraison#faq-livraison…). */
+  id: string;
+  title: string;
+  intro: string;
+  entries: readonly FaqEntry[];
+  settings: PublicSettings;
+  fallbackMessage: string;
+  className?: string;
+};
 
 /**
- * FAQ livraisons et expéditions (accordéon natif <details>, accessible sans JS).
+ * FAQ en accordéon natif <details> : accessible au clavier et lisible sans JS.
  * Chaque réponse se termine par un renvoi vers le WhatsApp de la boutique.
  */
-export function DeliveryFaq({ settings }: { settings: PublicSettings }) {
-  const fallback = deliveryFaqFallbackHref(settings);
+export function FaqSection({ id, title, intro, entries, settings, fallbackMessage, className }: FaqSectionProps) {
+  const fallback = whatsappLink(settings, fallbackMessage);
+  const titleId = `${id}-titre`;
 
   return (
-    <section id="faq-livraison" aria-labelledby="faq-livraison-titre" className="mt-8 scroll-mt-24">
-      <h2 id="faq-livraison-titre" className="text-lg font-bold">
-        Questions fréquentes : livraisons et expéditions
+    <section id={id} aria-labelledby={titleId} className={className ?? 'mt-8 scroll-mt-24'}>
+      <h2 id={titleId} className="text-lg font-bold">
+        {title}
       </h2>
-      <p className="mt-1 text-sm text-navy-600">
-        Cinq questions qui reviennent le plus souvent en boutique. Pour un cas particulier, le WhatsApp de la boutique reste le
-        canal le plus rapide.
-      </p>
+      <p className="mt-1 text-sm text-navy-600">{intro}</p>
 
       <div className="mt-3 divide-y divide-navy-100 overflow-hidden rounded-xl border border-navy-100 bg-white">
-        {DELIVERY_FAQ.map((entry) => {
-          const href = deliveryFaqHref(settings, entry);
+        {entries.map((entry) => {
+          const href = faqHref(settings, entry);
           return (
             <details key={entry.id} className="group px-4 py-3 open:bg-navy-50/40">
               <summary className="flex cursor-pointer list-none items-start justify-between gap-3 text-sm font-semibold text-navy-900 [&::-webkit-details-marker]:hidden">

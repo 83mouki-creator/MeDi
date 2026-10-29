@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "fournisseur": "SODIS-MAD CI",
+  "date": "2026-10-29",
+  "lot": 7,
+  "note": "Lot 7 : une seule référence nouvelle (interrupteur différentiel 4P 63 A Megalec). Les 17 autres photos reçues correspondent à des produits déjà publiés dans les lots 2 à 6 : aucune fiche n'a été dupliquée.",
+  "categories": [],
+  "sousCategoriesExistantes": [],
+  "produits": [
+    {
+      "sku": "ID4P63A30MA",
+      "sourceFile": "IMG-20261029-WA0110.jpg",
+      "name": "Interrupteur différentiel 4P 63 A — 30 mA, Megalec",
+      "brand": "Megalec",
+      "category": "protection-electrique",
+      "price": 55000,
+      "stock": 4,
+      "shortDescription": "Interrupteur différentiel tétrapolaire 63 A, sensibilité 30 mA, type AC, rail DIN.",
+      "description": "Interrupteur différentiel 4 pôles 63 A, sensibilité 30 mA, type AC, à installer en tête de tableau triphasé pour protéger les personnes contre les courants de fuite. Boîtier modulaire 4 modules, bornes numérotées 1-3-5-N en haut et 2-4-6-N en bas, bouton de test, montage sur rail DIN. Marque Megalec.",
+      "attributes": {
+        "Pôles": "4P (1-3-5-N / 2-4-6-N)",
+        "Calibre": "63 A",
+        "Sensibilité": "30 mA",
+        "Type": "AC",
+        "Tension": "400 V~ 50/60 Hz",
+        "Montage": "Rail DIN (4 modules)"
+      },
+      "keywords": [
+        "interrupteur differentiel",
+        "differentiel",
+        "4p",
+        "63a",
+        "30ma",
+        "triphase",
+        "rail din",
+        "megalec",
+        "protection",
+        "gyL8"
+      ]
+    }
+  ]
+}

@@ -7,8 +7,10 @@ import { deliveryZones } from '@/db/schema';
 import { getStoreSettings } from '@/lib/settings';
 import { formatFCFA, toFcfa } from '@/lib/utils';
 import { Alert, Card } from '@/components/ui/primitives';
-import { DeliveryFaq } from '@/components/delivery-faq';
-import { deliveryFaqJsonLd } from '@/lib/delivery-faq';
+import { FaqSection } from '@/components/faq-section';
+import { faqJsonLd } from '@/lib/faq';
+import { DELIVERY_FAQ, DELIVERY_FAQ_FALLBACK_MESSAGE } from '@/lib/delivery-faq';
+import { RETURNS_FAQ, RETURNS_FAQ_FALLBACK_MESSAGE } from '@/lib/returns-faq';
 
 export const metadata: Metadata = {
   title: 'Livraison à Daloa et dans toute la Côte d’Ivoire',
@@ -33,11 +35,11 @@ export default async function DeliveryPage() {
   const national = zones.filter((zone) => !zone.isLocal && !zone.isPickup);
   const pickup = zones.filter((zone) => zone.isPickup);
   const hasDemoZones = zones.some((zone) => /DÉMO|DEMO/i.test(zone.name));
-  const faqJsonLd = deliveryFaqJsonLd(settings);
+  const faqStructuredData = faqJsonLd(DELIVERY_FAQ, settings);
 
   return (
     <div className="container-page max-w-4xl py-8">
-      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqStructuredData) }} />
       <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">Livraison et retrait</h1>
       <p className="mt-2 text-sm text-navy-600">
         MeDi opère depuis {settings.city}. La destination est choisie <strong>avant</strong> le mode de paiement, car les
@@ -137,7 +139,23 @@ export default async function DeliveryPage() {
         déclaration du client ne vaut preuve de paiement : seule la vérification de l’encaissement fait foi.
       </Alert>
 
-      <DeliveryFaq settings={settings} />
+      <FaqSection
+        id="faq-livraison"
+        title="Questions fréquentes : livraisons et expéditions"
+        intro="Cinq questions qui reviennent le plus souvent en boutique. Pour un cas particulier, le WhatsApp de la boutique reste le canal le plus rapide."
+        entries={DELIVERY_FAQ}
+        settings={settings}
+        fallbackMessage={DELIVERY_FAQ_FALLBACK_MESSAGE}
+      />
+
+      <FaqSection
+        id="faq-retours"
+        title="Questions fréquentes : retours et remboursements"
+        intro="Un retour, un échange ou un remboursement dépend toujours de l’état réel de l’article : ces réponses décrivent la procédure, la boutique tranche le cas particulier sur WhatsApp."
+        entries={RETURNS_FAQ}
+        settings={settings}
+        fallbackMessage={RETURNS_FAQ_FALLBACK_MESSAGE}
+      />
 
       <div className="mt-6 flex items-center gap-2 rounded-lg bg-navy-50 p-3 text-sm text-navy-700">
         <Info className="size-4 shrink-0" aria-hidden />
