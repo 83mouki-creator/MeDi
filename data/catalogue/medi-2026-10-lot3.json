@@ -1,0 +1,364 @@
+{
+  "version": 1,
+  "fournisseur": "SODIS-MAD CI",
+  "date": "2026-10-29",
+  "lot": 3,
+  "note": "Troisième lot de photos. Références relevées sur les visuels. Prix et stocks proposés par le prestataire, modifiables dans /admin/produits.",
+  "categories": [
+    {
+      "slug": "eclairage-led",
+      "name": "Éclairage LED",
+      "description": "Spots, ampoules, projecteurs et rubans LED pour la maison, le commerce et le chantier.",
+      "children": [{ "slug": "eclairage-reglettes", "name": "Réglettes et tubes LED" }]
+    }
+  ],
+  "produits": [
+    {
+      "sku": "MDL-BUA4505W-6500",
+      "sourceFile": "IMG-20261029-WA0084.jpg",
+      "name": "Ampoule LED 5 W — culot E27, 6500 K",
+      "brand": "Midea",
+      "category": "eclairage-ampoules",
+      "price": 2500,
+      "stock": 24,
+      "shortDescription": "Ampoule LED 5 W à culot à vis E27, lumière blanche froide 6500 K, 480 lm.",
+      "description": "Ampoule LED à culot à vis E27 pour luminaire domestique. 5 W, lumière blanche froide 6500 K, flux 480 lm, durée annoncée 15 000 heures.",
+      "attributes": {
+        "Puissance": "5 W",
+        "Culot": "E27",
+        "Température de couleur": "6500 K",
+        "Flux lumineux": "480 lm",
+        "Durée de vie": "15 000 h"
+      },
+      "keywords": ["ampoule", "led", "e27", "5w", "6500k", "blanc froid", "lumiere", "midea"]
+    },
+    {
+      "sku": "MDL-DLM60R18W-03",
+      "sourceFile": "IMG-20261029-WA0021.jpg",
+      "name": "Spot LED 18 W en saillie — 6\", rond, 6500 K",
+      "brand": "Midea",
+      "category": "eclairage-spots",
+      "price": 12000,
+      "stock": 8,
+      "shortDescription": "Spot LED rond 18 W en saillie (apparent), diamètre 6 pouces, cadre blanc, 6500 K.",
+      "description": "Spot LED rond en saillie pour plafond sans faux plafond : couloir, boutique, local technique. 18 W, diamètre 6 pouces, cadre blanc, lumière 6500 K. Se fixe directement au plafond.",
+      "attributes": {
+        "Puissance": "18 W",
+        "Diamètre": "6 pouces",
+        "Montage": "En saillie (apparent)",
+        "Cadre": "Blanc",
+        "Température de couleur": "6500 K"
+      },
+      "keywords": ["spot", "led", "saillie", "apparent", "18w", "6 pouces", "6500k", "plafond", "midea"]
+    },
+    {
+      "sku": "MDL-STD12W-02-6500",
+      "sourceFile": "IMG-20261029-WA0092.jpg",
+      "name": "Ruban LED 12 W — 50 m, 6500 K",
+      "brand": "Midea",
+      "category": "eclairage-rubans",
+      "price": 35000,
+      "stock": 4,
+      "shortDescription": "Rouleau de ruban LED souple 50 m, 6500 K (blanc froid), alimentation 12 W.",
+      "description": "Ruban LED souple en rouleau de 50 mètres pour éclairage indirect : faux plafond, vitrine, mobilier. Lumière blanche froide 6500 K, découpe possible, adhésif au dos.",
+      "attributes": {
+        "Longueur": "50 m",
+        "Température de couleur": "6500 K (blanc froid)",
+        "Puissance": "12 W",
+        "Marque": "Midea Lighting"
+      },
+      "keywords": ["ruban led", "led", "bande lumineuse", "50 m", "6500k", "blanc froid", "eclairage", "midea"]
+    },
+    {
+      "sku": "EUPRDB/N",
+      "sourceFile": "IMG-20261029-WA0038.jpg",
+      "name": "Bouton poussoir étanche à encastrer — gris, IP55",
+      "brand": "Midea",
+      "category": "appareillage-electrique",
+      "price": 6500,
+      "stock": 15,
+      "shortDescription": "Bouton poussoir gris à encastrer avec voyant néon, étanche IP55.",
+      "description": "Bouton poussoir à encastrer avec témoin lumineux néon intégré, protection IP55 pour pièces humides et extérieur abrité : atelier, terrasse, buanderie. Plaque et cadre gris.",
+      "attributes": {
+        "Type": "Bouton poussoir avec voyant",
+        "Indice de protection": "IP55",
+        "Montage": "Encastré",
+        "Couleur": "Gris"
+      },
+      "keywords": ["bouton", "poussoir", "etanche", "ip55", "encastre", "voyant", "neon", "appareillage", "midea"]
+    },
+    {
+      "sku": "MDL-FLF200W-033000K",
+      "sourceFile": "IMG-20261029-WA0023.jpg",
+      "name": "Projecteur LED 200 W — 18 000 lm, IP66",
+      "brand": "Midea",
+      "category": "eclairage-projecteurs",
+      "price": 45000,
+      "stock": 4,
+      "shortDescription": "Projecteur LED 200 W, 18 000 lm, IP66, 3000 K, étrier orientable.",
+      "description": "Projecteur LED de forte puissance pour éclairage extérieur : cour, chantier, parking, entrepôt. 200 W, 18 000 lumens, étanchéité IP66, lumière blanche chaude 3000 K, étrier de fixation orientable.",
+      "attributes": {
+        "Puissance": "200 W",
+        "Flux lumineux": "18 000 lm",
+        "Indice de protection": "IP66",
+        "Température de couleur": "3000 K"
+      },
+      "keywords": ["projecteur", "led", "floodlight", "200w", "ip66", "3000k", "exterieur", "chantier", "midea"]
+    },
+    {
+      "sku": "MDL-BUA6012W-6500",
+      "sourceFile": "IMG-20261029-WA0044.jpg",
+      "name": "Ampoule LED 12 W — culot E27, 6500 K",
+      "brand": "Midea",
+      "category": "eclairage-ampoules",
+      "price": 4500,
+      "stock": 20,
+      "shortDescription": "Ampoule LED 12 W à culot à vis E27, lumière blanche froide 6500 K, 1100 lm.",
+      "description": "Ampoule LED à culot à vis E27, équivalente à une ampoule 75 W. 12 W, lumière blanche froide 6500 K, flux 1100 lm, durée annoncée 15 000 heures.",
+      "attributes": {
+        "Puissance": "12 W",
+        "Culot": "E27",
+        "Température de couleur": "6500 K",
+        "Flux lumineux": "1100 lm",
+        "Durée de vie": "15 000 h"
+      },
+      "keywords": ["ampoule", "led", "e27", "12w", "6500k", "blanc froid", "lumiere", "midea"]
+    },
+    {
+      "sku": "MDL-BLL1245W",
+      "sourceFile": "IMG-20261029-WA0046.jpg",
+      "name": "Réglette LED 1,20 m — 45 W",
+      "brand": "Midea",
+      "category": "eclairage-reglettes",
+      "price": 15000,
+      "stock": 10,
+      "shortDescription": "Réglette LED de 1,20 m, 45 W, pour éclairage linéaire d'atelier, boutique et garage.",
+      "description": "Réglette LED linéaire de 1,20 mètre pour éclairage continu : atelier, garage, boutique, couloir. 45 W, diffuseur opale, embouts de raccordement, fixation au plafond ou en suspension.",
+      "attributes": {
+        "Longueur": "1,20 m",
+        "Puissance": "45 W",
+        "Type": "Réglette linéaire avec diffuseur",
+        "Montage": "Plafond ou suspension"
+      },
+      "keywords": ["reglette", "led", "tube", "lineaire", "1.20 m", "45w", "atelier", "garage", "midea"]
+    },
+    {
+      "sku": "MDL-DL40R12W-036K",
+      "sourceFile": "IMG-20261029-WA0025.jpg",
+      "name": "Spot LED encastré 12 W — 4\", 6500 K",
+      "brand": "Midea",
+      "category": "eclairage-spots",
+      "price": 8500,
+      "stock": 10,
+      "shortDescription": "Spot LED à encastrer 12 W, diamètre 4 pouces, 6500 K (blanc froid).",
+      "description": "Spot LED encastré pour faux plafond de séjour, boutique et bureau. 12 W, 6500 K (blanc froid), diffuseur uniforme, fixations à ressorts, finition blanche.",
+      "attributes": {
+        "Puissance": "12 W",
+        "Diamètre": "4 pouces",
+        "Température de couleur": "6500 K (blanc froid)",
+        "Montage": "Encastré (faux plafond)"
+      },
+      "keywords": ["spot", "led", "encastre", "12w", "4 pouces", "6500k", "blanc froid", "faux plafond", "midea"]
+    },
+    {
+      "sku": "MDL-FLS15W65-02",
+      "sourceFile": "IMG-20261029-WA0052.jpg",
+      "name": "Projecteur solaire LED 15 W — 2100 lm, 6500 K",
+      "brand": "Midea",
+      "category": "eclairage-projecteurs",
+      "price": 32000,
+      "stock": 6,
+      "shortDescription": "Projecteur solaire 15 W avec panneau photovoltaïque et télécommande, 2100 lm, 6500 K.",
+      "description": "Projecteur solaire autonome pour éclairage extérieur sans raccordement électrique : cour, portail, ruelle. Panneau photovoltaïque fourni, batterie intégrée, 15 W, 2100 lumens, lumière 6500 K, télécommande.",
+      "attributes": {
+        "Puissance": "15 W",
+        "Flux lumineux": "2100 lm",
+        "Température de couleur": "6500 K",
+        "Alimentation": "Solaire (panneau fourni)",
+        "Accessoire": "Télécommande"
+      },
+      "keywords": ["projecteur", "solaire", "led", "photovoltaique", "15w", "2100 lm", "exterieur", "telecommande", "midea"]
+    },
+    {
+      "sku": "MDL-STD8W-05",
+      "sourceFile": "IMG-20261029-WA0054.jpg",
+      "name": "Ruban LED RGB 8 W — 50 m",
+      "brand": "Midea",
+      "category": "eclairage-rubans",
+      "price": 30000,
+      "stock": 4,
+      "shortDescription": "Rouleau de ruban LED RGB multicolore 50 m, alimentation 8 W.",
+      "description": "Ruban LED RGB multicolore en rouleau de 50 mètres pour décoration : vitrine, mobilier, salle de fête. Couleurs variable, découpe possible, adhésif au dos.",
+      "attributes": {
+        "Longueur": "50 m",
+        "Couleurs": "RGB (multicolore)",
+        "Puissance": "8 W",
+        "Marque": "Midea Lighting"
+      },
+      "keywords": ["ruban led", "rgb", "multicolore", "50 m", "8w", "decoration", "eclairage", "midea"]
+    },
+    {
+      "sku": "MDL-DL35R08W-03",
+      "sourceFile": "IMG-20261029-WA0027.jpg",
+      "name": "Spot LED encastré 8 W — 3,5\", 4000 K",
+      "brand": "Midea",
+      "category": "eclairage-spots",
+      "price": 6500,
+      "stock": 12,
+      "shortDescription": "Spot LED à encastrer 8 W, diamètre 3,5 pouces, 4000 K (blanc neutre), finition blanche.",
+      "description": "Spot LED encastré compact pour faux plafond : maison, commerce, bureau. 8 W, 4000 K (blanc neutre), diffuseur uniforme, fixations à ressorts, finition blanche.",
+      "attributes": {
+        "Puissance": "8 W",
+        "Diamètre": "3,5 pouces",
+        "Température de couleur": "4000 K (blanc neutre)",
+        "Montage": "Encastré (faux plafond)"
+      },
+      "keywords": ["spot", "led", "encastre", "8w", "3.5 pouces", "4000k", "blanc neutre", "faux plafond", "midea"]
+    },
+    {
+      "sku": "APC10-B2",
+      "sourceFile": "IMG-20261029-WA0060.jpg",
+      "name": "Aspirateur d'air 4\" — 12 W",
+      "brand": "Midea",
+      "category": "ventilation",
+      "price": 25000,
+      "stock": 6,
+      "shortDescription": "Extracteur d'air mural 4 pouces, 12 W, grille de protection, pour cuisine et salle d'eau.",
+      "description": "Aspirateur (extracteur) d'air mural pour cuisine, salle de bain et petit local technique. Hélice 4 pouces, moteur 12 W, grille de protection, cadre blanc à visser au mur.",
+      "attributes": {
+        "Diamètre": "4 pouces",
+        "Puissance": "12 W",
+        "Montage": "Mural",
+        "Usage": "Cuisine, salle d'eau, local technique"
+      },
+      "keywords": ["aspirateur", "extracteur", "ventilation", "aeration", "4 pouces", "12w", "cuisine", "midea"]
+    },
+    {
+      "sku": "MDL-CLR12W-R-6500K",
+      "sourceFile": "IMG-20261029-WA0062.jpg",
+      "name": "Globe LED 12 W avec détecteur de présence",
+      "brand": "Midea",
+      "category": "eclairage-plafonniers",
+      "price": 15000,
+      "stock": 8,
+      "shortDescription": "Plafonnier globe LED 12 W, 6500 K, avec détecteur de mouvement radar intégré.",
+      "description": "Plafonnier LED rond équipé d'un détecteur de présence radar : la lumière s'allume au passage et s'éteint seule. 12 W, 6500 K, idéal couloir, entrée, cage d'escalier et local de passage.",
+      "attributes": {
+        "Puissance": "12 W",
+        "Température de couleur": "6500 K",
+        "Détection": "Radar de présence",
+        "Montage": "En applique au plafond"
+      },
+      "keywords": ["globe", "plafonnier", "led", "detecteur", "presence", "radar", "12w", "6500k", "couloir", "midea"]
+    },
+    {
+      "sku": "MDL-CLR24W-03",
+      "sourceFile": "IMG-20261029-WA0064.jpg",
+      "name": "Globe LED 24 W — 6500 K",
+      "brand": "Midea",
+      "category": "eclairage-plafonniers",
+      "price": 16000,
+      "stock": 6,
+      "shortDescription": "Plafonnier globe LED rond 24 W, lumière blanche froide 6500 K.",
+      "description": "Plafonnier LED rond pour séjour, chambre et couloir. 24 W, lumière blanche froide 6500 K, diffuseur opale et finition blanche.",
+      "attributes": {
+        "Puissance": "24 W",
+        "Température de couleur": "6500 K",
+        "Montage": "En applique au plafond",
+        "Finition": "Blanc"
+      },
+      "keywords": ["globe", "plafonnier", "led", "24w", "6500k", "plafond", "lumiere", "midea"]
+    },
+    {
+      "sku": "MDL-BUA6015W-6500-B22",
+      "sourceFile": "IMG-20261029-WA0030.jpg",
+      "name": "Ampoule LED 15 W — culot B22, 6500 K",
+      "brand": "Midea",
+      "category": "eclairage-ampoules",
+      "price": 5500,
+      "stock": 15,
+      "shortDescription": "Ampoule LED 15 W à culot à baïonnette B22, lumière blanche froide 6500 K, 1500 lm.",
+      "description": "Ampoule LED à culot à baïonnette B22, équivalente à une ampoule 100 W. 15 W, lumière blanche froide 6500 K, flux 1500 lm, durée annoncée 15 000 heures.",
+      "attributes": {
+        "Puissance": "15 W",
+        "Culot": "B22",
+        "Température de couleur": "6500 K",
+        "Flux lumineux": "1500 lm",
+        "Durée de vie": "15 000 h"
+      },
+      "keywords": ["ampoule", "led", "b22", "15w", "6500k", "blanc froid", "lumiere", "midea"]
+    },
+    {
+      "sku": "MDL-CLR36W-01",
+      "sourceFile": "IMG-20261029-WA0070.jpg",
+      "name": "Globe LED 36 W rond — 3 couleurs",
+      "brand": "Midea",
+      "category": "eclairage-plafonniers",
+      "price": 25000,
+      "stock": 5,
+      "shortDescription": "Plafonnier globe LED rond 36 W, trois températures de couleur sélectionnables.",
+      "description": "Plafonnier LED rond de forte luminosité pour séjour et grande pièce. 36 W, trois températures de couleur sélectionnables (blanc chaud, neutre, froid), diffuseur opale.",
+      "attributes": {
+        "Puissance": "36 W",
+        "Températures": "3 couleurs au choix",
+        "Montage": "En applique au plafond",
+        "Finition": "Blanc"
+      },
+      "keywords": ["globe", "plafonnier", "led", "36w", "3 couleurs", "plafond", "grande piece", "midea"]
+    },
+    {
+      "sku": "278111L",
+      "sourceFile": "IMG-20261029-WA0013.jpg",
+      "name": "Prise 2P+T blanc — Mosaic",
+      "brand": "Legrand",
+      "category": "appareillage-electrique",
+      "price": 3500,
+      "stock": 25,
+      "shortDescription": "Prise de courant 2P+T 16 A, blanche, gamme Mosaic, à encastrer.",
+      "description": "Prise de courant 2P+T (avec terre) de la gamme Mosaic, à encastrer sur boîte d'encastrement. Mécanisme blanc, bornes à vis, se complète avec un cadre Mosaic.",
+      "attributes": {
+        "Type": "2P+T (avec terre)",
+        "Gamme": "Mosaic",
+        "Couleur": "Blanc",
+        "Montage": "Encastré"
+      },
+      "keywords": ["prise", "2p+t", "terre", "mosaic", "legrand", "blanc", "encastre", "appareillage"]
+    },
+    {
+      "sku": "410323",
+      "sourceFile": "IMG-20261029-WA0042.jpg",
+      "name": "Parafoudre 4P T2 — 20 kA",
+      "brand": "Legrand",
+      "category": "appareillage-electrique",
+      "price": 45000,
+      "stock": 5,
+      "shortDescription": "Parafoudre modulaire 4 pôles type T2, In 10 kA / Imax 20 kA, 320 V~, pour tableau divisionnaire.",
+      "description": "Parafoudre modulaire 4 pôles (4 modules) de type T2 pour protection du tableau contre les surtensions : In 10 kA, Imax 20 kA, Uc 320 V~. Se monte sur rail DIN.",
+      "attributes": {
+        "Pôles": "4",
+        "Type": "T2",
+        "Courant": "In 10 kA / Imax 20 kA",
+        "Tension": "Uc 320 V~",
+        "Montage": "Rail DIN"
+      },
+      "keywords": ["parafoudre", "surtension", "t2", "20ka", "4p", "tableau", "legrand", "appareillage"]
+    },
+    {
+      "sku": "31900",
+      "sourceFile": "IMG-20261029-WA0009.jpg",
+      "name": "Collier d'embase pour conduit — Legrand",
+      "brand": "Legrand",
+      "category": "appareillage-electrique",
+      "price": 1500,
+      "stock": 40,
+      "shortDescription": "Collier de fixation à embase pour conduit et gaine électrique.",
+      "description": "Collier de fixation à embase pour maintenir conduit, gaine ou câble le long d'une paroi. Fixation par vis, serrage par clip, matière plastique grise.",
+      "attributes": {
+        "Type": "Collier à embase",
+        "Usage": "Conduit, gaine, câble",
+        "Fixation": "Par vis + clip"
+      },
+      "keywords": ["collier", "embase", "fixation", "conduit", "gaine", "cable", "legrand", "appareillage"]
+    }
+  ]
+}
