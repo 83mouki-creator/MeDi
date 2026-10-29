@@ -22,12 +22,17 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
   if (!product) return { title: 'Produit introuvable' };
 
   const pricing = computePricing(product);
+  // Certaines références portent déjà la marque dans leur nom : on ne l'ajoute pas deux fois.
+  const brandSuffix =
+    product.brandName && !product.name.toLowerCase().includes(product.brandName.toLowerCase())
+      ? ` — ${product.brandName}`
+      : '';
   const description =
     product.shortDescription ??
-    `${product.name}${product.brandName ? ` — ${product.brandName}` : ''} disponible chez MeDi à Daloa. ${formatFCFA(pricing.price)}.`;
+    `${product.name}${brandSuffix} disponible chez MeDi à Daloa. ${formatFCFA(pricing.price)}.`;
 
   return {
-    title: `${product.name}${product.brandName ? ` — ${product.brandName}` : ''}`,
+    title: `${product.name}${brandSuffix}`,
     description: description.slice(0, 300),
     alternates: { canonical: `/produit/${product.slug}` },
     openGraph: {
