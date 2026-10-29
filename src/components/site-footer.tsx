@@ -107,6 +107,7 @@ export async function SiteFooter() {
           <h2 className="text-sm font-semibold text-white">Informations</h2>
           <ul className="mt-3 space-y-2 text-sm">
             <li><Link href="/livraison" className="hover:text-white">Livraison et retrait</Link></li>
+            <li><Link href="/livraison#faq-livraison" className="hover:text-white">FAQ livraisons et expéditions</Link></li>
             <li><Link href="/paiement" className="hover:text-white">Paiement Wave</Link></li>
             <li><Link href="/suivi" className="hover:text-white">Suivre ma commande</Link></li>
             <li><Link href="/retours" className="hover:text-white">Retours et remboursements</Link></li>
