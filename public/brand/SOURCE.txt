@@ -1,0 +1,11 @@
+Fichiers générés par scripts/make-brand-assets.ts à partir de medi-logo-source.png.
+Ne pas éditer à la main : relancer le script après remplacement du logo source.
+
+medi-logo.png                  → logo empilé, fond clair (documents, e-mails)
+medi-logo-blanc.png            → logo empilé, fond sombre
+medi-logo-horizontal.png       → en-tête et pied de page sur fond clair
+medi-logo-horizontal-blanc.png → en-tête et pied de page bleu nuit
+medi-icon.png                  → icône carrée 512 px (favicon, réseaux sociaux, PWA)
+apple-touch-icon.png           → icône iOS 180 px
+favicon-32.png                 → favicon PNG 32 px
+medi-og.png                    → image de partage 1200×630

@@ -45,7 +45,7 @@ export async function SiteFooter() {
 
       <div className="container-page grid gap-8 py-10 sm:grid-cols-2 lg:grid-cols-4">
         <div>
-          <Image src="/brand/medi-logo-blanc.svg" alt="MeDi" width={168} height={47} className="h-11 w-auto" />
+          <Image src="/brand/medi-logo-horizontal-blanc.png" alt="MeDi" width={703} height={200} className="h-12 w-auto" />
           <p className="mt-4 max-w-xs text-sm leading-relaxed">
             {settings.tagline ??
               'Quincaillerie, outillage industriel, matériel de construction et équipement de la maison à Daloa.'}

@@ -1,13 +1,26 @@
 # Logo MeDi
 
-Emplacements officiels des fichiers de marque :
+Le logo officiel fourni par le propriétaire est conservé tel quel dans
+`medi-logo-source.png`. Toutes les autres images de marque sont générées à partir
+de ce fichier :
+
+```bash
+npm run brand:assets
+```
 
 | Fichier | Usage |
 | --- | --- |
-| `medi-logo.svg` | En-tête (version horizontale, fond clair) |
-| `medi-logo-blanc.svg` | Pied de page (version horizontale, fond bleu nuit) |
-| `medi-icon.svg` / `favicon.svg` | Icône carrée, favicon, réseaux sociaux |
+| `medi-logo-source.png` | fichier d'origine (ne pas modifier : c'est la source) |
+| `medi-logo-horizontal-blanc.png` | en-tête et pied de page (fond bleu nuit) |
+| `medi-logo-horizontal.png` | documents et fonds clairs |
+| `medi-logo.png` / `medi-logo-blanc.png` | versions empilées (e-mails, réseaux sociaux) |
+| `medi-icon.png` | icône carrée 512 px (favicon haute résolution, PWA) |
+| `favicon-32.png` | favicon 32 px |
+| `apple-touch-icon.png` | icône iOS 180 px |
+| `medi-og.png` | image de partage 1200 × 630 (Open Graph / Twitter) |
 
-Le propriétaire peut remplacer ces fichiers par le logo officiel MeDi en conservant
-les mêmes noms : aucune modification de code n'est nécessaire. Les SVG actuels sont
-une création originale (aucun élément repris de Jumia ou d'une autre marque).
+Les anciens fichiers `medi-logo.svg`, `medi-logo-blanc.svg` et `medi-icon.svg`
+(proposition initiale) ne sont plus utilisés par le site.
+
+Pour remplacer le logo : écraser `medi-logo-source.png` puis relancer
+`npm run brand:assets`. Aucune modification de code n'est nécessaire.

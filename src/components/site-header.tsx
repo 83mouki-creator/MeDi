@@ -58,7 +58,7 @@ export async function SiteHeader() {
       {/* Barre principale */}
       <div className="container-page flex flex-wrap items-center gap-3 py-3 lg:gap-6">
         <Link href="/" className="flex shrink-0 items-center" aria-label="MeDi — accueil">
-          <Image src="/brand/medi-logo-blanc.svg" alt="MeDi" width={168} height={47} priority className="h-10 w-auto lg:h-11" />
+          <Image src="/brand/medi-logo-horizontal-blanc.png" alt="MeDi" width={703} height={200} priority className="h-11 w-auto lg:h-12" />
         </Link>
 
         <div className="order-3 w-full lg:order-2 lg:flex-1">
