@@ -1,0 +1,377 @@
+{
+  "version": 1,
+  "fournisseur": "SODIS-MAD CI",
+  "date": "2026-10-29",
+  "lot": 6,
+  "note": "Lot 6 : coffrets et appareillage modulaire Schneider (Prismaset XS, Acti9, Easy9), protection Megalec, poignées et panneaux de douche Griffe. Photos fournisseur retravaillées (bandeau MeDi + référence).",
+  "categories": [],
+  "sousCategoriesExistantes": [
+    {
+      "parent": "appareillage-electrique",
+      "slug": "coffrets-tableaux",
+      "name": "Coffrets et tableaux électriques"
+    }
+  ],
+  "produits": [
+    {
+      "sku": "LVSXT524",
+      "sourceFile": "IMG-20261029-WA0144.jpg",
+      "name": "Coffret électrique 120 modules — 5 rangées, Prismaset XS",
+      "brand": "Schneider Electric",
+      "category": "coffrets-tableaux",
+      "price": 85000,
+      "stock": 3,
+      "shortDescription": "Coffret apparent 120 modules sur 5 rangées, sans porte, gamme Prismaset XS.",
+      "description": "Coffret de distribution apparent pour tableau divisionnaire : 120 modules répartis sur 5 rangées, livré sans porte. Châssis équipé de rails DIN, bornier de terre et de neutre, réservations pour le passage des câbles. Gamme Schneider Prismaset XS, fixation murale.",
+      "attributes": {
+        "Capacité": "120 modules",
+        "Rangées": "5",
+        "Type": "Apparent, sans porte",
+        "Gamme": "Prismaset XS",
+        "Montage": "Mural"
+      },
+      "keywords": ["coffret", "tableau", "coffret electrique", "120 modules", "5 rangees", "prismaset", "xs", "schneider", "apparent"]
+    },
+    {
+      "sku": "LVSXT424",
+      "sourceFile": "IMG-20261029-WA0150.jpg",
+      "name": "Coffret électrique 96 modules — 4 rangées, Prismaset XS",
+      "brand": "Schneider Electric",
+      "category": "coffrets-tableaux",
+      "price": 70000,
+      "stock": 4,
+      "shortDescription": "Coffret apparent 96 modules sur 4 rangées, sans porte, gamme Prismaset XS.",
+      "description": "Coffret de distribution apparent 96 modules sur 4 rangées, livré sans porte. Rails DIN montés, bornier de terre et de neutre, fixations murales. Gamme Schneider Prismaset XS, adaptée aux tableaux d'appartement et de petit commerce.",
+      "attributes": {
+        "Capacité": "96 modules",
+        "Rangées": "4",
+        "Type": "Apparent, sans porte",
+        "Gamme": "Prismaset XS",
+        "Montage": "Mural"
+      },
+      "keywords": ["coffret", "tableau", "coffret electrique", "96 modules", "4 rangees", "prismaset", "xs", "schneider", "apparent"]
+    },
+    {
+      "sku": "EZ9D32610",
+      "sourceFile": "IMG-20261029-WA0112.jpg",
+      "name": "Disjoncteur différentiel DPN VIGI 2P 10 A — 30 mA, Easy9",
+      "brand": "Schneider Electric",
+      "category": "protection-electrique",
+      "price": 30000,
+      "stock": 8,
+      "shortDescription": "Disjoncteur différentiel phase + neutre 10 A, courbe C, 30 mA, gamme Easy9.",
+      "description": "Disjoncteur différentiel (RCBO) réunissant protection des circuits et protection des personnes sur un seul appareil : 2 pôles phase + neutre, 10 A courbe C, sensibilité 30 mA, bouton de test. Gamme Schneider Easy9, montage sur rail DIN.",
+      "attributes": {
+        "Type": "Disjoncteur différentiel (RCBO)",
+        "Pôles": "2P (phase + neutre)",
+        "Calibre": "10 A",
+        "Courbe": "C",
+        "Sensibilité": "30 mA",
+        "Gamme": "Easy9"
+      },
+      "keywords": ["disjoncteur differentiel", "rcbo", "dpn vigi", "10a", "30ma", "courbe c", "easy9", "schneider", "protection"]
+    },
+    {
+      "sku": "A9F74440",
+      "sourceFile": "IMG-20261029-WA0099.jpg",
+      "name": "Disjoncteur modulaire 4P 40 A — Acti9 iC60N",
+      "brand": "Schneider Electric",
+      "category": "protection-electrique",
+      "price": 38000,
+      "stock": 5,
+      "shortDescription": "Disjoncteur tétrapolaire 40 A sur rail DIN, gamme Acti9 iC60N.",
+      "description": "Disjoncteur modulaire 4 pôles 40 A pour circuit triphasé de tableau : protège contre les surcharges et les courts-circuits et coupe les quatre conducteurs. Gamme Schneider Acti9 iC60N, montage sur rail DIN.",
+      "attributes": {
+        "Pôles": "4P",
+        "Calibre": "40 A",
+        "Gamme": "Acti9 iC60N",
+        "Montage": "Rail DIN",
+        "Référence constructeur": "A9F74440"
+      },
+      "keywords": ["disjoncteur", "tetrapolaire", "4p", "40a", "acti9", "ic60n", "rail din", "triphase", "schneider", "protection"]
+    },
+    {
+      "sku": "A9F74463",
+      "sourceFile": "IMG-20261029-WA0146.jpg",
+      "name": "Disjoncteur modulaire 4P 63 A — Acti9 iC60N",
+      "brand": "Schneider Electric",
+      "category": "protection-electrique",
+      "price": 48000,
+      "stock": 4,
+      "shortDescription": "Disjoncteur tétrapolaire 63 A sur rail DIN, gamme Acti9 iC60N.",
+      "description": "Disjoncteur modulaire 4 pôles 63 A pour l'alimentation d'un tableau divisionnaire ou d'une machine triphasée. Coupe les quatre conducteurs en cas de surcharge ou de court-circuit. Gamme Schneider Acti9 iC60N, rail DIN.",
+      "attributes": {
+        "Pôles": "4P",
+        "Calibre": "63 A",
+        "Gamme": "Acti9 iC60N",
+        "Montage": "Rail DIN",
+        "Référence constructeur": "A9F74463"
+      },
+      "keywords": ["disjoncteur", "tetrapolaire", "4p", "63a", "acti9", "ic60n", "rail din", "triphase", "schneider", "protection"]
+    },
+    {
+      "sku": "A9L40601",
+      "sourceFile": "IMG-20261029-WA0094.jpg",
+      "name": "Parafoudre triphasé 3P+N 40 kA — 350 V, Acti9",
+      "brand": "Schneider Electric",
+      "category": "protection-electrique",
+      "price": 165000,
+      "stock": 3,
+      "shortDescription": "Parafoudre triphasé 3P+N, Imax 40 kA, 350 V, avec report de signalisation, gamme Acti9.",
+      "description": "Parafoudre modulaire triphasé 3P+N (trois phases + neutre) pour la protection générale d'un tableau industriel ou d'un immeuble contre les surtensions d'origine foudre. Imax 40 kA, Uc 350 V, tiroirs iPRD à témoin de fin de vie et contact de report de signalisation pour la supervision. Gamme Schneider Acti9, rail DIN.",
+      "attributes": {
+        "Type": "Parafoudre 3P+N",
+        "Courant maximal": "40 kA",
+        "Tension": "350 V~",
+        "Signalisation": "Témoin de fin de vie + report",
+        "Gamme": "Acti9 iPRD",
+        "Montage": "Rail DIN"
+      },
+      "keywords": ["parafoudre", "triphase", "3pn", "40ka", "350v", "report", "signalisation", "acti9", "iprd", "schneider", "protection"]
+    },
+    {
+      "sku": "ID4P40A30MA",
+      "sourceFile": "IMG-20261029-WA0097.jpg",
+      "name": "Interrupteur différentiel 4P 40 A — 30 mA, Megalec",
+      "brand": "Megalec",
+      "category": "protection-electrique",
+      "price": 45000,
+      "stock": 5,
+      "shortDescription": "Interrupteur différentiel tétrapolaire 40 A, sensibilité 30 mA, type AC, rail DIN.",
+      "description": "Interrupteur différentiel 4 pôles 40 A, sensibilité 30 mA, type AC, à installer en tête de tableau triphasé pour protéger les personnes contre les fuites de courant. Bouton de test intégré, montage sur rail DIN, marque Megalec.",
+      "attributes": {
+        "Pôles": "4P",
+        "Calibre": "40 A",
+        "Sensibilité": "30 mA",
+        "Type": "AC",
+        "Montage": "Rail DIN"
+      },
+      "keywords": ["interrupteur differentiel", "differentiel", "4p", "40a", "30ma", "triphase", "rail din", "megalec", "protection"]
+    },
+    {
+      "sku": "MEG-ESRM",
+      "sourceFile": "IMG-20261029-WA0102.jpg",
+      "name": "Extincteur automatique sur rail DIN — aérosol, Megalec",
+      "brand": "Megalec",
+      "category": "protection-electrique",
+      "price": 35000,
+      "stock": 6,
+      "shortDescription": "Extincteur automatique à aérosol condensé se fixant sur rail DIN à l'intérieur d'un coffret électrique.",
+      "description": "Dispositif d'extinction automatique pour coffret électrique : générateur d'aérosol condensé à déclenchement thermique, se clipsant sur rail DIN. Protège un volume de coffret d'environ 0,03 m³ ; durée de vie de 5 ans, sans entretien ni pression. Ne remplace pas un extincteur d'ambiance.",
+      "attributes": {
+        "Type": "Extincteur automatique à aérosol",
+        "Montage": "Rail DIN (dans le coffret)",
+        "Volume protégé": "≈ 0,03 m³",
+        "Déclenchement": "Thermique",
+        "Durée de vie": "5 ans"
+      },
+      "keywords": ["extincteur", "incendie", "aerosol", "coffret electrique", "rail din", "protection", "megalec", "securite"]
+    },
+    {
+      "sku": "MEG-123G",
+      "sourceFile": "IMG-20261029-WA0095.jpg",
+      "name": "Prise industrielle femelle apparente 3P 32 A IP44 — Megalec",
+      "brand": "Megalec",
+      "category": "prises-industrielles",
+      "price": 7000,
+      "stock": 8,
+      "shortDescription": "Prise femelle en saillie 3 pôles 32 A, IP44, capot bleu à ressort.",
+      "description": "Prise industrielle femelle à fixer en saillie : 3 pôles 32 A, protection IP44, capot bleu à ressort qui se rabat sur les contacts. Boîtier avec passes-câbles défonçables, pour atelier, chantier ou machine.",
+      "attributes": {
+        "Type": "Prise femelle en saillie",
+        "Pôles": "3P",
+        "Courant": "32 A",
+        "Tension": "230 V~ (repérage bleu)",
+        "Protection": "IP44"
+      },
+      "keywords": ["prise", "femelle", "apparente", "saillie", "industrielle", "3p", "32a", "ip44", "megalec"]
+    },
+    {
+      "sku": "MEG-DIS",
+      "sourceFile": "IMG-20261029-WA0116.jpg",
+      "name": "Dismatique blanc avec voyants vert et rouge — Megalec",
+      "brand": "Megalec",
+      "category": "appareillage-electrique",
+      "price": 12000,
+      "stock": 10,
+      "shortDescription": "Boîtier de commande encastré blanc avec bouton vert et voyant rouge, pour manœuvre à distance.",
+      "description": "Boîtier de commande (dismatique) à encastrer, façade blanche avec un bouton vert de marche et un voyant rouge de signalisation. Sert à commander un contacteur ou un disjoncteur à distance depuis un point d'usage. Marque Megalec.",
+      "attributes": {
+        "Type": "Boîtier de commande (dismatique)",
+        "Montage": "Encastré",
+        "Couleur": "Blanc",
+        "Commande": "Bouton vert + voyant rouge"
+      },
+      "keywords": ["dismatique", "boitier de commande", "bouton", "voyant", "contacteur", "encastre", "megalec", "appareillage"]
+    },
+    {
+      "sku": "MEG-DB22N",
+      "sourceFile": "IMG-20261029-WA0122.jpg",
+      "name": "Douille à baïonnette B22 — Megalec",
+      "brand": "Megalec",
+      "category": "eclairage-ampoules",
+      "price": 1500,
+      "stock": 40,
+      "shortDescription": "Douille B22 à baïonnette, corps blanc, à raccorder sur câble.",
+      "description": "Douille à baïonnette B22 pour ampoule à culot B22 : corps isolant blanc, contacts laiton, bague moletée de serrage. Se raccorde sur câble souple, pour applique, suspension ou remplacement d'une douille abîmée.",
+      "attributes": {
+        "Culot": "B22 (baïonnette)",
+        "Couleur": "Blanc",
+        "Contacts": "Laiton",
+        "Montage": "Sur câble"
+      },
+      "keywords": ["douille", "b22", "baionnette", "culot", "ampoule", "eclairage", "megalec"]
+    },
+    {
+      "sku": "GS-G224C",
+      "sourceFile": "IMG-20261029-WA0111.jpg",
+      "name": "Panneau de douche chromé avec buses massantes",
+      "brand": "Griffe",
+      "category": "plomberie",
+      "price": 85000,
+      "stock": 3,
+      "shortDescription": "Panneau de douche en inox chromé : pommeau de pluie, buses de massage, douchette à main et mitigeur.",
+      "description": "Panneau de douche mural en acier inoxydable finition chromée : pommeau de pluie en tête, rampe de buses massantes sur toute la hauteur, douchette à main avec flexible et mitigeur deux sorties. Fixation murale, même modèle que la version inox brossé.",
+      "attributes": {
+        "Matière": "Acier inoxydable",
+        "Finition": "Chromée",
+        "Pommeau": "Pluie en tête",
+        "Jets": "Buses massantes + douchette à main",
+        "Mitigeur": "2 sorties",
+        "Montage": "Mural"
+      },
+      "keywords": ["panneau de douche", "colonne", "douche", "chrome", "inox", "massant", "buses", "pommeau", "douchette", "plomberie", "griffe"]
+    },
+    {
+      "sku": "GS-G224D",
+      "sourceFile": "IMG-20261029-WA0100.jpg",
+      "name": "Panneau de douche doré avec buses massantes",
+      "brand": "Griffe",
+      "category": "plomberie",
+      "price": 95000,
+      "stock": 3,
+      "shortDescription": "Panneau de douche doré : pommeau de pluie, buses de massage, douchette à main et mitigeur.",
+      "description": "Panneau de douche mural en acier inoxydable finition dorée : pommeau de pluie en tête, rampe de buses massantes, douchette à main avec flexible et mitigeur deux sorties. Pour salle de bain haut de gamme, fixation murale.",
+      "attributes": {
+        "Matière": "Acier inoxydable",
+        "Finition": "Dorée",
+        "Pommeau": "Pluie en tête",
+        "Jets": "Buses massantes + douchette à main",
+        "Mitigeur": "2 sorties",
+        "Montage": "Mural"
+      },
+      "keywords": ["panneau de douche", "colonne", "douche", "dore", "doree", "massant", "buses", "pommeau", "douchette", "plomberie", "griffe"]
+    },
+    {
+      "sku": "GRIFFE-162",
+      "sourceFile": "IMG-20261029-WA0109.jpg",
+      "name": "Poignée inox avec serrure et cylindre — série 124",
+      "brand": "Griffe",
+      "category": "serrurerie",
+      "price": 22000,
+      "stock": 6,
+      "shortDescription": "Poignée sur plaque inox livrée avec son corps de serrure à mortaiser, cylindre et clés.",
+      "description": "Ensemble complet pour porte d'entrée : poignée sur plaque inox brossé, corps de serrure à mortaiser, cylindre à canon et jeu de clés. Série 124 de la gamme Luxe Griffe.",
+      "attributes": {
+        "Type": "Poignée + serrure à mortaiser",
+        "Matière": "Acier inoxydable",
+        "Finition": "Brossée",
+        "Fourni": "Corps de serrure, cylindre, clés",
+        "Série": "Luxe 124"
+      },
+      "keywords": ["poignee", "serrure", "encastree", "mortaiser", "inox", "serie 124", "cylindre", "cle", "serrurerie", "griffe"]
+    },
+    {
+      "sku": "GRIFFE-164",
+      "sourceFile": "IMG-20261029-WA0114.jpg",
+      "name": "Poignée chromée avec serrure et cylindre — Luxe",
+      "brand": "Griffe",
+      "category": "serrurerie",
+      "price": 25000,
+      "stock": 5,
+      "shortDescription": "Poignée chromée brillante sur plaque, livrée avec corps de serrure, cylindre et clés.",
+      "description": "Ensemble poignée et serrure en finition chromée brillante : plaque et béquille pleine, corps de serrure à mortaiser, cylindre à canon et jeu de clés fournis. Série Luxe Griffe, référence fournisseur 9069-A906.",
+      "attributes": {
+        "Type": "Poignée + serrure à mortaiser",
+        "Finition": "Chromée brillante",
+        "Fourni": "Corps de serrure, cylindre, clés",
+        "Série": "Luxe (9069-A906)",
+        "Usage": "Porte d'entrée"
+      },
+      "keywords": ["poignee", "serrure", "chrome", "luxe", "cylindre", "cle", "porte d'entree", "serrurerie", "griffe"]
+    },
+    {
+      "sku": "GRIFFE-166",
+      "sourceFile": "IMG-20261029-WA0096.jpg",
+      "name": "Poignée noire et chrome avec serrure — Luxe",
+      "brand": "Griffe",
+      "category": "serrurerie",
+      "price": 25000,
+      "stock": 5,
+      "shortDescription": "Poignée noire mate à béquille chromée, livrée avec corps de serrure, cylindre et clés.",
+      "description": "Ensemble poignée et serrure associant une plaque noire mate et une béquille chromée : corps de serrure à mortaiser, cylindre à canon et jeu de clés fournis. Série Luxe Griffe, référence fournisseur 9069-A916.",
+      "attributes": {
+        "Type": "Poignée + serrure à mortaiser",
+        "Finition": "Noir mat et chrome",
+        "Fourni": "Corps de serrure, cylindre, clés",
+        "Série": "Luxe (9069-A916)",
+        "Usage": "Porte d'entrée"
+      },
+      "keywords": ["poignee", "serrure", "noire", "chrome", "luxe", "cylindre", "cle", "porte d'entree", "serrurerie", "griffe"]
+    },
+    {
+      "sku": "GF-1058",
+      "sourceFile": "IMG-20261029-WA0148.jpg",
+      "name": "Poignée de porte noire et chrome avec cylindre — 1058",
+      "brand": "Griffe",
+      "category": "serrurerie",
+      "price": 12000,
+      "stock": 8,
+      "shortDescription": "Poignée sur plaque noire mate, béquille chromée, avec cylindre à canon et clés.",
+      "description": "Poignée de porte sur plaque longue noire mate avec béquille chromée et cylindre à canon, jeu de clés fourni. Pour porte d'entrée ou porte de service, série 1058 de la gamme Luxe Griffe.",
+      "attributes": {
+        "Type": "Poignée sur plaque avec cylindre",
+        "Finition": "Noir mat et chrome",
+        "Série": "Luxe 1058",
+        "Clés fournies": "Oui"
+      },
+      "keywords": ["poignee", "porte", "noire", "chrome", "luxe", "cylindre", "canon", "cle", "serrurerie", "griffe"]
+    },
+    {
+      "sku": "GF-11-1024",
+      "sourceFile": "IMG-20261029-WA0105.jpg",
+      "name": "Poignée de porte noire avec cylindre — GF-11-1024",
+      "brand": "Griffe",
+      "category": "serrurerie",
+      "price": 12000,
+      "stock": 10,
+      "shortDescription": "Poignée sur plaque noire brillante, béquille inox plate, avec cylindre à canon et clés.",
+      "description": "Poignée de porte sur plaque noire brillante avec béquille inox plate et fine, cylindre à canon et jeu de clés fournis. Série Luxe Griffe GF-11-1024, pour porte d'entrée ou intérieure.",
+      "attributes": {
+        "Type": "Poignée sur plaque avec cylindre",
+        "Finition": "Noir brillant et inox",
+        "Série": "Luxe GF-11-1024",
+        "Clés fournies": "Oui"
+      },
+      "keywords": ["poignee", "porte", "noire", "inox", "luxe", "cylindre", "canon", "cle", "serrurerie", "griffe"]
+    },
+    {
+      "sku": "GF-11-1025",
+      "sourceFile": "IMG-20261029-WA0124.jpg",
+      "name": "Poignée de porte noire et inox avec cylindre — GF-11-1025",
+      "brand": "Griffe",
+      "category": "serrurerie",
+      "price": 12000,
+      "stock": 10,
+      "shortDescription": "Poignée sur plaque noire, béquille inox courbée, avec cylindre à canon et clés.",
+      "description": "Poignée de porte sur plaque longue noire avec béquille inox courbée, cylindre à canon et jeu de clés fournis. Série Luxe Griffe GF-11-1025, pour porte d'entrée ou intérieure.",
+      "attributes": {
+        "Type": "Poignée sur plaque avec cylindre",
+        "Finition": "Noir et inox",
+        "Série": "Luxe GF-11-1025",
+        "Clés fournies": "Oui"
+      },
+      "keywords": ["poignee", "porte", "noire", "inox", "luxe", "cylindre", "canon", "cle", "serrurerie", "griffe"]
+    }
+  ]
+}

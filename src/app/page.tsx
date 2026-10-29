@@ -287,9 +287,17 @@ export default async function HomePage() {
               Expédition par transporteur, sur devis confirmé avant paiement. Le règlement intégral est requis avant remise du
               colis au transporteur, et la commande ne passe « prête à expédier » qu’après vérification de l’encaissement.
             </p>
-            <Link href="/livraison" className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-accent-700 hover:underline">
-              Comment ça marche <ArrowRight className="size-3.5" aria-hidden />
-            </Link>
+            <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1">
+              <Link href="/livraison" className="inline-flex items-center gap-1 text-sm font-semibold text-accent-700 hover:underline">
+                Comment ça marche <ArrowRight className="size-3.5" aria-hidden />
+              </Link>
+              <Link
+                href="/livraison#faq-livraison"
+                className="inline-flex items-center gap-1 text-sm font-semibold text-accent-700 hover:underline"
+              >
+                FAQ livraisons et expéditions <ArrowRight className="size-3.5" aria-hidden />
+              </Link>
+            </div>
           </div>
         </div>
 

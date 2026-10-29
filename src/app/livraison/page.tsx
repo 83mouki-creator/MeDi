@@ -7,11 +7,13 @@ import { deliveryZones } from '@/db/schema';
 import { getStoreSettings } from '@/lib/settings';
 import { formatFCFA, toFcfa } from '@/lib/utils';
 import { Alert, Card } from '@/components/ui/primitives';
+import { DeliveryFaq } from '@/components/delivery-faq';
+import { deliveryFaqJsonLd } from '@/lib/delivery-faq';
 
 export const metadata: Metadata = {
   title: 'Livraison à Daloa et dans toute la Côte d’Ivoire',
   description:
-    'Retrait en boutique à Daloa, livraison locale, ou expédition par transporteur dans toute la Côte d’Ivoire avec prépaiement.',
+    'Retrait en boutique à Daloa, livraison locale, ou expédition par transporteur dans toute la Côte d’Ivoire avec prépaiement. Cinq questions fréquentes sur les livraisons et les expéditions.',
   alternates: { canonical: '/livraison' },
 };
 
@@ -31,9 +33,11 @@ export default async function DeliveryPage() {
   const national = zones.filter((zone) => !zone.isLocal && !zone.isPickup);
   const pickup = zones.filter((zone) => zone.isPickup);
   const hasDemoZones = zones.some((zone) => /DÉMO|DEMO/i.test(zone.name));
+  const faqJsonLd = deliveryFaqJsonLd(settings);
 
   return (
     <div className="container-page max-w-4xl py-8">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqJsonLd) }} />
       <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">Livraison et retrait</h1>
       <p className="mt-2 text-sm text-navy-600">
         MeDi opère depuis {settings.city}. La destination est choisie <strong>avant</strong> le mode de paiement, car les
@@ -132,6 +136,8 @@ export default async function DeliveryPage() {
         Aucune expédition hors Daloa n’est remise au transporteur avant confirmation du paiement. Aucune capture d’écran ni
         déclaration du client ne vaut preuve de paiement : seule la vérification de l’encaissement fait foi.
       </Alert>
+
+      <DeliveryFaq settings={settings} />
 
       <div className="mt-6 flex items-center gap-2 rounded-lg bg-navy-50 p-3 text-sm text-navy-700">
         <Info className="size-4 shrink-0" aria-hidden />
