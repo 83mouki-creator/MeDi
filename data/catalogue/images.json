@@ -1,283 +1,295 @@
 {
   "31900": {
     "url": "/catalogue/31900.webp",
-    "checksum": "7f987cec319c991082db88a13d49787d28101ef340afaf6e7d340aa6df973b9c",
+    "checksum": "837d485de1a1839008d779f7f4e010b2443eb2e4ce7f5d618d643ede420e142b",
+    "width": 1000,
+    "height": 1000
+  },
+  "48941": {
+    "url": "/catalogue/48941.webp",
+    "checksum": "6b74a569fd132c48847e8e649186edab315efd3140ecb7a78d5d71a2b572b806",
+    "width": 1000,
+    "height": 1000
+  },
+  "402026": {
+    "url": "/catalogue/402026.webp",
+    "checksum": "06d079fbdf421a5beef8fd2d43eb6ca54271a062c9d07cea12f2cf6e2f411171",
     "width": 1000,
     "height": 1000
   },
   "410323": {
     "url": "/catalogue/410323.webp",
-    "checksum": "e74e417c0f316ce2282a094409ced80d971caa3501221f44b165636812ccaea4",
+    "checksum": "b895abdf65085791e692258fa40541143d1cd2c72e63651c210df4f0d626ba78",
     "width": 1000,
     "height": 1000
   },
   "EPCT091612": {
     "url": "/catalogue/epct091612.webp",
-    "checksum": "3fe7ccb02da10f378b6be835c85adf73263953a36c465dfc58918b8a739d9daa",
+    "checksum": "80b9914cedcf7d8275e1e77a54320a3c15cc945dcde0c99c9e9303496feb47d3",
     "width": 1000,
     "height": 1000
   },
   "ESBS71SB46": {
     "url": "/catalogue/esbs71sb46.webp",
-    "checksum": "7a4770e4840065ff948a73e5fc234a4ff0de707c46125d953c04a293908b07a0",
+    "checksum": "894e28797d268fa6a11291fb6c3298150226de8752982ed92d672d18fe7fe076",
     "width": 1000,
     "height": 1000
   },
   "EAGR22093": {
     "url": "/catalogue/eagr22093.webp",
-    "checksum": "ceb5e85f5ef38faa65bf16c47b7f15bff7a734f57999bcc2055976dc3c69361a",
+    "checksum": "e1bf1f543a5f8e51e6507ee728c95a19a9bf0e5d24bb320c6a505941585b0468",
     "width": 1000,
     "height": 1000
   },
   "ERBTLS1P44": {
     "url": "/catalogue/erbtls1p44.webp",
-    "checksum": "f7fd335a128684908cb859c1b5dc9c3fe7d12c0a0b22d125dd31a7c6214ed111",
+    "checksum": "7e9d84523c559f0c9b07b21cfefc04b3019c4de53f5428df3bb79542d5f41ac1",
     "width": 1000,
     "height": 1000
   },
   "EPLSO331": {
     "url": "/catalogue/eplso331.webp",
-    "checksum": "810e4aaef0af1c798d954c5740299170685347f71c275a85e86f35a8134abf0f",
+    "checksum": "1ff495b4523b8efc2f31fe3cb3d9c20e01e9a108165d33dfa83f9a8be41b4d43",
     "width": 1000,
     "height": 1000
   },
   "EGWP10022": {
     "url": "/catalogue/egwp10022.webp",
-    "checksum": "fabdc5e3649c2e41b16becddc4a3c100f52da46ad9ca1f65d4e780b928df2384",
+    "checksum": "6d152345c18699a0dcad8910fb22879cc93859a116ddaec9cce97ff308afe1b6",
     "width": 1000,
     "height": 1000
   },
   "EGFJ2A08": {
     "url": "/catalogue/egfj2a08.webp",
-    "checksum": "af425e86ebb74c2d82cc1d5645a6c73bdb2207ea1ed512ec36313ee1d27a4b16",
+    "checksum": "0d6db0bbdc5bf6c90cf940d14b89f5d75e7924c8a3adbca4b9052caff53fbf3a",
     "width": 1000,
     "height": 1000
   },
   "EWSBD15001": {
     "url": "/catalogue/ewsbd15001.webp",
-    "checksum": "12cc92c7e4843a61804b5de3093d87a58d8159d109eadd00b40f221917db66ab",
+    "checksum": "ae8a80097e216d3a15ba06168034bfd609cc9ee4e715295b47841b466f575aa3",
     "width": 1000,
     "height": 1000
   },
   "EDGRS711-1": {
     "url": "/catalogue/edgrs711-1.webp",
-    "checksum": "a6ee95967af68bde5bfa27c8b4ab315ec6dd65c8d9bb8632c18e8d9bb2ecf5d6",
+    "checksum": "b5c189f6f9e9a0ebe6a8cf67e8aa4726f665c9e8dedb51e10ef4de832bd0bc4a",
     "width": 1000,
     "height": 1000
   },
   "EABR6506": {
     "url": "/catalogue/eabr6506.webp",
-    "checksum": "8cfdecf6291f5e7c77f106766d19c83daf15423edce39664690abdd151f78c8d",
+    "checksum": "242055818956f626fdf3b78f8f442dd6a7c6a7ade293903996b2d2affc061bf9",
     "width": 1000,
     "height": 1000
   },
   "EWPPSO7501": {
     "url": "/catalogue/ewppso7501.webp",
-    "checksum": "d7bc7b952d3d93732eba4a23245986c96c9f4ef21af4fb93c003aa24718f3047",
+    "checksum": "e42c423ce83a3c222c573d8f38105d8503ebda1c9d7b15bafd492bd6fea39190",
     "width": 1000,
     "height": 1000
   },
   "EGGRD5511": {
     "url": "/catalogue/eggrd5511.webp",
-    "checksum": "3e94afd3101c3603216fdf6b02642b24248660589ef35ec56cf171eecd6b7c23",
+    "checksum": "939a4e879e042844c9c6bb0700270608341a85ce790893908939ed2876aec4cb",
     "width": 1000,
     "height": 1000
   },
   "EWPPD15001": {
     "url": "/catalogue/ewppd15001.webp",
-    "checksum": "c2a86c5c1ebcda1462b89b2620ad5959d89ae1408c70ac495b5b973600e781f7",
+    "checksum": "8e63fcd72d5396966b5e909fb40f02a909dc4ae7d0ae44850630f5c1b9283733",
     "width": 1000,
     "height": 1000
   },
   "EGWP8016": {
     "url": "/catalogue/egwp8016.webp",
-    "checksum": "844b04084ab8d6251542cc87667d527b5245999fc83a100a6a02c95e3adefc88",
+    "checksum": "738d556450e247be6402faea6d90e5cf323bf384a158f4b147b0b468901899f5",
     "width": 1000,
     "height": 1000
   },
   "ESBS71SB45": {
     "url": "/catalogue/esbs71sb45.webp",
-    "checksum": "b096bea27281e37fa6bf17a93c8fc3789bcdc3c8a96e0a78e5b79bd96de27117",
+    "checksum": "cc082910660c5b7c805e8c945e68569b4c043e69cf962cf04fc4ac7d0b9d2846",
     "width": 1000,
     "height": 1000
   },
   "MDL-STD12W-02-4000": {
     "url": "/catalogue/mdl-std12w-02-4000.webp",
-    "checksum": "ae4ca32f0de836c0298e994c0162440a6131f3eaa73d5c7da10697fca21c3111",
+    "checksum": "fe0edf7bc433897624a247202b8267bda4071830f5f596b5604f595bc8e65842",
     "width": 1000,
     "height": 1000
   },
   "MDL-DL60R18W-034K": {
     "url": "/catalogue/mdl-dl60r18w-034k.webp",
-    "checksum": "72aab4f2b406101e3bed7ac944a0806bec1be51bea21359926d680a95044188b",
+    "checksum": "ec357b182f39ebdb2236c2db09e49ebb06e5bb0dd6f285e0bb0139630dff9c37",
     "width": 1000,
     "height": 1000
   },
   "MDL-CAC37M05W-6500": {
     "url": "/catalogue/mdl-cac37m05w-6500.webp",
-    "checksum": "a04586e75cbddcfa5bed061568935253bfe3019b6e2bbf5129057f400e471bb8",
+    "checksum": "5f7d1a319c737f4b07fe8527ad18c36c255e7420b3ae0764ef90fe0b22006bf3",
     "width": 1000,
     "height": 1000
   },
   "MDL-FLF50W-036500K": {
     "url": "/catalogue/mdl-flf50w-036500k.webp",
-    "checksum": "d510e969c28ef79c68d8c296d06e7fb84e3695c910b2332ca78c1fa29479ecba",
+    "checksum": "00635325844f7f156143dd3c75c5f52880e72b0842079efc187d6fa1670464e0",
     "width": 1000,
     "height": 1000
   },
   "MDL-DL35R08W-03A": {
     "url": "/catalogue/mdl-dl35r08w-03a.webp",
-    "checksum": "315e7c4c1d68e16fdae57a353bbcffe44c0ce05f6bed511307a9c27e6e1af8ff",
+    "checksum": "1cddd9a37eb3e02161f26478b35966eb7f96c3c4da120c30ca57bfc5774fc880",
     "width": 1000,
     "height": 1000
   },
   "MDL-STD12W-02-3000": {
     "url": "/catalogue/mdl-std12w-02-3000.webp",
-    "checksum": "b8be0cd1f20bab75442c241348cfbbfbafd1bf6331102470d1631c2700de4c83",
+    "checksum": "b21fe052b3a98bb63ddbd05d57865ffc25c3f563864659e21caba72cfc4cb8a0",
     "width": 1000,
     "height": 1000
   },
   "MDL-DL35R08W-03-3000": {
     "url": "/catalogue/mdl-dl35r08w-03-3000.webp",
-    "checksum": "94a6de4e9c3567e24aa5df86921f3c974d3c4475788ebb324926ab2ed499b3f7",
+    "checksum": "b00eebd57daf5b69bede3315dbc11704fb01822933a52bd8c4585ad4ee15023d",
     "width": 1000,
     "height": 1000
   },
   "MDL-CLR24W-04": {
     "url": "/catalogue/mdl-clr24w-04.webp",
-    "checksum": "ae50c005530e8625ffa1032dcba8789df1857cdbbe1ca06fbdcc5e849210eefe",
+    "checksum": "5ed99113f399579d561393b427fac0217509472ab89195f156d87a7632964b3c",
     "width": 1000,
     "height": 1000
   },
   "MDL-BUA4505W-B226500": {
     "url": "/catalogue/mdl-bua4505w-b226500.webp",
-    "checksum": "0ea2e64f15e5843a35a85e7706582f0db73aa2c2b96b09d0afd2b3cf1626f935",
+    "checksum": "45a73fa4f0c9b4f30bfcf53f917880ac36549b1ed09de54505346ff8b6c80601",
     "width": 1000,
     "height": 1000
   },
   "MDL-STD12W30-05.PJ-1": {
     "url": "/catalogue/mdl-std12w30-05-pj-1.webp",
-    "checksum": "bb18abfb821dc69cd1e855959171b7137580f56bc745d827ca505425ce5f4b5f",
+    "checksum": "5486925e27ae8122230cf2daf9fe37bc350c78dfd569878f88c4355fd454dfe6",
     "width": 1000,
     "height": 1000
   },
   "MDL-FLF100W-036500K": {
     "url": "/catalogue/mdl-flf100w-036500k.webp",
-    "checksum": "12115e26a1ead7ce250600225f2b393c01adf3a116d6b1232492819884e1939e",
+    "checksum": "42cfdeef294efa18f9f0478459fab254fd891af87d42451536ebc03d3226f7ab",
     "width": 1000,
     "height": 1000
   },
   "MDL-BUA609W-B226500": {
     "url": "/catalogue/mdl-bua609w-b226500.webp",
-    "checksum": "e52bbb4d5b4ab1e3d1db9bfc217923a5ca398bb2217c67626a185d0d106f9f28",
+    "checksum": "7c2854bea6d3237730604583aaa00cf5d437049f3d70fca26a9cd9029ce2e302",
     "width": 1000,
     "height": 1000
   },
   "EUPRK22": {
     "url": "/catalogue/euprk22.webp",
-    "checksum": "029f81e8f3d0ddbf1dc58c06343bb55da327839866e23bd1467a3a6baa4fbac8",
+    "checksum": "c15148b2b150d13a92c32f09ce2fd3656f98d2b1b1372371757e8482f8a027ab",
     "width": 1000,
     "height": 1000
   },
   "MDL-SPCL09W65-01": {
     "url": "/catalogue/mdl-spcl09w65-01.webp",
-    "checksum": "70af355122f53f51fc5a2f29fad031a82dac017344f5d1a759b642d035211622",
+    "checksum": "6aa193dee719c0d9babd128fd52013e5858c071bec714c66ca2209de5ce95aa0",
     "width": 1000,
     "height": 1000
   },
   "ERBTLS1P45": {
     "url": "/catalogue/erbtls1p45.webp",
-    "checksum": "e38458bbc783151bacb5aa52ac5c76962b47ad2d1915eb49182cca4adca85484",
+    "checksum": "9e0a36ec471ee054fc9d05b0edb87e35551ff46ace7253cd71aa7c7ec940fae8",
     "width": 1000,
     "height": 1000
   },
   "EWPPD11001": {
     "url": "/catalogue/ewppd11001.webp",
-    "checksum": "4ccb5ae48fb7eebf0fd453b8eb9d61f6afc89027caa8224123168b7bf627e700",
+    "checksum": "f653e9d9e34c38684004562384f2b09da91ee514dfdcf9ae05541213e32566d4",
     "width": 1000,
     "height": 1000
   },
   "ERSTO2XL": {
     "url": "/catalogue/ersto2xl.webp",
-    "checksum": "d38fd2356b3f504fd5fb0eaeca843e8e5374d4d730b40e7adc2b579b6cda7c5d",
+    "checksum": "fc381c1e28d28f06a9892034ef6faaf2b1682b9154e6a1682ce4040f55b0b1e2",
     "width": 1000,
     "height": 1000
   },
   "ESBS32SB44": {
     "url": "/catalogue/esbs32sb44.webp",
-    "checksum": "81221e53ca16a9eec0df0b79f69b48d6b47c451ec7c4234071672d3d0595be7d",
+    "checksum": "e5f1629f14d01cfce205b9ab6069e05c35c9034e534518a4b2978cba193438b6",
     "width": 1000,
     "height": 1000
   },
   "EWSBD11001": {
     "url": "/catalogue/ewsbd11001.webp",
-    "checksum": "0c8e99e7368e2dfa6b0ff8e146498fb0b4caba80f322f99158e9e571fe72bb43",
+    "checksum": "02393f3217d408d19b98af4aeec7e47490262fd9b2d0924a84e176aa5ef2b11c",
     "width": 1000,
     "height": 1000
   },
   "EWPPJ15001": {
     "url": "/catalogue/ewppj15001.webp",
-    "checksum": "bd9bc7d597e070dab6c70b0d475cb0ffb20449a56951d0726b12c60c78b6198d",
+    "checksum": "0d26758259f2d92561e6c87912cd0bddfb0e3819468bc0b35344d75740933555",
     "width": 1000,
     "height": 1000
   },
   "EAGRO7581": {
     "url": "/catalogue/eagro7581.webp",
-    "checksum": "cd5543d9be639f3a787d7dfad9c70768bda765f16606cd5905443076fd89e46e",
+    "checksum": "0ec3abf365f327fa49465665e3554a8244730a99bc7a34725e30cb99d293ce6f",
     "width": 1000,
     "height": 1000
   },
   "MDL-DL35R08W-03-6500": {
     "url": "/catalogue/mdl-dl35r08w-03-6500.webp",
-    "checksum": "2ffdcb8ea346906fbba9a7668a9e53b7f0931cdec01c654f3337bc673168a3f6",
+    "checksum": "96af2c88f8c88a32f87785f0909b91829b04b1d9c5001fa550cafcc5afe4a1b9",
     "width": 1000,
     "height": 1000
   },
   "MDL-DL40R12W-033K": {
     "url": "/catalogue/mdl-dl40r12w-033k.webp",
-    "checksum": "7f6422cabcbafefd0f1fb59b0548691604aeb413f0ce97a4cfe2385bdfbea9ab",
+    "checksum": "446aa7120b1c016bfc4e82a014dd8f294156ca9f8dbe8ec837930f6799aabbe4",
     "width": 1000,
     "height": 1000
   },
   "MDL-SPR09W40-01": {
     "url": "/catalogue/mdl-spr09w40-01.webp",
-    "checksum": "ef7d7d787a883a0220be4286b910699641f6d03182ddceba8555e6c880595919",
+    "checksum": "9ea28d63c6f862e74a2bb7b1f2664d20577dea3a9c53d1025196e0c0020648c1",
     "width": 1000,
     "height": 1000
   },
   "MDL-BUA4505W-6500": {
     "url": "/catalogue/mdl-bua4505w-6500.webp",
-    "checksum": "f4cf00983ef8f1b9800fad09d1be9b7beaa7c554effe135eefbd30746fc13740",
+    "checksum": "e5751b5c7008713d34618a60ba9abd380c8788816f075d351afec8f39b86301e",
     "width": 1000,
     "height": 1000
   },
   "MDL-DLM60R18W-03": {
     "url": "/catalogue/mdl-dlm60r18w-03.webp",
-    "checksum": "b5a539b9e3a53f8fdf2a8520fa7ef65171da1bdd15b9ec8d8c5a9f07c1c2c02f",
+    "checksum": "f746a944506d27a07006d460215df15612c38cf52d7cca2d933500f0bc389f84",
     "width": 1000,
     "height": 1000
   },
   "MDL-STD12W-02-6500": {
     "url": "/catalogue/mdl-std12w-02-6500.webp",
-    "checksum": "3329405b07b43c91ac28f65a7efaac9d7ad2391793aa7017416270a7c5d90c04",
+    "checksum": "0e675951b8f56ffa4e8ef9535b08255b97e4f5a964ba5c2cc530e2f461184a60",
     "width": 1000,
     "height": 1000
   },
   "EUPRDB/N": {
     "url": "/catalogue/euprdb-n.webp",
-    "checksum": "bc45469b253d9a48a31e819e81881842721a4c2b46e82c8bcc39a2835bfa34df",
+    "checksum": "a7c45d11194e214905e922a416f40ba659753183657af2b1089b1f4b62c328b3",
     "width": 1000,
     "height": 1000
   },
   "MDL-FLF200W-033000K": {
     "url": "/catalogue/mdl-flf200w-033000k.webp",
-    "checksum": "f6c1578fc987809907643d9704090a2e78aacc18932267342c389a3e7fb4266f",
+    "checksum": "094d85eb8a611f7a9e5f11af07f7bf2707c910e5c6a51ff98f8f88f1d40937c1",
     "width": 1000,
     "height": 1000
   },
   "MDL-BUA6012W-6500": {
     "url": "/catalogue/mdl-bua6012w-6500.webp",
-    "checksum": "aa132cc15f5780a8fa54a728ba7203bb9f10dc3ca06499350a71c49481321421",
+    "checksum": "2ab20b2fdab81d0ba72669257b54bfafed29a0cb2ea09a2a7b64d8f76c40e829",
     "width": 1000,
     "height": 1000
   },
@@ -289,61 +301,151 @@
   },
   "MDL-DL40R12W-036K": {
     "url": "/catalogue/mdl-dl40r12w-036k.webp",
-    "checksum": "a0a82ee1ac5e66cd0d4653942ef4d1374e4d3668a883c1cc6b5b1fb1b962a9ca",
+    "checksum": "2a0f2e0a151572e18821c9bdff2ac170bb13d544f9b30e949eaacaba15a5c967",
     "width": 1000,
     "height": 1000
   },
   "MDL-FLS15W65-02": {
     "url": "/catalogue/mdl-fls15w65-02.webp",
-    "checksum": "fa920ec3185f0e8e4f10f0d9d4794e2ce0bb5c1e639d44d10f97cb7346ddbb63",
+    "checksum": "050f0dc19548e64a89a3a01f8e248f7fe30dbbd70522685b7abaa22e49af06dc",
     "width": 1000,
     "height": 1000
   },
   "MDL-STD8W-05": {
     "url": "/catalogue/mdl-std8w-05.webp",
-    "checksum": "b13effe0b54227af1ad91e3fd427ab6264a8563035ad509e3f439eefc947d937",
+    "checksum": "9f0c0dc0238a07a3e21146a443b92bd8d58d8e702c65296c6571955f6410f445",
     "width": 1000,
     "height": 1000
   },
   "MDL-DL35R08W-03": {
     "url": "/catalogue/mdl-dl35r08w-03.webp",
-    "checksum": "a9e55c8114183f442a09c69c80e555bfd306b900e5f3678019018f1b16afc467",
+    "checksum": "3885eb06fdec2fec5ddd0bb8e5f965793387da1132283659ac5599c3f63d857d",
     "width": 1000,
     "height": 1000
   },
   "APC10-B2": {
     "url": "/catalogue/apc10-b2.webp",
-    "checksum": "96e2e02229115ef2e775c21df81522a99882a7266aebccf8be103242fc3ff1ee",
+    "checksum": "ea507ab3d6e38682757de0e2cd8bd870232ec5c939c33ab694f61af07657e688",
     "width": 1000,
     "height": 1000
   },
   "MDL-CLR12W-R-6500K": {
     "url": "/catalogue/mdl-clr12w-r-6500k.webp",
-    "checksum": "2a6c812ec006ad01914f8ee0cd18e0196b3a968224453b468a1999f6f7e24dd7",
+    "checksum": "d0295ca268e79e191a0eb4f75bd1a427742ec321814f86a29bdfe9c43d3d5fa3",
     "width": 1000,
     "height": 1000
   },
   "MDL-CLR24W-03": {
     "url": "/catalogue/mdl-clr24w-03.webp",
-    "checksum": "fc718f49829e77171b4c8ec95b73a2758104a71cb4b592483c7ebf8f9e9ccbea",
+    "checksum": "84499bdbcba215522006a00f08b3cf9122e1552482ff8c22a90c9d34b29ed44e",
     "width": 1000,
     "height": 1000
   },
   "MDL-BUA6015W-6500-B22": {
     "url": "/catalogue/mdl-bua6015w-6500-b22.webp",
-    "checksum": "06bb1d7eb14456e1bfdaad666bd697b58596ccc053a336a41442f2a19f13a12b",
+    "checksum": "db5d6c1def30e4b09cb1bab4879d8282e027956dd88b008331d09fa81a0e09e2",
     "width": 1000,
     "height": 1000
   },
   "MDL-CLR36W-01": {
     "url": "/catalogue/mdl-clr36w-01.webp",
-    "checksum": "d9ab6efdbcd5f1a48807338004092cfab1fbaf66f41a8611a7c9c8f0c7540ccc",
+    "checksum": "8095009e77afab3987d629bf2d1722f53d46f44531936ab8c4115e434c15f11c",
     "width": 1000,
     "height": 1000
   },
   "278111L": {
     "url": "/catalogue/278111l.webp",
-    "checksum": "246ace9cbe73c6e1d21a22c6ded1f03783a7a66d502bf79486bc270e4be4b162",
+    "checksum": "d11cb12691d1fb1c62a7e7b2ee74111f3d314d9a0f3b15b15d0b4d1139b3ef06",
+    "width": 1000,
+    "height": 1000
+  },
+  "NP2210WH": {
+    "url": "/catalogue/np2210wh.webp",
+    "checksum": "f967ae997a62516ce83257c92da770cd156a119204b899d921f2f5d3db0ebba5",
+    "width": 1000,
+    "height": 1000
+  },
+  "UB2220WH": {
+    "url": "/catalogue/ub2220wh.webp",
+    "checksum": "4ca56c7eea821d9d8ca0bb50217b89b1e26392673f1a2446caeee3bef953cd06",
+    "width": 1000,
+    "height": 1000
+  },
+  "069820L": {
+    "url": "/catalogue/069820l.webp",
+    "checksum": "9a874524c4f0827330b5971c3e1dca131c5302eb7f27ebfa1f1840c8897f4a50",
+    "width": 1000,
+    "height": 1000
+  },
+  "A9F74263": {
+    "url": "/catalogue/a9f74263.webp",
+    "checksum": "d44ff4d819aaa6f794ea9e8eac0f04f4455c17d0ea3d5186ba3f5ee11c1a78be",
+    "width": 1000,
+    "height": 1000
+  },
+  "S525662": {
+    "url": "/catalogue/s525662.webp",
+    "checksum": "b1031d5637eda7f4198d9b2f8f3cb31481c8f5fa810fb5713a65ee45f898551e",
+    "width": 1000,
+    "height": 1000
+  },
+  "MEG-014G": {
+    "url": "/catalogue/meg-014g.webp",
+    "checksum": "3a68587dc53265e275bd661f461a4fdeb56e5b09e616ecc7f5fc13da35c34b9e",
+    "width": 1000,
+    "height": 1000
+  },
+  "MEG-023G": {
+    "url": "/catalogue/meg-023g.webp",
+    "checksum": "21aaced8deac430af589b3f07a6bfd6a549987f8e28c236b6609236795b8b757",
+    "width": 1000,
+    "height": 1000
+  },
+  "MEG-025G": {
+    "url": "/catalogue/meg-025g.webp",
+    "checksum": "e8e238b2493759b4bc4c8226d5624630f7bd748a965e0b011a34e59ae311f77c",
+    "width": 1000,
+    "height": 1000
+  },
+  "MEG-113G": {
+    "url": "/catalogue/meg-113g.webp",
+    "checksum": "90dba070cbf4dd9386eeb27dacbb9f0d50ac95a4f8e9734e4639a2db93464669",
+    "width": 1000,
+    "height": 1000
+  },
+  "MEG-114G": {
+    "url": "/catalogue/meg-114g.webp",
+    "checksum": "3a4575bbf883ed4753c4514ef65170bb87c99a674a5de0e073e43667bcbf95ec",
+    "width": 1000,
+    "height": 1000
+  },
+  "MEG-125G": {
+    "url": "/catalogue/meg-125g.webp",
+    "checksum": "5ed2895f53204f4b8245d588e1842c745acc1d463ccce0a0484e8d4b0e916187",
+    "width": 1000,
+    "height": 1000
+  },
+  "GRIFFE-159": {
+    "url": "/catalogue/griffe-159.webp",
+    "checksum": "a9f55eb0758f2b4fde5a26f8c3792bbd7ad2cb0ab5144b59a6b0056c34836a52",
+    "width": 1000,
+    "height": 1000
+  },
+  "GRIFFE-163": {
+    "url": "/catalogue/griffe-163.webp",
+    "checksum": "f8dccae73e54869ffd352e4707f5a6ee437c6d07beaa6f3a29aa927bebcf23b2",
+    "width": 1000,
+    "height": 1000
+  },
+  "GS-G222": {
+    "url": "/catalogue/gs-g222.webp",
+    "checksum": "ccdcc70b4af5e7d6be76dc931eac051a163453aa55189804b651c79c63f1b5c8",
+    "width": 1000,
+    "height": 1000
+  },
+  "GS-G041": {
+    "url": "/catalogue/gs-g041.webp",
+    "checksum": "daa556e5b882ca4f2b0a32756115581dddba30c3e90aa9ceff8b76312e65991b",
     "width": 1000,
     "height": 1000
   }

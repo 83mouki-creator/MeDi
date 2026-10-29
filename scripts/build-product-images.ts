@@ -53,11 +53,24 @@ function findHeaderEnd(px: (x: number, y: number) => readonly number[], W: numbe
   return last > 0 ? Math.min(H * 0.3, last + 4) : 0;
 }
 
-/** Début du bloc de texte imprimé en bas de la photo (lignes sombres collées au bas). */
+/**
+ * Début du bloc de texte imprimé en bas de la photo.
+ *
+ * Le texte du fournisseur est du noir franc et épais : on ne retient que les
+ * lignes réellement chargées en pixels sombres (≥ 12 % de la largeur), ce qui
+ * évite de « remonter » dans l'article photographié (poignées, colonnes de
+ * douche…) lorsque celui-ci descend bas dans l'image. La tolérance de 40 lignes
+ * relie le titre et son sous-titre, séparés par un blanc plus large sur
+ * certaines photos.
+ */
+const TEXT_ROW_DARK = 0.12;
+const TEXT_ROW_GAP = 40;
+
 function findTextTop(darkFrac: number[], H: number) {
+  const floor = Math.floor(H * 0.5);
   let bottom = -1;
-  for (let y = H - 1; y >= Math.floor(H * 0.5); y--) {
-    if ((darkFrac[y] ?? 0) > 0.004) {
+  for (let y = H - 1; y >= floor; y--) {
+    if ((darkFrac[y] ?? 0) > TEXT_ROW_DARK) {
       bottom = y;
       break;
     }
@@ -66,9 +79,9 @@ function findTextTop(darkFrac: number[], H: number) {
 
   let gap = 0;
   let y = bottom;
-  for (; y >= Math.floor(H * 0.45); y--) {
-    if ((darkFrac[y] ?? 0) > 0.004) gap = 0;
-    else if (++gap > 22) break;
+  for (; y >= floor; y--) {
+    if ((darkFrac[y] ?? 0) > TEXT_ROW_DARK) gap = 0;
+    else if (++gap > TEXT_ROW_GAP) break;
   }
   return Math.min(H, y + gap + 1);
 }
@@ -136,7 +149,7 @@ async function build(product: ManifestProduct) {
   const headerEnd = Math.round(findHeaderEnd(px, W, H));
   const textTop = Math.round(findTextTop(darkFrac, H));
   const regionTop = headerEnd;
-  const regionBottom = Math.max(regionTop + 200, Math.min(H, textTop - 6));
+  const regionBottom = Math.max(regionTop + 200, Math.min(H, textTop - 10));
   const regionH = regionBottom - regionTop;
 
   // Boîte englobante du produit (pixels éloignés des deux coins hauts = fond).
