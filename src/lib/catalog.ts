@@ -109,7 +109,14 @@ export async function listProducts(filters: CatalogFilters = {}): Promise<{ item
   const perPage = Math.min(60, Math.max(1, filters.perPage ?? 24));
   const conditions = baseConditions();
 
-  if (filters.category) conditions.push(sql`c.slug = ${filters.category}`);
+  // Une catégorie parente renvoie aussi les produits de ses sous-catégories.
+  if (filters.category) {
+    const slugValue = filters.category;
+    conditions.push(sql`p.category_id IN (
+      SELECT id FROM categories WHERE slug = ${slugValue}
+        OR parent_id = (SELECT id FROM categories WHERE slug = ${slugValue})
+    )`);
+  }
   if (filters.brand) conditions.push(sql`b.slug = ${filters.brand}`);
   if (filters.minPrice !== undefined) conditions.push(sql`(CASE WHEN ${PROMO_ACTIVE} THEN p.promo_price ELSE p.price END) >= ${filters.minPrice}`);
   if (filters.maxPrice !== undefined) conditions.push(sql`(CASE WHEN ${PROMO_ACTIVE} THEN p.promo_price ELSE p.price END) <= ${filters.maxPrice}`);
@@ -295,7 +302,9 @@ export async function getCategoryTree() {
   const rows = await db.execute(sql`
     SELECT c.id, c.slug, c.name, c.parent_id, c.position, c.image_url,
            (SELECT count(*)::int FROM products p
-             WHERE p.category_id = c.id AND p.is_active = true AND p.is_archived = false) AS product_count
+             WHERE p.is_active = true AND p.is_archived = false
+               AND (p.category_id = c.id
+                    OR p.category_id IN (SELECT id FROM categories sub WHERE sub.parent_id = c.id))) AS product_count
     FROM categories c
     WHERE c.is_active = true
     ORDER BY c.position ASC, c.name ASC

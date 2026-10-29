@@ -24,3 +24,7 @@ public/uploads/*
 *.tsbuildinfo
 next-env.d.ts
 /test-results
+
+# Photos fournisseur d'origine (marque tierce) — non versionnées
+data/photos-source/
+public/catalogue/_planche-controle.png

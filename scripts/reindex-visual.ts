@@ -10,9 +10,8 @@
  *   npm run reindex:visual -- --all     # tout recalculer (après changement de modèle)
  *   npm run reindex:visual -- --limit=50
  */
-import { and, isNull, sql } from 'drizzle-orm';
+import { sql } from 'drizzle-orm';
 import { db, pool } from '../src/db';
-import { productImages } from '../src/db/schema';
 import { indexImage, providerInfo } from '../src/lib/visual';
 
 function flag(name: string) {
@@ -35,11 +34,18 @@ async function main() {
   const all = flag('all');
   const limit = Number(option('limit') ?? 5000);
 
-  const rows = await db
-    .select({ id: productImages.id, url: productImages.url, alt: productImages.alt })
-    .from(productImages)
-    .where(all ? undefined : and(isNull(productImages.embedding)))
-    .limit(limit);
+  // Seules les photos de fiches publiées sont indexées : inutile d'empreindre
+  // le catalogue archivé (démo), qui n'apparaît jamais dans les résultats.
+  const rows = (
+    await db.execute(sql`
+      SELECT pi.id, pi.url, pi.alt FROM product_images pi
+      JOIN products p ON p.id = pi.product_id
+      WHERE p.is_active = true AND p.is_archived = false
+        ${all ? sql`` : sql`AND pi.embedding IS NULL`}
+      ORDER BY pi.created_at DESC
+      LIMIT ${limit}
+    `)
+  ).rows as { id: string; url: string; alt: string | null }[];
 
   console.log(`${rows.length} image(s) à traiter${all ? ' (recalcul complet)' : ' (nouvelles uniquement)'}.`);
 
@@ -63,7 +69,11 @@ async function main() {
     }
   }
 
-  const remaining = await db.execute(sql`SELECT count(*)::int AS n FROM product_images WHERE embedding IS NULL`);
+  const remaining = await db.execute(sql`
+    SELECT count(*)::int AS n FROM product_images pi
+    JOIN products p ON p.id = pi.product_id
+    WHERE pi.embedding IS NULL AND p.is_active = true AND p.is_archived = false
+  `);
   const left = (remaining.rows as { n: number }[])[0]?.n ?? 0;
 
   console.log(`✅ ${done} indexée(s), ${failed} échec(s), ${left} restante(s) — ${Math.round((Date.now() - startedAt) / 1000)}s`);
