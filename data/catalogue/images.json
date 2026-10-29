@@ -448,5 +448,119 @@
     "checksum": "daa556e5b882ca4f2b0a32756115581dddba30c3e90aa9ceff8b76312e65991b",
     "width": 1000,
     "height": 1000
+  },
+  "C25F6TM250": {
+    "url": "/catalogue/c25f6tm250.webp",
+    "checksum": "57d9557e27cc18f86c930de45a03237c92425b507c748384d837743b4c6acb68",
+    "width": 1000,
+    "height": 1000
+  },
+  "EZ9R32240": {
+    "url": "/catalogue/ez9r32240.webp",
+    "checksum": "56d74b3c4032bdeed02b96097cd7c1a507e0de603b732238abddea7763e07007",
+    "width": 1000,
+    "height": 1000
+  },
+  "EZ9L33620": {
+    "url": "/catalogue/ez9l33620.webp",
+    "checksum": "685ed579e5290ec7088afae4c9a275f6fff9dc0f4167cb2efb0d47dad4b9d30c",
+    "width": 1000,
+    "height": 1000
+  },
+  "EZ9P32620": {
+    "url": "/catalogue/ez9p32620.webp",
+    "checksum": "0e613b7fcf227b9a8fd3ee854b1761b5802e1eef1c9a13222086b1a7a02d6670",
+    "width": 1000,
+    "height": 1000
+  },
+  "EZ9F32225": {
+    "url": "/catalogue/ez9f32225.webp",
+    "checksum": "7d270d91a7091c4332aced1c20761250dc8adaee870b5ce43475b59d4e9be2f3",
+    "width": 1000,
+    "height": 1000
+  },
+  "S520620": {
+    "url": "/catalogue/s520620.webp",
+    "checksum": "55d4958076973e6ed40ae638e4c80a5fc8a15fad6b17a2d1f2accea2612aadb4",
+    "width": 1000,
+    "height": 1000
+  },
+  "MEG-013G": {
+    "url": "/catalogue/meg-013g.webp",
+    "checksum": "62aa9bfb2b7fcd698bf12113b60233833835a7d68ca993e0b18577b5451ee20f",
+    "width": 1000,
+    "height": 1000
+  },
+  "MEG-015G": {
+    "url": "/catalogue/meg-015g.webp",
+    "checksum": "0c8ff32b00c8f9bf40ede3f9ee5eda5e4c852073d4ddde648a9e865d10ccb885",
+    "width": 1000,
+    "height": 1000
+  },
+  "GF-1010": {
+    "url": "/catalogue/gf-1010.webp",
+    "checksum": "c2878d3fac42d21c9ff976d71f13e962d3a69e7c3351510479af75ee2e537ece",
+    "width": 1000,
+    "height": 1000
+  },
+  "GRIFFE-158": {
+    "url": "/catalogue/griffe-158.webp",
+    "checksum": "09580caca30be6583e87378cd72a8d6f0bdc907ed0486383a0f6b4003779de25",
+    "width": 1000,
+    "height": 1000
+  },
+  "GRIFFE-160": {
+    "url": "/catalogue/griffe-160.webp",
+    "checksum": "20c2baa2d7594e1f16593485bfc661be7016bed6b87bf7b52e20dc8e8e7e580b",
+    "width": 1000,
+    "height": 1000
+  },
+  "GRIFFE-161": {
+    "url": "/catalogue/griffe-161.webp",
+    "checksum": "1d9d9a1551296a86ace86e8afec1b4d724d3c91cf7bbe1485ab092397954a3ad",
+    "width": 1000,
+    "height": 1000
+  },
+  "GF-11-1023": {
+    "url": "/catalogue/gf-11-1023.webp",
+    "checksum": "a1b233717ea0e8d3b50b88e1da04a4ed9e54842fd1fb89b1cbeefcbc20013f36",
+    "width": 1000,
+    "height": 1000
+  },
+  "GF-11-1028": {
+    "url": "/catalogue/gf-11-1028.webp",
+    "checksum": "ba6a8baaae2ae1b9c43565519d1bbf982e105ca96b92137b272feb350814dfab",
+    "width": 1000,
+    "height": 1000
+  },
+  "GRIFFE-165": {
+    "url": "/catalogue/griffe-165.webp",
+    "checksum": "8c3841144df05c9a51108ac45f4d8a36b1615d79b593a0e7beba2205e3a0fcb3",
+    "width": 1000,
+    "height": 1000
+  },
+  "GRIFFE-168": {
+    "url": "/catalogue/griffe-168.webp",
+    "checksum": "cbb057bc1f117eb879c51b501c037e5beeb602dcdccf593d878e843336742dcb",
+    "width": 1000,
+    "height": 1000
+  },
+  "GS-G053": {
+    "url": "/catalogue/gs-g053.webp",
+    "checksum": "5cef46868ad4ed13607c931ae205ddd6da472060897627653186665007336bbd",
+    "width": 1000,
+    "height": 1000
+  },
+  "GS-G120": {
+    "url": "/catalogue/gs-g120.webp",
+    "checksum": "9b38d2480c038192ab2be81507145159d54da5b7d06f55eb2b0a75715753555c",
+    "width": 1000,
+    "height": 1000
+  },
+  "GS-G224SS": {
+    "url": "/catalogue/gs-g224ss.webp",
+    "checksum": "7414ebf5f3a4b321ed7a8ac975fdf82de708ede2fbada6a4ea4e7ae318274a8a",
+    "width": 1000,
+    "height": 1000
   }
 }

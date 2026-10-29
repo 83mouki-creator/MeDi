@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from 'vitest';
 import { listProducts } from '@/lib/catalog';
-import { searchProducts } from '@/lib/search';
+import { searchProducts, suggest } from '@/lib/search';
 import { computeAvailability, computePricing } from '@/lib/pricing';
 import { randomBytes } from 'node:crypto';
 import { db } from '@/db';
@@ -138,6 +138,28 @@ describe('recherche texte', () => {
     const result = await searchProducts('quantum-flux-capacitor');
     expect(result.total).toBe(0);
     expect(result.items).toEqual([]);
+  });
+
+  it('propose des suggestions dès la saisie, même sur plusieurs mots', async () => {
+    const product = await createProduct({
+      name: 'Interrupteur différentiel 2P 40 A — 30 mA',
+      shortDescription: 'Protection des personnes, gamme Easy9.',
+      keywords: ['differentiel', 'ddr', 'easy9'],
+    });
+
+    // Un seul mot, puis deux mots saisis dans le désordre : la suggestion doit
+    // rester proposée pendant la frappe.
+    for (const query of ['differentiel', 'differentiel 40', '40 differentiel']) {
+      const results = await suggest(query);
+      expect(
+        results.some((item) => item.kind === 'product' && item.href === `/produit/${product.slug}`),
+        `suggestion pour « ${query} »`,
+      ).toBe(true);
+    }
+
+    // Deux mots qui ne désignent pas le même produit ne doivent pas le proposer.
+    const unrelated = await suggest('differentiel ciment');
+    expect(unrelated.some((item) => item.href === `/produit/${product.slug}`)).toBe(false);
   });
 
   it('respecte la pagination', async () => {
