@@ -1,0 +1,353 @@
+{
+  "version": 1,
+  "fournisseur": "SODIS-MAD CI",
+  "date": "2026-10-29",
+  "lot": 4,
+  "note": "Lot 4 : appareillage électrique Legrand, Schneider Electric et Megalec, poignées Griffe, colonnes de douche Griffe. Photos fournisseur retravaillées (bandeau MeDi + référence).",
+  "categories": [
+    {
+      "slug": "appareillage-electrique",
+      "name": "Appareillage électrique",
+      "description": "Interrupteurs, prises, détecteurs et appareillage modulaire.",
+      "children": [
+        { "slug": "protection-electrique", "name": "Disjoncteurs et protection" },
+        { "slug": "prises-industrielles", "name": "Prises et fiches industrielles" }
+      ]
+    }
+  ],
+  "sousCategoriesExistantes": [
+    { "parent": "appareillage-electrique", "slug": "protection-electrique", "name": "Disjoncteurs et protection" },
+    { "parent": "appareillage-electrique", "slug": "prises-industrielles", "name": "Prises et fiches industrielles" }
+  ],
+  "produits": [
+    {
+      "sku": "NP2210WH",
+      "sourceFile": "IMG-20261029-WA0015.jpg",
+      "name": "Interrupteur va-et-vient blanc — Legrand",
+      "brand": "Legrand",
+      "category": "appareillage-electrique",
+      "price": 2500,
+      "stock": 20,
+      "shortDescription": "Interrupteur va-et-vient blanc à encastrer, mécanisme nu avec griffe de fixation.",
+      "description": "Interrupteur va-et-vient (simple allumage commandé depuis deux points) à encastrer, blanc. Mécanisme livré avec son support à griffes, prêt à recevoir la plaque de finition.",
+      "attributes": {
+        "Type": "Va-et-vient (SVV)",
+        "Montage": "Encastré",
+        "Couleur": "Blanc",
+        "Référence constructeur": "NP2210WH"
+      },
+      "keywords": ["interrupteur", "va et vient", "svv", "blanc", "encastre", "legrand", "appareillage", "electrique"]
+    },
+    {
+      "sku": "UB2220WH",
+      "sourceFile": "IMG-20261029-WA0011.jpg",
+      "name": "Interrupteur double va-et-vient blanc — Urbano",
+      "brand": "Legrand",
+      "category": "appareillage-electrique",
+      "price": 3000,
+      "stock": 15,
+      "shortDescription": "Interrupteur double va-et-vient blanc, gamme Urbano, à encastrer.",
+      "description": "Interrupteur double va-et-vient de la gamme Urbano : deux commandes sur une même plaque, pour piloter deux circuits ou un circuit depuis plusieurs points. Blanc, à encastrer.",
+      "attributes": {
+        "Type": "Double va-et-vient (DVV)",
+        "Gamme": "Urbano",
+        "Montage": "Encastré",
+        "Couleur": "Blanc",
+        "Référence constructeur": "UB2220WH"
+      },
+      "keywords": ["interrupteur", "double va et vient", "dvv", "urbano", "blanc", "encastre", "legrand", "appareillage"]
+    },
+    {
+      "sku": "069820L",
+      "sourceFile": "IMG-20261029-WA0018.jpg",
+      "name": "Bouton poussoir étanche gris avec voyant néon — Plexo",
+      "brand": "Legrand",
+      "category": "appareillage-electrique",
+      "price": 6000,
+      "stock": 12,
+      "shortDescription": "Bouton poussoir gris à encastrer, étanche IP55, avec voyant néon et griffe de fixation.",
+      "description": "Bouton poussoir de la gamme Plexo, à encastrer, avec voyant néon lumineux et griffe de fixation fournie. Étanche IP55 : adapté aux entrées, ateliers, terrasses et locaux humides.",
+      "attributes": {
+        "Type": "Bouton poussoir avec voyant néon",
+        "Gamme": "Plexo",
+        "Montage": "Encastré",
+        "Protection": "IP55",
+        "Accessoire": "Griffe de fixation fournie",
+        "Couleur": "Gris"
+      },
+      "keywords": ["bouton poussoir", "poussoir", "neon", "voyant", "etanche", "ip55", "plexo", "gris", "legrand"]
+    },
+    {
+      "sku": "48941",
+      "sourceFile": "IMG-20261029-WA0010.jpg",
+      "name": "Détecteur de mouvement à encastrer — Legrand",
+      "brand": "Legrand",
+      "category": "appareillage-electrique",
+      "price": 15000,
+      "stock": 8,
+      "shortDescription": "Détecteur de mouvement infrarouge à encastrer au plafond, blanc.",
+      "description": "Détecteur de mouvement à infrarouge passif, à encastrer au plafond, avec ressorts de fixation. Allume automatiquement l'éclairage au passage : couloirs, escaliers, sanitaires et abords.",
+      "attributes": {
+        "Détection": "Infrarouge passif (PIR)",
+        "Montage": "Encastré au plafond",
+        "Couleur": "Blanc",
+        "Référence constructeur": "48941"
+      },
+      "keywords": ["detecteur", "mouvement", "presence", "pir", "infrarouge", "plafond", "encastre", "legrand"]
+    },
+    {
+      "sku": "402026",
+      "sourceFile": "IMG-20261029-WA0017.jpg",
+      "name": "Interrupteur différentiel 2P 63 A — 30 mA, type AC",
+      "brand": "Legrand",
+      "category": "protection-electrique",
+      "price": 55000,
+      "stock": 4,
+      "shortDescription": "Interrupteur différentiel 2 pôles 63 A, sensibilité 30 mA, type AC, gamme RX³.",
+      "description": "Interrupteur différentiel modulaire à installer en tête de tableau : protège les personnes contre les fuites de courant. 2 pôles, 63 A, 30 mA, type AC, gamme RX³, montage sur rail DIN.",
+      "attributes": {
+        "Pôles": "2P",
+        "Calibre": "63 A",
+        "Sensibilité": "30 mA",
+        "Type": "AC",
+        "Gamme": "RX³",
+        "Montage": "Rail DIN"
+      },
+      "keywords": ["interrupteur differentiel", "differentiel", "ddr", "30ma", "63a", "rx3", "tableau", "legrand", "protection"]
+    },
+    {
+      "sku": "A9F74263",
+      "sourceFile": "IMG-20261029-WA0113.jpg",
+      "name": "Disjoncteur modulaire 2P 63 A — Acti9 iC60N",
+      "brand": "Schneider Electric",
+      "category": "protection-electrique",
+      "price": 22000,
+      "stock": 6,
+      "shortDescription": "Disjoncteur 2 pôles 63 A sur rail DIN, gamme Acti9 iC60N.",
+      "description": "Disjoncteur modulaire 2 pôles 63 A pour tableau divisionnaire, gamme Acti9 iC60N. Coupe le circuit en cas de surcharge ou de court-circuit et sert d'interrupteur de commande.",
+      "attributes": {
+        "Pôles": "2P",
+        "Calibre": "63 A",
+        "Gamme": "Acti9 iC60N",
+        "Montage": "Rail DIN",
+        "Référence constructeur": "A9F74263"
+      },
+      "keywords": ["disjoncteur", "modulaire", "rail din", "63a", "2p", "acti9", "ic60n", "schneider", "tableau", "protection"]
+    },
+    {
+      "sku": "S525662",
+      "sourceFile": "IMG-20261029-WA0129.jpg",
+      "name": "Sortie de câble blanc — Odace",
+      "brand": "Schneider Electric",
+      "category": "appareillage-electrique",
+      "price": 2000,
+      "stock": 20,
+      "shortDescription": "Sortie de câble blanche à encastrer, gamme Odace, pour passage de câble propre en sortie de cloison.",
+      "description": "Sortie de câble à encastrer de la gamme Odace : habille la traversée d'un câble en sortie de cloison ou de mur, sans arête vive. Blanc, mécanisme avec griffes.",
+      "attributes": {
+        "Type": "Sortie de câble",
+        "Gamme": "Odace",
+        "Montage": "Encastré",
+        "Couleur": "Blanc",
+        "Référence constructeur": "S525662"
+      },
+      "keywords": ["sortie de cable", "cable", "odace", "blanc", "encastre", "schneider", "appareillage"]
+    },
+    {
+      "sku": "MEG-014G",
+      "sourceFile": "IMG-20261029-WA0151.jpg",
+      "name": "Fiche industrielle mâle 4P 16 A IP44 — Megalec",
+      "brand": "Megalec",
+      "category": "prises-industrielles",
+      "price": 4500,
+      "stock": 15,
+      "shortDescription": "Fiche mâle mobile 4 pôles 16 A, IP44, repérage rouge (400 V), presse-étoupe.",
+      "description": "Fiche industrielle mâle (prise mobile) 4 pôles 16 A, protection IP44, repérage rouge pour réseau 400 V triphasé. Corps en matière isolante résistante aux chocs, presse-étoupe arrière pour câble.",
+      "attributes": {
+        "Type": "Fiche mâle mobile",
+        "Pôles": "4P",
+        "Courant": "16 A",
+        "Tension": "400 V~ (repérage rouge)",
+        "Protection": "IP44",
+        "Presse-étoupe": "Fourni"
+      },
+      "keywords": ["fiche", "prise", "industrielle", "male", "4p", "16a", "ip44", "400v", "megalec", "chantier"]
+    },
+    {
+      "sku": "MEG-023G",
+      "sourceFile": "IMG-20261029-WA0121.jpg",
+      "name": "Fiche industrielle mâle 3P 32 A IP44 — Megalec",
+      "brand": "Megalec",
+      "category": "prises-industrielles",
+      "price": 5500,
+      "stock": 12,
+      "shortDescription": "Fiche mâle mobile 3 pôles 32 A, IP44, repérage bleu (230 V), presse-étoupe.",
+      "description": "Fiche industrielle mâle 3 pôles 32 A, protection IP44, repérage bleu pour réseau 230 V monophasé. À raccorder sur câble souple, presse-étoupe arrière.",
+      "attributes": {
+        "Type": "Fiche mâle mobile",
+        "Pôles": "3P",
+        "Courant": "32 A",
+        "Tension": "230 V~ (repérage bleu)",
+        "Protection": "IP44",
+        "Presse-étoupe": "Fourni"
+      },
+      "keywords": ["fiche", "prise", "industrielle", "male", "3p", "32a", "ip44", "230v", "bleu", "megalec"]
+    },
+    {
+      "sku": "MEG-025G",
+      "sourceFile": "IMG-20261029-WA0123.jpg",
+      "name": "Fiche industrielle mâle 5P 32 A IP44 — Megalec",
+      "brand": "Megalec",
+      "category": "prises-industrielles",
+      "price": 7500,
+      "stock": 8,
+      "shortDescription": "Fiche mâle mobile 5 pôles 32 A, IP44, repérage rouge (400 V), presse-étoupe.",
+      "description": "Fiche industrielle mâle 5 pôles 32 A (3 phases + neutre + terre), protection IP44, repérage rouge 400 V. Pour machines, groupes et tableaux de chantier.",
+      "attributes": {
+        "Type": "Fiche mâle mobile",
+        "Pôles": "5P",
+        "Courant": "32 A",
+        "Tension": "400 V~ (repérage rouge)",
+        "Protection": "IP44",
+        "Presse-étoupe": "Fourni"
+      },
+      "keywords": ["fiche", "prise", "industrielle", "male", "5p", "32a", "ip44", "400v", "triphase", "megalec"]
+    },
+    {
+      "sku": "MEG-113G",
+      "sourceFile": "IMG-20261029-WA0119.jpg",
+      "name": "Prise industrielle femelle apparente 3P 16 A IP44 — Megalec",
+      "brand": "Megalec",
+      "category": "prises-industrielles",
+      "price": 5000,
+      "stock": 12,
+      "shortDescription": "Prise femelle en saillie 3 pôles 16 A, IP44, capot bleu à ressort.",
+      "description": "Prise industrielle femelle à fixer en saillie sur mur ou machine : 3 pôles 16 A, protection IP44, capot bleu à ressort qui se rabat sur les contacts. Boîtier avec passes-câbles défonçables.",
+      "attributes": {
+        "Type": "Prise femelle en saillie",
+        "Pôles": "3P",
+        "Courant": "16 A",
+        "Tension": "230 V~ (repérage bleu)",
+        "Protection": "IP44",
+        "Capot": "À ressort"
+      },
+      "keywords": ["prise", "femelle", "apparente", "saillie", "industrielle", "3p", "16a", "ip44", "megalec"]
+    },
+    {
+      "sku": "MEG-114G",
+      "sourceFile": "IMG-20261029-WA0127.jpg",
+      "name": "Prise industrielle femelle apparente 4P 16 A IP44 — Megalec",
+      "brand": "Megalec",
+      "category": "prises-industrielles",
+      "price": 5500,
+      "stock": 10,
+      "shortDescription": "Prise femelle en saillie 4 pôles 16 A, IP44, capot rouge à ressort.",
+      "description": "Prise industrielle femelle en saillie, 4 pôles 16 A, protection IP44, repérage rouge 400 V. Capot à ressort et boîtier à passes-câbles pour montage mural.",
+      "attributes": {
+        "Type": "Prise femelle en saillie",
+        "Pôles": "4P",
+        "Courant": "16 A",
+        "Tension": "400 V~ (repérage rouge)",
+        "Protection": "IP44",
+        "Capot": "À ressort"
+      },
+      "keywords": ["prise", "femelle", "apparente", "saillie", "industrielle", "4p", "16a", "ip44", "400v", "megalec"]
+    },
+    {
+      "sku": "MEG-125G",
+      "sourceFile": "IMG-20261029-WA0131.jpg",
+      "name": "Prise industrielle femelle apparente 5P 32 A IP44 — Megalec",
+      "brand": "Megalec",
+      "category": "prises-industrielles",
+      "price": 8500,
+      "stock": 6,
+      "shortDescription": "Prise femelle en saillie 5 pôles 32 A, IP44, capot rouge à ressort.",
+      "description": "Prise industrielle femelle en saillie, 5 pôles 32 A (3 phases + neutre + terre), protection IP44, repérage rouge 400 V. Pour alimentation de machines et de tableaux de chantier.",
+      "attributes": {
+        "Type": "Prise femelle en saillie",
+        "Pôles": "5P",
+        "Courant": "32 A",
+        "Tension": "400 V~ (repérage rouge)",
+        "Protection": "IP44",
+        "Capot": "À ressort"
+      },
+      "keywords": ["prise", "femelle", "apparente", "saillie", "industrielle", "5p", "32a", "ip44", "400v", "megalec"]
+    },
+    {
+      "sku": "GRIFFE-159",
+      "sourceFile": "IMG-20261029-WA0149.jpg",
+      "name": "Poignée de porte avec cylindre et clés — inox",
+      "brand": "Griffe",
+      "category": "serrurerie",
+      "price": 12000,
+      "stock": 10,
+      "shortDescription": "Poignée sur plaque longue en inox avec cylindre à canon et trois clés fournies.",
+      "description": "Poignée de porte sur plaque longue en acier inoxydable, avec cylindre à canon et jeu de trois clés. Pour porte d'entrée, porte de service ou bureau. Finition brossée, béquille pleine.",
+      "attributes": {
+        "Type": "Poignée sur plaque avec cylindre",
+        "Matière": "Acier inoxydable",
+        "Finition": "Brossée",
+        "Clés fournies": "3",
+        "Usage": "Porte d'entrée, porte de service"
+      },
+      "keywords": ["poignee", "porte", "serrure", "cylindre", "canon", "cle", "inox", "serrurerie", "griffe"]
+    },
+    {
+      "sku": "GRIFFE-163",
+      "sourceFile": "IMG-20261029-WA0115.jpg",
+      "name": "Poignée de porte de salle de bain — inox",
+      "brand": "Griffe",
+      "category": "serrurerie",
+      "price": 8000,
+      "stock": 12,
+      "shortDescription": "Poignée sur plaque inox avec bouton de condamnation, pour porte de salle de bain ou WC.",
+      "description": "Poignée sur plaque en acier inoxydable avec bouton de condamnation à visser (sans clé) : la porte se ferme de l'intérieur et s'ouvre de l'extérieur au tournevis en cas d'urgence. Pour salle de bain et WC.",
+      "attributes": {
+        "Type": "Poignée sur plaque avec bouton de condamnation",
+        "Matière": "Acier inoxydable",
+        "Finition": "Brossée",
+        "Usage": "Porte de salle de bain, WC"
+      },
+      "keywords": ["poignee", "salle de bain", "wc", "condamnation", "inox", "porte", "serrurerie", "griffe"]
+    },
+    {
+      "sku": "GS-G222",
+      "sourceFile": "IMG-20261029-WA0117.jpg",
+      "name": "Colonne de douche noire — pommeau 300 mm et douchette",
+      "brand": "Griffe",
+      "category": "plomberie",
+      "price": 45000,
+      "stock": 4,
+      "shortDescription": "Colonne de douche noire mate, hauteur 1140 mm, pommeau rond 300 mm, douchette à main et flexible.",
+      "description": "Colonne de douche en finition noire mate : pommeau de pluie rond de 300 mm, douchette à main sur support réglable, flexible souple et raccord mural. Hauteur de colonne 1140 mm, profondeur 215 mm, inclinaison du pommeau 120°.",
+      "attributes": {
+        "Finition": "Noir mat",
+        "Hauteur": "1140 mm",
+        "Profondeur": "215 mm",
+        "Pommeau": "Rond Ø 300 mm",
+        "Douchette": "À main avec flexible",
+        "Inclinaison": "120°"
+      },
+      "keywords": ["colonne de douche", "douche", "pommeau", "douchette", "flexible", "noir", "salle de bain", "plomberie", "griffe"]
+    },
+    {
+      "sku": "GS-G041",
+      "sourceFile": "IMG-20261029-WA0125.jpg",
+      "name": "Colonne de douche noire avec mitigeur digital",
+      "brand": "Griffe",
+      "category": "plomberie",
+      "price": 65000,
+      "stock": 3,
+      "shortDescription": "Colonne de douche noire avec mitigeur à affichage digital, pommeau rectangulaire et douchette multi-jets.",
+      "description": "Ensemble de douche en finition noire mate avec mitigeur digital : écran d'affichage de la température, commandes tactiles, pommeau de pluie rectangulaire, douchette à main multi-jets et flexible. Colonne verticale à raccord mural.",
+      "attributes": {
+        "Finition": "Noir mat",
+        "Mitigeur": "Digital avec affichage de température",
+        "Pommeau": "Rectangulaire",
+        "Douchette": "Multi-jets avec flexible",
+        "Montage": "Colonne murale"
+      },
+      "keywords": ["colonne de douche", "douche", "mitigeur", "digital", "afficheur", "pommeau", "noir", "salle de bain", "plomberie", "griffe"]
+    }
+  ]
+}
