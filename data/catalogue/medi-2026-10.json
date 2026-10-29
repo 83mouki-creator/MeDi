@@ -1,0 +1,614 @@
+{
+  "version": 1,
+  "fournisseur": "SODIS-MAD CI",
+  "date": "2026-10-29",
+  "note": "Références relevées sur les photos fournies par le propriétaire. Prix et stocks proposés par le prestataire, validés par le propriétaire le 2026-10-29.",
+  "categories": [
+    {
+      "slug": "equipements-de-protection",
+      "name": "Équipements de protection",
+      "description": "Chaussures, bottes et protection individuelle pour chantier et atelier.",
+      "children": [
+        {
+          "slug": "epi-chaussures",
+          "name": "Chaussures de sécurité"
+        },
+        {
+          "slug": "epi-bottes",
+          "name": "Bottes de sécurité"
+        }
+      ]
+    },
+    {
+      "slug": "eclairage-led",
+      "name": "Éclairage LED",
+      "description": "Spots, ampoules, projecteurs et rubans LED pour la maison, le commerce et le chantier.",
+      "children": [
+        {
+          "slug": "eclairage-spots",
+          "name": "Spots encastrés"
+        },
+        {
+          "slug": "eclairage-ampoules",
+          "name": "Ampoules LED"
+        },
+        {
+          "slug": "eclairage-projecteurs",
+          "name": "Projecteurs LED"
+        },
+        {
+          "slug": "eclairage-rubans",
+          "name": "Rubans LED"
+        }
+      ]
+    }
+  ],
+  "sousCategoriesExistantes": [
+    {
+      "parent": "equipements-techniques",
+      "slug": "groupes-electrogenes",
+      "name": "Groupes électrogènes"
+    },
+    {
+      "parent": "equipements-techniques",
+      "slug": "ventilation",
+      "name": "Ventilation et extraction"
+    },
+    {
+      "parent": "materiel-de-construction",
+      "slug": "compactage",
+      "name": "Compactage et damage"
+    }
+  ],
+  "produits": [
+    {
+      "sku": "EPCT091612",
+      "sourceFile": "IMG-20261029-WA0063.jpg",
+      "name": "Compacteur à plaque réversible 160 kg — essence 6,0 kW (9 HP)",
+      "brand": "EMTROP",
+      "category": "compactage",
+      "price": 1250000,
+      "stock": 2,
+      "shortDescription": "Plaque vibrante réversible 160 kg, moteur essence EMTROP 9 HP, marche avant et arrière.",
+      "description": "Compacteur à plaque réversible pour compactage de sols, remblais et enrobés sur chantier. Le mouvement réversible (avant / arrière) permet de travailler au plus près des murs et dans les tranchées. Châssis renforcé, plaque acier, guidon de manœuvre avec commande de sens de marche.",
+      "attributes": {
+        "Poids": "160 kg",
+        "Moteur": "EMTROP essence 9,0 HP (6,0 kW)",
+        "Sens de travail": "Avant et arrière (réversible)",
+        "Usage": "Sols, remblais, enrobés, tranchées"
+      },
+      "keywords": [
+        "compacteur",
+        "plaque vibrante",
+        "compactage",
+        "vibrant",
+        "damage",
+        "chantier",
+        "essence",
+        "emtop"
+      ],
+      "featured": true
+    },
+    {
+      "sku": "ESBS71SB46",
+      "sourceFile": "IMG-20261029-WA0065.jpg",
+      "name": "Chaussure de sécurité noire SB — pointure 46",
+      "brand": "EMTROP",
+      "category": "epi-chaussures",
+      "price": 32000,
+      "stock": 6,
+      "shortDescription": "Chaussure montante de sécurité, embout acier, cuir noir traité hydrofuge, pointure 46.",
+      "description": "Chaussure de sécurité montante pour chantier et atelier. Embout de protection en acier, cuir pleine fleur noir traité contre l'eau et les projections d'huile, semelle antidérapante. Norme SB.",
+      "attributes": {
+        "Pointure": "46",
+        "Norme": "SB",
+        "Embout": "Acier",
+        "Matière": "Cuir noir hydrofuge",
+        "Semelle": "Antidérapante, résistante aux huiles"
+      },
+      "keywords": [
+        "chaussure",
+        "securite",
+        "botte",
+        "embout acier",
+        "pointure 46",
+        "chantier",
+        "epi",
+        "emtop"
+      ],
+      "featured": true
+    },
+    {
+      "sku": "EAGR22093",
+      "sourceFile": "IMG-20261029-WA0067.jpg",
+      "name": "Meuleuse d'angle 230 mm — 2200 W",
+      "brand": "EMTROP",
+      "category": "outillage-electroportatif",
+      "price": 95000,
+      "stock": 4,
+      "shortDescription": "Meuleuse d'angle professionnelle Ø230 mm (9\"), 2200 W, 6600 tr/min, poignée latérale.",
+      "description": "Meuleuse d'angle pour découpe et ébarbage du métal, de la pierre et du béton. Moteur 2200 W, disque Ø230 mm, carter de protection réglable, poignée latérale trois positions.",
+      "attributes": {
+        "Puissance": "2200 W",
+        "Disque": "Ø230 mm (9 pouces)",
+        "Vitesse": "6600 tr/min",
+        "Alimentation": "230 V"
+      },
+      "keywords": [
+        "meuleuse",
+        "angle",
+        "230 mm",
+        "disqueuse",
+        "2200w",
+        "metal",
+        "beton",
+        "emtop"
+      ],
+      "featured": true
+    },
+    {
+      "sku": "ERBTLS1P44",
+      "sourceFile": "IMG-20261029-WA0069.jpg",
+      "name": "Bottes de sécurité 44 — tige 400 mm",
+      "brand": "EMTROP",
+      "category": "epi-bottes",
+      "price": 22000,
+      "stock": 8,
+      "shortDescription": "Bottes de sécurité PVC, tige haute 400 mm, embout et semelle acier, pointure 44.",
+      "description": "Bottes de sécurité hautes pour chantier, agriculture et travaux humides. Embout de protection en acier, semelle anti-perforation en acier, semelle extérieure antidérapante. Pointure 44.",
+      "attributes": {
+        "Pointure": "44",
+        "Hauteur de tige": "400 mm",
+        "Embout": "Acier",
+        "Semelle": "Acier anti-perforation + antidérapante"
+      },
+      "keywords": [
+        "bottes",
+        "securite",
+        "botte",
+        "caoutchouc",
+        "400 mm",
+        "pointure 44",
+        "chantier",
+        "epi",
+        "emtop"
+      ]
+    },
+    {
+      "sku": "EPLSO331",
+      "sourceFile": "IMG-20261029-WA0071.jpg",
+      "name": "Jeu de 3 pinces isolées 1000 V",
+      "brand": "EMTROP",
+      "category": "outillage-a-main",
+      "price": 28000,
+      "stock": 10,
+      "shortDescription": "Jeu de 3 pinces isolées 1000 V : bec demi-rond 160 mm, coupe-câble 160 mm, bec long 200 mm.",
+      "description": "Ensemble de trois pinces isolées pour travaux électriques jusqu'à 1000 V. Manches bi-matière antidérapants, acier forgé traité. Conforme EN IEC 60900.",
+      "attributes": {
+        "Composition": "3 pinces",
+        "Longueurs": "160 mm (x2) et 200 mm",
+        "Isolation": "1000 V — EN IEC 60900",
+        "Marquage": "VDE / GS"
+      },
+      "keywords": [
+        "pinces",
+        "isolees",
+        "1000v",
+        "electricien",
+        "coup cable",
+        "bec long",
+        "outillage",
+        "emtop"
+      ]
+    },
+    {
+      "sku": "EGWP10022",
+      "sourceFile": "IMG-20261029-WA0073.jpg",
+      "name": "Moto-pompe à eau essence 4\" — 7,5 HP",
+      "brand": "EMTROP",
+      "category": "motopompes",
+      "price": 385000,
+      "stock": 3,
+      "shortDescription": "Moto-pompe à eau essence, raccord 100 mm (4\"), moteur 7,5 HP, débit 1500 L/min.",
+      "description": "Moto-pompe à eau à moteur essence pour chantier, irrigation et assèchement. Raccord 100 mm (4 pouces), débit jusqu'à 1500 L/min, réservoir 3,6 L. Châssis tubulaire de protection.",
+      "attributes": {
+        "Raccord": "100 mm (4 pouces)",
+        "Moteur": "Essence 7,5 HP",
+        "Débit": "1500 L/min",
+        "Réservoir": "3,6 L"
+      },
+      "keywords": [
+        "motopompe",
+        "pompe",
+        "eau",
+        "essence",
+        "4 pouces",
+        "100mm",
+        "irrigation",
+        "chantier",
+        "emtop"
+      ],
+      "featured": true
+    },
+    {
+      "sku": "EGFJ2A08",
+      "sourceFile": "IMG-20261029-WA0075.jpg",
+      "name": "Ventilateur d'extraction industriel 8\" — 120 W",
+      "brand": "EMTROP",
+      "category": "ventilation",
+      "price": 45000,
+      "stock": 5,
+      "shortDescription": "Ventilateur d'extraction 8 pouces, 120 W, débit 1300 m³/h, moteur cuivre.",
+      "description": "Ventilateur d'extraction d'air pour atelier, entrepôt et local technique. Débit 1300 m³/h, carter métallique, moteur à bobinage cuivre, poignée de transport et pieds antidérapants.",
+      "attributes": {
+        "Diamètre": "8 pouces",
+        "Puissance": "120 W (0,16 HP)",
+        "Débit": "1300 m³/h",
+        "Moteur": "100 % cuivre"
+      },
+      "keywords": [
+        "ventilateur",
+        "extracteur",
+        "aeration",
+        "atelier",
+        "8 pouces",
+        "1300 m3",
+        "emtop"
+      ]
+    },
+    {
+      "sku": "EWSBD15001",
+      "sourceFile": "IMG-20261029-WA0077.jpg",
+      "name": "Coffret de commande pour pompe à plonger",
+      "brand": "EMTROP",
+      "category": "motopompes",
+      "price": 35000,
+      "stock": 4,
+      "shortDescription": "Boîtier de commande et de protection 220-240 V pour pompe immergée (EWPPD15001).",
+      "description": "Coffret de commande pour pompe immergée : protection électrique, interrupteur et raccordement 220-240 V / 50 Hz. Compatible avec la pompe à plonger EWPPD15001.",
+      "attributes": {
+        "Alimentation": "220-240 V ~ 50 Hz",
+        "Compatibilité": "Pompe immergée EWPPD15001",
+        "Fonction": "Commande et protection"
+      },
+      "keywords": [
+        "coffret",
+        "boitier",
+        "commande",
+        "pompe",
+        "immergee",
+        "plongeur",
+        "protection",
+        "emtop"
+      ]
+    },
+    {
+      "sku": "EDGRS711-1",
+      "sourceFile": "IMG-20261029-WA0079.jpg",
+      "name": "Groupe électrogène diesel silencieux 7 kVA — ATS",
+      "brand": "EMTROP",
+      "category": "groupes-electrogenes",
+      "price": 2200000,
+      "stock": 2,
+      "shortDescription": "Groupe électrogène insonorisé diesel 7 kVA, monophasé 30 A, démarrage à clé, fonction ATS.",
+      "description": "Groupe électrogène diesel insonorisé pour maison, commerce et chantier. 7 kVA monophasé, 30 A, démarrage à clé, fonction ATS (démarrage automatique sur coupure), alternateur à bobinage 100 % cuivre, châssis sur roulettes avec cuve intégrée.",
+      "attributes": {
+        "Puissance": "7 kVA",
+        "Courant": "30 A",
+        "Phasage": "Monophasé",
+        "Carburant": "Diesel",
+        "Démarrage": "Clé électrique",
+        "Options": "Fonction ATS, insonorisé, bobinage cuivre"
+      },
+      "keywords": [
+        "groupe electrogene",
+        "generateur",
+        "diesel",
+        "7 kva",
+        "silencieux",
+        "ats",
+        "secours",
+        "emtop"
+      ]
+    },
+    {
+      "sku": "EABR6506",
+      "sourceFile": "IMG-20261029-WA0081.jpg",
+      "name": "Souffleur / aspirateur 650 W — variateur",
+      "brand": "EMTROP",
+      "category": "outillage-electroportatif",
+      "price": 42000,
+      "stock": 6,
+      "shortDescription": "Souffleur-aspirateur 650 W, débit 4,0 m³/min, vitesse variable 0-16 500 tr/min.",
+      "description": "Souffleur et aspirateur de feuilles et poussières. Moteur 650 W, débit d'air 4,0 m³/min, variateur de vitesse électronique, tube de soufflage et sac de récupération fournis.",
+      "attributes": {
+        "Puissance": "650 W",
+        "Débit d'air": "0-4,0 m³/min",
+        "Vitesse": "0-16 500 tr/min",
+        "Fonctions": "Souffleur et aspirateur, vitesse variable"
+      },
+      "keywords": [
+        "souffleur",
+        "aspirateur",
+        "feuilles",
+        "650w",
+        "jardin",
+        "nettoyage",
+        "emtop"
+      ]
+    },
+    {
+      "sku": "EWPPSO7501",
+      "sourceFile": "IMG-20261029-WA0083.jpg",
+      "name": "Pompe submersible eau claire 750 W (1 HP)",
+      "brand": "EMTROP",
+      "category": "motopompes",
+      "price": 65000,
+      "stock": 6,
+      "shortDescription": "Pompe submersible eau claire 750 W, débit 120 L/min, refoulement 32 m, flotteur.",
+      "description": "Pompe submersible pour vidange et relevage d'eau claire : caves, chantiers, réservoirs. Moteur 750 W (1 HP) bobiné cuivre, base inox, interrupteur à flotteur, sortie 1 pouce.",
+      "attributes": {
+        "Puissance": "750 W (1,0 HP)",
+        "Débit": "120 L/min",
+        "Refoulement": "32 m",
+        "Sortie": "1 pouce",
+        "Alimentation": "220-240 V ~ 50 Hz"
+      },
+      "keywords": [
+        "pompe",
+        "submersible",
+        "vide cave",
+        "relevage",
+        "eau claire",
+        "flotteur",
+        "750w",
+        "emtop"
+      ]
+    },
+    {
+      "sku": "EGGRD5511",
+      "sourceFile": "IMG-20261029-WA0085.jpg",
+      "name": "Groupe électrogène essence 5,5 kVA — démarrage à clé",
+      "brand": "EMTROP",
+      "category": "groupes-electrogenes",
+      "price": 450000,
+      "stock": 3,
+      "shortDescription": "Groupe électrogène essence 5,5 kVA, 24 A, monophasé, démarrage à clé, châssis roulant.",
+      "description": "Groupe électrogène portable à essence pour maison, boutique et chantier. 5,5 kVA monophasé, 24 A, démarrage électrique à clé, alternateur cuivre, châssis tubulaire avec roues et poignées.",
+      "attributes": {
+        "Puissance": "5,5 kVA (max 5 500 W)",
+        "Courant": "24 A",
+        "Phasage": "Monophasé",
+        "Carburant": "Essence",
+        "Démarrage": "Clé électrique"
+      },
+      "keywords": [
+        "groupe electrogene",
+        "generateur",
+        "essence",
+        "5.5 kva",
+        "24a",
+        "secours",
+        "emtop"
+      ],
+      "featured": true
+    },
+    {
+      "sku": "EWPPD15001",
+      "sourceFile": "IMG-20261029-WA0087.jpg",
+      "name": "Pompe immergée 4\" — 1500 W (2 HP)",
+      "brand": "EMTROP",
+      "category": "motopompes",
+      "price": 185000,
+      "stock": 3,
+      "shortDescription": "Pompe immergée de forage 4\", 1500 W, débit 100 L/min, refoulement 135 m.",
+      "description": "Pompe immergée pour forage et puits profond. Corps inox, moteur 1500 W (2,0 HP) bobiné cuivre, diamètre 4 pouces, sortie 1\"1/4, hauteur de refoulement 135 m.",
+      "attributes": {
+        "Puissance": "1500 W (2,0 HP)",
+        "Diamètre": "4 pouces",
+        "Débit": "100 L/min",
+        "Refoulement": "135 m",
+        "Sortie": "1\"1/4"
+      },
+      "keywords": [
+        "pompe",
+        "immergee",
+        "forage",
+        "puits",
+        "4 pouces",
+        "2hp",
+        "1500w",
+        "emtop"
+      ]
+    },
+    {
+      "sku": "EGWP8016",
+      "sourceFile": "IMG-20261029-WA0089.jpg",
+      "name": "Moto-pompe à eau essence 3\" — 7,0 HP",
+      "brand": "EMTROP",
+      "category": "motopompes",
+      "price": 285000,
+      "stock": 3,
+      "shortDescription": "Moto-pompe à eau essence, raccord 80 mm (3\"), moteur 7,0 HP, débit 1000 L/min.",
+      "description": "Moto-pompe à eau à moteur essence pour chantier, irrigation et assèchement de moyenne capacité. Raccord 80 mm (3 pouces), débit jusqu'à 1000 L/min, réservoir 3,6 L, châssis tubulaire.",
+      "attributes": {
+        "Raccord": "80 mm (3 pouces)",
+        "Moteur": "Essence 7,0 HP",
+        "Débit": "1000 L/min",
+        "Réservoir": "3,6 L"
+      },
+      "keywords": [
+        "motopompe",
+        "pompe",
+        "eau",
+        "essence",
+        "3 pouces",
+        "80mm",
+        "irrigation",
+        "emtop"
+      ]
+    },
+    {
+      "sku": "ESBS71SB45",
+      "sourceFile": "IMG-20261029-WA0091.jpg",
+      "name": "Chaussure de sécurité noire SB — pointure 45",
+      "brand": "EMTROP",
+      "category": "epi-chaussures",
+      "price": 32000,
+      "stock": 6,
+      "shortDescription": "Chaussure montante de sécurité, embout acier, cuir noir traité hydrofuge, pointure 45.",
+      "description": "Chaussure de sécurité montante pour chantier et atelier. Embout de protection en acier, cuir pleine fleur noir traité contre l'eau et les projections d'huile, semelle antidérapante. Norme SB.",
+      "attributes": {
+        "Pointure": "45",
+        "Norme": "SB",
+        "Embout": "Acier",
+        "Matière": "Cuir noir hydrofuge",
+        "Semelle": "Antidérapante, résistante aux huiles"
+      },
+      "keywords": [
+        "chaussure",
+        "securite",
+        "embout acier",
+        "pointure 45",
+        "chantier",
+        "epi",
+        "emtop"
+      ]
+    },
+    {
+      "sku": "MDL-STD12W-02-4000",
+      "sourceFile": "IMG-20261029-WA0072.jpg",
+      "name": "Ruban LED 12 W — 50 m, 4000 K",
+      "brand": "Midea",
+      "category": "eclairage-rubans",
+      "price": 35000,
+      "stock": 4,
+      "shortDescription": "Rouleau de ruban LED souple 50 m, 4000 K (blanc neutre), alimentation 12 W.",
+      "description": "Ruban LED souple en rouleau de 50 mètres pour éclairage indirect : faux plafond, vitrine, mobilier. Lumière blanche neutre 4000 K, découpe possible, adhésif au dos.",
+      "attributes": {
+        "Longueur": "50 m",
+        "Température de couleur": "4000 K (blanc neutre)",
+        "Puissance": "12 W",
+        "Marque": "Midea Lighting"
+      },
+      "keywords": [
+        "ruban led",
+        "led",
+        "bande lumineuse",
+        "50 m",
+        "4000k",
+        "eclairage",
+        "midea"
+      ]
+    },
+    {
+      "sku": "MDL-DL60R18W-034K",
+      "sourceFile": "IMG-20261029-WA0032.jpg",
+      "name": "Spot LED encastré 18 W — 6\", 4000 K",
+      "brand": "Midea",
+      "category": "eclairage-spots",
+      "price": 9500,
+      "stock": 12,
+      "shortDescription": "Spot LED à encastrer 18 W, diamètre 6 pouces, 4000 K, blanc.",
+      "description": "Spot LED encastré pour faux plafond : maison, boutique, bureau. 18 W, 4000 K (blanc neutre), diffuseur uniforme, fixations à ressorts, finition blanche.",
+      "attributes": {
+        "Puissance": "18 W",
+        "Diamètre": "6 pouces",
+        "Température de couleur": "4000 K",
+        "Montage": "Encastré (faux plafond)"
+      },
+      "keywords": [
+        "spot",
+        "led",
+        "encastre",
+        "18w",
+        "6 pouces",
+        "4000k",
+        "faux plafond",
+        "midea"
+      ]
+    },
+    {
+      "sku": "MDL-CAC37M05W-6500",
+      "sourceFile": "IMG-20261029-WA0078.jpg",
+      "name": "Ampoule flamme LED 5 W — E14, 6500 K",
+      "brand": "Midea",
+      "category": "eclairage-ampoules",
+      "price": 2500,
+      "stock": 20,
+      "shortDescription": "Ampoule LED flamme 5 W à culot E14, lumière blanche 6500 K.",
+      "description": "Ampoule LED en forme de flamme pour luminaire de décoration, applique et lustre. Culot E14, 5 W, lumière blanche froide 6500 K, allumage immédiat.",
+      "attributes": {
+        "Puissance": "5 W",
+        "Culot": "E14",
+        "Température de couleur": "6500 K",
+        "Forme": "Flamme"
+      },
+      "keywords": [
+        "ampoule",
+        "led",
+        "flamme",
+        "e14",
+        "5w",
+        "6500k",
+        "lumiere",
+        "midea"
+      ]
+    },
+    {
+      "sku": "MDL-FLF50W-036500K",
+      "sourceFile": "IMG-20261029-WA0033.jpg",
+      "name": "Projecteur LED 50 W — 4500 lm, IP66",
+      "brand": "Midea",
+      "category": "eclairage-projecteurs",
+      "price": 15000,
+      "stock": 8,
+      "shortDescription": "Projecteur LED 50 W, 4500 lm, IP66, 6500 K, étrier de fixation orientable.",
+      "description": "Projecteur LED pour éclairage extérieur : cour, façade, chantier, parking. 50 W, 4500 lumens, étanchéité IP66, lumière blanche 6500 K, étrier de fixation orientable.",
+      "attributes": {
+        "Puissance": "50 W",
+        "Flux lumineux": "4500 lm",
+        "Indice de protection": "IP66",
+        "Température de couleur": "6500 K"
+      },
+      "keywords": [
+        "projecteur",
+        "led",
+        "floodlight",
+        "50w",
+        "ip66",
+        "exterieur",
+        "4500 lm",
+        "midea"
+      ],
+      "featured": true
+    },
+    {
+      "sku": "MDL-DL35R08W-03A",
+      "sourceFile": "IMG-20261029-WA0034.jpg",
+      "name": "Spot LED encastré 8 W — 3,5\", 3 couleurs",
+      "brand": "Midea",
+      "category": "eclairage-spots",
+      "price": 6500,
+      "stock": 12,
+      "shortDescription": "Spot LED encastré 8 W, 3,5 pouces, sélection de 3 températures de couleur.",
+      "description": "Spot LED encastré compact pour faux plafond. 8 W, diamètre 3,5 pouces, trois températures de couleur sélectionnables (blanc chaud, neutre, froid) au moment de l'installation. Finition blanche.",
+      "attributes": {
+        "Puissance": "8 W",
+        "Diamètre": "3,5 pouces",
+        "Températures": "3 couleurs au choix",
+        "Montage": "Encastré (faux plafond)"
+      },
+      "keywords": [
+        "spot",
+        "led",
+        "encastre",
+        "8w",
+        "3.5 pouces",
+        "3 couleurs",
+        "faux plafond",
+        "midea"
+      ]
+    }
+  ]
+}

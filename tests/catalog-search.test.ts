@@ -2,6 +2,9 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { listProducts } from '@/lib/catalog';
 import { searchProducts } from '@/lib/search';
 import { computeAvailability, computePricing } from '@/lib/pricing';
+import { randomBytes } from 'node:crypto';
+import { db } from '@/db';
+import { categories } from '@/db/schema';
 import { resetDb, createProduct, createCategory, createBrand } from './helpers';
 
 beforeEach(async () => {
@@ -68,6 +71,26 @@ describe('catalogue : filtres et tri', () => {
 
     const ranged = await listProducts({ category: category.slug, minPrice: 5000, maxPrice: 7000 });
     expect(ranged.items.map((item) => item.name)).toEqual(['Tuyau PVC 40 mm']);
+  });
+
+  it('remonte les produits des sous-catégories depuis une catégorie parente', async () => {
+    const parent = await createCategory('Éclairage LED (test)');
+    const [child] = await db
+      .insert(categories)
+      .values({ id: `tst_cat_${randomBytes(3).toString('hex')}`, slug: `spots-${randomBytes(3).toString('hex')}`, name: 'Spots (test)', parentId: parent.id })
+      .returning();
+
+    await createProduct({ name: 'Spot encastré 18 W', categoryId: child!.id, price: '9500', stock: 12 });
+    await createProduct({ name: 'Ampoule flamante', categoryId: parent.id, price: '2500', stock: 20 });
+    await createProduct({ name: 'Produit hors rayon', price: '1000', stock: 5 });
+
+    const fromParent = await listProducts({ category: parent.slug });
+    expect(fromParent.total).toBe(2);
+    expect(fromParent.items.map((item) => item.name).sort()).toEqual(['Ampoule flamante', 'Spot encastré 18 W']);
+
+    const fromChild = await listProducts({ category: child!.slug });
+    expect(fromChild.total).toBe(1);
+    expect(fromChild.items[0]!.name).toBe('Spot encastré 18 W');
   });
 
   it('masque les produits inactifs ou archivés', async () => {

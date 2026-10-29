@@ -30,8 +30,15 @@ async function getHomeData() {
       db
         .select({ id: products.id })
         .from(products)
-        .where(and(eq(products.isActive, true), eq(products.isArchived, false), eq(products.isFeatured, true)))
-        .orderBy(desc(products.soldCount))
+        .where(
+          and(
+            eq(products.isActive, true),
+            eq(products.isArchived, false),
+            eq(products.isFeatured, true),
+            sql`(${products.stock} - ${products.reserved}) > 0`,
+          ),
+        )
+        .orderBy(desc(products.soldCount), desc(products.createdAt))
         .limit(8),
       db
         .select({ id: products.id })
@@ -55,13 +62,18 @@ async function getHomeData() {
       db
         .select({ id: brands.id, name: brands.name, slug: brands.slug })
         .from(brands)
-        .where(eq(brands.isActive, true))
+        .where(
+          and(
+            eq(brands.isActive, true),
+            sql`EXISTS (SELECT 1 FROM products p WHERE p.brand_id = ${brands.id} AND p.is_active AND NOT p.is_archived)`,
+          ),
+        )
         .orderBy(asc(brands.name))
         .limit(12),
       db.execute(sql`
         SELECT
           (SELECT count(*)::int FROM products WHERE is_active AND NOT is_archived) AS products,
-          (SELECT count(*)::int FROM categories WHERE is_active) AS categories
+          (SELECT count(*)::int FROM categories WHERE is_active AND parent_id IS NULL) AS categories
       `),
     ]);
 
@@ -213,13 +225,14 @@ export default async function HomePage() {
         />
       ) : null}
 
-      <Section
-        title="Meilleures ventes"
-        subtitle="Les références les plus commandées par les clients de la boutique."
-        href="/catalogue?sort=popular"
-        products={featured}
-        emptyLabel="Aucune vente enregistrée pour l’instant."
-      />
+      {featured.length > 0 ? (
+        <Section
+          title="Sélection MeDi"
+          subtitle="Les références mises en avant par la boutique, disponibles immédiatement."
+          href="/catalogue"
+          products={featured}
+        />
+      ) : null}
 
       <Section
         title="Nouveautés"
