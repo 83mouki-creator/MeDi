@@ -75,13 +75,30 @@ photos et catalogue réels, configuration du stockage d'images et de la base Neo
 | Vérification mobile réelle | test sur téléphone (mise en page, caméra, lenteur réseau). |
 | Mentions légales / CGV définitives | RCCM, compte contribuable, forme juridique, adresse, tribunal compétent, politique de retour. |
 
+## Renseigné par le propriétaire (2026-10-29)
+
+| Élément | Valeur | Où la modifier |
+| --- | --- | --- |
+| Horaires | lundi – samedi 7h30 – 18h00, dimanche fermé | `/admin/parametres` |
+| WhatsApp / téléphone | +225 07 08 90 48 91 | `/admin/parametres` |
+| Numéro marchand Wave | même numéro (provisoire) | `/admin/parametres` |
+| Logo | fourni par le propriétaire, décliné par `npm run brand:assets` | `public/brand/` |
+| Barème de livraison | arrêté par le prestataire à la demande du propriétaire | `/admin/livraison` |
+
+Ces valeurs sont posées par `npm run config:store`, exécuté à chaque déploiement :
+le script ne remplit que les champs vides, les modifications faites dans
+`/admin` ne sont donc jamais écrasées (`--force` pour réappliquer).
+
+Barème en vigueur (modifiable) : retrait gratuit · Daloa centre 1 000 FCFA ·
+Daloa périphérie 2 000 FCFA · Abidjan 4 000 · Yamoussoukro 3 000 · Bouaké 4 000 ·
+San-Pédro 6 000 · autre ville 5 000 FCFA (expédition en prépaiement).
+
 ## Non configuré — volontairement, faute d'informations
 
-- Téléphone, WhatsApp, e-mail, adresse, horaires de la boutique.
-- Grille tarifaire de livraison réelle (les zones de démonstration sont marquées « DÉMO »).
-- Numéro marchand Wave de la boutique.
+- Adresse de la boutique (affichée « à compléter », jamais inventée).
+- Adresse e-mail de contact.
 - Conditions de retour, garanties commerciales, politique de remboursement.
-- Références et prix réels des 200+ produits/photos.
+- Références, prix et stocks réels des 200+ produits (photos non reçues).
 
 ## Données à fournir par le propriétaire
 
@@ -93,8 +110,8 @@ photos et catalogue réels, configuration du stockage d'images et de la base Neo
    partenaires et conditions de paiement du transport hors Daloa.
 4. **Paiement** : numéro marchand Wave, décision sur le mode (manuel ou automatique), conditions du
    paiement à la livraison (autorisation et plafond).
-5. **Catalogue** : fichier CSV (référence, nom, prix, stock, catégorie, marque, descriptions,
-   mots-clés) ou accès à la base existante, et les 200+ photos nommées par référence.
+5. **Catalogue** : les 200+ photos (une par produit, référence lisible sur la photo). Le
+   prestataire en déduit nom, catégorie, prix et stock, puis importe via `npm run import:catalog`.
 6. **Commercial** : politique de retour, garanties, conditions de précommande, remises éventuelles.
 7. **Comptes** : liste des personnes ayant besoin d'un accès d'administration et leur rôle.
 8. **Données personnelles** : responsable de traitement, durées de conservation, état de la

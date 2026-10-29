@@ -27,11 +27,23 @@ export const metadata: Metadata = {
     title: 'MeDi — Quincaillerie, outillage et équipement à Daloa',
     description:
       'Outillage professionnel, matériaux de construction et équipement de la maison. Commande en ligne, retrait à Daloa ou livraison.',
+    images: [{ url: '/brand/medi-og.png', width: 1200, height: 630, alt: 'MeDi — Daloa, Côte d’Ivoire' }],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'MeDi — Quincaillerie, outillage et équipement à Daloa',
+    description:
+      'Outillage professionnel, matériaux de construction et équipement de la maison. Retrait à Daloa ou livraison.',
+    images: ['/brand/medi-og.png'],
   },
   robots: { index: true, follow: true },
   icons: {
-    icon: [{ url: '/brand/favicon.svg', type: 'image/svg+xml' }],
-    apple: [{ url: '/brand/favicon.svg' }],
+    icon: [
+      { url: '/brand/favicon-32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/brand/medi-icon.png', sizes: '512x512', type: 'image/png' },
+    ],
+    shortcut: [{ url: '/brand/favicon-32.png' }],
+    apple: [{ url: '/brand/apple-touch-icon.png', sizes: '180x180', type: 'image/png' }],
   },
   formatDetection: { telephone: false },
 };

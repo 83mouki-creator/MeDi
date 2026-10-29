@@ -18,7 +18,6 @@ import { db, pool } from '../src/db';
 import {
   brands,
   categories,
-  deliveryZones,
   productAttributes,
   productImages,
   products,
@@ -268,36 +267,8 @@ async function main() {
   }
   const supplierRows = await db.select({ id: suppliers.id }).from(suppliers).limit(1);
 
-  // Zones de livraison (valeurs de travail à remplacer par le barème du propriétaire)
-  const zones = [
-    { id: 'zone_pickup_daloa', name: 'Retrait en boutique — Daloa', city: 'Daloa', isLocal: true, isPickup: true, fee: 0, freeAbove: null, delay: 'Immédiat pendant les horaires d’ouverture', order: 0 },
-    { id: 'zone_daloa_domicile', name: 'Daloa — livraison à domicile (DÉMO)', city: 'Daloa', isLocal: true, isPickup: false, fee: 1500, freeAbove: 50000, delay: 'Sous 24 h ouvrées', order: 1 },
-    { id: 'zone_abidjan', name: 'Abidjan — expédition (DÉMO)', city: 'Abidjan', isLocal: false, isPickup: false, fee: 4000, freeAbove: null, delay: '2 à 4 jours par car', order: 2 },
-    { id: 'zone_yamoussoukro', name: 'Yamoussoukro — expédition (DÉMO)', city: 'Yamoussoukro', isLocal: false, isPickup: false, fee: 3500, freeAbove: null, delay: '2 à 3 jours par car', order: 3 },
-    { id: 'zone_bouake', name: 'Bouaké — expédition (DÉMO)', city: 'Bouaké', isLocal: false, isPickup: false, fee: 4000, freeAbove: null, delay: '2 à 4 jours par car', order: 4 },
-    { id: 'zone_sanpedro', name: 'San-Pédro — expédition (DÉMO)', city: 'San-Pédro', isLocal: false, isPickup: false, fee: 5000, freeAbove: null, delay: '3 à 5 jours par transporteur', order: 5 },
-    { id: 'zone_autre', name: 'Autre ville — Côte d’Ivoire (DÉMO)', city: 'Autre ville', isLocal: false, isPickup: false, fee: 5000, freeAbove: null, delay: '3 à 5 jours, transporteur à confirmer', order: 6 },
-  ];
-  for (const zone of zones) {
-    await db
-      .insert(deliveryZones)
-      .values({
-        id: zone.id,
-        name: zone.name,
-        city: zone.city,
-        isLocal: zone.isLocal,
-        isPickup: zone.isPickup,
-        fee: String(zone.fee),
-        freeAbove: zone.freeAbove === null ? null : String(zone.freeAbove),
-        estimatedDelay: zone.delay,
-        sortOrder: zone.order,
-        isActive: true,
-      })
-      .onConflictDoUpdate({
-        target: deliveryZones.id,
-        set: { name: zone.name, city: zone.city, isLocal: zone.isLocal, isPickup: zone.isPickup, fee: String(zone.fee), freeAbove: zone.freeAbove === null ? null : String(zone.freeAbove), estimatedDelay: zone.delay, sortOrder: zone.order },
-      });
-  }
+  // Zones de livraison : gérées par `npm run config:store` (barème réel de la
+  // boutique, modifiable dans /admin/livraison). Le seed n'en crée aucune.
 
   // Produits
   let created = 0;
@@ -427,8 +398,8 @@ async function main() {
     console.log('   ⚠️  Comptes de DÉMONSTRATION uniquement : supprimez-les avant la mise en production.');
   }
 
-  console.log(`   ${created} produits, ${CATEGORIES.length} catégories racines, ${zones.length} zones de livraison.`);
-  console.log('   Les coordonnées de la boutique restent vides : à saisir dans /admin/parametres.');
+  console.log(`   ${created} produits, ${CATEGORIES.length} catégories racines.`);
+  console.log('   Coordonnées et barème de livraison : voir `npm run config:store` et /admin/parametres.');
   await pool.end();
 }
 

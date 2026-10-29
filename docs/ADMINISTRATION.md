@@ -36,6 +36,24 @@ Le mot de passe est demandé en interactif (ou via `MEDI_ADMIN_PASSWORD` pour un
 12 caractères minimum, majuscule, minuscule, chiffre, caractère spécial. Un compte existant est mis à
 jour (rôle, mot de passe, réactivation) et l'opération est journalisée.
 
+## Coordonnées, horaires et barème de livraison
+
+Les informations commerciales connues sont posées automatiquement à chaque déploiement :
+
+```bash
+npm run config:store            # ne remplit que les champs encore vides
+npm run config:store -- --force # réapplique les valeurs du dépôt (écrase les saisies /admin)
+```
+
+Ensuite, tout se modifie dans l'interface :
+
+- `/admin/parametres` : téléphone, WhatsApp, horaires, adresse, numéro Wave, paiement à la livraison.
+- `/admin/livraison` : zones, frais, seuil de gratuité, délais. Le tunnel de commande lit uniquement
+  ces lignes — aucun tarif n'est codé en dur.
+
+Le logo officiel est décliné automatiquement (`npm run brand:assets`) vers `public/brand/` :
+en-tête et pied de page (fond bleu nuit), favicon, icône iOS, image de partage.
+
 ## Cartographie des écrans
 
 | Écran | Contenu |
