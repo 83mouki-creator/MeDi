@@ -1,0 +1,372 @@
+{
+  "version": 1,
+  "fournisseur": "SODIS-MAD CI",
+  "date": "2026-10-29",
+  "lot": 2,
+  "note": "Deuxième lot de photos. Références relevées sur les visuels. Prix et stocks proposés par le prestataire, modifiables dans /admin/produits.",
+  "categories": [
+    {
+      "slug": "eclairage-led",
+      "name": "Éclairage LED",
+      "description": "Spots, ampoules, projecteurs et rubans LED pour la maison, le commerce et le chantier.",
+      "children": [{ "slug": "eclairage-plafonniers", "name": "Plafonniers et globes" }]
+    },
+    {
+      "slug": "equipements-de-protection",
+      "name": "Équipements de protection",
+      "description": "Chaussures, bottes et protection individuelle pour chantier et atelier.",
+      "children": [{ "slug": "epi-vetements", "name": "Vêtements de protection" }]
+    }
+  ],
+  "sousCategoriesExistantes": [
+    { "parent": "equipements-techniques", "slug": "appareillage-electrique", "name": "Appareillage électrique" }
+  ],
+  "produits": [
+    {
+      "sku": "MDL-STD12W-02-3000",
+      "sourceFile": "IMG-20261029-WA0086.jpg",
+      "name": "Ruban LED 12 W — 50 m, 3000 K",
+      "brand": "Midea",
+      "category": "eclairage-rubans",
+      "price": 35000,
+      "stock": 4,
+      "shortDescription": "Rouleau de ruban LED souple 50 m, 3000 K (blanc chaud), alimentation 12 W.",
+      "description": "Ruban LED souple en rouleau de 50 mètres pour éclairage indirect : faux plafond, vitrine, mobilier. Lumière blanche chaude 3000 K, découpe possible, adhésif au dos.",
+      "attributes": {
+        "Longueur": "50 m",
+        "Température de couleur": "3000 K (blanc chaud)",
+        "Puissance": "12 W",
+        "Marque": "Midea Lighting"
+      },
+      "keywords": ["ruban led", "led", "bande lumineuse", "50 m", "3000k", "blanc chaud", "eclairage", "midea"]
+    },
+    {
+      "sku": "MDL-DL35R08W-03-3000",
+      "sourceFile": "IMG-20261029-WA0088.jpg",
+      "name": "Spot LED encastré 8 W — 3,5\", 3000 K",
+      "brand": "Midea",
+      "category": "eclairage-spots",
+      "price": 6500,
+      "stock": 12,
+      "shortDescription": "Spot LED à encastrer 8 W, diamètre 3,5 pouces, 3000 K (blanc chaud), finition blanche.",
+      "description": "Spot LED encastré compact pour faux plafond : maison, commerce, bureau. 8 W, 3000 K (blanc chaud), diffuseur uniforme, fixations à ressorts, finition blanche.",
+      "attributes": {
+        "Puissance": "8 W",
+        "Diamètre": "3,5 pouces",
+        "Température de couleur": "3000 K (blanc chaud)",
+        "Montage": "Encastré (faux plafond)"
+      },
+      "keywords": ["spot", "led", "encastre", "8w", "3.5 pouces", "3000k", "blanc chaud", "faux plafond", "midea"]
+    },
+    {
+      "sku": "MDL-CLR24W-04",
+      "sourceFile": "IMG-20261029-WA0036.jpg",
+      "name": "Plafonnier globe LED 24 W — 3 couleurs",
+      "brand": "Midea",
+      "category": "eclairage-plafonniers",
+      "price": 18000,
+      "stock": 6,
+      "shortDescription": "Plafonnier rond LED 24 W, 3 températures de couleur, cadre blanc.",
+      "description": "Plafonnier LED rond en applique de plafond pour séjour, chambre et couloir. 24 W, trois températures de couleur sélectionnables, diffuseur opale et cadre blanc.",
+      "attributes": {
+        "Puissance": "24 W",
+        "Températures": "3 couleurs au choix",
+        "Cadre": "Blanc",
+        "Montage": "En applique au plafond"
+      },
+      "keywords": ["plafonnier", "globe", "led", "24w", "3 couleurs", "plafond", "lumiere", "midea"]
+    },
+    {
+      "sku": "MDL-BUA4505W-B226500",
+      "sourceFile": "IMG-20261029-WA0037.jpg",
+      "name": "Ampoule LED 5 W — culot B22, 6500 K",
+      "brand": "Midea",
+      "category": "eclairage-ampoules",
+      "price": 2500,
+      "stock": 24,
+      "shortDescription": "Ampoule LED 5 W à culot B22, lumière blanche froide 6500 K, 480 lm.",
+      "description": "Ampoule LED à culot à baïonnette B22 pour luminaire domestique. 5 W, lumière blanche froide 6500 K, flux 480 lm, durée annoncée 15 000 heures.",
+      "attributes": {
+        "Puissance": "5 W",
+        "Culot": "B22",
+        "Température de couleur": "6500 K",
+        "Flux lumineux": "480 lm",
+        "Durée de vie": "15 000 h"
+      },
+      "keywords": ["ampoule", "led", "b22", "5w", "6500k", "blanc froid", "lumiere", "midea"]
+    },
+    {
+      "sku": "MDL-STD12W30-05.PJ-1",
+      "sourceFile": "IMG-20261029-WA0039.jpg",
+      "name": "Fiche d'alimentation pour ruban LED 9 W / 12 W",
+      "brand": "Midea",
+      "category": "eclairage-rubans",
+      "price": 3500,
+      "stock": 15,
+      "shortDescription": "Cordon d'alimentation avec transformateur pour ruban LED 9 W et 12 W.",
+      "description": "Cordon d'alimentation secteur avec bloc transformateur et connecteur pour ruban LED 9 W et 12 W. Permet d'alimenter le ruban directement sur une prise 220 V.",
+      "attributes": {
+        "Compatibilité": "Ruban LED 9 W et 12 W",
+        "Alimentation": "Prise secteur 220-240 V",
+        "Marque": "Midea Lighting"
+      },
+      "keywords": ["alimentation", "fiche", "transformateur", "ruban led", "connecteur", "9w", "12w", "midea"]
+    },
+    {
+      "sku": "MDL-FLF100W-036500K",
+      "sourceFile": "IMG-20261029-WA0041.jpg",
+      "name": "Projecteur LED 100 W — 9000 lm, IP66",
+      "brand": "Midea",
+      "category": "eclairage-projecteurs",
+      "price": 28000,
+      "stock": 6,
+      "shortDescription": "Projecteur LED 100 W, 9000 lm, IP66, 6500 K, étrier de fixation orientable.",
+      "description": "Projecteur LED pour éclairage extérieur : cour, façade, chantier, parking. 100 W, 9000 lumens, étanchéité IP66, lumière blanche 6500 K, étrier de fixation orientable.",
+      "attributes": {
+        "Puissance": "100 W",
+        "Flux lumineux": "9000 lm",
+        "Indice de protection": "IP66",
+        "Température de couleur": "6500 K"
+      },
+      "keywords": ["projecteur", "led", "floodlight", "100w", "ip66", "exterieur", "9000 lm", "midea"]
+    },
+    {
+      "sku": "MDL-BUA609W-B226500",
+      "sourceFile": "IMG-20261029-WA0043.jpg",
+      "name": "Ampoule LED 9 W — culot B22, 6500 K",
+      "brand": "Midea",
+      "category": "eclairage-ampoules",
+      "price": 3500,
+      "stock": 24,
+      "shortDescription": "Ampoule LED 9 W à culot B22, lumière blanche froide 6500 K, 810 lm.",
+      "description": "Ampoule LED à culot à baïonnette B22, équivalente à une ampoule 60 W. 9 W, lumière blanche froide 6500 K, flux 810 lm, durée annoncée 15 000 heures.",
+      "attributes": {
+        "Puissance": "9 W",
+        "Culot": "B22",
+        "Température de couleur": "6500 K",
+        "Flux lumineux": "810 lm",
+        "Durée de vie": "15 000 h"
+      },
+      "keywords": ["ampoule", "led", "b22", "9w", "6500k", "blanc froid", "lumiere", "midea"]
+    },
+    {
+      "sku": "EUPRK22",
+      "sourceFile": "IMG-20261029-WA0045.jpg",
+      "name": "Interrupteur étanche à encastrer — gris",
+      "brand": "Midea",
+      "category": "appareillage-electrique",
+      "price": 4500,
+      "stock": 20,
+      "shortDescription": "Interrupteur va-et-vient étanche à encastrer, double commande, gris.",
+      "description": "Interrupteur va-et-vient étanche à encastrer pour pièce humide : atelier, terrasse, buanderie. Double commande, mécanisme protégé, plaque et cadre gris.",
+      "attributes": {
+        "Type": "Va-et-vient (double commande)",
+        "Montage": "Encastré",
+        "Protection": "Étanche",
+        "Couleur": "Gris"
+      },
+      "keywords": ["interrupteur", "etanche", "encastre", "va et vient", "appareillage", "electrique", "gris", "midea"]
+    },
+    {
+      "sku": "MDL-SPCL09W65-01",
+      "sourceFile": "IMG-20261029-WA0047.jpg",
+      "name": "Spot LED de décoration 9 W — blanc, 6500 K",
+      "brand": "Midea",
+      "category": "eclairage-spots",
+      "price": 8500,
+      "stock": 10,
+      "shortDescription": "Spot LED de décoration en saillie 9 W, réflecteur orientable, blanc, 6500 K.",
+      "description": "Spot LED de décoration en saillie (sans percement de faux plafond) pour vitrine, couloir et galerie. 9 W, réflecteur orientable, corps blanc, lumière 6500 K.",
+      "attributes": {
+        "Puissance": "9 W",
+        "Température de couleur": "6500 K",
+        "Montage": "En saillie",
+        "Couleur": "Blanc"
+      },
+      "keywords": ["spot", "led", "decoration", "saillie", "9w", "6500k", "blanc", "vitrine", "midea"]
+    },
+    {
+      "sku": "ERBTLS1P45",
+      "sourceFile": "IMG-20261029-WA0049.jpg",
+      "name": "Bottes de sécurité 45 — tige 400 mm",
+      "brand": "EMTROP",
+      "category": "epi-bottes",
+      "price": 22000,
+      "stock": 8,
+      "shortDescription": "Bottes de sécurité PVC, tige haute 400 mm, embout et semelle acier, pointure 45.",
+      "description": "Bottes de sécurité hautes pour chantier, agriculture et travaux humides. Embout de protection en acier, semelle anti-perforation en acier, semelle extérieure antidérapante. Pointure 45.",
+      "attributes": {
+        "Pointure": "45",
+        "Hauteur de tige": "400 mm",
+        "Embout": "Acier",
+        "Semelle": "Acier anti-perforation + antidérapante"
+      },
+      "keywords": ["bottes", "securite", "botte", "caoutchouc", "400 mm", "pointure 45", "chantier", "epi", "emtop"]
+    },
+    {
+      "sku": "EWPPD11001",
+      "sourceFile": "IMG-20261029-WA0051.jpg",
+      "name": "Pompe immergée 4\" — 1100 W (1,5 HP)",
+      "brand": "EMTROP",
+      "category": "motopompes",
+      "price": 165000,
+      "stock": 3,
+      "shortDescription": "Pompe immergée de forage 4\", 1100 W, débit 100 L/min, refoulement 112 m.",
+      "description": "Pompe immergée pour forage et puits profond. Corps inox, moteur 1100 W (1,5 HP) bobiné cuivre, diamètre 4 pouces, sortie 1\"1/4, hauteur de refoulement 112 m.",
+      "attributes": {
+        "Puissance": "1100 W (1,5 HP)",
+        "Diamètre": "4 pouces",
+        "Débit": "100 L/min",
+        "Refoulement": "112 m",
+        "Sortie": "1\"1/4",
+        "Alimentation": "220-240 V ~ 50 Hz"
+      },
+      "keywords": ["pompe", "immergee", "plonger", "forage", "puits", "4 pouces", "1.5hp", "1100w", "emtop"]
+    },
+    {
+      "sku": "ERSTO2XL",
+      "sourceFile": "IMG-20261029-WA0053.jpg",
+      "name": "Imperméable de pluie 2 pièces (veste + pantalon) — XL",
+      "brand": "EMTROP",
+      "category": "epi-vetements",
+      "price": 18000,
+      "stock": 6,
+      "shortDescription": "Combinaison de pluie 2 pièces, veste à capuche et pantalon, PVC bleu, taille XL.",
+      "description": "Ensemble de pluie deux pièces pour chantier et travaux extérieurs : veste à capuche avec fermeture éclair et pantalon à taille élastiquée, en PVC bleu. Taille XL.",
+      "attributes": {
+        "Composition": "Veste + pantalon",
+        "Taille": "XL",
+        "Matière": "PVC (doublure polyester 190)",
+        "Couleur": "Bleu"
+      },
+      "keywords": ["imperméable", "pluie", "veste", "pantalon", "pvc", "xl", "chantier", "epi", "emtop"]
+    },
+    {
+      "sku": "ESBS32SB44",
+      "sourceFile": "IMG-20261029-WA0055.jpg",
+      "name": "Chaussure de sécurité kaki SB — pointure 44",
+      "brand": "EMTROP",
+      "category": "epi-chaussures",
+      "price": 35000,
+      "stock": 5,
+      "shortDescription": "Chaussure de sécurité montante kaki, nubuck et textile, semelle noire, pointure 44. Norme SB.",
+      "description": "Chaussure de sécurité montante pour chantier et atelier. Tige nubuck kaki avec renforts textiles bleu et rouge, lacets rouges, embout de protection et semelle antidérapante. Norme SB. Pointure 44.",
+      "attributes": {
+        "Pointure": "44",
+        "Norme": "SB",
+        "Tige": "Nubuck kaki + textile",
+        "Couleur": "Kaki / noir / rouge",
+        "Semelle": "Antidérapante"
+      },
+      "keywords": ["chaussure", "securite", "kaki", "pointure 44", "chantier", "epi", "sb", "emtop"]
+    },
+    {
+      "sku": "EWSBD11001",
+      "sourceFile": "IMG-20261029-WA0057.jpg",
+      "name": "Boîtier de commande pour pompe à plonger",
+      "brand": "EMTROP",
+      "category": "motopompes",
+      "price": 35000,
+      "stock": 4,
+      "shortDescription": "Boîtier de commande et de protection 220-240 V pour pompe immergée EWPPD11001.",
+      "description": "Boîtier de commande pour pompe immergée : protection électrique, interrupteur et raccordement 220-240 V / 50 Hz. Compatible avec la pompe à plonger EWPPD11001.",
+      "attributes": {
+        "Alimentation": "220-240 V ~ 50 Hz",
+        "Compatibilité": "Pompe immergée EWPPD11001",
+        "Fonction": "Commande et protection"
+      },
+      "keywords": ["boitier", "coffret", "commande", "pompe", "immergee", "plongeur", "protection", "emtop"]
+    },
+    {
+      "sku": "EWPPJ15001",
+      "sourceFile": "IMG-20261029-WA0059.jpg",
+      "name": "Surpresseur d'eau auto-amorçant 1500 W (2 HP)",
+      "brand": "EMTROP",
+      "category": "motopompes",
+      "price": 95000,
+      "stock": 4,
+      "shortDescription": "Surpresseur auto-amorçant 1500 W, débit 100 L/min, refoulement 100 m, raccords 1\".",
+      "description": "Surpresseur d'eau auto-amorçant pour maison, immeuble et arrosage. Moteur 1500 W (2,0 HP) bobiné cuivre, corps en électrophorèse anticorrosion, débit 100 L/min, hauteur de refoulement 100 m, raccords 1\" x 1\".",
+      "attributes": {
+        "Puissance": "1500 W (2,0 HP)",
+        "Débit": "100 L/min",
+        "Refoulement": "100 m",
+        "Raccords": "1\" x 1\"",
+        "Corps": "Électrophorèse (anticorrosion)"
+      },
+      "keywords": ["surpresseur", "pompe", "auto-amorcante", "eau", "2hp", "1500w", "maison", "arrosage", "emtop"]
+    },
+    {
+      "sku": "EAGRO7581",
+      "sourceFile": "IMG-20261029-WA0061.jpg",
+      "name": "Meuleuse d'angle 115 mm — 750 W",
+      "brand": "EMTROP",
+      "category": "outillage-electroportatif",
+      "price": 45000,
+      "stock": 5,
+      "shortDescription": "Meuleuse d'angle Ø115 mm (4-1/2\"), 750 W, 12 000 tr/min, poignée latérale.",
+      "description": "Meuleuse d'angle pour découpe et ébarbage du métal et des matériaux de construction. Moteur 750 W, disque Ø115 mm, 12 000 tr/min, carter de protection et poignée latérale.",
+      "attributes": {
+        "Puissance": "750 W",
+        "Disque": "Ø115 mm (4-1/2 pouces)",
+        "Vitesse": "12 000 tr/min",
+        "Alimentation": "230 V"
+      },
+      "keywords": ["meuleuse", "angle", "115 mm", "disqueuse", "750w", "metal", "chantier", "emtop"]
+    },
+    {
+      "sku": "MDL-DL35R08W-03-6500",
+      "sourceFile": "IMG-20261029-WA0074.jpg",
+      "name": "Spot LED encastré 8 W — 3,5\", 6500 K",
+      "brand": "Midea",
+      "category": "eclairage-spots",
+      "price": 6500,
+      "stock": 12,
+      "shortDescription": "Spot LED à encastrer 8 W, diamètre 3,5 pouces, 6500 K (blanc froid), finition blanche.",
+      "description": "Spot LED encastré compact pour faux plafond : maison, commerce, bureau. 8 W, 6500 K (blanc froid), diffuseur uniforme, fixations à ressorts, finition blanche.",
+      "attributes": {
+        "Puissance": "8 W",
+        "Diamètre": "3,5 pouces",
+        "Température de couleur": "6500 K (blanc froid)",
+        "Montage": "Encastré (faux plafond)"
+      },
+      "keywords": ["spot", "led", "encastre", "8w", "3.5 pouces", "6500k", "blanc froid", "faux plafond", "midea"]
+    },
+    {
+      "sku": "MDL-DL40R12W-033K",
+      "sourceFile": "IMG-20261029-WA0019.jpg",
+      "name": "Spot LED encastré 12 W — 4\", 3000 K",
+      "brand": "Midea",
+      "category": "eclairage-spots",
+      "price": 8500,
+      "stock": 10,
+      "shortDescription": "Spot LED à encastrer 12 W, diamètre 4 pouces, 3000 K (blanc chaud).",
+      "description": "Spot LED encastré pour faux plafond de séjour, boutique et bureau. 12 W, 3000 K (blanc chaud), diffuseur uniforme, fixations à ressorts, finition blanche.",
+      "attributes": {
+        "Puissance": "12 W",
+        "Diamètre": "4 pouces",
+        "Température de couleur": "3000 K (blanc chaud)",
+        "Montage": "Encastré (faux plafond)"
+      },
+      "keywords": ["spot", "led", "encastre", "12w", "4 pouces", "3000k", "blanc chaud", "faux plafond", "midea"]
+    },
+    {
+      "sku": "MDL-SPR09W40-01",
+      "sourceFile": "IMG-20261029-WA0082.jpg",
+      "name": "Spot LED encastré orientable 9 W — 4000 K",
+      "brand": "Midea",
+      "category": "eclairage-spots",
+      "price": 7500,
+      "stock": 10,
+      "shortDescription": "Spot LED orientable à encastrer 9 W, réflecteur noir, 4000 K.",
+      "description": "Spot LED orientable à encastrer pour mettre en valeur un produit ou un mur. 9 W, réflecteur noir, lumière blanche neutre 4000 K, collerette blanche, fixations à ressorts.",
+      "attributes": {
+        "Puissance": "9 W",
+        "Température de couleur": "4000 K (blanc neutre)",
+        "Orientation": "Réflecteur orientable",
+        "Montage": "Encastré (faux plafond)"
+      },
+      "keywords": ["spot", "led", "orientable", "encastre", "9w", "4000k", "reflecteur", "vitrine", "midea"]
+    }
+  ]
+}

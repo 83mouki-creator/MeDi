@@ -118,5 +118,119 @@
     "checksum": "315e7c4c1d68e16fdae57a353bbcffe44c0ce05f6bed511307a9c27e6e1af8ff",
     "width": 1000,
     "height": 1000
+  },
+  "MDL-STD12W-02-3000": {
+    "url": "/catalogue/mdl-std12w-02-3000.webp",
+    "checksum": "b8be0cd1f20bab75442c241348cfbbfbafd1bf6331102470d1631c2700de4c83",
+    "width": 1000,
+    "height": 1000
+  },
+  "MDL-DL35R08W-03-3000": {
+    "url": "/catalogue/mdl-dl35r08w-03-3000.webp",
+    "checksum": "94a6de4e9c3567e24aa5df86921f3c974d3c4475788ebb324926ab2ed499b3f7",
+    "width": 1000,
+    "height": 1000
+  },
+  "MDL-CLR24W-04": {
+    "url": "/catalogue/mdl-clr24w-04.webp",
+    "checksum": "ae50c005530e8625ffa1032dcba8789df1857cdbbe1ca06fbdcc5e849210eefe",
+    "width": 1000,
+    "height": 1000
+  },
+  "MDL-BUA4505W-B226500": {
+    "url": "/catalogue/mdl-bua4505w-b226500.webp",
+    "checksum": "0ea2e64f15e5843a35a85e7706582f0db73aa2c2b96b09d0afd2b3cf1626f935",
+    "width": 1000,
+    "height": 1000
+  },
+  "MDL-STD12W30-05.PJ-1": {
+    "url": "/catalogue/mdl-std12w30-05-pj-1.webp",
+    "checksum": "bb18abfb821dc69cd1e855959171b7137580f56bc745d827ca505425ce5f4b5f",
+    "width": 1000,
+    "height": 1000
+  },
+  "MDL-FLF100W-036500K": {
+    "url": "/catalogue/mdl-flf100w-036500k.webp",
+    "checksum": "12115e26a1ead7ce250600225f2b393c01adf3a116d6b1232492819884e1939e",
+    "width": 1000,
+    "height": 1000
+  },
+  "MDL-BUA609W-B226500": {
+    "url": "/catalogue/mdl-bua609w-b226500.webp",
+    "checksum": "e52bbb4d5b4ab1e3d1db9bfc217923a5ca398bb2217c67626a185d0d106f9f28",
+    "width": 1000,
+    "height": 1000
+  },
+  "EUPRK22": {
+    "url": "/catalogue/euprk22.webp",
+    "checksum": "029f81e8f3d0ddbf1dc58c06343bb55da327839866e23bd1467a3a6baa4fbac8",
+    "width": 1000,
+    "height": 1000
+  },
+  "MDL-SPCL09W65-01": {
+    "url": "/catalogue/mdl-spcl09w65-01.webp",
+    "checksum": "70af355122f53f51fc5a2f29fad031a82dac017344f5d1a759b642d035211622",
+    "width": 1000,
+    "height": 1000
+  },
+  "ERBTLS1P45": {
+    "url": "/catalogue/erbtls1p45.webp",
+    "checksum": "e38458bbc783151bacb5aa52ac5c76962b47ad2d1915eb49182cca4adca85484",
+    "width": 1000,
+    "height": 1000
+  },
+  "EWPPD11001": {
+    "url": "/catalogue/ewppd11001.webp",
+    "checksum": "4ccb5ae48fb7eebf0fd453b8eb9d61f6afc89027caa8224123168b7bf627e700",
+    "width": 1000,
+    "height": 1000
+  },
+  "ERSTO2XL": {
+    "url": "/catalogue/ersto2xl.webp",
+    "checksum": "d38fd2356b3f504fd5fb0eaeca843e8e5374d4d730b40e7adc2b579b6cda7c5d",
+    "width": 1000,
+    "height": 1000
+  },
+  "ESBS32SB44": {
+    "url": "/catalogue/esbs32sb44.webp",
+    "checksum": "81221e53ca16a9eec0df0b79f69b48d6b47c451ec7c4234071672d3d0595be7d",
+    "width": 1000,
+    "height": 1000
+  },
+  "EWSBD11001": {
+    "url": "/catalogue/ewsbd11001.webp",
+    "checksum": "0c8e99e7368e2dfa6b0ff8e146498fb0b4caba80f322f99158e9e571fe72bb43",
+    "width": 1000,
+    "height": 1000
+  },
+  "EWPPJ15001": {
+    "url": "/catalogue/ewppj15001.webp",
+    "checksum": "bd9bc7d597e070dab6c70b0d475cb0ffb20449a56951d0726b12c60c78b6198d",
+    "width": 1000,
+    "height": 1000
+  },
+  "EAGRO7581": {
+    "url": "/catalogue/eagro7581.webp",
+    "checksum": "cd5543d9be639f3a787d7dfad9c70768bda765f16606cd5905443076fd89e46e",
+    "width": 1000,
+    "height": 1000
+  },
+  "MDL-DL35R08W-03-6500": {
+    "url": "/catalogue/mdl-dl35r08w-03-6500.webp",
+    "checksum": "2ffdcb8ea346906fbba9a7668a9e53b7f0931cdec01c654f3337bc673168a3f6",
+    "width": 1000,
+    "height": 1000
+  },
+  "MDL-DL40R12W-033K": {
+    "url": "/catalogue/mdl-dl40r12w-033k.webp",
+    "checksum": "7f6422cabcbafefd0f1fb59b0548691604aeb413f0ce97a4cfe2385bdfbea9ab",
+    "width": 1000,
+    "height": 1000
+  },
+  "MDL-SPR09W40-01": {
+    "url": "/catalogue/mdl-spr09w40-01.webp",
+    "checksum": "ef7d7d787a883a0220be4286b910699641f6d03182ddceba8555e6c880595919",
+    "width": 1000,
+    "height": 1000
   }
 }

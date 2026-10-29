@@ -17,31 +17,7 @@ import { db, pool } from '../src/db';
 import { brands, categories, productAttributes, productImages, products } from '../src/db/schema';
 import { buildSearchText } from '../src/lib/catalog';
 import { newId, slugify } from '../src/lib/utils';
-
-type ManifestCategory = {
-  slug: string;
-  name: string;
-  description?: string;
-  children?: { slug: string; name: string; description?: string }[];
-};
-
-type Manifest = {
-  categories: ManifestCategory[];
-  sousCategoriesExistantes: { parent: string; slug: string; name: string }[];
-  produits: {
-    sku: string;
-    name: string;
-    brand: string;
-    category: string;
-    price: number;
-    stock: number;
-    shortDescription?: string;
-    description?: string;
-    attributes?: Record<string, string>;
-    keywords?: string[];
-    featured?: boolean;
-  }[];
-};
+import { loadCatalogue } from './catalogue-data';
 
 type ImageIndex = Record<string, { url: string; checksum: string; width: number; height: number }>;
 
@@ -51,7 +27,7 @@ const UPDATE = process.argv.includes('--update');
 async function main() {
   console.log(`→ Catalogue réel MeDi${DRY ? ' (simulation)' : ''}`);
 
-  const manifest = JSON.parse(await readFile(path.join('data', 'catalogue', 'medi-2026-10.json'), 'utf8')) as Manifest;
+  const manifest = await loadCatalogue();
   const images = JSON.parse(await readFile(path.join('data', 'catalogue', 'images.json'), 'utf8')) as ImageIndex;
 
   const categoryIdBySlug = new Map<string, string>();
