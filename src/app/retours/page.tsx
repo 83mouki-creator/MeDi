@@ -2,6 +2,9 @@ import type { Metadata } from 'next';
 import Link from 'next/link';
 import { PackageX, ShieldAlert, Camera, Info } from 'lucide-react';
 import { getStoreSettings } from '@/lib/settings';
+import { faqJsonLd } from '@/lib/faq';
+import { RETURNS_FAQ, RETURNS_FAQ_FALLBACK_MESSAGE } from '@/lib/returns-faq';
+import { FaqSection } from '@/components/faq-section';
 import { Alert, Card } from '@/components/ui/primitives';
 
 export const metadata: Metadata = {
@@ -14,9 +17,11 @@ export const dynamic = 'force-dynamic';
 
 export default async function ReturnsPage() {
   const settings = await getStoreSettings();
+  const faqStructuredData = faqJsonLd(RETURNS_FAQ, settings);
 
   return (
     <div className="container-page max-w-3xl py-8">
+      <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqStructuredData) }} />
       <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">Retours, échanges et garanties</h1>
       <p className="mt-2 text-sm text-navy-600">
         Les conditions ci-dessous décrivent le fonctionnement de la plateforme. Les durées et modalités commerciales définitives
@@ -67,6 +72,16 @@ export default async function ReturnsPage() {
           </p>
         </Card>
       </div>
+
+      <FaqSection
+        id="faq-retours"
+        title="Questions fréquentes : retours et remboursements"
+        intro="Cinq questions sur les retours, les échanges et les remboursements. Les conditions définitives relèvent de la direction ; chaque cas est confirmé sur le WhatsApp de la boutique."
+        entries={RETURNS_FAQ}
+        settings={settings}
+        fallbackMessage={RETURNS_FAQ_FALLBACK_MESSAGE}
+        className="mt-8 scroll-mt-24"
+      />
 
       <h2 className="mt-7 text-lg font-bold">Comment demander un retour</h2>
       <ol className="mt-2 list-decimal space-y-2 pl-5 text-sm text-navy-600">

@@ -1,4 +1,4 @@
-import { whatsappLink, type PublicSettings } from './settings';
+import type { FaqEntry } from './faq';
 
 /**
  * Contenu de la FAQ « livraisons et expéditions ».
@@ -7,15 +7,7 @@ import { whatsappLink, type PublicSettings } from './settings';
  * tests lisent tous ce même tableau. Chaque réponse renvoie vers le WhatsApp de
  * la boutique : aucun cas particulier n'est tranché par une règle inventée.
  */
-export type DeliveryFaqEntry = {
-  id: string;
-  question: string;
-  answer: string;
-  /** Message pré-rempli du WhatsApp ouvert depuis cette réponse. */
-  whatsappMessage: string;
-};
-
-export const DELIVERY_FAQ: readonly DeliveryFaqEntry[] = [
+export const DELIVERY_FAQ: readonly FaqEntry[] = [
   {
     id: 'hors-daloa',
     question: 'Livrez-vous en dehors de Daloa ?',
@@ -60,30 +52,3 @@ export const DELIVERY_FAQ: readonly DeliveryFaqEntry[] = [
 
 export const DELIVERY_FAQ_FALLBACK_MESSAGE =
   'Bonjour MeDi, j’ai une question sur la livraison ou l’expédition d’une commande.';
-
-export function deliveryFaqHref(settings: PublicSettings, entry: DeliveryFaqEntry) {
-  return whatsappLink(settings, entry.whatsappMessage);
-}
-
-export function deliveryFaqFallbackHref(settings: PublicSettings) {
-  return whatsappLink(settings, DELIVERY_FAQ_FALLBACK_MESSAGE);
-}
-
-/** Données structurées FAQPage (SEO) construites depuis le même contenu. */
-export function deliveryFaqJsonLd(settings: PublicSettings) {
-  const phone = settings.whatsapp
-    ? ` Pour toute question, contactez la boutique sur WhatsApp au ${settings.whatsapp}.`
-    : '';
-  return {
-    '@context': 'https://schema.org',
-    '@type': 'FAQPage',
-    mainEntity: DELIVERY_FAQ.map((entry) => ({
-      '@type': 'Question',
-      name: entry.question,
-      acceptedAnswer: {
-        '@type': 'Answer',
-        text: `${entry.answer}${phone}`,
-      },
-    })),
-  };
-}
