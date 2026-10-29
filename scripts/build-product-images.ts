@@ -15,18 +15,11 @@ import { createHash } from 'node:crypto';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import sharp from 'sharp';
-
-type ManifestProduct = {
-  sku: string;
-  sourceFile: string;
-  name: string;
-  brand: string;
-};
-
-type Manifest = { produits: ManifestProduct[] };
+import { loadCatalogue, type ManifestProduct } from './catalogue-data';
 
 const SOURCE_DIR = path.join('data', 'photos-source');
 const OUT_DIR = path.join('public', 'catalogue');
+const IMAGES_INDEX = path.join('data', 'catalogue', 'images.json');
 const CANVAS = 1000;
 const BANNER_H = 180;
 const AREA_H = CANVAS - BANNER_H;
@@ -93,7 +86,11 @@ function fitText(text: string, size: number, maxWidth: number, factor = 0.52) {
 
 function bannerSvg(params: { sku: string; label: string }) {
   const label = escapeXml(fitText(params.label, 25, 880, 0.5));
-  const sku = escapeXml(fitText(params.sku, 30, 360, 0.62));
+  // La référence est réduite jusqu'à tenir entière : une référence tronquée
+  // serait inutilisable pour retrouver l'article en boutique.
+  const skuMax = 520;
+  const skuSize = Math.max(16, Math.min(30, Math.floor(skuMax / (params.sku.length * 0.64))));
+  const sku = escapeXml(params.sku);
   return Buffer.from(`
 <svg xmlns="http://www.w3.org/2000/svg" width="${CANVAS}" height="${BANNER_H}">
   <defs>
@@ -108,7 +105,7 @@ function bannerSvg(params: { sku: string; label: string }) {
         font-size="56" font-weight="bold" fill="#ffffff" letter-spacing="1">MeDi</text>
   <circle cx="206" cy="60" r="7" fill="${ORANGE}"/>
   <text x="${CANVAS - 52}" y="78" text-anchor="end" font-family="DejaVu Sans, Liberation Sans, Helvetica, Arial, sans-serif"
-        font-size="30" font-weight="bold" fill="${ORANGE}" letter-spacing="1">${sku}</text>
+        font-size="${skuSize}" font-weight="bold" fill="${ORANGE}" letter-spacing="1">${sku}</text>
   <line x1="52" y1="102" x2="${CANVAS - 52}" y2="102" stroke="#2a4472" stroke-width="2"/>
   <text x="52" y="146" font-family="DejaVu Sans, Liberation Sans, Helvetica, Arial, sans-serif"
         font-size="25" fill="#c9d5e6">${label}</text>
@@ -193,7 +190,12 @@ async function build(product: ManifestProduct) {
     .webp({ quality: 86, effort: 5 })
     .toBuffer();
 
-  const outFile = path.join(OUT_DIR, `${product.sku.toLowerCase()}.webp`);
+  // Nom de fichier sûr pour l'URL (la référence peut contenir un point).
+  const fileBase = product.sku
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+  const outFile = path.join(OUT_DIR, `${fileBase}.webp`);
   await writeFile(outFile, composed);
 
   return {
@@ -209,9 +211,9 @@ async function build(product: ManifestProduct) {
 
 async function main() {
   await mkdir(OUT_DIR, { recursive: true });
-  const manifest = JSON.parse(await readFile(path.join('data', 'catalogue', 'medi-2026-10.json'), 'utf8')) as Manifest;
+  const catalogue = await loadCatalogue();
   const only = option('only');
-  const products = only ? manifest.produits.filter((p) => p.sku === only) : manifest.produits;
+  const products = only ? catalogue.produits.filter((p) => p.sku === only) : catalogue.produits;
 
   const results: Awaited<ReturnType<typeof build>>[] = [];
   for (const product of products) {
@@ -243,14 +245,19 @@ async function main() {
     console.log('Planche de contrôle : public/catalogue/_planche-controle.png');
   }
 
-  await writeFile(
-    path.join('data', 'catalogue', 'images.json'),
-    `${JSON.stringify(
-      Object.fromEntries(results.map((r) => [r.sku, { url: r.file, checksum: r.checksum, width: r.width, height: r.height }])),
-      null,
-      2,
-    )}\n`,
-  );
+  // Le récapitulatif des vignettes est fusionné entre les lots : `--only` ne doit
+  // pas effacer les entrées des photos déjà générées.
+  let previous: Record<string, unknown> = {};
+  try {
+    previous = JSON.parse(await readFile(IMAGES_INDEX, 'utf8')) as Record<string, unknown>;
+  } catch {
+    previous = {};
+  }
+  const index = {
+    ...previous,
+    ...Object.fromEntries(results.map((r) => [r.sku, { url: r.file, checksum: r.checksum, width: r.width, height: r.height }])),
+  };
+  await writeFile(IMAGES_INDEX, `${JSON.stringify(index, null, 2)}\n`);
   console.log(`\n${results.length} photo(s) générée(s) dans ${OUT_DIR}`);
 }
 
