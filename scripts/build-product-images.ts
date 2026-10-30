@@ -180,7 +180,10 @@ async function build(product: ManifestProduct) {
   // Fenêtre horizontale : on vise le format du bandeau produit (1000 × 820),
   // élargie si nécessaire pour ne pas rogner l'article.
   let windowW = Math.round((regionH * CANVAS) / AREA_H);
-  windowW = Math.max(windowW, Math.min(W, maxX - minX + 80));
+  // Marge généreuse : certains articles pâles sur fond blanc (filasse, tôle
+  // perlée…) ont des extrémités détectées tardivement ; une marge de 80 px les
+  // rognait. On élargit donc la fenêtre au-delà de la boîte détectée.
+  windowW = Math.max(windowW, Math.min(W, maxX - minX + 200));
   windowW = Math.min(W, windowW);
   let left = Math.round(contentCenter - windowW / 2);
   left = Math.max(0, Math.min(W - windowW, left));

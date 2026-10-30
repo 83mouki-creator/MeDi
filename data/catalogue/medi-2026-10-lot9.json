@@ -1,0 +1,367 @@
+{
+  "version": 1,
+  "fournisseur": "SODIS-MAD CI",
+  "date": "2026-10-30",
+  "lot": 9,
+  "note": "Lot 9 : dix-septième série de photos fournisseur, toujours sur la gamme FORCE — feuilles de tôle de porte (5 motifs), sous-presseurs QB60/70/80, chauffe-eau 50 L, crochets de porte ZX-12/ZX-14, ventilateur de plafond, oxydes de fer noir et bleu, poutrelles de coffrage H20 3,90 m et 2,90 m, bale de filasse 100 kg. Aucune de ces 17 références n'existait dans les lots 1 à 8. Deux paires se ressemblent sur la photo mais sont bien des articles distincts : AT818 (1 mm) / AT8188 (0,8 mm) et ZX-12 / ZX-14.",
+  "categories": [],
+  "sousCategoriesExistantes": [
+    {
+      "parent": "materiel-de-construction",
+      "slug": "toles-portes",
+      "name": "Tôles et feuilles de porte"
+    },
+    {
+      "parent": "materiel-de-construction",
+      "slug": "bois-coffrage",
+      "name": "Bois et coffrage"
+    },
+    {
+      "parent": "peinture-finitions",
+      "slug": "pigments-oxydes",
+      "name": "Pigments et oxydes"
+    },
+    {
+      "parent": "plomberie",
+      "slug": "chauffe-eau",
+      "name": "Chauffe-eau"
+    }
+  ],
+  "produits": [
+    {
+      "sku": "FORCE-AT713",
+      "sourceFile": "IMG-20261030-WA0016.jpg",
+      "name": "Feuille de tôle de porte en acier 1 mm — motif ovale, 1 × 2 m",
+      "brand": "Force",
+      "category": "toles-portes",
+      "price": 38000,
+      "stock": 4,
+      "shortDescription": "Feuille d'acier noire 1 × 2 m, 1 mm, décor gaufré à quatre médaillons ovales.",
+      "description": "Feuille de tôle de porte en acier noir mat, épaisseur 1 mm, format 2000 × 1000 mm. Le décor est gaufré dans la masse : quatre médaillons ovales en relief encadrés par un liseré, ce qui donne une porte pleine sans nécessiter de moulures rapportées. Se découpe et se soude comme une tôle ordinaire ; destinée à la fabrication ou à la rénovation d'une porte d'entrée, d'un portail ou d'un portillon. Référence Force AT713.",
+      "attributes": {
+        "Épaisseur": "1 mm",
+        "Format": "1 × 2 m (1000 × 2000 mm)",
+        "Matière": "Acier",
+        "Finition": "Noire, mate",
+        "Motif": "Quatre médaillons ovales en relief",
+        "Usage": "Fabrication ou rénovation de porte"
+      },
+      "keywords": ["tole", "feuille de tole", "porte", "acier", "1 mm", "1x2m", "at713", "gauffee", "relief", "materiel de construction", "force"]
+    },
+    {
+      "sku": "FORCE-AT8008",
+      "sourceFile": "IMG-20261030-WA0021.jpg",
+      "name": "Feuille de tôle de porte en acier 1 mm — motif vagues, 1 × 2 m",
+      "brand": "Force",
+      "category": "toles-portes",
+      "price": 38000,
+      "stock": 4,
+      "shortDescription": "Feuille d'acier noire 1 × 2 m, 1 mm, décor gaufré vagues et damiers.",
+      "description": "Feuille de tôle de porte en acier noir, épaisseur 1 mm, format 2000 × 1000 mm. Le motif associe des vagues concentriques, des bandes en damier et deux rosaces, pour une porte pleine au rendu travaillé. Tôle pleine qui se découpe, se perce et se soude normalement, prévue pour la fabrication ou la remise en état d'une porte ou d'un portail. Référence Force AT8008.",
+      "attributes": {
+        "Épaisseur": "1 mm",
+        "Format": "1 × 2 m (1000 × 2000 mm)",
+        "Matière": "Acier",
+        "Finition": "Noire",
+        "Motif": "Vagues, damiers et rosaces",
+        "Usage": "Fabrication ou rénovation de porte"
+      },
+      "keywords": ["tole", "feuille de tole", "porte", "acier", "1 mm", "1x2m", "at8008", "gauffee", "materiel de construction", "force"]
+    },
+    {
+      "sku": "FORCE-AT818",
+      "sourceFile": "IMG-20261030-WA0023.jpg",
+      "name": "Feuille de tôle de porte en acier 1 mm — motif colonne, 1 × 2 m",
+      "brand": "Force",
+      "category": "toles-portes",
+      "price": 38000,
+      "stock": 4,
+      "shortDescription": "Feuille d'acier noire 1 × 2 m, 1 mm, décor gaufré colonne moulurée.",
+      "description": "Feuille de tôle de porte en acier noir, épaisseur 1 mm, format 2000 × 1000 mm. Le décor gaufré reprend une colonne moulurée avec chapiteau, fleurons et panneau à rosace : une porte pleine habillée sans pièces rapportées. Tôle pleine qui se découpe, se perce et se soude normalement. Cette référence est la version 1 mm ; le même motif existe en 0,8 mm sous la référence AT8188. Référence Force AT818.",
+      "attributes": {
+        "Épaisseur": "1 mm",
+        "Format": "1 × 2 m (1000 × 2000 mm)",
+        "Matière": "Acier",
+        "Finition": "Noire",
+        "Motif": "Colonne moulurée et rosace",
+        "Usage": "Fabrication ou rénovation de porte"
+      },
+      "keywords": ["tole", "feuille de tole", "porte", "acier", "1 mm", "1x2m", "at818", "colonne", "gauffee", "materiel de construction", "force"]
+    },
+    {
+      "sku": "FORCE-AT8128",
+      "sourceFile": "IMG-20261030-WA0027.jpg",
+      "name": "Feuille de tôle de porte en acier 0,8 mm — motif cœur, 1 × 2 m",
+      "brand": "Force",
+      "category": "toles-portes",
+      "price": 32000,
+      "stock": 5,
+      "shortDescription": "Feuille d'acier noire 1 × 2 m, 0,8 mm, décor gaufré cœur et rosace.",
+      "description": "Feuille de tôle de porte en acier noir, épaisseur 0,8 mm, format 2000 × 1000 mm. Le motif gaufré alterne un médaillon en cœur, une rosace rayonnante et un panneau à enroulements, encadrés par une trame finement guillochée. Plus fine que la version 1 mm, elle reste rigide une fois posée sur une ossature ou une porte existante. Référence Force AT8128 (marquage fournisseur AT812).",
+      "attributes": {
+        "Épaisseur": "0,8 mm",
+        "Format": "1 × 2 m (1000 × 2000 mm)",
+        "Matière": "Acier",
+        "Finition": "Noire",
+        "Motif": "Cœur, rosace et enroulements",
+        "Usage": "Fabrication ou rénovation de porte"
+      },
+      "keywords": ["tole", "feuille de tole", "porte", "acier", "0,8 mm", "0.8 mm", "1x2m", "at8128", "at812", "coeur", "gauffee", "materiel de construction", "force"]
+    },
+    {
+      "sku": "FORCE-AT8188",
+      "sourceFile": "IMG-20261030-WA0032.jpg",
+      "name": "Feuille de tôle de porte en acier 0,8 mm — motif colonne, 1 × 2 m",
+      "brand": "Force",
+      "category": "toles-portes",
+      "price": 32000,
+      "stock": 5,
+      "shortDescription": "Feuille d'acier noire 1 × 2 m, 0,8 mm, décor gaufré colonne moulurée.",
+      "description": "Feuille de tôle de porte en acier noir, épaisseur 0,8 mm, format 2000 × 1000 mm. Même décor gaufré que la référence AT818 — colonne moulurée, chapiteau, fleurons et panneau à rosace — mais dans une épaisseur de 0,8 mm, plus légère et plus facile à cintrer. Tôle pleine qui se découpe, se perce et se soude normalement. Référence Force AT8188 (le marquage imprimé sur la photo indique AT818).",
+      "attributes": {
+        "Épaisseur": "0,8 mm",
+        "Format": "1 × 2 m (1000 × 2000 mm)",
+        "Matière": "Acier",
+        "Finition": "Noire",
+        "Motif": "Colonne moulurée et rosace",
+        "Usage": "Fabrication ou rénovation de porte"
+      },
+      "keywords": ["tole", "feuille de tole", "porte", "acier", "0,8 mm", "0.8 mm", "1x2m", "at8188", "at818", "colonne", "gauffee", "materiel de construction", "force"]
+    },
+    {
+      "sku": "FORCE-442",
+      "sourceFile": "IMG-20261030-WA0017.jpg",
+      "name": "Sous-presseur d'eau QB60 — corps fonte, moteur fermé",
+      "brand": "Force",
+      "category": "motopompes",
+      "price": 48000,
+      "stock": 4,
+      "shortDescription": "Surpresseur en ligne QB60 pour maintenir la pression du réseau d'eau.",
+      "description": "Sous-presseur (surpresseur) en ligne destiné à maintenir la pression d'eau dans une habitation ou un local lorsque le réseau est faible : il se monte sur la conduite, entre l'arrivée d'eau et les points d'utilisation. Corps de pompe en fonte peint vert, moteur fermé à ailettes avec boîte à bornes et câble d'alimentation à trois conducteurs, bride d'aspiration et de refoulement avec bouchons de service. Modèle QB60 de la gamme Force.",
+      "attributes": {
+        "Modèle": "QB60",
+        "Type": "Sous-presseur (surpresseur) en ligne",
+        "Corps": "Fonte peinte",
+        "Motorisation": "Moteur électrique fermé, câble 3 conducteurs",
+        "Installation": "En ligne sur la conduite d'eau",
+        "Usage": "Maintien de la pression d'eau domestique"
+      },
+      "keywords": ["sous presseur", "surpresseur", "pompe", "pompe a eau", "qb60", "force-442", "pression", "eau", "motopompe", "force"]
+    },
+    {
+      "sku": "FORCE-443",
+      "sourceFile": "IMG-20261030-WA0029.jpg",
+      "name": "Sous-presseur d'eau QB70 — corps fonte, moteur fermé",
+      "brand": "Force",
+      "category": "motopompes",
+      "price": 58000,
+      "stock": 3,
+      "shortDescription": "Surpresseur en ligne QB70, modèle supérieur du QB60.",
+      "description": "Sous-presseur (surpresseur) en ligne de modèle QB70, un cran au-dessus du QB60 pour les installations qui demandent davantage de débit ou de pression. Même construction : corps de pompe en fonte peint vert, moteur fermé à ailettes avec boîte à bornes, câble d'alimentation à trois conducteurs et brides d'aspiration et de refoulement. Se monte directement sur la conduite d'eau. Gamme Force.",
+      "attributes": {
+        "Modèle": "QB70",
+        "Type": "Sous-presseur (surpresseur) en ligne",
+        "Corps": "Fonte peinte",
+        "Motorisation": "Moteur électrique fermé, câble 3 conducteurs",
+        "Installation": "En ligne sur la conduite d'eau",
+        "Usage": "Maintien de la pression d'eau domestique"
+      },
+      "keywords": ["sous presseur", "surpresseur", "pompe", "pompe a eau", "qb70", "force-443", "pression", "eau", "motopompe", "force"]
+    },
+    {
+      "sku": "FORCE-444",
+      "sourceFile": "IMG-20261030-WA0031.jpg",
+      "name": "Sous-presseur d'eau QB80 — corps fonte, moteur fermé",
+      "brand": "Force",
+      "category": "motopompes",
+      "price": 68000,
+      "stock": 3,
+      "shortDescription": "Surpresseur en ligne QB80, le plus puissant de la série.",
+      "description": "Sous-presseur (surpresseur) en ligne de modèle QB80, le plus puissant de la série QB présentée ici. Il reprend la construction des QB60 et QB70 : corps de pompe en fonte peint vert, moteur fermé à ailettes, boîte à bornes, câble d'alimentation à trois conducteurs et brides d'aspiration et de refoulement. Pour les réseaux qui alimentent plusieurs points d'eau ou un immeuble. Gamme Force.",
+      "attributes": {
+        "Modèle": "QB80",
+        "Type": "Sous-presseur (surpresseur) en ligne",
+        "Corps": "Fonte peinte",
+        "Motorisation": "Moteur électrique fermé, câble 3 conducteurs",
+        "Installation": "En ligne sur la conduite d'eau",
+        "Usage": "Maintien de la pression d'eau domestique"
+      },
+      "keywords": ["sous presseur", "surpresseur", "pompe", "pompe a eau", "qb80", "force-444", "pression", "eau", "motopompe", "force"]
+    },
+    {
+      "sku": "FORCE-417",
+      "sourceFile": "IMG-20261030-WA0018.jpg",
+      "name": "Chauffe-eau électrique 50 L — vertical, VEDAL",
+      "brand": "Force",
+      "category": "chauffe-eau",
+      "price": 115000,
+      "stock": 3,
+      "shortDescription": "Ballon d'eau chaude électrique 50 L à poser au mur, modèle VEDAL.",
+      "description": "Chauffe-eau électrique à accumulation de 50 litres, modèle VEDAL, en pose verticale murale. Cuve blanche avec thermomètre de température en façade, molette de réglage avec témoins de mise sous tension et de chauffe sous capot noir, raccords d'eau froide (bleu) et d'eau chaude (rouge) en partie basse. Convient à une salle de bain ou à une cuisine pour un foyer de quelques personnes. Gamme Force.",
+      "attributes": {
+        "Capacité": "50 L",
+        "Modèle": "VEDAL",
+        "Type": "Chauffe-eau électrique à accumulation",
+        "Pose": "Verticale, murale",
+        "Équipement": "Thermomètre et molette de réglage avec témoins",
+        "Raccords": "Eau froide et eau chaude en partie basse"
+      },
+      "keywords": ["chauffe eau", "chauffe-eau", "ballon", "eau chaude", "50 l", "50l", "vedal", "force-417", "electrique", "plomberie", "force"]
+    },
+    {
+      "sku": "FORCE-177",
+      "sourceFile": "IMG-20261030-WA0019.jpg",
+      "name": "Crochets de porte ZX-12 — dorés, douzaine",
+      "brand": "Force",
+      "category": "serrurerie",
+      "price": 18000,
+      "stock": 5,
+      "shortDescription": "Targettes coulissantes dorées ZX-12, vendues par douze.",
+      "description": "Lot de douze crochets de porte (targettes coulissantes) ZX-12 en acier zingué doré, avec poignée cintrée et gâche de réception. Ils se vissent en applique sur une porte, un portail, un volet ou un portillon pour un verrouillage rapide, et peuvent recevoir un cadenas lorsque la gâche est percée. Conditionnement par douzaine, pour les chantiers et les revendeurs. Gamme Force.",
+      "attributes": {
+        "Modèle": "ZX-12",
+        "Type": "Crochet de porte (targette coulissante)",
+        "Finition": "Zinguée dorée",
+        "Conditionnement": "Douzaine (12 pièces)",
+        "Pose": "En applique, à visser",
+        "Usage": "Porte, portail, volet, portillon"
+      },
+      "keywords": ["crochet", "crochet de porte", "targette", "verrou", "zx-12", "force-177", "dore", "douzaine", "portail", "serrurerie", "force"]
+    },
+    {
+      "sku": "FORCE-178",
+      "sourceFile": "IMG-20261030-WA0020.jpg",
+      "name": "Crochets de porte ZX-14 — dorés, douzaine",
+      "brand": "Force",
+      "category": "serrurerie",
+      "price": 22000,
+      "stock": 5,
+      "shortDescription": "Targettes coulissantes dorées ZX-14, format supérieur, par douze.",
+      "description": "Lot de douze crochets de porte (targettes coulissantes) ZX-14 en acier zingué doré, de format supérieur aux ZX-12, avec poignée cintrée et gâche de réception. Fixation en applique par vis sur porte, portail, volet ou portillon ; la gâche peut recevoir un cadenas. Conditionnement par douzaine. Gamme Force.",
+      "attributes": {
+        "Modèle": "ZX-14",
+        "Type": "Crochet de porte (targette coulissante)",
+        "Finition": "Zinguée dorée",
+        "Conditionnement": "Douzaine (12 pièces)",
+        "Pose": "En applique, à visser",
+        "Usage": "Porte, portail, volet, portillon"
+      },
+      "keywords": ["crochet", "crochet de porte", "targette", "verrou", "zx-14", "force-178", "dore", "douzaine", "portail", "serrurerie", "force"]
+    },
+    {
+      "sku": "FORCE-40",
+      "sourceFile": "IMG-20261030-WA0026.jpg",
+      "name": "Ventilateur de plafond 16\" — 3 pales bleues",
+      "brand": "Force",
+      "category": "ventilation",
+      "price": 28000,
+      "stock": 6,
+      "shortDescription": "Ventilateur de plafond suspendu 16 pouces, trois pales bleues.",
+      "description": "Ventilateur de plafond suspendu de 16 pouces (environ 40 cm de diamètre), à trois pales bleues et grille de protection blanche. Il se fixe au plafond par sa cloche et se suspend à la hauteur voulue par sa tige, ce qui permet de brasser l'air d'une pièce sans encombrer le sol. Câblage d'alimentation à prévoir sur le point de fixation. Modèle 16 de la gamme Force.",
+      "attributes": {
+        "Diamètre": "16 pouces (≈ 40 cm)",
+        "Nombre de pales": "3",
+        "Couleurs": "Blanc et bleu",
+        "Pose": "Suspendue au plafond",
+        "Usage": "Brassage d'air en pièce de vie"
+      },
+      "keywords": ["ventilateur", "ventilateur plafond", "ventilateur de plafond", "ventilo", "16 pouces", "force-40", "brasseur d'air", "ventilation", "force"]
+    },
+    {
+      "sku": "FORCE-25",
+      "sourceFile": "IMG-20261030-WA0022.jpg",
+      "name": "Oxyde de fer bleu — sac de 25 kg",
+      "brand": "Force",
+      "category": "pigments-oxydes",
+      "price": 55000,
+      "stock": 4,
+      "shortDescription": "Pigment minéral bleu en poudre, sac de 25 kg.",
+      "description": "Oxyde de fer bleu en poudre, conditionné en sac de 25 kg (poids net 25 kg, poids brut 25,2 kg). Pigment minéral utilisé pour teinter les peintures, les enduits, les bétons et les mortiers de finition ; il résiste à la lumière et reste stable au séchage. À doser progressivement dans le mélange jusqu'à la teinte souhaitée. Référence Force-25.",
+      "attributes": {
+        "Produit": "Oxyde de fer bleu (Iron oxide blue)",
+        "Poids net": "25 kg",
+        "Poids brut": "25,2 kg",
+        "Forme": "Poudre",
+        "Usage": "Pigment pour peinture, enduit, béton"
+      },
+      "keywords": ["oxyde", "oxyde de fer", "pigment", "bleu", "colorant", "25 kg", "force-25", "peinture", "beton", "force"]
+    },
+    {
+      "sku": "FORCE-24",
+      "sourceFile": "IMG-20261030-WA0024.jpg",
+      "name": "Oxyde de fer noir n° 721 — sac de 25 kg",
+      "brand": "Force",
+      "category": "pigments-oxydes",
+      "price": 50000,
+      "stock": 4,
+      "shortDescription": "Pigment minéral noir n° 721 en poudre, sac de 25 kg.",
+      "description": "Oxyde de fer noir (Iron oxide black, n° 721) en poudre, conditionné en sac de 25 kg (poids net 25 kg, poids brut 25,2 kg). Pigment minéral pour teinter peintures, enduits, bétons et mortiers ; il donne des teintes profondes et stables à la lumière. À doser progressivement dans le mélange. Référence Force-24.",
+      "attributes": {
+        "Produit": "Oxyde de fer noir (Iron oxide black)",
+        "Référence couleur": "N° 721",
+        "Poids net": "25 kg",
+        "Poids brut": "25,2 kg",
+        "Forme": "Poudre",
+        "Usage": "Pigment pour peinture, enduit, béton"
+      },
+      "keywords": ["oxyde", "oxyde de fer", "pigment", "noir", "721", "colorant", "25 kg", "force-24", "peinture", "beton", "force"]
+    },
+    {
+      "sku": "POUT-H20-3900",
+      "sourceFile": "IMG-20261030-WA0025.jpg",
+      "name": "Poutrelle de coffrage H20 en bois — 3,90 m",
+      "brand": "Force",
+      "category": "bois-coffrage",
+      "price": 15000,
+      "stock": 20,
+      "shortDescription": "Poutrelle H20 protégée, longueur 3,90 m, pour coffrage de dalle.",
+      "description": "Poutrelle de coffrage en bois de profil H20, longueur 3,90 m, protégée sur ses arêtes et ses extrémités par un embout rapporté. Elle sert d'élément porteur horizontal entre les étais et le plancher de coffrage pour couler une dalle ou une poutre, et se réutilise chantier après chantier lorsqu'elle est stockée à plat et au sec. Gamme Force.",
+      "attributes": {
+        "Profil": "H20",
+        "Longueur": "3,90 m",
+        "Matière": "Bois",
+        "Protection": "Arêtes et extrémités protégées",
+        "Usage": "Coffrage de dalle et de poutre"
+      },
+      "keywords": ["poutrelle", "poutrelle h20", "h20", "coffrage", "bois", "etai", "dalle", "3,90 m", "3.90 m", "pout-h20-3900", "materiel de construction", "force"]
+    },
+    {
+      "sku": "POT-H20-2900",
+      "sourceFile": "IMG-20261030-WA0028.jpg",
+      "name": "Poutrelle de coffrage H20 en bois — 2,90 m",
+      "brand": "Force",
+      "category": "bois-coffrage",
+      "price": 11500,
+      "stock": 20,
+      "shortDescription": "Poutrelle H20 protégée, longueur 2,90 m, pour coffrage de dalle.",
+      "description": "Poutrelle de coffrage en bois de profil H20, longueur 2,90 m, protégée sur ses arêtes et ses extrémités. Version courte de la poutrelle 3,90 m, adaptée aux petites dalles, aux balcons, aux seuils et aux reprises de coffrage entre étais. Se stocke à plat et au sec pour être réutilisée. Gamme Force.",
+      "attributes": {
+        "Profil": "H20",
+        "Longueur": "2,90 m",
+        "Matière": "Bois",
+        "Protection": "Arêtes et extrémités protégées",
+        "Usage": "Coffrage de dalle et de poutre"
+      },
+      "keywords": ["poutrelle", "poutrelle h20", "h20", "coffrage", "bois", "etai", "dalle", "2,90 m", "2.90 m", "pot-h20-2900", "materiel de construction", "force"]
+    },
+    {
+      "sku": "FILS-100KG",
+      "sourceFile": "IMG-20261030-WA0030.jpg",
+      "name": "Bale de filasse STAF — 100 kg",
+      "brand": "Force",
+      "category": "plomberie",
+      "price": 85000,
+      "stock": 2,
+      "shortDescription": "Fibre végétale d'étanchéité pour raccords filetés, bale de 100 kg.",
+      "description": "Filasse STAF en fibre végétale, conditionnée en bale compressée de 100 kg. Elle s'enroule dans le filetage des raccords d'eau (tuyaux, robinets, mamelons) avant de visser, pour assurer l'étanchéité des jonctions en plomberie ; elle s'utilise avec de la pâte à joint ou du mastic filasse. Le conditionnement en bale s'adresse aux plombiers, aux chantiers et aux revendeurs. Gamme Force.",
+      "attributes": {
+        "Produit": "Filasse STAF",
+        "Matière": "Fibre végétale (sisal)",
+        "Poids": "100 kg",
+        "Conditionnement": "Bale compressée",
+        "Usage": "Étanchéité des raccords filetés d'eau"
+      },
+      "keywords": ["filasse", "bale de filasse", "staf", "etancheite", "raccord", "plomberie", "100 kg", "fils-100kg", "chanvre", "force"]
+    }
+  ]
+}
