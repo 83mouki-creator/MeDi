@@ -18,7 +18,7 @@ export default async function ResetPasswordPage({ searchParams }: { searchParams
           </div>
         ) : (
           <Alert tone="danger" className="mt-4">
-            Lien invalide : le jeton de réinitialisation est absent. Demandez un nouveau lien à la boutique.
+            Ce lien de réinitialisation n&apos;est pas valide ou a expiré. Demandez un nouveau lien à la boutique.
           </Alert>
         )}
       </Card>

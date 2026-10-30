@@ -76,8 +76,7 @@ export default async function OrderConfirmationPage({ params, searchParams }: Pr
       ) : null}
       {waveParam === 'success' ? (
         <Alert tone="info" title="Retour depuis Wave" className="mt-4">
-          Si votre paiement a été validé, la confirmation est enregistrée automatiquement après vérification serveur. Actualisez
-          cette page dans quelques instants.
+          Si votre paiement a bien été validé, la confirmation apparaît ici dans quelques instants. Actualisez la page.
         </Alert>
       ) : null}
       {waveParam === 'error' ? (
@@ -110,7 +109,7 @@ export default async function OrderConfirmationPage({ params, searchParams }: Pr
             <Card className="p-4">
               <p className="text-sm font-semibold text-navy-900">Paiement automatique sécurisé</p>
               <p className="mt-1 text-xs text-navy-600">
-                Une session de paiement Wave est créée côté serveur pour le montant exact de la commande.
+                Vous êtes redirigé vers Wave pour régler le montant exact de votre commande.
               </p>
               <div className="mt-3">
                 <WavePayButton orderId={order.id} returnTo={returnTo} />

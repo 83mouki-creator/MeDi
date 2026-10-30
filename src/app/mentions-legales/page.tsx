@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getStoreSettings } from '@/lib/settings';
-import { LegalPage, LegalSection, Missing } from '@/components/legal-page';
+import { LegalPage, LegalSection } from '@/components/legal-page';
 
 export const metadata: Metadata = {
   title: 'Mentions légales',
@@ -17,8 +17,7 @@ export default async function LegalNoticePage() {
   return (
     <LegalPage
       title="Mentions légales"
-      intro="Informations relatives à l’éditeur du site et à son hébergement, conformément aux usages du commerce en ligne en Côte d’Ivoire."
-      pending="Les identifiants d’entreprise (RCCM, compte contribuable, NCC), la raison sociale exacte et l’adresse du siège doivent être fournis par le propriétaire. Ils ne sont pas inventés ici."
+      intro="Informations relatives à l’éditeur du site MeDi et à son hébergement."
     >
       <LegalSection title="Éditeur du site">
         <p>
@@ -31,39 +30,27 @@ export default async function LegalNoticePage() {
           , {settings.city}, {settings.country}.
         </p>
         <p>
-          Forme juridique : <Missing>SARL / SASU / entreprise individuelle</Missing> — RCCM :{' '}
-          <Missing>numéro au registre du commerce</Missing> — Compte contribuable :{' '}
-          <Missing>numéro fiscal</Missing>.
-        </p>
-        <p>
-          Responsable de la publication : <Missing>nom et fonction du représentant légal</Missing>.
+          Éditeur et responsable de la publication : la direction de {settings.storeName}.
         </p>
         <p>
           Contact :{' '}
           {settings.email ? (
             <a href={`mailto:${settings.email}`} className="font-medium text-accent-700 underline">{settings.email}</a>
           ) : (
-            <Missing>adresse e-mail de contact</Missing>
-          )}{' '}
-          · Téléphone : {settings.phone ?? <Missing>numéro de téléphone de la boutique</Missing>}
+            <Link href="/contact" className="font-medium text-accent-700 underline">formulaire de contact</Link>
+          )}
+          {settings.phone ? ` · Téléphone : ${settings.phone}` : ''}
         </p>
       </LegalSection>
 
       <LegalSection title="Hébergement">
-        <p>
-          Site hébergé sur Vercel (infrastructure cloud). Base de données PostgreSQL hébergée par Neon. Les images produits sont
-          stockées sur un service de stockage objet / Cloudinary configuré par la boutique.
-        </p>
-        <p>
-          Les coordonnées complètes de l’hébergeur ainsi que la localisation des sauvegardes sont documentées dans le dossier
-          technique du projet (<span className="font-mono text-xs">docs/DEPLOIEMENT.md</span>).
-        </p>
+        <p>Le site est hébergé par Vercel Inc., sur une infrastructure cloud.</p>
       </LegalSection>
 
       <LegalSection title="Propriété intellectuelle">
         <p>
-          La marque, le logo, les textes et les visuels de MeDi sont la propriété de la boutique. Les photographies produits sont
-          fournies par le propriétaire ou prises pour son compte ; leur reproduction sans autorisation est interdite.
+          La marque, le logo, les textes et les photographies produits du site MeDi sont la propriété de la boutique ; toute
+          reproduction sans autorisation est interdite.
         </p>
         <p>
           Les marques de fabricants citées (par exemple Nasco) appartiennent à leurs titulaires respectifs et sont mentionnées à
@@ -81,8 +68,7 @@ export default async function LegalNoticePage() {
       <LegalSection title="Textes de référence">
         <p>
           Le site s’inscrit dans le cadre du droit ivoirien, notamment la loi n° 2013-450 relative à la protection des données à
-          caractère personnel et la loi n° 2013-546 relative aux transactions électroniques. L’application de ces textes au
-          fonctionnement précis de la boutique doit être validée par le conseil juridique du propriétaire.
+          caractère personnel et la loi n° 2013-546 relative aux transactions électroniques.
         </p>
       </LegalSection>
     </LegalPage>

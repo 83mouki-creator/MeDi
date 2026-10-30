@@ -76,8 +76,8 @@ export function PaymentInstructions({
 
       {autoMode ? (
         <p className="text-xs text-navy-600">
-          Le paiement automatique Wave est configuré : le bouton « Payer avec Wave » ouvre une session sécurisée et la confirmation
-          est reçue par notification serveur signée.
+          Le bouton « Payer avec Wave » vous amène directement au paiement sécurisé du montant exact de votre commande. La
+          confirmation nous revient automatiquement.
         </p>
       ) : null}
 

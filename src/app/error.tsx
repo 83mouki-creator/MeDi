@@ -19,7 +19,6 @@ export default function GlobalError({ error, reset }: { error: Error & { digest?
       <p className="mt-2 max-w-md text-sm text-navy-600">
         La page n’a pas pu être affichée. Vos données de commande ne sont pas perdues : réessayez, ou revenez à l’accueil.
       </p>
-      {error.digest ? <p className="mt-2 font-mono text-xs text-navy-400">Référence : {error.digest}</p> : null}
       <div className="mt-5 flex flex-wrap justify-center gap-2">
         <button
           type="button"

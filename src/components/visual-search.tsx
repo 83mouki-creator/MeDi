@@ -161,9 +161,8 @@ export function VisualSearch() {
               <p className={`text-sm font-semibold ${result.confident ? 'text-emerald-900' : 'text-amber-900'}`}>{result.message}</p>
               {!result.confident ? (
                 <p className="mt-1 text-xs text-amber-800">
-                  {result.calibrated
-                    ? 'Le score n’est pas suffisant pour affirmer qu’il s’agit du même produit. Vérifiez la référence et les caractéristiques avant de commander.'
-                    : 'Résultat fourni à titre de piste : le descripteur intégré ne reconnaît pas le sens de l’image. Vérifiez la référence, les dimensions et la matière avant de commander.'}
+                  Ces articles se ressemblent sur la photo, sans certitude qu’il s’agisse du même produit : vérifiez la référence,
+                  les dimensions et la matière avant de commander.
                 </p>
               ) : null}
             </div>

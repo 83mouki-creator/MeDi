@@ -20,8 +20,8 @@ export default async function PaymentPage() {
     <div className="container-page max-w-3xl py-8">
       <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">Paiement</h1>
       <p className="mt-2 text-sm text-navy-600">
-        Tous les montants sont en francs CFA (FCFA). Le total est recalculé par le serveur à partir des prix en base : ce que
-        votre navigateur affiche n’est jamais utilisé pour facturer.
+        Tous les montants sont en francs CFA (FCFA). Le total affiché au moment de la commande est celui que vous réglez, sans
+        supplément ajouté après coup.
       </p>
 
       <div className="mt-5 space-y-3">
@@ -38,8 +38,8 @@ export default async function PaymentPage() {
                   Vous saisissez ensuite la <strong>référence de la transaction</strong> dans le formulaire de la commande.
                 </li>
                 <li>
-                  La commande reste au statut « <strong>paiement à vérifier</strong> » jusqu’à ce qu’un administrateur contrôle
-                  l’encaissement réel sur le compte marchand.
+                  La commande reste au statut « <strong>paiement à vérifier</strong> » jusqu’à ce que la boutique contrôle le
+                  paiement reçu sur son compte marchand.
                 </li>
                 <li>Aucune confirmation ne s’obtient à partir d’une capture d’écran ou d’une simple déclaration.</li>
               </ul>
@@ -50,12 +50,12 @@ export default async function PaymentPage() {
                 </p>
               ) : (
                 <p className="mt-2 text-sm text-navy-500">
-                  Le numéro marchand Wave sera affiché ici dès que la boutique l’aura renseigné.
+                  Contactez la boutique pour obtenir le numéro marchand Wave.
                 </p>
               )}
               {settings.waveMode === 'MANUAL' ? (
                 <Alert tone="info" className="mt-2">
-                  Vérification manuelle par un administrateur. Le délai habituel de contrôle dépend des horaires de la boutique.
+                  Le contrôle du paiement est assuré par la boutique, pendant les horaires d’ouverture.
                 </Alert>
               ) : null}
             </div>
@@ -113,8 +113,8 @@ export default async function PaymentPage() {
           <ShieldCheck className="size-5 text-emerald-600" aria-hidden />
           <h3 className="mt-2 font-bold">Aucun paiement simulé</h3>
           <p className="mt-1 text-navy-600">
-            Aucun encaissement n’est inventé par la plateforme. Tant que l’intégration Wave automatique n’est pas configurée, la
-            confirmation est faite manuellement par un administrateur, après contrôle du compte marchand.
+            La boutique contrôle elle-même chaque paiement sur son compte marchand avant de préparer la commande. Une capture
+            d’écran ou une déclaration ne remplace pas ce contrôle.
           </p>
         </Card>
         <Card className="p-4 text-sm">

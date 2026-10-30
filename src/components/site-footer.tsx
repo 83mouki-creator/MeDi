@@ -8,7 +8,6 @@ export async function SiteFooter() {
   const settings = await getStoreSettings();
   const tree = await getCategoryTree().catch(() => ({ roots: [], childrenOf: () => [], all: [] }));
   const whatsapp = whatsappLink(settings);
-  const contactMissing = !settings.phone && !settings.addressLine && !settings.openingHours;
 
   return (
     <footer className="mt-16 bg-navy-950 text-navy-200">
@@ -54,34 +53,31 @@ export async function SiteFooter() {
             <p className="flex items-start gap-2">
               <MapPin className="mt-0.5 size-4 shrink-0 text-accent-400" aria-hidden />
               <span>
-                {settings.addressLine ?? 'Adresse de la boutique : à compléter'}
-                {settings.addressLine ? `, ${settings.city}` : ` — ${settings.city}, ${settings.country}`}
+                {settings.addressLine ? `${settings.addressLine}, ${settings.city}` : `${settings.city}, ${settings.country}`}
               </span>
             </p>
-            <p className="flex items-center gap-2">
-              <Phone className="size-4 shrink-0 text-accent-400" aria-hidden />
-              {settings.phone ? (
+            {settings.phone ? (
+              <p className="flex items-center gap-2">
+                <Phone className="size-4 shrink-0 text-accent-400" aria-hidden />
                 <a href={`tel:${settings.phone.replace(/\s/g, '')}`} className="hover:text-white">
                   {settings.phone}
                 </a>
-              ) : (
-                <span className="text-navy-400">Téléphone : à compléter</span>
-              )}
-            </p>
-            <p className="flex items-center gap-2">
-              <Mail className="size-4 shrink-0 text-accent-400" aria-hidden />
-              {settings.email ? (
+              </p>
+            ) : null}
+            {settings.email ? (
+              <p className="flex items-center gap-2">
+                <Mail className="size-4 shrink-0 text-accent-400" aria-hidden />
                 <a href={`mailto:${settings.email}`} className="hover:text-white">
                   {settings.email}
                 </a>
-              ) : (
-                <span className="text-navy-400">E-mail : à compléter</span>
-              )}
-            </p>
-            <p className="flex items-start gap-2">
-              <Clock className="mt-0.5 size-4 shrink-0 text-accent-400" aria-hidden />
-              <span>{settings.openingHours ?? 'Horaires : à compléter'}</span>
-            </p>
+              </p>
+            ) : null}
+            {settings.openingHours ? (
+              <p className="flex items-start gap-2">
+                <Clock className="mt-0.5 size-4 shrink-0 text-accent-400" aria-hidden />
+                <span>{settings.openingHours}</span>
+              </p>
+            ) : null}
           </address>
         </div>
 
@@ -149,11 +145,6 @@ export async function SiteFooter() {
               Parcourir le catalogue
             </Link>
           </div>
-          {contactMissing ? (
-            <p className="mt-4 rounded-lg border border-amber-700/40 bg-amber-950/30 p-2 text-xs text-amber-200">
-              Coordonnées de la boutique en attente des informations du propriétaire.
-            </p>
-          ) : null}
         </div>
       </div>
 

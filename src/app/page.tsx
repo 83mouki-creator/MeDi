@@ -162,8 +162,7 @@ export default async function HomePage() {
             <div className="rounded-xl bg-white/10 p-4 backdrop-blur sm:col-span-2">
               <p className="text-xs font-semibold uppercase tracking-wide text-accent-300">Disponibilité en temps réel</p>
               <p className="mt-1 text-sm text-navy-100">
-                Chaque fiche indique le stock réellement disponible en boutique. Une dernière unité réservée n’est jamais
-                revendue.
+                Chaque fiche indique le stock réellement disponible en boutique, mis à jour en continu.
               </p>
             </div>
             <div className="rounded-xl bg-white/10 p-4 backdrop-blur">
@@ -191,7 +190,7 @@ export default async function HomePage() {
           </div>
           {data.roots.length === 0 ? (
             <p className="rounded-lg border border-dashed border-navy-200 bg-white p-4 text-sm text-navy-500">
-              Les rayons seront affichés dès que le catalogue sera importé.
+              Nos rayons seront affichés très bientôt.
             </p>
           ) : (
             <ul className="grid grid-cols-3 gap-2 sm:grid-cols-4 lg:grid-cols-5">
@@ -293,7 +292,7 @@ export default async function HomePage() {
             </h2>
             <p className="mt-2 text-sm text-navy-600">
               Expédition par transporteur, sur devis confirmé avant paiement. Le règlement intégral est requis avant remise du
-              colis au transporteur, et la commande ne passe « prête à expédier » qu’après vérification de l’encaissement.
+              colis au transporteur, et la commande ne passe « prête à expédier » qu’après confirmation du paiement.
             </p>
             <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1">
               <Link href="/livraison" className="inline-flex items-center gap-1 text-sm font-semibold text-accent-700 hover:underline">
@@ -323,7 +322,7 @@ export default async function HomePage() {
             <p>
               <strong>Prix en FCFA</strong>
               <br />
-              <span className="text-navy-600">Le total est recalculé côté serveur, jamais dans le navigateur.</span>
+              <span className="text-navy-600">Le montant facturé est celui de la boutique, vérifié à chaque commande.</span>
             </p>
           </div>
           <div className="flex items-start gap-2 text-sm">

@@ -21,7 +21,7 @@ export const RETURNS_FAQ: readonly FaqEntry[] = [
     id: 'produits-eligibles',
     question: 'Quels produits peuvent être retournés ?',
     answer:
-      'Un article est examiné s’il est intact, non utilisé et non installé, complet (accessoires, visserie, notice) et dans son emballage d’origine. Les conditions définitives — cas exclus, produits déjà posés ou découpés, consommables — sont arrêtées par la direction de la boutique et rappelées sur la page Retours. En cas de doute sur un article précis, posez la question sur WhatsApp avant tout envoi.',
+      'Un article est examiné s’il est intact, non utilisé et non installé, complet (accessoires, visserie, notice) et dans son emballage d’origine. Certains articles ne peuvent pas être repris, notamment ceux déjà posés ou découpés et les consommables ouverts : en cas de doute sur une référence précise, posez la question sur WhatsApp avant tout envoi.',
     whatsappMessage:
       'Bonjour MeDi, avant de renvoyer un article, je voudrais savoir s’il est éligible à un retour. Produit : … État : …',
   },

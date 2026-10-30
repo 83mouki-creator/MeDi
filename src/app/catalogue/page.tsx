@@ -50,7 +50,6 @@ export default async function CatalogPage({ searchParams }: { searchParams: Prom
   const listResult = q ? null : await listProducts(filters);
 
   const result = searchResult ?? listResult!;
-  const usedFuzzy = searchResult?.usedFuzzy ?? false;
 
   const items = q ? result.items.filter((item) => (promo ? item.onPromo : true)) : result.items;
 
@@ -86,7 +85,7 @@ export default async function CatalogPage({ searchParams }: { searchParams: Prom
           {q ? `Résultats pour « ${q} »` : 'Tout le catalogue'}
         </h1>
         <p className="mt-1 text-sm text-navy-600" aria-live="polite">
-          {total} produit{total > 1 ? 's' : ''} {q ? (usedFuzzy && !promo ? '· correspondances approximatives incluses' : '') : 'disponibles'}
+          {q ? `${total} produit${total > 1 ? 's' : ''} trouvé${total > 1 ? 's' : ''}` : `${total} produit${total > 1 ? 's' : ''} disponible${total > 1 ? 's' : ''}`}
         </p>
       </header>
 

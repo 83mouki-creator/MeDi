@@ -34,7 +34,6 @@ export default async function DeliveryPage() {
   const local = zones.filter((zone) => zone.isLocal && !zone.isPickup);
   const national = zones.filter((zone) => !zone.isLocal && !zone.isPickup);
   const pickup = zones.filter((zone) => zone.isPickup);
-  const hasDemoZones = zones.some((zone) => /DÉMO|DEMO/i.test(zone.name));
   const faqStructuredData = faqJsonLd(DELIVERY_FAQ, settings);
 
   return (
@@ -75,22 +74,15 @@ export default async function DeliveryPage() {
         </Card>
       </div>
 
-      <h2 className="mt-8 text-lg font-bold">Zones et frais configurés</h2>
+      <h2 className="mt-8 text-lg font-bold">Zones et frais de livraison</h2>
       <p className="mt-1 text-sm text-navy-600">
-        Ces tarifs sont saisis par la boutique dans son espace d’administration. Ils peuvent évoluer ; le montant appliqué est
-        toujours celui affiché au moment de la commande.
+        Les frais dépendent de votre ville ou de votre quartier. Le montant appliqué est toujours celui affiché au moment de la
+        commande.
       </p>
 
-      {hasDemoZones ? (
-        <Alert tone="warning" className="mt-3" title="Tarifs de démonstration">
-          Certaines zones portent la mention « DÉMO » : ce sont des exemples installés avec le catalogue de démonstration. Le
-          propriétaire doit les remplacer par la grille réelle dans <span className="font-medium">/admin/livraison</span>.
-        </Alert>
-      ) : null}
-
       {zones.length === 0 ? (
-        <Alert tone="info" className="mt-3" title="Grille tarifaire non configurée">
-          Aucune zone de livraison n’est active. Contactez la boutique pour connaître les conditions applicables.
+        <Alert tone="info" className="mt-3" title="Frais à confirmer">
+          Contactez la boutique pour connaître les frais applicables à votre destination.
         </Alert>
       ) : (
         <div className="mt-3 overflow-x-auto rounded-xl border border-navy-100 bg-white">
@@ -130,7 +122,7 @@ export default async function DeliveryPage() {
         <li>Vous choisissez le produit et indiquez la ville de destination ainsi que le transporteur souhaité.</li>
         <li>La boutique vous confirme le coût du transport et le total à régler avant expédition.</li>
         <li>Vous payez l’intégralité par Wave en joignant la référence de la transaction.</li>
-        <li>Un administrateur vérifie l’encaissement réel, puis la commande passe en préparation et enfin « prête à expédier ».</li>
+        <li>La boutique vérifie le paiement reçu, puis prépare la commande et la passe en « prête à expédier ».</li>
         <li>Le numéro de suivi du transporteur est communiqué dans le suivi de commande.</li>
       </ol>
 

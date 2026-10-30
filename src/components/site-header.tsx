@@ -42,9 +42,7 @@ export async function SiteHeader() {
               <a href={`tel:${settings.phone.replace(/\s/g, '')}`} className="flex items-center gap-1.5 hover:text-white">
                 <Phone className="size-3.5" aria-hidden /> {settings.phone}
               </a>
-            ) : (
-              <span className="text-navy-300">Téléphone boutique : à compléter</span>
-            )}
+            ) : null}
             <Link href="/livraison" className="flex items-center gap-1.5 hover:text-white">
               <Truck className="size-3.5" aria-hidden /> Livraison
             </Link>

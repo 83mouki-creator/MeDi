@@ -315,8 +315,7 @@ export async function searchByImage(buffer: Buffer, mime: string, limit = 8): Pr
     return {
       available: false,
       provider,
-      reason:
-        'Aucune photo de produit n’a encore été indexée. Lancez `npm run reindex:visual` après l’import du catalogue.',
+      reason: 'La recherche par photo est momentanément indisponible. Utilisez la recherche par mots-clés ou écrivez-nous sur WhatsApp.',
     };
   }
 
@@ -361,12 +360,10 @@ export async function searchByImage(buffer: Buffer, mime: string, limit = 8): Pr
 
   const flat = margin < 0.02;
   const message = !best
-    ? 'Aucun produit visuellement proche n’a été trouvé. Essayez une photo plus nette, sur fond neutre.'
+    ? 'Aucun produit proche n’a été trouvé. Essayez une photo plus nette, sur fond neutre, ou écrivez-nous sur WhatsApp.'
     : confident
-      ? `Correspondance probable : ${best.product.name} (${Math.round(best.score * 100)} % de similarité visuelle).`
-      : calibrated
-        ? `Aucune correspondance certaine. Voici les produits visuellement les plus proches (${Math.round(best.score * 100)} % au mieux) — à vérifier manuellement.`
-        : `Pistes visuelles : ${best.product.name} arrive en tête (${Math.round(best.score * 100)} % de similarité). Le descripteur intégré compare les couleurs et les contours, pas le sens de l’image : vérifiez la référence avant de commander.${flat ? ' Plusieurs photos du catalogue se ressemblent beaucoup : utilisez la recherche par référence pour confirmer.' : ''}`;
+      ? `Correspondance probable : ${best.product.name} (${Math.round(best.score * 100)} % de ressemblance visuelle).`
+      : `Ressemblances possibles : ${best.product.name} arrive en tête (${Math.round(best.score * 100)} %). Vérifiez la référence, les dimensions et la matière avant de commander.${flat ? ' Plusieurs articles se ressemblent sur les photos : confirmez avec la recherche par référence.' : ''}`;
 
   return {
     available: true,
