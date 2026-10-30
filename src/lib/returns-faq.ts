@@ -45,7 +45,7 @@ export const RETURNS_FAQ: readonly FaqEntry[] = [
     id: 'frais-retour',
     question: 'Qui prend en charge les frais de retour ?',
     answer:
-      'Aucun barème de frais de retour n’est publié à ce jour : le transport d’un retour dépend de la ville, du poids de l’article et du motif (erreur de préparation, produit défectueux, changement d’avis). La boutique vous indique par WhatsApp, avant l’expédition du retour, qui supporte ces frais et quel est le montant. Aucun frais n’est prélevé sans votre accord.',
+      'Les frais de retour dépendent de la ville, du poids de l’article et du motif (erreur de préparation, produit défectueux, changement d’avis). La boutique vous indique par WhatsApp, avant l’expédition du retour, qui supporte ces frais et quel est le montant. Aucun frais n’est prélevé sans votre accord.',
     whatsappMessage:
       'Bonjour MeDi, je voudrais connaître les frais de retour pour mon article. Numéro de commande : … Ville : …',
   },

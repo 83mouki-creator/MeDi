@@ -81,8 +81,8 @@ export default async function DeliveryPage() {
       </p>
 
       {zones.length === 0 ? (
-        <Alert tone="info" className="mt-3" title="Frais à confirmer">
-          Contactez la boutique pour connaître les frais applicables à votre destination.
+        <Alert tone="info" className="mt-3" title="Votre destination n’est pas dans la liste ?">
+          Écrivez-nous sur WhatsApp : la boutique vous communique les frais réels avant tout règlement.
         </Alert>
       ) : (
         <div className="mt-3 overflow-x-auto rounded-xl border border-navy-100 bg-white">
@@ -93,7 +93,6 @@ export default async function DeliveryPage() {
                 <th scope="col" className="px-3 py-2">Zone</th>
                 <th scope="col" className="px-3 py-2">Ville</th>
                 <th scope="col" className="px-3 py-2">Frais</th>
-                <th scope="col" className="px-3 py-2">Gratuit à partir de</th>
                 <th scope="col" className="px-3 py-2">Délai indicatif</th>
               </tr>
             </thead>
@@ -106,10 +105,7 @@ export default async function DeliveryPage() {
                   </td>
                   <td className="px-3 py-2 text-navy-600">{zone.city}</td>
                   <td className="px-3 py-2">{zone.isPickup ? 'Gratuit' : formatFCFA(toFcfa(zone.fee))}</td>
-                  <td className="px-3 py-2 text-navy-600">
-                    {zone.freeAbove ? formatFCFA(toFcfa(zone.freeAbove)) : '—'}
-                  </td>
-                  <td className="px-3 py-2 text-navy-600">{zone.estimatedDelay ?? 'à confirmer'}</td>
+                  <td className="px-3 py-2 text-navy-600">{zone.estimatedDelay ?? 'Communiqué à la commande'}</td>
                 </tr>
               ))}
             </tbody>
