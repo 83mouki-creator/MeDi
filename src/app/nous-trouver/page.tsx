@@ -51,8 +51,8 @@ export default async function FindUsPage() {
 
       <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">Nous trouver</h1>
       <p className="mt-2 text-sm text-navy-600">
-        La boutique se trouve à {settings.city}, {settings.country}. Retrouvez ici le plan d’accès, l’itinéraire, les horaires et
-        le numéro à appeler pour venir retirer votre commande.
+        La boutique se trouve à {settings.city}, {settings.country}. Retrouvez ici l’itinéraire, les horaires et le numéro à appeler
+        pour venir retirer votre commande.
       </p>
 
       {/* ─── Carte ou emplacement en attente ─── */}
