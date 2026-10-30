@@ -275,9 +275,17 @@ export default async function HomePage() {
               Retrait gratuit en boutique ou livraison à domicile selon votre quartier. Le paiement à la livraison est proposé
               uniquement si la boutique l’autorise pour la zone et le montant concernés.
             </p>
-            <Link href="/livraison" className="mt-3 inline-flex items-center gap-1 text-sm font-semibold text-accent-700 hover:underline">
-              Voir les zones et frais <ArrowRight className="size-3.5" aria-hidden />
-            </Link>
+            <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1">
+              <Link href="/livraison" className="inline-flex items-center gap-1 text-sm font-semibold text-accent-700 hover:underline">
+                Voir les zones et frais <ArrowRight className="size-3.5" aria-hidden />
+              </Link>
+              <Link
+                href="/nous-trouver"
+                className="inline-flex items-center gap-1 text-sm font-semibold text-accent-700 hover:underline"
+              >
+                {settings.geo ? 'Plan et itinéraire' : 'Nous trouver'} <ArrowRight className="size-3.5" aria-hidden />
+              </Link>
+            </div>
           </div>
           <div className="rounded-xl border border-navy-100 bg-white p-5">
             <h2 className="flex items-center gap-2 text-lg font-bold">

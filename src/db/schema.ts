@@ -519,6 +519,11 @@ export const storeSettings = pgTable('store_settings', {
   lowStockThreshold: integer('low_stock_threshold').notNull().default(5),
   reservationMinutes: integer('reservation_minutes').notNull().default(120),
   freeDeliveryAbove: numeric('free_delivery_above', { precision: 12, scale: 2 }),
+  // Géolocalisation de la boutique : renseignée par le propriétaire dans
+  // /admin/parametres. Tant que les deux valeurs sont vides, aucune carte ni
+  // coordonnée n'est affichée (rien n'est deviné ni approximé).
+  latitude: numeric('latitude', { precision: 9, scale: 6 }),
+  longitude: numeric('longitude', { precision: 9, scale: 6 }),
   facebookUrl: text('facebook_url'),
   instagramUrl: text('instagram_url'),
   legalNotice: text('legal_notice'),

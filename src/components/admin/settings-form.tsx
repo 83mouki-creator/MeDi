@@ -33,6 +33,8 @@ export function SettingsForm({
     instagramUrl: string | null;
     legalNotice: string | null;
     returnPolicy: string | null;
+    latitudeInput: string | null;
+    longitudeInput: string | null;
   };
 }) {
   const [state, formAction, pending] = useActionState(saveSettingsAction, initial);
@@ -74,6 +76,39 @@ export function SettingsForm({
             <Input id="openingHours" name="openingHours" defaultValue={settings.openingHours ?? ''} maxLength={200} placeholder="Lun–Sam 8h–18h" />
           </Field>
         </div>
+      </Card>
+
+      <Card className="space-y-3 p-4">
+        <h2 className="text-sm font-bold">Géolocalisation de la boutique</h2>
+        <p className="text-xs text-navy-500">
+          Coordonnées exactes du magasin, relevées sur place (application Plans, GPS du téléphone…). Elles alimentent la carte
+          « Nous trouver » et les données structurées pour les moteurs de recherche. Tant que les deux champs sont vides, le site
+          n’affiche aucune carte et annonce simplement que la position est en attente : rien n’est estimé.
+        </p>
+        <div className="grid gap-3 sm:grid-cols-2">
+          <Field label="Latitude" htmlFor="latitude" hint="Entre -90 et 90, ex. 6.877520">
+            <Input
+              id="latitude"
+              name="latitude"
+              inputMode="decimal"
+              defaultValue={settings.latitudeInput ?? ''}
+              placeholder="6.877520"
+            />
+          </Field>
+          <Field label="Longitude" htmlFor="longitude" hint="Entre -180 et 180, ex. -6.450220">
+            <Input
+              id="longitude"
+              name="longitude"
+              inputMode="decimal"
+              defaultValue={settings.longitudeInput ?? ''}
+              placeholder="-6.450220"
+            />
+          </Field>
+        </div>
+        <p className="text-xs text-navy-500">
+          Les deux champs vont ensemble : une coordonnée seule est refusée à l’enregistrement. Laissez les deux vides pour
+          désactiver l’affichage de la carte.
+        </p>
       </Card>
 
       <Card className="space-y-3 p-4">

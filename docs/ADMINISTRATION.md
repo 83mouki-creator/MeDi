@@ -47,9 +47,26 @@ npm run config:store -- --force # réapplique les valeurs du dépôt (écrase le
 
 Ensuite, tout se modifie dans l'interface :
 
-- `/admin/parametres` : téléphone, WhatsApp, horaires, adresse, numéro Wave, paiement à la livraison.
+- `/admin/parametres` : téléphone, WhatsApp, horaires, adresse, numéro Wave, paiement à la livraison,
+  **géolocalisation (latitude / longitude)**.
 - `/admin/livraison` : zones, frais, seuil de gratuité, délais. Le tunnel de commande lit uniquement
   ces lignes — aucun tarif n'est codé en dur.
+
+### Géolocalisation de la boutique
+
+Deux champs dans `/admin/parametres → Géolocalisation de la boutique` : latitude et longitude en
+degrés décimaux, six décimales (ex. `6.877520` / `-6.450220`, virgule acceptée). Relevé à faire sur
+place (application Plans, GPS du téléphone) — aucune coordonnée n'est estimée par l'application.
+
+- Les deux valeurs vont ensemble : une seule coordonnée est refusée à l'enregistrement, et les bornes
+  sont contrôlées (latitude −90 → 90, longitude −180 → 180).
+- Tant que la paire est vide, `/nous-trouver` n'affiche **aucune carte** : la page annonce que la
+  position est en attente et propose le WhatsApp de la boutique.
+- Dès que la paire est enregistrée : carte OpenStreetMap (sans clé d'API), boutons « Itinéraire »
+  et « Ouvrir dans Maps », coordonnées affichées, et bloc `geo` dans les données structurées
+  (`Store`) de la page.
+- La page est liée depuis le pied de page, la page contact et l'accueil ; elle est référencée dans
+  `sitemap.xml`.
 
 Le logo officiel est décliné automatiquement (`npm run brand:assets`) vers `public/brand/` :
 en-tête et pied de page (fond bleu nuit), favicon, icône iOS, image de partage.
@@ -67,7 +84,7 @@ en-tête et pied de page (fond bleu nuit), favicon, icône iOS, image de partage
 | `/admin/commandes/[id]` | détail, articles, historique horodaté, changement de statut, vérification du paiement (confirmer / refuser avec justification), expédition et suivi, note interne |
 | `/admin/paiements` | paiements à vérifier, historique des confirmations, mode Wave actif |
 | `/admin/livraison` | zones, frais, seuil de gratuité, délai, retrait, activation |
-| `/admin/parametres` | coordonnées, horaires, numéro Wave, paiement à la livraison (activation + plafond), réservation, textes légaux, état des intégrations (sans afficher les secrets) |
+| `/admin/parametres` | coordonnées, horaires, géolocalisation (latitude / longitude), numéro Wave, paiement à la livraison (activation + plafond), réservation, textes légaux, état des intégrations (sans afficher les secrets) |
 | `/admin/import` | import CSV (simulation puis import), import de photos en masse, affectation des photos, réindexation visuelle |
 | `/admin/utilisateurs` | création de comptes internes, rôles, activation/désactivation |
 | `/admin/journal` | journal d'audit |

@@ -3,6 +3,7 @@ import { eq } from 'drizzle-orm';
 import { db } from '../db';
 import { storeSettings, type StoreSetting } from '../db/schema';
 import { env } from './env';
+import { parseCoordinates, type GeoPoint } from './geo';
 
 /**
  * Réglages de la boutique. Les informations commerciales (téléphone, adresse,
@@ -33,6 +34,11 @@ export type PublicSettings = {
   instagramUrl: string | null;
   legalNotice: string | null;
   returnPolicy: string | null;
+  /** Coordonnées exactes de la boutique — `null` tant qu'elles ne sont pas fournies. */
+  geo: GeoPoint | null;
+  /** Valeur brute saisie dans l'admin, pour réafficher le formulaire tel quel. */
+  latitudeInput: string | null;
+  longitudeInput: string | null;
   // booléens de configuration (pas des données commerciales)
   waveAutoConfigured: boolean;
   storageConfigured: boolean;
@@ -64,6 +70,8 @@ const FALLBACK: StoreSetting = {
   instagramUrl: null,
   legalNotice: null,
   returnPolicy: null,
+  latitude: null,
+  longitude: null,
   updatedAt: new Date(),
 };
 
@@ -79,6 +87,7 @@ export const getStoreSettings = cache(async (): Promise<PublicSettings> => {
   }
 
   const s = row ?? FALLBACK;
+  const coordinates = parseCoordinates({ latitude: s.latitude, longitude: s.longitude });
   return {
     storeName: s.storeName,
     tagline: s.tagline,
@@ -103,6 +112,9 @@ export const getStoreSettings = cache(async (): Promise<PublicSettings> => {
     instagramUrl: s.instagramUrl,
     legalNotice: s.legalNotice,
     returnPolicy: s.returnPolicy,
+    geo: coordinates.status === 'ok' ? coordinates.point : null,
+    latitudeInput: s.latitude,
+    longitudeInput: s.longitude,
     waveAutoConfigured: env.wave.mode === 'AUTO' && env.wave.enabled,
     storageConfigured: env.storage.configured,
     visionProvider: env.vision.provider,

@@ -1,0 +1,289 @@
+{
+  "version": 1,
+  "fournisseur": "SODIS-MAD CI",
+  "date": "2026-10-30",
+  "lot": 8,
+  "note": "Lot 8 : quinzième lot de photos fournisseur, entièrement consacré à la gamme FORCE (quincaillerie) — clés à canon, canons simples, verrou, charnière universelle, vis de rappel et tirefonds de tôle. Aucune de ces références n'existait dans les lots 1 à 7.",
+  "categories": [],
+  "sousCategoriesExistantes": [],
+  "produits": [
+    {
+      "sku": "CLE-124F",
+      "sourceFile": "IMG-20261030-WA0013.jpg",
+      "name": "Poignée de porte inox avec cylindre — Luxe 124",
+      "brand": "Force",
+      "category": "serrurerie",
+      "price": 18000,
+      "stock": 6,
+      "shortDescription": "Poignée sur plaque inox brossé, béquille fixe, avec cylindre à canon et clés.",
+      "description": "Poignée de porte sur plaque étroite en inox brossé, béquille fixe et canon de sécurité protégé. Livrée montée avec son cylindre et son jeu de clés. Finition résistante à l'usage intensif, pour porte d'entrée ou porte de service. Série Luxe 124 de la gamme Force.",
+      "attributes": {
+        "Type": "Poignée sur plaque avec cylindre",
+        "Matière": "Acier inoxydable",
+        "Finition": "Brossée",
+        "Série": "Luxe 124",
+        "Usage": "Porte d'entrée, porte de service"
+      },
+      "keywords": ["poignee", "cle a canon", "serrure", "inox", "luxe 124", "cylindre", "porte", "serrurerie", "force"]
+    },
+    {
+      "sku": "CLE-129F",
+      "sourceFile": "IMG-20261030-WA0003.jpg",
+      "name": "Poignée de porte inox et chrome avec cylindre — Luxe 129",
+      "brand": "Force",
+      "category": "serrurerie",
+      "price": 18000,
+      "stock": 6,
+      "shortDescription": "Poignée sur plaque inox, béquille chromée, avec cylindre à canon et clés.",
+      "description": "Poignée de porte sur plaque longue en inox avec béquille chromée lisse, canon de sécurité et jeu de clés fourni. Le contraste plaque inox / béquille polie habille aussi bien une porte d'entrée qu'une porte intérieure. Série Luxe 129 de la gamme Force.",
+      "attributes": {
+        "Type": "Poignée sur plaque avec cylindre",
+        "Matière": "Inox et laiton chromé",
+        "Finition": "Inox et chrome",
+        "Série": "Luxe 129",
+        "Usage": "Porte d'entrée, porte intérieure"
+      },
+      "keywords": ["poignee", "cle a canon", "serrure", "inox", "chrome", "luxe 129", "cylindre", "porte", "serrurerie", "force"]
+    },
+    {
+      "sku": "CLE-134F",
+      "sourceFile": "IMG-20261030-WA0007.jpg",
+      "name": "Poignée de porte inox, béquille courbe — Luxe 134",
+      "brand": "Force",
+      "category": "serrurerie",
+      "price": 18000,
+      "stock": 6,
+      "shortDescription": "Poignée sur plaque inox brossé avec béquille courbe, cylindre à canon et clés.",
+      "description": "Poignée de porte sur plaque inox brossé, béquille fine légèrement courbe pour une prise en main douce, canon de sécurité et jeu de clés fourni. Modèle discret pour porte d'entrée ou porte de passage. Série Luxe 134 de la gamme Force.",
+      "attributes": {
+        "Type": "Poignée sur plaque avec cylindre",
+        "Matière": "Acier inoxydable",
+        "Finition": "Brossée",
+        "Série": "Luxe 134",
+        "Usage": "Porte d'entrée, porte de passage"
+      },
+      "keywords": ["poignee", "cle a canon", "serrure", "inox", "courbe", "luxe 134", "cylindre", "porte", "serrurerie", "force"]
+    },
+    {
+      "sku": "CLE-170F",
+      "sourceFile": "IMG-20261030-WA0011.jpg",
+      "name": "Poignée de porte inox à béquille tubulaire — Luxe 170",
+      "brand": "Force",
+      "category": "serrurerie",
+      "price": 18000,
+      "stock": 6,
+      "shortDescription": "Poignée sur plaque inox avec béquille tubulaire, cylindre à canon et clés.",
+      "description": "Poignée de porte sur plaque inox à béquille tubulaire pleine, dessin contemporain et prise en main franche. Livrée avec son cylindre à canon et son jeu de clés. Pour porte d'entrée, porte de bureau ou local commercial. Série Luxe 170 de la gamme Force.",
+      "attributes": {
+        "Type": "Poignée sur plaque avec cylindre",
+        "Matière": "Acier inoxydable",
+        "Béquille": "Tubulaire pleine",
+        "Série": "Luxe 170",
+        "Usage": "Porte d'entrée, bureau, local commercial"
+      },
+      "keywords": ["poignee", "cle a canon", "serrure", "inox", "tubulaire", "luxe 170", "cylindre", "porte", "serrurerie", "force"]
+    },
+    {
+      "sku": "CLE-S-101-1913",
+      "sourceFile": "IMG-20261030-WA0004.jpg",
+      "name": "Poignée de porte inox brossé — S-101-1913",
+      "brand": "Force",
+      "category": "serrurerie",
+      "price": 20000,
+      "stock": 6,
+      "shortDescription": "Poignée sur plaque large inox brossé, béquille droite, cylindre à canon et clés.",
+      "description": "Poignée de porte sur plaque large en inox brossé, béquille droite de section ronde et canon de sécurité avec jeu de clés. La plaque large répartit l'effort et convient aux portes souvent sollicitées. Référence Force S-101-1913 (série Luxe).",
+      "attributes": {
+        "Type": "Poignée sur plaque large avec cylindre",
+        "Matière": "Acier inoxydable",
+        "Finition": "Brossée",
+        "Référence": "S-101-1913",
+        "Usage": "Porte d'entrée très sollicitée"
+      },
+      "keywords": ["poignee", "cle a canon", "serrure", "inox", "plaque large", "s-101-1913", "cylindre", "porte", "serrurerie", "force"]
+    },
+    {
+      "sku": "CLE-S-101-1919",
+      "sourceFile": "IMG-20261030-WA0006.jpg",
+      "name": "Poignée de porte noire mate — S-101-1919",
+      "brand": "Force",
+      "category": "serrurerie",
+      "price": 20000,
+      "stock": 6,
+      "shortDescription": "Poignée sur plaque large noire mate, béquille inox, cylindre à canon et clés.",
+      "description": "Poignée de porte sur plaque large noire mate avec béquille inox satiné : un rendu sobre pour les portes contemporaines. Canon de sécurité et jeu de clés fournis, poignée livrée avec sa visserie de fixation. Référence Force S-101-1919 (série Luxe).",
+      "attributes": {
+        "Type": "Poignée sur plaque large avec cylindre",
+        "Matière": "Acier et inox",
+        "Finition": "Noir mat et inox satiné",
+        "Référence": "S-101-1919",
+        "Usage": "Porte d'entrée contemporaine"
+      },
+      "keywords": ["poignee", "cle a canon", "serrure", "noire", "mate", "inox", "s-101-1919", "cylindre", "porte", "serrurerie", "force"]
+    },
+    {
+      "sku": "CLE-S5",
+      "sourceFile": "IMG-20261030-WA0015.jpg",
+      "name": "Canon de sécurité 60 mm — 5 clés",
+      "brand": "Force",
+      "category": "serrurerie",
+      "price": 7000,
+      "stock": 12,
+      "shortDescription": "Barillet de porte 60 mm livré sous blister avec 5 clés et sa vis de fixation.",
+      "description": "Canon de sécurité européen longueur 60 mm, livré sous blister avec cinq clés et la vis de fixation. Se monte en remplacement d'un barillet standard sur serrure à profil européen : porte d'entrée, porte de service ou local. Marque Force.",
+      "attributes": {
+        "Type": "Canon de sécurité (profil européen)",
+        "Longueur": "60 mm",
+        "Clés fournies": "5",
+        "Livré avec": "Vis de fixation",
+        "Conditionnement": "Blister"
+      },
+      "keywords": ["canon", "barillet", "cylindre", "serrure", "60 mm", "5 cles", "securite", "porte", "serrurerie", "force"]
+    },
+    {
+      "sku": "CLE-S5-70",
+      "sourceFile": "IMG-20261030-WA0002.jpg",
+      "name": "Canon de sécurité 70 mm — 5 clés",
+      "brand": "Force",
+      "category": "serrurerie",
+      "price": 8000,
+      "stock": 12,
+      "shortDescription": "Barillet de porte 70 mm livré sous blister avec 5 clés et sa vis de fixation.",
+      "description": "Canon de sécurité européen longueur 70 mm, pour porte épaisse ou serrure à entrée profonde. Livré sous blister avec cinq clés et la vis de fixation. Marque Force.",
+      "attributes": {
+        "Type": "Canon de sécurité (profil européen)",
+        "Longueur": "70 mm",
+        "Clés fournies": "5",
+        "Livré avec": "Vis de fixation",
+        "Conditionnement": "Blister"
+      },
+      "keywords": ["canon", "barillet", "cylindre", "serrure", "70 mm", "5 cles", "securite", "porte", "serrurerie", "force"]
+    },
+    {
+      "sku": "CK6683",
+      "sourceFile": "IMG-20261030-WA0009.jpg",
+      "name": "Verrou de porte à clé, laqué rouge — CK6683",
+      "brand": "Force",
+      "category": "serrurerie",
+      "price": 6500,
+      "stock": 12,
+      "shortDescription": "Verrou de porte en applique, tôle laquée rouge, pêne dormant à clé.",
+      "description": "Verrou de porte en applique à fixer en façade ou en intérieur : corps en tôle laquée rouge, pêne dormant manoeuvré à la clé, gâche et clés fournies. Se pose en complément d'une serrure existante pour renforcer une porte de magasin, un portail ou un local. Référence CK6683, marque Force.",
+      "attributes": {
+        "Type": "Verrou de porte en applique",
+        "Finition": "Tôle laquée rouge",
+        "Commande": "Clé",
+        "Pêne": "Dormant",
+        "Fourni": "Gâche et clés"
+      },
+      "keywords": ["verrou", "porte", "cle", "rouge", "ck6683", "pene dormant", "magasin", "serrurerie", "force"]
+    },
+    {
+      "sku": "CHARN-UF",
+      "sourceFile": "IMG-20261030-WA0001.jpg",
+      "name": "Charnière universelle 008 — boîte de 5",
+      "brand": "Force",
+      "category": "serrurerie",
+      "price": 3500,
+      "stock": 10,
+      "shortDescription": "Boîte de 5 charnières universelles à visser, pour porte et meuble.",
+      "description": "Charnières universelles présentées en boîte de cinq pièces, à visser sur bois ou sur support préparé. Format compact adapté aux portes légères, placards, trappes et meubles. Conditionnement d'atelier pratique pour le dépannage. Marque Force.",
+      "attributes": {
+        "Type": "Charnière universelle à visser",
+        "Conditionnement": "Boîte de 5",
+        "Usage": "Portes légères, placards, meubles"
+      },
+      "keywords": ["charniere", "universelle", "008", "boite de 5", "porte", "placard", "meuble", "quincaillerie", "force"]
+    },
+    {
+      "sku": "VIS-RF",
+      "sourceFile": "IMG-20261030-WA0000.jpg",
+      "name": "Vis de rappel à fixer — boîte de 30 g",
+      "brand": "Force",
+      "category": "visserie-fixation",
+      "price": 1000,
+      "stock": 40,
+      "shortDescription": "Boîte de 30 g de vis de rappel zinguées dorées, avec piton et plaque de fixation.",
+      "description": "Vis de rappel courte à tête bombée, finition zinguée dorée, conditionnée en boîte de 30 grammes. Sert à fixer une plaque de propreté, un butoir, une poignée ou un accessoire léger sur bois ou sur cloison préparée. Marque Force.",
+      "attributes": {
+        "Type": "Vis de rappel",
+        "Conditionnement": "Boîte de 30 g",
+        "Finition": "Zinguée dorée",
+        "Usage": "Fixation d'accessoires légers"
+      },
+      "keywords": ["vis", "vis de rappel", "visserie", "fixation", "30 g", "zinguée", "quincaillerie", "force"]
+    },
+    {
+      "sku": "TIR-8X80F",
+      "sourceFile": "IMG-20261030-WA0008.jpg",
+      "name": "Tirefond de tôle 8 × 80 mm — avec platine et chevilles",
+      "brand": "Force",
+      "category": "visserie-fixation",
+      "price": 2500,
+      "stock": 25,
+      "shortDescription": "Kit de 5 tirefonds 8 × 80 mm avec platine métallique et chevilles.",
+      "description": "Kit de fixation pour support creux : cinq tirefonds à tête fraisée 8 × 80 mm, une platine métallique de reprise et des chevilles à collerette. Pour fixer un meuble, un chauffe-eau, une étagère ou un accessoire sur cloison ou plaque de plâtre. Marque Force.",
+      "attributes": {
+        "Type": "Kit de tirefonds de tôle",
+        "Dimensions": "8 × 80 mm",
+        "Contenu": "5 tirefonds, platine métallique, chevilles",
+        "Finition": "Zinguée dorée"
+      },
+      "keywords": ["tirefond", "tirefond de tole", "8x80", "fixation", "platine", "chevilles", "cloison", "visserie", "force"]
+    },
+    {
+      "sku": "TTBF",
+      "sourceFile": "IMG-20261030-WA0010.jpg",
+      "name": "Tirefond de tôle 8 × 80 mm bleu — avec platine et chevilles",
+      "brand": "Force",
+      "category": "visserie-fixation",
+      "price": 2500,
+      "stock": 25,
+      "shortDescription": "Kit de 5 tirefonds 8 × 80 mm, platine bleue et chevilles.",
+      "description": "Kit de fixation identique au modèle standard, avec platine de reprise laquée bleue : cinq tirefonds 8 × 80 mm, une platine et des chevilles à collerette. La couleur de la platine permet de repérer facilement les kits par chantier ou par type de support. Marque Force.",
+      "attributes": {
+        "Type": "Kit de tirefonds de tôle",
+        "Dimensions": "8 × 80 mm",
+        "Contenu": "5 tirefonds, platine bleue, chevilles",
+        "Finition": "Zinguée dorée"
+      },
+      "keywords": ["tirefond", "tirefond de tole", "8x80", "bleu", "fixation", "platine", "chevilles", "visserie", "force"]
+    },
+    {
+      "sku": "TTRF",
+      "sourceFile": "IMG-20261030-WA0012.jpg",
+      "name": "Tirefond de tôle 8 × 80 mm rouge — avec platine et chevilles",
+      "brand": "Force",
+      "category": "visserie-fixation",
+      "price": 2500,
+      "stock": 25,
+      "shortDescription": "Kit de 5 tirefonds 8 × 80 mm, platine rouge et chevilles.",
+      "description": "Kit de fixation avec platine de reprise laquée rouge : cinq tirefonds 8 × 80 mm, une platine et des chevilles à collerette. Pour fixer un équipement sur cloison creuse ou plaque de plâtre. Marque Force.",
+      "attributes": {
+        "Type": "Kit de tirefonds de tôle",
+        "Dimensions": "8 × 80 mm",
+        "Contenu": "5 tirefonds, platine rouge, chevilles",
+        "Finition": "Zinguée dorée"
+      },
+      "keywords": ["tirefond", "tirefond de tole", "8x80", "rouge", "fixation", "platine", "chevilles", "visserie", "force"]
+    },
+    {
+      "sku": "TTVD",
+      "sourceFile": "IMG-20261030-WA0014.jpg",
+      "name": "Tirefond de tôle 8 × 80 mm vert — avec platine et chevilles",
+      "brand": "Force",
+      "category": "visserie-fixation",
+      "price": 2500,
+      "stock": 25,
+      "shortDescription": "Kit de 5 tirefonds 8 × 80 mm, platine verte et chevilles.",
+      "description": "Kit de fixation avec platine de reprise laquée verte : cinq tirefonds 8 × 80 mm, une platine et des chevilles à collerette. Pour fixer un équipement sur cloison creuse ou plaque de plâtre. Marque Force.",
+      "attributes": {
+        "Type": "Kit de tirefonds de tôle",
+        "Dimensions": "8 × 80 mm",
+        "Contenu": "5 tirefonds, platine verte, chevilles",
+        "Finition": "Zinguée dorée"
+      },
+      "keywords": ["tirefond", "tirefond de tole", "8x80", "vert", "fixation", "platine", "chevilles", "visserie", "force"]
+    }
+  ]
+}
