@@ -190,7 +190,7 @@ export default async function HomePage() {
           </div>
           {data.roots.length === 0 ? (
             <p className="rounded-lg border border-dashed border-navy-200 bg-white p-4 text-sm text-navy-500">
-              Nos rayons seront affichés très bientôt.
+              Retrouvez toutes nos familles de produits dans le catalogue.
             </p>
           ) : (
             <ul className="grid grid-cols-3 gap-2 sm:grid-cols-4 lg:grid-cols-5">
@@ -238,7 +238,7 @@ export default async function HomePage() {
         subtitle="Dernières références ajoutées au catalogue."
         href="/catalogue?sort=newest"
         products={latest}
-        emptyLabel="Le catalogue sera bientôt enrichi."
+        emptyLabel="Aucune nouveauté à afficher pour le moment."
       />
 
       {/* MARQUES */}

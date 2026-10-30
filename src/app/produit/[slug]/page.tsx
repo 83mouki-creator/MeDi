@@ -153,7 +153,7 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
                 ? 'Épuisé — indisponible actuellement'
                 : availability.state === 'PREORDER'
                   ? 'Disponible en précommande'
-                  : `${availability.label} — expédition sous 24 h ouvrées après paiement`}
+                  : `${availability.label} — retrait à Daloa ou expédition après paiement`}
             </p>
 
             <div className="mt-4">
@@ -176,7 +176,7 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
                 <Store className="size-4 text-accent-600" aria-hidden /> Retrait en boutique
               </p>
               <p className="mt-1 text-xs leading-relaxed text-navy-600">
-                {settings.addressLine ? `${settings.addressLine}, ${settings.city}` : `Boutique à ${settings.city} — adresse à confirmer`}
+                {settings.addressLine ? `${settings.addressLine}, ${settings.city}` : `Boutique MeDi à ${settings.city}`}
                 {settings.openingHours ? ` · ${settings.openingHours}` : ''}
               </p>
             </Card>

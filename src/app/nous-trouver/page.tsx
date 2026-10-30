@@ -108,15 +108,11 @@ export default async function FindUsPage() {
         ) : (
           <Card className="border-amber-200 bg-amber-50 p-5 text-amber-900">
             <h3 className="flex items-center gap-2 text-sm font-bold">
-              <TriangleAlert className="size-4" aria-hidden /> Plan d’accès bientôt disponible
+              <Compass className="size-4" aria-hidden /> Itinéraire sur WhatsApp
             </h3>
             <p className="mt-2 text-sm">
-              Le plan d’accès de la boutique sera affiché ici très prochainement. Nous préférons ne pas publier de position
-              approximative : votre itinéraire doit être exact.
-            </p>
-            <p className="mt-2 text-sm">
-              En attendant, demandez l’itinéraire sur WhatsApp : un membre de l’équipe vous indique le chemin depuis votre point de
-              départ.
+              Nous ne publions pas de position approximative : votre itinéraire doit être exact. Demandez l’itinéraire sur WhatsApp,
+              un membre de l’équipe vous indique le chemin depuis votre point de départ.
             </p>
             {whatsapp ? (
               <a

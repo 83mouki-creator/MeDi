@@ -181,7 +181,7 @@ export default async function OrderConfirmationPage({ params, searchParams }: Pr
           <Card className="p-4 text-sm">
             <h2 className="flex items-center gap-2 font-bold"><MapPin className="size-4 text-accent-600" aria-hidden /> Où retirer ?</h2>
             <p className="mt-1 text-xs text-navy-600">
-              {settings.addressLine ? `${settings.addressLine}, ${settings.city}` : `Boutique MeDi à ${settings.city} — adresse à confirmer`}
+              {settings.addressLine ? `${settings.addressLine}, ${settings.city}` : `Boutique MeDi à ${settings.city}`}
             </p>
             {settings.openingHours ? <p className="text-xs text-navy-600">{settings.openingHours}</p> : null}
             {settings.phone ? <p className="mt-1 text-xs text-navy-600">{settings.phone}</p> : null}
