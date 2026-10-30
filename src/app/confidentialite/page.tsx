@@ -57,7 +57,7 @@ export default async function PrivacyPage() {
           <li>Gérer la relation client, répondre aux demandes d’aide et traiter les réclamations.</li>
           <li>Assurer la sécurité du site, prévenir la fraude et vérifier les paiements.</li>
           <li>Respecter les obligations comptables et fiscales de la boutique.</li>
-          <li>Améliorer le catalogue et la recherche, sur la base de données agrégées.</li>
+          <li>Améliorer le catalogue et la recherche, à partir de données agrégées.</li>
         </ul>
       </LegalSection>
 
