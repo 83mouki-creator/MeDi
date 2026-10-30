@@ -24,17 +24,17 @@ export default async function ReturnsPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqStructuredData) }} />
       <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">Retours, échanges et garanties</h1>
       <p className="mt-2 text-sm text-navy-600">
-        Les conditions ci-dessous décrivent le fonctionnement de la plateforme. Les durées et modalités commerciales définitives
-        sont arrêtées par la direction de la boutique.
+        Un article ne vous convient pas ou ne correspond pas à ce que vous attendiez ? Voici comment se passe un retour ou un
+        échange chez MeDi.
       </p>
 
       {settings.returnPolicy ? (
         <Card className="mt-4 whitespace-pre-line p-4 text-sm text-navy-700">{settings.returnPolicy}</Card>
       ) : (
-        <Alert tone="warning" className="mt-4" title="Politique de retour non encore publiée">
-          La direction n’a pas encore communiqué sa politique de retour définitive (délai, conditions de reprise, frais). Aucune
-          durée n’est inventée ici. En attendant, chaque demande est examinée au cas par cas :{' '}
-          <Link href="/contact" className="font-semibold underline">écrivez-nous</Link> avec votre numéro de commande.
+        <Alert tone="info" className="mt-4" title="Un retour se traite au cas par cas">
+          Chaque demande est examinée selon l’état réel de l’article et le motif. Écrivez-nous sur WhatsApp avec votre numéro de
+          commande : nous vous répondons avec la marche à suivre et, s’il y a lieu, les frais de renvoi avant toute reprise du
+          produit.
         </Alert>
       )}
 
@@ -76,7 +76,7 @@ export default async function ReturnsPage() {
       <FaqSection
         id="faq-retours"
         title="Questions fréquentes : retours et remboursements"
-        intro="Cinq questions sur les retours, les échanges et les remboursements. Les conditions définitives relèvent de la direction ; chaque cas est confirmé sur le WhatsApp de la boutique."
+        intro="Cinq questions sur les retours, les échanges et les remboursements. Pour un cas particulier, le WhatsApp de la boutique reste le plus rapide."
         entries={RETURNS_FAQ}
         settings={settings}
         fallbackMessage={RETURNS_FAQ_FALLBACK_MESSAGE}

@@ -14,8 +14,6 @@ export const metadata: Metadata = {
 
 export const dynamic = 'force-dynamic';
 
-const MISSING = 'Information à compléter par la boutique';
-
 export default async function ContactPage() {
   const [settings, user] = await Promise.all([getStoreSettings(), getCurrentUser().catch(() => null)]);
 
@@ -55,9 +53,7 @@ export default async function ContactPage() {
                   <a href={`tel:${settings.phone.replace(/\s/g, '')}`} className="font-semibold text-navy-900 hover:underline">
                     {settings.phone}
                   </a>
-                ) : (
-                  <span className="text-navy-400">{MISSING}</span>
-                )}
+                ) : null}
               </span>
             </li>
             {whatsappHref ? (
@@ -80,9 +76,7 @@ export default async function ContactPage() {
                     {settings.addressLine}, {settings.city}, {settings.country}
                   </span>
                 ) : (
-                  <span className="text-navy-400">
-                    {MISSING} ({settings.city}, {settings.country})
-                  </span>
+                  <span className="font-semibold text-navy-900">{settings.city}, {settings.country}</span>
                 )}
               </span>
             </li>
@@ -92,9 +86,7 @@ export default async function ContactPage() {
                 <span className="block text-xs text-navy-500">Horaires</span>
                 {settings.openingHours ? (
                   <span className="font-semibold text-navy-900">{settings.openingHours}</span>
-                ) : (
-                  <span className="text-navy-400">{MISSING}</span>
-                )}
+                ) : null}
               </span>
             </li>
             <li className="flex gap-2">
@@ -105,9 +97,7 @@ export default async function ContactPage() {
                   <a href={`mailto:${settings.email}`} className="font-semibold text-navy-900 hover:underline">
                     {settings.email}
                   </a>
-                ) : (
-                  <span className="text-navy-400">{MISSING}</span>
-                )}
+                ) : null}
               </span>
             </li>
           </ul>
@@ -130,8 +120,8 @@ export default async function ContactPage() {
             <TriangleAlert className="size-4" aria-hidden /> Tarifs et délais
           </p>
           <p className="mt-1">
-            Les frais de livraison sont calculés à partir des zones configurées par la boutique. Pour une livraison hors Daloa,
-            le coût du transport est confirmé avant tout paiement.
+            Les frais de livraison dépendent de votre quartier ou de votre ville. Pour une livraison hors Daloa, le coût du
+            transport est confirmé avant tout paiement.
           </p>
         </Card>
 

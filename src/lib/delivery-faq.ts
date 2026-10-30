@@ -28,7 +28,7 @@ export const DELIVERY_FAQ: readonly FaqEntry[] = [
     id: 'prepaiement',
     question: 'Pourquoi le paiement intégral est-il exigé hors Daloa ?',
     answer:
-      'Parce que le transporteur est réglé au départ du colis et qu’aucun encaissement n’a lieu à l’arrivée. La commande ne devient « prête à expédier » qu’après vérification de l’encaissement réel par un administrateur : une capture d’écran, un SMS ou une déclaration ne valent jamais preuve de paiement. Tant que le paiement n’est pas confirmé, la commande reste « paiement à vérifier » et le colis reste en boutique.',
+      'Parce que le transporteur est réglé au départ du colis et qu’aucun encaissement n’a lieu à l’arrivée. La commande ne devient « prête à expédier » qu’après vérification du paiement reçu par la boutique : une capture d’écran, un SMS ou une déclaration ne valent jamais preuve de paiement. Tant que le paiement n’est pas confirmé, la commande reste « paiement à vérifier » et le colis reste en boutique.',
     whatsappMessage:
       'Bonjour MeDi, je souhaite expédier une commande hors Daloa et j’ai une question sur le prépaiement. Ma référence de commande / de transaction : …',
   },

@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getStoreSettings } from '@/lib/settings';
-import { LegalPage, LegalSection, Missing } from '@/components/legal-page';
+import { LegalPage, LegalSection } from '@/components/legal-page';
 
 export const metadata: Metadata = {
   title: 'Politique de confidentialité',
@@ -19,25 +19,18 @@ export default async function PrivacyPage() {
     <LegalPage
       title="Politique de confidentialité"
       intro="Cette page explique quelles données personnelles sont traitées lorsque vous utilisez le site MeDi, pourquoi elles le sont, combien de temps elles sont conservées et comment exercer vos droits."
-      pending="La déclaration auprès de l’ARTCI et la désignation d’un responsable de traitement relèvent du propriétaire. Aucune déclaration n’est présumée faite."
     >
       <LegalSection title="Responsable du traitement">
         <p>
-          {settings.storeName}, {settings.city}, {settings.country}. Contact pour les demandes relatives aux données :{' '}
-          {settings.email ? (
-            <a href={`mailto:${settings.email}`} className="font-medium text-accent-700 underline">{settings.email}</a>
-          ) : (
-            <Missing>adresse e-mail dédiée aux données personnelles</Missing>
-          )}
-          .
+          {settings.storeName}, {settings.city}, {settings.country}. Pour toute demande relative à vos données, écrivez-nous via la
+          page <Link href="/contact" className="font-medium text-accent-700 underline">contact</Link>.
         </p>
       </LegalSection>
 
       <LegalSection title="Données collectées">
         <ul className="list-disc space-y-1 pl-5">
           <li>
-            <strong>Compte client</strong> : nom, adresse e-mail, numéro de téléphone, mot de passe (stocké uniquement sous forme
-            de condensat scrypt, jamais en clair).
+            <strong>Compte client</strong> : nom, adresse e-mail, numéro de téléphone et mot de passe (jamais conservé en clair).
           </li>
           <li>
             <strong>Commandes</strong> : coordonnées de livraison, ville, commune, point de repère, transporteur, contenu de la
@@ -51,8 +44,8 @@ export default async function PrivacyPage() {
             à la recherche visuelle sont traitées en mémoire et ne sont pas conservées.
           </li>
           <li>
-            <strong>Données techniques</strong> : adresse IP et agent utilisateur, utilisés pour la sécurité (limitation des
-            tentatives de connexion, prévention des abus) et la traçabilité des actions d’administration.
+            <strong>Données de sécurité</strong> : adresse IP et type de navigateur, utilisés pour la protection du site
+            (limitation des tentatives de connexion, prévention des abus).
           </li>
         </ul>
         <p>Aucune donnée de carte bancaire n’est collectée : les paiements Wave s’effectuent hors du site, dans l’application du client.</p>
@@ -76,16 +69,14 @@ export default async function PrivacyPage() {
           <li>Journaux de sécurité : durée limitée, proportionnée à la finalité de sécurité.</li>
         </ul>
         <p>
-          Les durées précises retenues par la boutique doivent être confirmées par le propriétaire ; elles ne peuvent pas être
-          inférieures aux obligations légales de conservation comptable.
+          Les durées de conservation respectent les obligations légales applicables, notamment en matière comptable.
         </p>
       </LegalSection>
 
       <LegalSection title="Destinataires et sous-traitants">
         <p>
-          Les données sont accessibles aux personnels habilités de la boutique (administration, gestion des commandes, gestion du
-          stock) dans la limite de leurs attributions. Des prestataires techniques interviennent pour l’hébergement (Vercel), la
-          base de données (Neon) et le stockage des images. Les paiements sont traités par Wave selon ses propres conditions.
+          Les données sont accessibles aux personnes habilitées de la boutique (gestion des commandes, du stock et du service
+          client), dans la limite de leurs attributions. Les paiements sont traités par Wave selon ses propres conditions.
         </p>
         <p>Aucune donnée n’est vendue ni cédée à des fins publicitaires.</p>
       </LegalSection>
@@ -94,12 +85,8 @@ export default async function PrivacyPage() {
         <p>
           Vous pouvez demander l’accès à vos données, leur rectification, leur effacement lorsque la loi le permet, la limitation
           du traitement, et vous opposer à certains usages. Écrivez à{' '}
-          {settings.email ? (
-            <a href={`mailto:${settings.email}`} className="font-medium text-accent-700 underline">{settings.email}</a>
-          ) : (
-            <Missing>adresse e-mail de contact</Missing>
-          )}{' '}
-          ou utilisez la page <Link href="/contact" className="font-medium text-accent-700 underline">contact</Link>.
+          utilisez la page <Link href="/contact" className="font-medium text-accent-700 underline">contact</Link> ou écrivez-nous
+          sur WhatsApp au numéro affiché en bas de page.
         </p>
         <p>
           En cas de difficulté persistante, vous pouvez saisir l’Autorité de régulation des télécommunications de Côte d’Ivoire
@@ -109,9 +96,8 @@ export default async function PrivacyPage() {
 
       <LegalSection title="Sécurité">
         <p>
-          Les mots de passe sont hachés (scrypt avec sel), les sessions sont signées et stockées côté serveur, les accès
-          d’administration sont contrôlés par rôle et journalisés. Les communications avec le site passent par HTTPS en
-          production. Les secrets techniques ne sont jamais exposés au navigateur ni au dépôt de code.
+          Les mots de passe ne sont jamais conservés en clair, les connexions sont protégées et les accès internes sont limités aux
+          personnes habilitées.
         </p>
       </LegalSection>
 

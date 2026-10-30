@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getStoreSettings } from '@/lib/settings';
-import { LegalPage, LegalSection, Missing } from '@/components/legal-page';
+import { LegalPage, LegalSection } from '@/components/legal-page';
 
 export const metadata: Metadata = {
   title: 'Conditions générales de vente',
@@ -18,20 +18,19 @@ export default async function TermsPage() {
   return (
     <LegalPage
       title="Conditions générales de vente"
-      intro="Les présentes conditions s’appliquent à toute commande passée sur le site. Elles décrivent le fonctionnement effectif de la plateforme ; les mentions réservées à la direction sont signalées."
-      pending="Les clauses commerciales définitives (délais de rétractation, garanties, juridiction compétente, pénalités) doivent être validées par le propriétaire et son conseil. Aucune n’est inventée ici."
+      intro="Les présentes conditions s’appliquent à toute commande passée sur le site MeDi. Elles décrivent les modalités de commande, de paiement, de livraison et de retour applicables à la boutique."
     >
       <LegalSection title="1. Vendeur">
         <p>
-          {settings.storeName}, {settings.city}, {settings.country}. RCCM : <Missing>numéro RCCM</Missing>. Téléphone :{' '}
-          {settings.phone ?? <Missing>téléphone de la boutique</Missing>}.
+          {settings.storeName}, {settings.city}, {settings.country}.
+          {settings.phone ? ` Téléphone : ${settings.phone}.` : ''}
         </p>
       </LegalSection>
 
       <LegalSection title="2. Produits et disponibilité">
         <p>
-          Les produits sont des outils, matériaux et équipements proposés à la vente dans le catalogue. Les visuels sont fournis à
-          titre indicatif ; les caractéristiques techniques affichées proviennent des fiches produits saisies par la boutique.
+          Les produits sont des outils, matériaux et équipements proposés à la vente dans le catalogue. Les visuels et les
+          caractéristiques techniques sont fournis à titre indicatif.
         </p>
         <p>
           La disponibilité est calculée en temps réel à partir du stock physique diminué des quantités réservées par des
@@ -47,8 +46,8 @@ export default async function TermsPage() {
           séparément avant paiement. Les prix promotionnels s’appliquent uniquement pendant la période annoncée.
         </p>
         <p>
-          Le total facturé est recalculé par le serveur à partir des prix enregistrés en base au moment de la commande. Un prix
-          affiché de manière manifestement erronée peut entraîner l’annulation de la commande et le remboursement intégral.
+          Le total facturé est celui calculé au moment de la commande, à partir des prix affichés sur le site. Un prix affiché de
+          manière manifestement erroné peut entraîner l’annulation de la commande et le remboursement intégral.
         </p>
       </LegalSection>
 
@@ -66,18 +65,16 @@ export default async function TermsPage() {
 
       <LegalSection title="5. Paiement">
         <p>
-          Les moyens de paiement proposés sont affichés après le choix de la destination : Wave, paiement à la livraison (si la
-          boutique l’autorise dans la zone et sous le plafond configuré), ou espèces en boutique pour un retrait.
+          Les moyens de paiement proposés sont affichés après le choix de la destination : Wave, paiement à la livraison (lorsque
+          la boutique l’autorise pour la zone et le montant concernés), ou espèces en boutique pour un retrait.
         </p>
         <p>
           <strong>Hors Daloa, le paiement intégral est exigé avant expédition.</strong> L’envoi d’une référence de transaction
-          place la commande en « paiement à vérifier » : la confirmation intervient après contrôle de l’encaissement réel par un
-          administrateur, ou automatiquement lorsqu’une intégration Wave sécurisée est configurée. Une capture d’écran ne
-          constitue pas une preuve de paiement.
+          place la commande en « paiement à vérifier » : la confirmation intervient après contrôle du paiement reçu par la
+          boutique. Une capture d’écran ne constitue pas une preuve de paiement.
         </p>
         <p>
-          Le coût du transport hors Daloa est communiqué avant le paiement et n’est pas fixé par une grille nationale
-          standardisée : il dépend du transporteur et de la destination, selon les tarifs saisis par la boutique.
+          Le coût du transport hors Daloa est communiqué avant le paiement : il dépend du transporteur et de la destination.
         </p>
       </LegalSection>
 
@@ -118,7 +115,7 @@ export default async function TermsPage() {
       <LegalSection title="10. Droit applicable et litiges">
         <p>
           Les présentes conditions sont soumises au droit ivoirien. En cas de litige, une solution amiable sera recherchée en
-          priorité. Juridiction compétente : <Missing>tribunal compétent désigné par la boutique</Missing>.
+          priorité avec la boutique avant toute autre démarche.
         </p>
       </LegalSection>
     </LegalPage>

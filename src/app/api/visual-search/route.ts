@@ -15,7 +15,14 @@ export const maxDuration = 30;
 export async function POST(request: Request) {
   const provider = providerInfo();
   if (!provider.available) {
-    return NextResponse.json({ available: false, reason: provider.note, provider }, { status: 503 });
+    return NextResponse.json(
+      {
+        available: false,
+        reason: 'La recherche par photo est momentanément indisponible. Utilisez la recherche par mots-clés ou écrivez-nous sur WhatsApp.',
+        provider,
+      },
+      { status: 503 },
+    );
   }
 
   const ip = request.headers.get('x-forwarded-for') ?? 'local';

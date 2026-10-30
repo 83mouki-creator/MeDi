@@ -10,12 +10,12 @@ import {
   osmEmbedUrl,
   osmPageUrl,
 } from '@/lib/geo';
-import { Alert, Card } from '@/components/ui/primitives';
+import { Card } from '@/components/ui/primitives';
 
 export const metadata: Metadata = {
   title: 'Nous trouver — boutique MeDi à Daloa',
   description:
-    'Localisation de la boutique MeDi à Daloa : carte, coordonnées GPS et itinéraire. Les coordonnées exactes sont publiées par la boutique dès qu’elles sont relevées.',
+    'Localisation de la boutique MeDi à Daloa : carte, itinéraire, horaires et téléphone pour venir retirer votre commande.',
   alternates: { canonical: '/nous-trouver' },
 };
 
@@ -51,8 +51,8 @@ export default async function FindUsPage() {
 
       <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">Nous trouver</h1>
       <p className="mt-2 text-sm text-navy-600">
-        La boutique se trouve à {settings.city}, {settings.country}. Cette page publie l’emplacement exact dès que la boutique l’a
-        relevé : aucune position n’est estimée ni arrondie ici.
+        La boutique se trouve à {settings.city}, {settings.country}. Retrouvez ici le plan d’accès, l’itinéraire, les horaires et
+        le numéro à appeler pour venir retirer votre commande.
       </p>
 
       {/* ─── Carte ou emplacement en attente ─── */}
@@ -100,7 +100,7 @@ export default async function FindUsPage() {
                   rel="noopener noreferrer"
                   className="inline-flex min-h-11 items-center gap-2 rounded-lg border border-navy-200 px-4 py-2.5 text-sm font-semibold text-navy-800 hover:bg-navy-50"
                 >
-                  <Compass className="size-4" aria-hidden /> OpenStreetMap
+                  <Compass className="size-4" aria-hidden /> Voir la carte
                 </a>
               </div>
             </div>
@@ -108,12 +108,11 @@ export default async function FindUsPage() {
         ) : (
           <Card className="border-amber-200 bg-amber-50 p-5 text-amber-900">
             <h3 className="flex items-center gap-2 text-sm font-bold">
-              <TriangleAlert className="size-4" aria-hidden /> Coordonnées GPS en attente
+              <TriangleAlert className="size-4" aria-hidden /> Plan d’accès bientôt disponible
             </h3>
             <p className="mt-2 text-sm">
-              La boutique n’a pas encore communiqué la latitude et la longitude exactes de son emplacement. <strong>La carte sera
-              affichée automatiquement</strong> dès que ces deux valeurs seront enregistrées dans l’espace d’administration — aucune
-              position approximative n’est utilisée en attendant.
+              Le plan d’accès de la boutique sera affiché ici très prochainement. Nous préférons ne pas publier de position
+              approximative : votre itinéraire doit être exact.
             </p>
             <p className="mt-2 text-sm">
               En attendant, demandez l’itinéraire sur WhatsApp : un membre de l’équipe vous indique le chemin depuis votre point de
@@ -151,15 +150,14 @@ export default async function FindUsPage() {
               <MapPin className="size-4 text-accent-600" aria-hidden /> Adresse
             </p>
             <p className="mt-1 text-navy-600">
-              {settings.addressLine ?? 'Adresse de la boutique : à compléter'}
-              {settings.addressLine ? `, ${settings.city}` : ` — ${settings.city}, ${settings.country}`}
+              {settings.addressLine ? `${settings.addressLine}, ${settings.city}` : `${settings.city}, ${settings.country}`}
             </p>
           </Card>
           <Card className="p-4 text-sm">
             <p className="flex items-center gap-2 font-bold">
               <Clock className="size-4 text-accent-600" aria-hidden /> Horaires
             </p>
-            <p className="mt-1 text-navy-600">{settings.openingHours ?? 'Horaires : à compléter'}</p>
+            <p className="mt-1 text-navy-600">{settings.openingHours ?? 'Contactez la boutique pour connaître les horaires.'}</p>
           </Card>
           <Card className="p-4 text-sm">
             <p className="flex items-center gap-2 font-bold">
@@ -171,7 +169,7 @@ export default async function FindUsPage() {
                   {settings.phone}
                 </a>
               ) : (
-                'Numéro : à compléter'
+                <span className="text-navy-500">Numéro communiqué sur WhatsApp</span>
               )}
             </p>
           </Card>
@@ -191,13 +189,6 @@ export default async function FindUsPage() {
         </div>
       </section>
 
-      {point ? null : (
-        <Alert tone="info" className="mt-6" title="Comment compléter cette page">
-          Les coordonnées se saisissent dans <span className="font-medium">/admin/parametres → Géolocalisation de la boutique</span>{' '}
-          (latitude et longitude, six décimales). Une fois enregistrées, la carte, le bouton d’itinéraire et les données
-          structurées de localisation s’affichent sur cette page.
-        </Alert>
-      )}
     </div>
   );
 }

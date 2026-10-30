@@ -217,7 +217,7 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
         <section aria-labelledby="description-title">
           <h2 id="description-title" className="mb-2 text-lg font-bold">Description</h2>
           <div className="prose-sm max-w-none whitespace-pre-line text-sm leading-relaxed text-navy-700">
-            {product.description || product.shortDescription || 'Description détaillée à venir.'}
+            {product.description || product.shortDescription || 'Photo et description complètes disponibles sur demande via WhatsApp.'}
           </div>
         </section>
 
@@ -233,19 +233,10 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
               ))}
             </dl>
           ) : (
-            <p className="text-sm text-navy-500">Caractéristiques à compléter par la boutique.</p>
+            <p className="text-sm text-navy-500">
+              Les caractéristiques détaillées de cet article vous sont communiquées sur demande via WhatsApp.
+            </p>
           )}
-          {product.keywords.length > 0 ? (
-            <ul className="mt-3 flex flex-wrap gap-1.5" aria-label="Mots-clés">
-              {product.keywords.slice(0, 12).map((keyword) => (
-                <li key={keyword}>
-                  <Link href={`/catalogue?q=${encodeURIComponent(keyword)}`} className="rounded-md bg-navy-50 px-2 py-1 text-xs text-navy-600 hover:bg-navy-100">
-                    {keyword}
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          ) : null}
         </section>
       </div>
 
