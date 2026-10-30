@@ -113,6 +113,18 @@ export default async function ContactPage() {
           </ul>
         </Card>
 
+        <Card className="p-4 text-sm">
+          <h2 className="mb-2 flex items-center gap-2 text-sm font-bold">
+            <MapPin className="size-4 text-accent-600" aria-hidden /> Nous trouver
+          </h2>
+          <p className="text-navy-600">
+            Carte, coordonnées GPS et itinéraire vers la boutique à {settings.city}.
+          </p>
+          <a href="/nous-trouver" className="mt-2 inline-block font-semibold text-accent-700 underline">
+            Ouvrir la page « Nous trouver »
+          </a>
+        </Card>
+
         <Card className="border-amber-200 bg-amber-50 p-4 text-sm text-amber-900">
           <p className="flex items-center gap-2 font-semibold">
             <TriangleAlert className="size-4" aria-hidden /> Tarifs et délais

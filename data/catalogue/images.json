@@ -682,5 +682,95 @@
     "checksum": "b9f2183387664f47bf03bea5d098f6d6b7c08ddf7c9447187b0b9ea840e1b88a",
     "width": 1000,
     "height": 1000
+  },
+  "CLE-124F": {
+    "url": "/catalogue/cle-124f.webp",
+    "checksum": "87fb8c5ac638fab557131b4259d706847e6fcdf66cf1dce87048e45ac9e3c5c0",
+    "width": 1000,
+    "height": 1000
+  },
+  "CLE-129F": {
+    "url": "/catalogue/cle-129f.webp",
+    "checksum": "8b30757a9ae29f0e598d120a205412e31442a46d9b61d4c5fd8f88fd1497c811",
+    "width": 1000,
+    "height": 1000
+  },
+  "CLE-134F": {
+    "url": "/catalogue/cle-134f.webp",
+    "checksum": "ae4eb16d7b22cd19f0f8dca844d3819230ec1a8951a7b1a00a5a22183d784dac",
+    "width": 1000,
+    "height": 1000
+  },
+  "CLE-170F": {
+    "url": "/catalogue/cle-170f.webp",
+    "checksum": "77413fcda7e66f4966ab622c4c0629713dbaa6afa6916d1823590f74ad2bf9f9",
+    "width": 1000,
+    "height": 1000
+  },
+  "CLE-S-101-1913": {
+    "url": "/catalogue/cle-s-101-1913.webp",
+    "checksum": "a879b45897b514d2c162338cdd182576b0da566f72d9f248abeeb4f6245e11ad",
+    "width": 1000,
+    "height": 1000
+  },
+  "CLE-S-101-1919": {
+    "url": "/catalogue/cle-s-101-1919.webp",
+    "checksum": "2a56350cbd4d006cc5ae95f943e93a325429ae01d46047059a87aea5b4fbe93d",
+    "width": 1000,
+    "height": 1000
+  },
+  "CLE-S5": {
+    "url": "/catalogue/cle-s5.webp",
+    "checksum": "fa07488a5261b87f689e749deaa17b7d09a70d94357bcfdd7e8918c19e835e9a",
+    "width": 1000,
+    "height": 1000
+  },
+  "CLE-S5-70": {
+    "url": "/catalogue/cle-s5-70.webp",
+    "checksum": "a9702d370371836735e3f1dc76cc52a837122d1e3406e6690010ceb02d5d9a93",
+    "width": 1000,
+    "height": 1000
+  },
+  "CK6683": {
+    "url": "/catalogue/ck6683.webp",
+    "checksum": "ae2b77a08bf6513e9c3ec40df64a2b2ff5ab6cb80d1f7f1990d372a5bedbfc98",
+    "width": 1000,
+    "height": 1000
+  },
+  "CHARN-UF": {
+    "url": "/catalogue/charn-uf.webp",
+    "checksum": "03784cd6f21a41f855ce4a67572c95bf63ba71fbfe8cbdfaafbc240c847c74bf",
+    "width": 1000,
+    "height": 1000
+  },
+  "VIS-RF": {
+    "url": "/catalogue/vis-rf.webp",
+    "checksum": "085ab23d2b206e46aff84685ebe37dbd548b96f82e2389cceefb65ffae1fa47b",
+    "width": 1000,
+    "height": 1000
+  },
+  "TIR-8X80F": {
+    "url": "/catalogue/tir-8x80f.webp",
+    "checksum": "2438c2b8db66512659ca864740d4153ebf0e90708dd7bba8a42a55032e619529",
+    "width": 1000,
+    "height": 1000
+  },
+  "TTBF": {
+    "url": "/catalogue/ttbf.webp",
+    "checksum": "29ac0a1025926bbb8f6b443befbfe8473d6deb5e27fb9d54d63c2ed7e0fd84f8",
+    "width": 1000,
+    "height": 1000
+  },
+  "TTRF": {
+    "url": "/catalogue/ttrf.webp",
+    "checksum": "c7992bc79bf8d9ee369e185aa1d5259efed1b7044dbf9fff3d89910ec8b81759",
+    "width": 1000,
+    "height": 1000
+  },
+  "TTVD": {
+    "url": "/catalogue/ttvd.webp",
+    "checksum": "0f977adf3eff04e850fcff3a3d7e8833b64c04670821a5b6fd7060245013dd91",
+    "width": 1000,
+    "height": 1000
   }
 }

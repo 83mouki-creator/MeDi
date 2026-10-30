@@ -7,6 +7,7 @@ import { db } from '@/db';
 import { deliveryZones, storeSettings } from '@/db/schema';
 import { requirePermission } from '@/lib/auth';
 import { audit } from '@/lib/audit';
+import { parseCoordinates } from '@/lib/geo';
 import { newId } from '@/lib/utils';
 
 export type SettingsState = { error?: string; success?: string };
@@ -40,6 +41,15 @@ export async function saveSettingsAction(_prev: SettingsState, formData: FormDat
   if (!Number.isFinite(lowStock) || lowStock < 0) return { error: 'Seuil de stock faible invalide.' };
   if (!Number.isFinite(reservation) || reservation < 15) return { error: 'Durée de réservation minimale : 15 minutes.' };
 
+  // Géolocalisation : soit les deux coordonnées sont fournies et valides, soit
+  // les deux restent vides. Une seule valeur est refusée (jamais de position
+  // approximative publiée sur le site).
+  const coordinates = parseCoordinates({ latitude: optional(formData.get('latitude')), longitude: optional(formData.get('longitude')) });
+  if (coordinates.status === 'incomplete') {
+    return { error: 'Géolocalisation incomplète : renseignez la latitude ET la longitude, ou laissez les deux champs vides.' };
+  }
+  if (coordinates.status === 'invalid') return { error: `Géolocalisation invalide : ${coordinates.message}` };
+
   const values = {
     storeName: String(formData.get('storeName') ?? 'MeDi').trim() || 'MeDi',
     tagline: optional(formData.get('tagline')),
@@ -62,15 +72,24 @@ export async function saveSettingsAction(_prev: SettingsState, formData: FormDat
     instagramUrl: optional(formData.get('instagramUrl')),
     legalNotice: optional(formData.get('legalNotice')),
     returnPolicy: optional(formData.get('returnPolicy')),
+    latitude: coordinates.status === 'ok' ? coordinates.point.latitude.toFixed(6) : null,
+    longitude: coordinates.status === 'ok' ? coordinates.point.longitude.toFixed(6) : null,
     updatedAt: new Date(),
   };
 
   await db.insert(storeSettings).values({ id: 1, ...values }).onConflictDoUpdate({ target: storeSettings.id, set: values });
-  await audit(actor, { action: 'settings.updated', entity: 'store_settings', entityId: '1', metadata: { allowCod: values.allowCod } });
+  await audit(actor, {
+    action: 'settings.updated',
+    entity: 'store_settings',
+    entityId: '1',
+    metadata: { allowCod: values.allowCod, geoConfigured: values.latitude !== null },
+  });
 
   revalidatePath('/');
   revalidatePath('/admin/parametres');
   revalidatePath('/livraison');
+  revalidatePath('/contact');
+  revalidatePath('/nous-trouver');
   return { success: 'Réglages enregistrés.' };
 }
 
