@@ -297,6 +297,43 @@ export async function listPromotions(limit = 8) {
   return (rows.rows as Record<string, unknown>[]).map(mapCard);
 }
 
+/** Identifiants des produits réellement en promotion (fenêtre de dates respectée). */
+export async function listActivePromoProductIds(limit = 8): Promise<string[]> {
+  const rows = await db.execute(sql`
+    SELECT p.id FROM products p
+    WHERE p.is_active = true AND p.is_archived = false AND ${PROMO_ACTIVE}
+    ORDER BY ((p.price - p.promo_price) / NULLIF(p.price, 0)) DESC, p.updated_at DESC
+    LIMIT ${limit}
+  `);
+  return (rows.rows as { id: string }[]).map((row) => String(row.id));
+}
+
+/**
+ * Identifiants des meilleures ventes : uniquement des produits déjà vendus
+ * (au moins une unité) et encore disponibles. Aucun classement inventé.
+ */
+export async function listBestSellerProductIds(limit = 8): Promise<string[]> {
+  const rows = await db.execute(sql`
+    SELECT p.id FROM products p
+    WHERE p.is_active = true AND p.is_archived = false
+      AND p.sold_count > 0
+      AND (p.stock - p.reserved) > 0
+    ORDER BY p.sold_count DESC, p.created_at DESC
+    LIMIT ${limit}
+  `);
+  return (rows.rows as { id: string }[]).map((row) => String(row.id));
+}
+
+/** Nombre de références actuellement en promotion (sert à masquer le lien vide). */
+export async function countActivePromotions(): Promise<number> {
+  const result = await db.execute(sql`
+    SELECT count(*)::int AS n FROM products p
+    WHERE p.is_active = true AND p.is_archived = false AND ${PROMO_ACTIVE}
+  `);
+  const row = result.rows[0] as { n?: number } | undefined;
+  return Number(row?.n ?? 0);
+}
+
 /** Arborescence de catégories actives avec comptage de produits publiés. */
 export async function getCategoryTree() {
   const rows = await db.execute(sql`

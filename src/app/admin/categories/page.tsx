@@ -77,9 +77,9 @@ export default async function CategoriesPage() {
         </Card>
       </div>
 
-      <Card className="overflow-hidden">
+      <Card className="overflow-x-auto">
         <h2 className="border-b border-navy-100 bg-navy-50 px-4 py-2.5 text-sm font-bold">Catégories ({categoryRows.length})</h2>
-        <table className="w-full text-sm">
+        <table className="w-full min-w-[560px] text-sm">
           <thead className="text-left text-xs uppercase tracking-wide text-navy-500">
             <tr>
               <th className="px-3 py-2">Nom</th>
@@ -112,9 +112,9 @@ export default async function CategoriesPage() {
         </table>
       </Card>
 
-      <Card className="overflow-hidden">
+      <Card className="overflow-x-auto">
         <h2 className="border-b border-navy-100 bg-navy-50 px-4 py-2.5 text-sm font-bold">Marques ({brandRows.length})</h2>
-        <table className="w-full text-sm">
+        <table className="w-full min-w-[560px] text-sm">
           <thead className="text-left text-xs uppercase tracking-wide text-navy-500">
             <tr>
               <th className="px-3 py-2">Nom</th>

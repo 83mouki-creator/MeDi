@@ -10,7 +10,7 @@ import { CatalogFilters, SortSelect } from '@/components/catalog-filters';
 import { Pagination } from '@/components/pagination';
 import { EmptyState } from '@/components/ui/primitives';
 import { ButtonLink } from '@/components/ui/button';
-
+import { parsePage } from '@/lib/utils';
 type SearchParams = Record<string, string | string[] | undefined>;
 
 export const metadata: Metadata = {
@@ -34,7 +34,7 @@ export default async function CatalogPage({ searchParams }: { searchParams: Prom
   const promo = first(params.promo) === '1';
   const availability = promo ? 'promo' : ((first(params.availability) as 'in_stock' | 'promo' | 'all' | undefined) ?? 'all');
   const sort = (first(params.sort) as 'relevance' | 'price_asc' | 'price_desc' | 'newest' | undefined) ?? 'relevance';
-  const page = Math.max(1, Number(first(params.page) ?? 1) || 1);
+  const page = parsePage(first(params.page));
 
   const [tree, brands, priceRange] = await Promise.all([
     getCategoryTree().catch(() => ({ roots: [], childrenOf: () => [], all: [] as { id: string; slug: string; name: string; productCount: number }[] })),

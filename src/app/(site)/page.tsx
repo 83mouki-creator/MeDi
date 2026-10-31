@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { db } from '@/db';
 import { brands, categories, products } from '@/db/schema';
 import { ProductCardView } from '@/components/product-card';
-import type { ProductCard } from '@/lib/catalog';
+import { listBestSellerProductIds, type ProductCard } from '@/lib/catalog';
 import { categoryIcon } from '@/components/category-icon';
 import { getStoreSettings } from '@/lib/settings';
 
@@ -55,6 +55,11 @@ async function getHomeData() {
             eq(products.isArchived, false),
             isNotNull(products.promoPrice),
             gt(products.promoPrice, sql`0`),
+            // Même fenêtre de validité que la fiche produit : une promo expirée
+            // ne doit pas apparaître dans « Promotions en cours ».
+            sql`(${products.promoPrice} < ${products.price})`,
+            sql`(${products.promoStartsAt} IS NULL OR ${products.promoStartsAt} <= now())`,
+            sql`(${products.promoEndsAt} IS NULL OR ${products.promoEndsAt} >= now())`,
           ),
         )
         .orderBy(desc(products.updatedAt))
@@ -100,10 +105,13 @@ async function cardsFor(ids: string[]): Promise<ProductCard[]> {
 
 export default async function HomePage() {
   const [settings, data] = await Promise.all([getStoreSettings(), getHomeData()]);
-  const [featured, latest, promos] = await Promise.all([
+  const [featured, latest, promos, bestSellers] = await Promise.all([
     cardsFor(data.featured.map((row) => row.id)),
     cardsFor(data.latest.map((row) => row.id)),
     cardsFor(data.promos.map((row) => row.id)),
+    listBestSellerProductIds(8)
+      .then((ids) => cardsFor(ids))
+      .catch(() => []),
   ]);
 
   const whatsappHref = settings.whatsapp
@@ -221,6 +229,15 @@ export default async function HomePage() {
           subtitle="Prix réduits pendant la période annoncée, dans la limite du stock disponible."
           href="/catalogue?promo=1"
           products={promos}
+        />
+      ) : null}
+
+      {bestSellers.length > 0 ? (
+        <Section
+          title="Meilleures ventes"
+          subtitle="Les références les plus commandées par nos clients, encore disponibles."
+          href="/catalogue"
+          products={bestSellers}
         />
       ) : null}
 

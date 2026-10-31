@@ -53,7 +53,7 @@ navigateur : `.env.local` et `.env*` sont ignorés par Git.
 
 ```bash
 npm run test:setup   # crée medi_test et applique les migrations
-npm run test         # 60 tests d'intégration
+npm run test         # 109 tests d'intégration
 ```
 
 La base de test est distincte : les tests vident leurs tables, jamais celles de la boutique.

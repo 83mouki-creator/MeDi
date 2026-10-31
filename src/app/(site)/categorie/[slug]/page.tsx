@@ -10,7 +10,7 @@ import { ProductGrid } from '@/components/product-card';
 import { CatalogFilters, SortSelect } from '@/components/catalog-filters';
 import { Pagination } from '@/components/pagination';
 import { EmptyState } from '@/components/ui/primitives';
-
+import { parsePage } from '@/lib/utils';
 type Params = { slug: string };
 type SearchParams = Record<string, string | string[] | undefined>;
 
@@ -52,7 +52,7 @@ export default async function CategoryPage({
   const max = Number(first(query.max) ?? '') || undefined;
   const availability = (first(query.availability) as 'in_stock' | 'promo' | 'all' | undefined) ?? 'all';
   const sort = (first(query.sort) as 'relevance' | 'price_asc' | 'price_desc' | 'newest' | undefined) ?? 'relevance';
-  const page = Math.max(1, Number(first(query.page) ?? 1) || 1);
+  const page = parsePage(first(query.page));
 
   const [tree, brands, priceRange, result] = await Promise.all([
     getCategoryTree().catch(() => ({ roots: [], childrenOf: () => [], all: [] as { id: string; slug: string; name: string; productCount: number }[] })),

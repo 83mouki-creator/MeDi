@@ -1,8 +1,12 @@
 import Link from 'next/link';
 import { SearchX, Home, LayoutGrid, LifeBuoy } from 'lucide-react';
+import { SiteHeader } from '@/components/site-header';
+import { SiteFooter } from '@/components/site-footer';
 
 export default function NotFound() {
   return (
+    <>
+    <SiteHeader />
     <div className="container-page flex min-h-[60vh] max-w-2xl flex-col items-center justify-center py-12 text-center">
       <span className="grid size-16 place-items-center rounded-full bg-navy-50 text-navy-400">
         <SearchX className="size-8" aria-hidden />
@@ -37,5 +41,7 @@ export default function NotFound() {
         <Link href="/suivi" className="font-semibold text-accent-700 underline">Utilisez le suivi de commande</Link>.
       </p>
     </div>
+    <SiteFooter />
+    </>
   );
 }

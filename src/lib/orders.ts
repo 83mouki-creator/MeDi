@@ -14,10 +14,11 @@ import {
   orderStatusEnum,
   type Order,
 } from '../db/schema';
-import { newId, toFcfa } from './utils';
+import { newId, parsePage, sanitizeSearch, toFcfa } from './utils';
 import { computeAvailability, computePricing } from './pricing';
 import { quoteDelivery, type DeliveryMethod, type PaymentMethod } from './delivery';
 import { getStoreSettings } from './settings';
+import { ORDER_STATUS_LABELS, PAYMENT_STATUS_LABELS } from './order-status';
 import { canTransition, type OrderStatus } from './order-status';
 import type { CheckoutInput } from './validation';
 import { audit } from './audit';
@@ -544,6 +545,13 @@ export async function getOrderDetails(orderId: string) {
 
 export type OrderDetails = NonNullable<Awaited<ReturnType<typeof getOrderDetails>>>;
 
+/** Date valide (AAAA-MM-JJ ou ISO) sinon null — évite toute erreur SQL. */
+function safeDate(value?: string): string | null {
+  if (!value) return null;
+  const parsed = new Date(value);
+  return Number.isNaN(parsed.getTime()) ? null : parsed.toISOString();
+}
+
 export async function listOrders(filters: {
   q?: string;
   status?: string;
@@ -555,19 +563,29 @@ export async function listOrders(filters: {
   perPage?: number;
 }) {
   const conditions = [sql`1 = 1`];
-  if (filters.q) {
-    const like = `%${filters.q.trim().toLowerCase()}%`;
+  const search = sanitizeSearch(filters.q);
+  if (search) {
+    const like = `%${search.toLowerCase()}%`;
     conditions.push(sql`(lower(o.number) LIKE ${like} OR lower(o.phone) LIKE ${like}
       OR lower(o.customer_first_name || ' ' || o.customer_last_name) LIKE ${like})`);
   }
-  if (filters.status) conditions.push(sql`o.status = ${filters.status}`);
-  if (filters.paymentStatus) conditions.push(sql`o.payment_status = ${filters.paymentStatus}`);
+  // Les statuts sont des énumérations PostgreSQL : une valeur inconnue (URL
+  // modifiée à la main, lien obsolète) doit être ignorée, jamais provoquer une
+  // erreur serveur.
+  if (filters.status && Object.hasOwn(ORDER_STATUS_LABELS, filters.status)) {
+    conditions.push(sql`o.status = ${filters.status}`);
+  }
+  if (filters.paymentStatus && Object.hasOwn(PAYMENT_STATUS_LABELS, filters.paymentStatus)) {
+    conditions.push(sql`o.payment_status = ${filters.paymentStatus}`);
+  }
   if (filters.city) conditions.push(sql`lower(o.city) = ${filters.city.toLowerCase()}`);
-  if (filters.from) conditions.push(sql`o.created_at >= ${filters.from}`);
-  if (filters.to) conditions.push(sql`o.created_at <= ${filters.to}`);
+  const from = safeDate(filters.from);
+  const to = safeDate(filters.to);
+  if (from) conditions.push(sql`o.created_at >= ${from}`);
+  if (to) conditions.push(sql`o.created_at <= ${to}`);
 
-  const page = Math.max(1, filters.page ?? 1);
-  const perPage = Math.min(100, filters.perPage ?? 20);
+  const page = parsePage(filters.page ?? 1);
+  const perPage = Math.min(100, Math.max(1, filters.perPage ?? 20));
   const where = sql.join(conditions, sql` AND `);
 
   const rows = await db.execute(sql`

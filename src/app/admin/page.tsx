@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import { AlertTriangle, ArrowRight, Banknote, ClipboardList, CreditCard, PackageX, Truck } from 'lucide-react';
-import { getDashboardMetrics } from '@/lib/admin';
+import { AlertTriangle, ArrowRight, Banknote, ClipboardList, CreditCard, MessageSquare, PackageX, Truck } from 'lucide-react';
+import { countContactMessages, getDashboardMetrics } from '@/lib/admin';
 import { getCurrentUser } from '@/lib/auth';
 import { getStoreSettings } from '@/lib/settings';
 import { ORDER_STATUS_LABELS, type OrderStatus } from '@/lib/order-status';
@@ -10,12 +10,13 @@ import { Badge, Card } from '@/components/ui/primitives';
 export const dynamic = 'force-dynamic';
 
 export default async function AdminDashboard() {
-  const [metrics, user, settings] = await Promise.all([
+  const [metrics, user, settings, messages] = await Promise.all([
     getDashboardMetrics().catch(async () => {
       return null;
     }),
     getCurrentUser(),
     getStoreSettings(),
+    countContactMessages().catch(() => ({ newCount: 0, open: 0, total: 0 })),
   ]);
 
   if (!metrics) {
@@ -60,6 +61,14 @@ export default async function AdminDashboard() {
       href: '/admin/stock',
       alert: metrics.lowStock.length > 0,
     },
+    {
+      label: 'Demandes clients à traiter',
+      value: String(messages.open),
+      hint: `${messages.newCount} nouvelle(s) · ${messages.total} message(s) reçus`,
+      icon: MessageSquare,
+      href: '/admin/messages',
+      alert: messages.open > 0,
+    },
   ];
 
   const missingInfo = !settings.phone || !settings.addressLine || !settings.openingHours || !settings.waveNumber;
@@ -84,7 +93,7 @@ export default async function AdminDashboard() {
         </div>
       ) : null}
 
-      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="grid gap-3 sm:grid-cols-2 xl:grid-cols-5">
         {kpis.map((kpi) => {
           const Icon = kpi.icon;
           return (

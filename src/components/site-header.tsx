@@ -4,7 +4,7 @@ import { Camera, ChevronDown, LayoutDashboard, MapPin, Menu, Phone, ShoppingCart
 import { getCurrentUser, isStaff } from '@/lib/auth';
 import { readCart } from '@/lib/cart';
 import { getStoreSettings, whatsappLink } from '@/lib/settings';
-import { getCategoryTree } from '@/lib/catalog';
+import { countActivePromotions, getCategoryTree } from '@/lib/catalog';
 import { SearchBar } from './search-bar';
 
 const FALLBACK_CATEGORIES = [
@@ -17,11 +17,12 @@ const FALLBACK_CATEGORIES = [
 ];
 
 export async function SiteHeader() {
-  const [settings, user, cart, tree] = await Promise.all([
+  const [settings, user, cart, tree, promoCount] = await Promise.all([
     getStoreSettings(),
     getCurrentUser(),
     readCart(),
     getCategoryTree().catch(() => ({ roots: [], childrenOf: () => [], all: [] })),
+    countActivePromotions().catch(() => 0),
   ]);
 
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
@@ -155,11 +156,13 @@ export async function SiteHeader() {
                 </Link>
               </li>
             ))}
-            <li className="shrink-0">
-              <Link href="/catalogue?promo=1" className="block whitespace-nowrap px-3 py-2.5 text-[13px] font-semibold text-accent-300 hover:bg-navy-800">
-                Promotions
-              </Link>
-            </li>
+            {promoCount > 0 ? (
+              <li className="shrink-0">
+                <Link href="/catalogue?promo=1" className="block whitespace-nowrap px-3 py-2.5 text-[13px] font-semibold text-accent-300 hover:bg-navy-800">
+                  Promotions
+                </Link>
+              </li>
+            ) : null}
           </ul>
 
           {whatsapp ? (

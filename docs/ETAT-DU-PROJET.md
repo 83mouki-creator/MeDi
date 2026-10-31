@@ -1,13 +1,13 @@
 # État du projet
 
-Dernière mise à jour : **2026-10-28**.
+Dernière mise à jour : **2026-10-31**.
 
 ## Résumé honnête
 
 La plateforme est **fonctionnelle de bout en bout sur le plan logiciel** : catalogue réel en base,
 recherche texte et visuelle, panier recalculé côté serveur, commandes avec réservation de stock,
 paiement Wave (mode manuel vérifié par un administrateur), espace client, back-office complet,
-migrations versionnées, build de production et **60 tests d'intégration exécutés avec succès**.
+migrations versionnées, build de production et **109 tests d'intégration exécutés avec succès**.
 
 Elle n'est **pas encore « prête à vendre »** en production, pour des raisons qui ne sont pas du code :
 identifiants Wave (ou validation du mode manuel), coordonnées et mentions légales de la boutique,
@@ -42,10 +42,14 @@ photos et catalogue réels, configuration du stockage d'images et de la base Neo
   compte public, aucun mot de passe par défaut.
 - Rôles OWNER / ADMIN / STOCK_MANAGER / ORDER_MANAGER avec contrôle serveur de chaque permission et
   journal d'audit.
+- Interface d'administration **séparée de la boutique** : mise en page dédiée, sans en-tête, sans
+  panier client et sans recherche publique. Tous les onglets sont repliés derrière un bouton à trois
+  traits qui ouvre un panneau coulissant (fermeture par Échap, par le voile, à la navigation).
 - Tableau de bord, produits (CRUD, promotions, photos, caractéristiques, archivage), stock avec
-  motifs et historique, catégories, marques, commandes (recherche, filtres, statuts, paiement,
-  expédition, notes), paiements à vérifier, zones de livraison, paramètres, import CSV, import de
-  photos, utilisateurs, journal, statistiques.
+  recherche, filtres, compteurs et pagination, catégories, marques, commandes (recherche, filtres,
+  statuts, paiement, expédition, notes), paiements à vérifier, **demandes clients reçues via le
+  formulaire de contact** (prise en charge, clôture, réouverture), zones de livraison, paramètres,
+  import CSV, import de photos, utilisateurs, journal d'activité (recherche), statistiques.
 - Import CSV du catalogue avec simulation, rapport ligne par ligne, mise à jour par référence.
 - Import massif de photos avec empreinte SHA-256, file de validation, rattachement manuel, rejet motivé.
 
@@ -62,7 +66,7 @@ photos et catalogue réels, configuration du stockage d'images et de la base Neo
 - Tâche planifiée d'expiration des réservations protégée par `CRON_SECRET`.
 - Stockage d'images : local ou Cloudinary, validation du type réel, normalisation WebP.
 - SEO : métadonnées, canoniques, plan du site, robots, données structurées.
-- Build de production et TypeScript strict sans erreur ; 60 tests passants.
+- Build de production et TypeScript strict sans erreur ; 109 tests passants.
 
 ## Partiel — code présent, à valider avec les moyens du propriétaire
 

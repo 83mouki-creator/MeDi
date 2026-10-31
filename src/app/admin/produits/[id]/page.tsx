@@ -105,7 +105,7 @@ export default async function EditProductPage({
             {movements.length === 0 ? (
               <p className="text-sm text-navy-500">Aucun mouvement enregistré.</p>
             ) : (
-              <table className="w-full text-xs">
+              <table className="w-full min-w-[460px] text-xs">
                 <thead className="text-left text-navy-500">
                   <tr>
                     <th className="py-1">Date</th>

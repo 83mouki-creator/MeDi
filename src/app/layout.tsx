@@ -1,7 +1,5 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
-import { SiteHeader } from '@/components/site-header';
-import { SiteFooter } from '@/components/site-footer';
 import { env } from '@/lib/env';
 
 export const metadata: Metadata = {
@@ -57,19 +55,7 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="fr-CI">
-      <body className="min-h-dvh bg-white font-sans text-navy-900 antialiased">
-        <a
-          href="#contenu"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-50 focus:rounded-md focus:bg-navy-950 focus:px-3 focus:py-2 focus:text-sm focus:font-semibold focus:text-white"
-        >
-          Aller au contenu principal
-        </a>
-        <SiteHeader />
-        <main id="contenu" className="min-h-[60vh]">
-          {children}
-        </main>
-        <SiteFooter />
-      </body>
+      <body className="min-h-dvh bg-white font-sans text-navy-900 antialiased">{children}</body>
     </html>
   );
 }

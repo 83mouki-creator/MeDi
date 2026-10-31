@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Search } from 'lucide-react';
 import { listOrders } from '@/lib/orders';
 import { ORDER_STATUS_LABELS, PAYMENT_STATUS_LABELS, type OrderStatus } from '@/lib/order-status';
-import { formatDateTime, formatFCFA } from '@/lib/utils';
+import { formatDateTime, formatFCFA, parsePage } from '@/lib/utils';
 import { Badge, Card, EmptyState } from '@/components/ui/primitives';
 import { Input, Select } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
@@ -14,7 +14,7 @@ export default async function AdminOrdersPage({ searchParams }: { searchParams: 
   const params = await searchParams;
   const get = (key: string) => (typeof params[key] === 'string' ? (params[key] as string) : undefined);
 
-  const page = Math.max(1, Number(get('page') ?? 1) || 1);
+  const page = parsePage(get('page'));
   const result = await listOrders({
     q: get('q'),
     status: get('status'),

@@ -1,6 +1,6 @@
 import { sql } from 'drizzle-orm';
 import { db } from '../db';
-import { normalizeText } from './utils';
+import { normalizeText, parsePage } from './utils';
 import type { ProductCard } from './catalog';
 
 /**
@@ -63,7 +63,7 @@ function buildScoreFragment(q: string) {
 
 export async function searchProducts(rawQuery: string, options: SearchOptions = {}): Promise<SearchResult> {
   const query = normalizeText(rawQuery);
-  const page = Math.max(1, options.page ?? 1);
+  const page = parsePage(options.page ?? 1);
   const perPage = Math.min(60, Math.max(1, options.perPage ?? 24));
 
   if (!query) {

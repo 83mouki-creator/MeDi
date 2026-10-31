@@ -46,6 +46,31 @@ export function normalizeText(input: string) {
     .trim();
 }
 
+/**
+ * Nettoie un terme de recherche saisi par un utilisateur avant de l'envoyer à
+ * PostgreSQL : caractères de contrôle retirés (un octet nul fait échouer la
+ * requête), longueur bornée. Les jokers LIKE sont conservés tels quels.
+ */
+/**
+ * Numéro de page issu de l'URL : entier positif borné. Une valeur absurde
+ * (1e20, texte, négatif) retombe sur 1 sans provoquer d'erreur SQL.
+ */
+export function parsePage(value: unknown, max = 10_000): number {
+  const raw = Array.isArray(value) ? value[0] : value;
+  const parsed = Number.parseInt(String(raw ?? '1'), 10);
+  if (!Number.isFinite(parsed) || parsed < 1) return 1;
+  return Math.min(parsed, max);
+}
+
+export function sanitizeSearch(value: string | null | undefined, max = 80): string {
+  return String(value ?? '')
+    // eslint-disable-next-line no-control-regex
+    .replace(/[\u0000-\u001f\u007f]/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim()
+    .slice(0, max);
+}
+
 export function slugify(input: string) {
   return normalizeText(input)
     .replace(/[^a-z0-9]+/g, '-')
