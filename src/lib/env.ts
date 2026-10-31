@@ -27,6 +27,15 @@ export const env = {
   /** URL publique du site (liens de retour Wave, e-mails, partage). */
   appUrl: optional('APP_URL', 'http://localhost:3000'),
 
+  /**
+   * Jeton à usage unique pour créer le premier compte propriétaire sur
+   * /activation. Vide = activation désactivée (comportement par défaut).
+   * Lu à chaque appel : l'activation peut être révoquée sans redéploiement.
+   */
+  get adminSetupToken(): string {
+    return optional('ADMIN_SETUP_TOKEN');
+  },
+
   /** Wave — API Checkout officielle (https://docs.wave.com/checkout). */
   wave: {
     apiKey: optional('WAVE_API_KEY'),

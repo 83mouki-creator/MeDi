@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
-import { ArrowRight, Package } from 'lucide-react';
-import { getCurrentUser } from '@/lib/auth';
+import { ArrowRight, LayoutDashboard, Package } from 'lucide-react';
+import { getCurrentUser, isStaff } from '@/lib/auth';
 import { listUserOrders } from '@/lib/orders';
 import { ORDER_STATUS_LABELS, type OrderStatus } from '@/lib/order-status';
 import { formatDate, formatFCFA } from '@/lib/utils';
@@ -37,6 +37,21 @@ export default async function AccountOverview() {
           </Link>
         </div>
       </Card>
+
+      {isStaff(user.role) ? (
+        <Card className="flex flex-wrap items-center justify-between gap-3 border-accent-200 bg-accent-50 p-4">
+          <div>
+            <p className="text-sm font-bold text-navy-900">Espace administration</p>
+            <p className="text-xs text-navy-600">Produits, stock, commandes, paiements et réglages de la boutique.</p>
+          </div>
+          <Link
+            href="/admin"
+            className="inline-flex min-h-11 items-center gap-2 rounded-lg bg-accent-500 px-4 py-2.5 text-sm font-semibold text-white hover:bg-accent-600"
+          >
+            <LayoutDashboard className="size-4" aria-hidden /> Ouvrir l’administration
+          </Link>
+        </Card>
+      ) : null}
 
       <Card className="overflow-hidden">
         <div className="flex items-center justify-between border-b border-navy-100 bg-navy-50 px-4 py-2.5">

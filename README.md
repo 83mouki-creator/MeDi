@@ -53,6 +53,17 @@ npm run dev                         # http://localhost:3000 — administration :
 Avec une base Neon, remplacez `npm run db:local` par le renseignement de `DATABASE_URL` (poolée) et
 `DIRECT_URL` (directe) dans `.env.local`, puis `npm run db:migrate`.
 
+### Créer le premier compte propriétaire sur un site déjà déployé
+
+Sur un environnement distant (Vercel), le mot de passe ne doit pas transiter par un terminal :
+
+1. renseigner la variable d'environnement `ADMIN_SETUP_TOKEN` (valeur aléatoire longue, 32 caractères minimum) ;
+2. ouvrir `https://<domaine>/activation?token=<valeur>` ;
+3. choisir le nom affiché, l'adresse e-mail et le mot de passe (10 caractères, une lettre, un chiffre).
+
+La page n'existe que tant qu'aucun compte `OWNER` ou `ADMIN` n'est enregistré : elle renvoie 404 sans le bon jeton,
+et se ferme définitivement une fois le compte créé. Retirer ensuite `ADMIN_SETUP_TOKEN` de l'environnement.
+
 ## Scripts
 
 | Commande | Rôle |
