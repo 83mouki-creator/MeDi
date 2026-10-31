@@ -1,6 +1,6 @@
 import { sql } from 'drizzle-orm';
 import { db } from '../db';
-import { toFcfa } from './utils';
+import { parsePage, sanitizeSearch, toFcfa } from './utils';
 
 /**
  * Indicateurs de l'administration.
@@ -126,6 +126,86 @@ export async function getLowStockList(limit = 100) {
   }));
 }
 
+export type StockFilter = 'all' | 'low' | 'out';
+
+export type StockRow = {
+  id: string;
+  sku: string;
+  name: string;
+  slug: string;
+  stock: number;
+  reserved: number;
+  available: number;
+  threshold: number;
+};
+
+function mapStockRow(row: Record<string, unknown>): StockRow {
+  return {
+    id: String(row.id),
+    sku: String(row.sku),
+    name: String(row.name),
+    slug: String(row.slug),
+    stock: Number(row.stock),
+    reserved: Number(row.reserved),
+    available: Number(row.stock) - Number(row.reserved),
+    threshold: row.low_stock_threshold === null ? 5 : Number(row.low_stock_threshold),
+  };
+}
+
+/** Compteurs du haut de l'écran Stock : tout le catalogue publié, pas un échantillon. */
+export async function getStockCounters(): Promise<{ tracked: number; low: number; out: number }> {
+  const rows = await db.execute(sql`
+    SELECT
+      count(*)::int AS tracked,
+      count(*) FILTER (WHERE stock - reserved <= coalesce(low_stock_threshold, 5))::int AS low,
+      count(*) FILTER (WHERE stock - reserved <= 0)::int AS out
+    FROM products
+    WHERE is_active = true AND is_archived = false
+  `);
+  const row = (rows.rows as { tracked: number; low: number; out: number }[])[0];
+  return { tracked: Number(row?.tracked ?? 0), low: Number(row?.low ?? 0), out: Number(row?.out ?? 0) };
+}
+
+/** Liste paginée de TOUS les produits publiés, la plus basse disponibilité d'abord. */
+export async function listStockProducts({
+  q = '',
+  filter = 'all',
+  page = 1,
+  perPage = 25,
+}: {
+  q?: string;
+  filter?: StockFilter;
+  page?: number;
+  perPage?: number;
+}): Promise<{ items: StockRow[]; total: number; page: number; totalPages: number }> {
+  const conditions = [sql`is_active = true AND is_archived = false`];
+  const term = sanitizeSearch(q);
+  if (term) {
+    const like = `%${term.toLowerCase()}%`;
+    conditions.push(sql`(lower(name) LIKE ${like} OR lower(sku) LIKE ${like})`);
+  }
+  if (filter === 'low') conditions.push(sql`(stock - reserved) <= coalesce(low_stock_threshold, 5)`);
+  if (filter === 'out') conditions.push(sql`(stock - reserved) <= 0`);
+
+  const where = sql.join(conditions, sql` AND `);
+  const safePage = parsePage(page);
+  const rows = await db.execute(sql`
+    SELECT id, sku, name, slug, stock, reserved, low_stock_threshold, count(*) OVER() AS total_count
+    FROM products
+    WHERE ${where}
+    ORDER BY (stock - reserved) ASC, name ASC
+    LIMIT ${perPage} OFFSET ${(safePage - 1) * perPage}
+  `);
+  const list = rows.rows as Record<string, unknown>[];
+  const total = list[0] ? Number(list[0].total_count) : 0;
+  return {
+    items: list.map(mapStockRow),
+    total,
+    page: safePage,
+    totalPages: Math.max(1, Math.ceil(total / perPage)),
+  };
+}
+
 export async function salesByDay(days = 14) {
   const rows = await db.execute(sql`
     SELECT to_char(d.day, 'YYYY-MM-DD') AS day,
@@ -164,4 +244,84 @@ export async function deliveryBreakdown() {
     method: String(row.method),
     count: Number(row.count),
   }));
+}
+
+// ─────────────────────── Demandes reçues via le formulaire de contact ───────────────────────
+
+export const CONTACT_STATUS_LABELS: Record<string, string> = {
+  NEW: 'Nouvelle',
+  IN_PROGRESS: 'En cours',
+  CLOSED: 'Traitée',
+};
+
+export type ContactMessageRow = {
+  id: string;
+  name: string;
+  email: string;
+  phone: string | null;
+  subject: string;
+  message: string;
+  orderNumber: string | null;
+  status: string;
+  replyNote: string | null;
+  handledAt: string | null;
+  createdAt: string;
+};
+
+export async function countContactMessages(): Promise<{ newCount: number; open: number; total: number }> {
+  const rows = await db.execute(sql`
+    SELECT
+      count(*) FILTER (WHERE status = 'NEW')::int AS new_count,
+      count(*) FILTER (WHERE status <> 'CLOSED')::int AS open,
+      count(*)::int AS total
+    FROM contact_messages
+  `);
+  const row = (rows.rows as { new_count: number; open: number; total: number }[])[0];
+  return { newCount: Number(row?.new_count ?? 0), open: Number(row?.open ?? 0), total: Number(row?.total ?? 0) };
+}
+
+/** Messages du formulaire de contact, les plus récents d'abord. */
+export async function listContactMessages({
+  status = 'open',
+  page = 1,
+  perPage = 20,
+}: {
+  status?: 'open' | 'NEW' | 'IN_PROGRESS' | 'CLOSED' | 'all';
+  page?: number;
+  perPage?: number;
+} = {}): Promise<{ items: ContactMessageRow[]; total: number; page: number; totalPages: number }> {
+  const conditions = [sql`1 = 1`];
+  if (status === 'open') conditions.push(sql`status <> 'CLOSED'`);
+  else if (status !== 'all') conditions.push(sql`status = ${status}`);
+  const where = sql.join(conditions, sql` AND `);
+
+  const safePage = parsePage(page);
+  const rows = await db.execute(sql`
+    SELECT id, name, email, phone, subject, message, order_number, status, reply_note, handled_at, created_at,
+      count(*) OVER() AS total_count
+    FROM contact_messages
+    WHERE ${where}
+    ORDER BY created_at DESC
+    LIMIT ${perPage} OFFSET ${(safePage - 1) * perPage}
+  `);
+  const list = rows.rows as Record<string, unknown>[];
+  const total = list[0] ? Number(list[0].total_count) : 0;
+  return {
+    items: list.map((row) => ({
+      id: String(row.id),
+      name: String(row.name),
+      email: String(row.email),
+      phone: (row.phone as string | null) ?? null,
+      subject: String(row.subject),
+      message: String(row.message),
+      orderNumber: (row.order_number as string | null) ?? null,
+      status: String(row.status),
+      replyNote: (row.reply_note as string | null) ?? null,
+      handledAt: row.handled_at ? new Date(row.handled_at as string).toISOString() : null,
+      createdAt: new Date(row.created_at as string).toISOString(),
+    })),
+    total,
+    page: safePage,
+    totalPages: Math.max(1, Math.ceil(total / perPage)),
+  };
 }

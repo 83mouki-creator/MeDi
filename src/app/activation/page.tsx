@@ -53,6 +53,7 @@ export default async function ActivationPage({
 
   return (
     <div className="container-page max-w-lg py-10">
+      <p className="mb-3 text-center text-sm font-extrabold tracking-tight text-navy-950">MeDi</p>
       <Card className="p-6">
         <h1 className="flex items-center gap-2 text-xl font-extrabold">
           <ShieldCheck className="size-5 text-accent-600" aria-hidden /> Créer le compte propriétaire
@@ -68,6 +69,11 @@ export default async function ActivationPage({
           <AdminActivationForm token={token} defaultName="MeDi" />
         </div>
       </Card>
+      <p className="mt-4 text-center text-xs text-navy-500">
+        <Link href="/" className="underline hover:text-navy-800">
+          Retour à la boutique
+        </Link>
+      </p>
     </div>
   );
 }

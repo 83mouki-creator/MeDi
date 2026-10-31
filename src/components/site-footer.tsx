@@ -102,7 +102,7 @@ export async function SiteFooter() {
         <nav aria-label="Informations">
           <h2 className="text-sm font-semibold text-white">Informations</h2>
           <ul className="mt-3 space-y-2 text-sm">
-            <li><Link href="/nous-trouver" className="hover:text-white">Nous trouver (plan et GPS)</Link></li>
+            <li><Link href="/nous-trouver" className="hover:text-white">Nous trouver</Link></li>
             <li><Link href="/livraison" className="hover:text-white">Livraison et retrait</Link></li>
             <li><Link href="/livraison#faq-livraison" className="hover:text-white">FAQ livraisons et expéditions</Link></li>
             <li><Link href="/paiement" className="hover:text-white">Paiement Wave</Link></li>

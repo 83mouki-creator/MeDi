@@ -71,6 +71,16 @@ place (application Plans, GPS du téléphone) — aucune coordonnée n'est estim
 Le logo officiel est décliné automatiquement (`npm run brand:assets`) vers `public/brand/` :
 en-tête et pied de page (fond bleu nuit), favicon, icône iOS, image de partage.
 
+## Navigation
+
+L'administration a sa propre mise en page : **aucun élément de la boutique** n'y apparaît (ni le
+panier du client, ni la recherche publique, ni le pied de page commercial). Tous les écrans sont
+accessibles depuis un bouton à trois traits en haut à gauche : il ouvre un panneau coulissant qui
+referme automatiquement au changement de page, se ferme avec la touche Échap ou en cliquant à côté.
+Le bouton affiche un compteur de paiements à vérifier, et le panneau un compteur de nouvelles
+demandes clients. Les entrées sont filtrées selon le rôle : un opérateur ne voit pas les écrans
+auxquels il n'a pas droit.
+
 ## Cartographie des écrans
 
 | Écran | Contenu |
@@ -80,14 +90,15 @@ en-tête et pied de page (fond bleu nuit), favicon, icône iOS, image de partage
 | `/admin/produits/nouveau`, `/admin/produits/[id]` | création / édition : prix FCFA, promotion avec fenêtre de dates, stock, seuil d'alerte, précommande, catégorie, marque, mots-clés, caractéristiques, photos, archivage |
 | `/admin/stock` | ajustements de stock avec motif obligatoire (delta ou valeur cible) et historique des mouvements |
 | `/admin/categories` | catégories (arborescence) et marques |
-| `/admin/commandes` | recherche (numéro, client, téléphone), filtres statut / paiement / ville, pagination |
+| `/admin/commandes` | recherche (numéro, client, téléphone), filtres statut / paiement / ville / période, pagination |
+| `/admin/messages` | demandes reçues via le formulaire de contact : coordonnées du client, message, prise en charge, clôture, réouverture |
 | `/admin/commandes/[id]` | détail, articles, historique horodaté, changement de statut, vérification du paiement (confirmer / refuser avec justification), expédition et suivi, note interne |
 | `/admin/paiements` | paiements à vérifier, historique des confirmations, mode Wave actif |
 | `/admin/livraison` | zones, frais, seuil de gratuité, délai, retrait, activation |
 | `/admin/parametres` | coordonnées, horaires, géolocalisation (latitude / longitude), numéro Wave, paiement à la livraison (activation + plafond), réservation, textes légaux, état des intégrations (sans afficher les secrets) |
 | `/admin/import` | import CSV (simulation puis import), import de photos en masse, affectation des photos, réindexation visuelle |
 | `/admin/utilisateurs` | création de comptes internes, rôles, activation/désactivation |
-| `/admin/journal` | journal d'audit |
+| `/admin/journal` | journal d'audit, recherche par action, opérateur ou entité |
 | `/admin/statistiques` | ventes, répartition des paiements et livraisons, meilleures ventes, recherches sans résultat |
 
 ## Règles de gestion clés

@@ -1,14 +1,18 @@
+import { Search } from 'lucide-react';
 import { listAuditLogs } from '@/lib/audit';
-import { formatDateTime } from '@/lib/utils';
+import { formatDateTime, parsePage } from '@/lib/utils';
 import { Card, EmptyState, Badge } from '@/components/ui/primitives';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/form';
 import { Pagination } from '@/components/pagination';
 
 export const dynamic = 'force-dynamic';
 
 export default async function AuditPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
   const params = await searchParams;
-  const page = Math.max(1, Number(params.page ?? 1) || 1);
-  const { rows, total, pageSize } = await listAuditLogs(page, 50);
+  const page = parsePage(params.page);
+  const q = typeof params.q === 'string' ? params.q : '';
+  const { rows, total, pageSize } = await listAuditLogs(page, 50, q);
 
   return (
     <div className="space-y-4">
@@ -20,8 +24,39 @@ export default async function AuditPage({ searchParams }: { searchParams: Promis
         </p>
       </header>
 
+      <Card className="p-3">
+        <form method="get" className="flex flex-wrap items-end gap-2">
+          <label htmlFor="journal-recherche" className="sr-only">
+            Rechercher dans le journal
+          </label>
+          <Input
+            id="journal-recherche"
+            name="q"
+            defaultValue={q}
+            placeholder="Action, opérateur, référence…"
+            aria-label="Rechercher dans le journal d’activité"
+            className="w-full sm:w-72"
+          />
+          <Button type="submit" variant="outline" size="sm">
+            <Search className="size-4" aria-hidden /> Rechercher
+          </Button>
+          {q ? (
+            <a href="/admin/journal" className="text-xs font-semibold text-navy-600 underline">
+              Réinitialiser
+            </a>
+          ) : null}
+        </form>
+      </Card>
+
       {rows.length === 0 ? (
-        <EmptyState title="Aucune entrée" description="Les actions sensibles apparaîtront ici." />
+        <EmptyState
+          title={q ? 'Aucune entrée pour cette recherche' : 'Aucune entrée'}
+          description={
+            q
+              ? `Aucune action journalisée ne correspond à « ${q} ».`
+              : 'Les actions sensibles apparaîtront ici dès la première modification (prix, stock, paiement, réglages).'
+          }
+        />
       ) : (
         <Card className="overflow-x-auto">
           <table className="w-full min-w-[760px] text-sm">
@@ -49,7 +84,7 @@ export default async function AuditPage({ searchParams }: { searchParams: Promis
         </Card>
       )}
 
-      <Pagination page={page} totalPages={Math.max(1, Math.ceil(total / pageSize))} basePath="/admin/journal" searchParams={{}} />
+      <Pagination page={page} totalPages={Math.max(1, Math.ceil(total / pageSize))} basePath="/admin/journal" searchParams={{ q: q || undefined }} />
     </div>
   );
 }

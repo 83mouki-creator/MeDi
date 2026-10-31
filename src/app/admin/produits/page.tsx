@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { Plus, Search } from 'lucide-react';
 import { sql } from 'drizzle-orm';
 import { db } from '@/db';
-import { formatFCFA } from '@/lib/utils';
+import { formatFCFA, parsePage, sanitizeSearch } from '@/lib/utils';
 import { Badge, Card, EmptyState } from '@/components/ui/primitives';
 import { Button, ButtonLink } from '@/components/ui/button';
 import { Input, Select } from '@/components/ui/form';
@@ -13,9 +13,9 @@ export const dynamic = 'force-dynamic';
 
 export default async function AdminProductsPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
   const params = await searchParams;
-  const q = typeof params.q === 'string' ? params.q.trim() : '';
+  const q = sanitizeSearch(typeof params.q === 'string' ? params.q : '');
   const status = typeof params.status === 'string' ? params.status : 'active';
-  const page = Math.max(1, Number(params.page ?? 1) || 1);
+  const page = parsePage(params.page);
   const perPage = 25;
 
   const conditions = [sql`1 = 1`];
@@ -61,7 +61,7 @@ export default async function AdminProductsPage({ searchParams }: { searchParams
         <form method="get" className="grid gap-2 sm:grid-cols-[1fr_200px_auto]">
           <div className="relative">
             <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-navy-400" aria-hidden />
-            <Input name="q" defaultValue={q} className="pl-9" placeholder="Nom, référence, mot-clé" aria-label="Rechercher un produit" />
+            <Input name="q" defaultValue={q} className="pl-9" placeholder="Rechercher dans mes produits (nom, référence)" aria-label="Rechercher un produit dans l’administration" />
           </div>
           <Select name="status" defaultValue={status} aria-label="Filtrer par état">
             <option value="active">Publiés</option>

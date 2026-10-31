@@ -1,7 +1,7 @@
 import { desc, eq, and, gte, sql } from 'drizzle-orm';
 import { db } from '../db';
 import { auditLogs, searchEvents } from '../db/schema';
-import { newId } from './utils';
+import { newId, parsePage, sanitizeSearch } from './utils';
 import type { SessionUser } from './auth';
 
 export type AuditInput = {
@@ -51,11 +51,25 @@ function sanitizeMetadata(metadata: Record<string, unknown>): Record<string, unk
   return out;
 }
 
-export async function listAuditLogs(page = 1, pageSize = 50) {
+export async function listAuditLogs(rawPage = 1, pageSize = 50, q = '') {
+  const page = parsePage(rawPage);
   const offset = (page - 1) * pageSize;
+  const term = sanitizeSearch(q);
+  // Recherche libre sur l'action, l'opérateur et l'entité concernée.
+  const where = term
+    ? sql`(${auditLogs.action} ILIKE ${`%${term}%`} OR coalesce(${auditLogs.actorEmail}, '') ILIKE ${`%${term}%`}
+        OR coalesce(${auditLogs.entity}, '') ILIKE ${`%${term}%`} OR coalesce(${auditLogs.entityId}, '') ILIKE ${`%${term}%`})`
+    : undefined;
+
   const [rows, countRows] = await Promise.all([
-    db.select().from(auditLogs).orderBy(desc(auditLogs.createdAt)).limit(pageSize).offset(offset),
-    db.select({ count: sql<number>`count(*)::int` }).from(auditLogs),
+    db
+      .select()
+      .from(auditLogs)
+      .where(where)
+      .orderBy(desc(auditLogs.createdAt))
+      .limit(pageSize)
+      .offset(offset),
+    db.select({ count: sql<number>`count(*)::int` }).from(auditLogs).where(where),
   ]);
   return { rows, total: countRows[0]?.count ?? 0, page, pageSize };
 }
@@ -70,7 +84,7 @@ export async function auditLogsForEntity(entity: string, entityId: string) {
 }
 
 export async function recordSearch(query: string, resultCount: number, kind: 'TEXT' | 'VISUAL', userId?: string | null) {
-  const trimmed = query.trim().slice(0, 200);
+  const trimmed = sanitizeSearch(query, 200);
   if (!trimmed) return;
   try {
     await db.insert(searchEvents).values({
