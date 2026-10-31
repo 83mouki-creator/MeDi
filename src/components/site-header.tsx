@@ -83,16 +83,6 @@ export async function SiteHeader() {
             </span>
           </Link>
 
-          {isStaff(user?.role) ? (
-            <Link
-              href="/admin"
-              className="hidden items-center gap-1.5 rounded-lg px-2.5 py-2 text-sm font-medium text-navy-100 hover:bg-navy-800 hover:text-white sm:flex"
-            >
-              <LayoutDashboard className="size-5" aria-hidden />
-              <span className="hidden md:inline">Admin</span>
-            </Link>
-          ) : null}
-
           <Link
             href="/panier"
             className="relative flex items-center gap-2 rounded-lg bg-accent-500 px-3 py-2 text-sm font-semibold text-white hover:bg-accent-600"
@@ -106,6 +96,24 @@ export async function SiteHeader() {
               </span>
             ) : null}
           </Link>
+
+          {/*
+            Bouton d'administration : visible en permanence pour les comptes de la
+            boutique (propriétaire, admin, stock, commandes), jamais pour un visiteur
+            ni pour un client. Il occupe l'angle supérieur droit de la barre.
+          */}
+          {isStaff(user?.role) ? (
+            <Link
+              href="/admin"
+              aria-label="Administration de la boutique"
+              title="Administration de la boutique"
+              className="flex items-center gap-2 rounded-lg bg-white px-3 py-2 text-sm font-extrabold text-navy-950 shadow-sm ring-1 ring-white/60 hover:bg-accent-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-400"
+            >
+              <LayoutDashboard className="size-5 text-accent-600" aria-hidden />
+              <span className="hidden sm:inline">Administration</span>
+              <span className="sm:hidden">Admin</span>
+            </Link>
+          ) : null}
         </div>
       </div>
 
