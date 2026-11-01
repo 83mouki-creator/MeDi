@@ -1,4 +1,6 @@
 import { Mail, MessageSquare, Phone } from 'lucide-react';
+import { getAdminI18n } from '@/lib/i18n/admin-server';
+import type { AdminTranslator } from '@/lib/i18n/admin';
 import { CONTACT_STATUS_LABELS, countContactMessages, listContactMessages, type ContactMessageRow } from '@/lib/admin';
 import { setMessageStatusAction } from '@/app/actions/admin-messages';
 import { Badge, Card, EmptyState } from '@/components/ui/primitives';
@@ -15,7 +17,7 @@ const TONES: Record<string, 'accent' | 'warning' | 'success'> = {
   CLOSED: 'success',
 };
 
-function MessageCard({ message }: { message: ContactMessageRow }) {
+function MessageCard({ message, t }: { message: ContactMessageRow; t: AdminTranslator }) {
   return (
     <Card className="p-4">
       <div className="flex flex-wrap items-start justify-between gap-2">
@@ -48,7 +50,7 @@ function MessageCard({ message }: { message: ContactMessageRow }) {
             <input type="hidden" name="id" value={message.id} />
             <input type="hidden" name="status" value="IN_PROGRESS" />
             <Button type="submit" size="sm" variant="outline">
-              Prendre en charge
+              {t('Prendre en charge')}
             </Button>
           </form>
         ) : null}
@@ -57,7 +59,7 @@ function MessageCard({ message }: { message: ContactMessageRow }) {
             <input type="hidden" name="id" value={message.id} />
             <input type="hidden" name="status" value="CLOSED" />
             <Button type="submit" size="sm">
-              Marquer comme traitée
+              {t('Marquer comme traitée')}
             </Button>
           </form>
         ) : (
@@ -65,12 +67,12 @@ function MessageCard({ message }: { message: ContactMessageRow }) {
             <input type="hidden" name="id" value={message.id} />
             <input type="hidden" name="status" value="NEW" />
             <Button type="submit" size="sm" variant="ghost">
-              Rouvrir
+              {t('Rouvrir')}
             </Button>
           </form>
         )}
         <span className="text-xs text-navy-500">
-          {message.replyNote ? `Note : ${message.replyNote}` : 'Répondez au client par e-mail ou par téléphone.'}
+          {message.replyNote ? `${t('Note')} : ${message.replyNote}` : t('Répondez au client par e-mail ou par téléphone.')}
         </span>
       </div>
     </Card>
@@ -82,6 +84,7 @@ export default async function AdminMessagesPage({
 }: {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
+  const { t } = await getAdminI18n();
   const params = await searchParams;
   const rawStatus = typeof params.status === 'string' ? params.status : 'open';
   const status = (['open', 'NEW', 'IN_PROGRESS', 'CLOSED', 'all'] as const).includes(rawStatus as never)
@@ -94,7 +97,7 @@ export default async function AdminMessagesPage({
   return (
     <div className="space-y-4">
       <header>
-        <h1 className="text-xl font-extrabold tracking-tight">Demandes clients</h1>
+        <h1 className="text-xl font-extrabold tracking-tight">{t('Demandes clients')}</h1>
         <p className="text-sm text-navy-600">
           Messages envoyés depuis le formulaire de contact. {counters.newCount} nouvelle(s) · {counters.open} à traiter ·{' '}
           {counters.total} au total.
@@ -104,17 +107,17 @@ export default async function AdminMessagesPage({
       <Card className="flex flex-wrap items-end gap-3 p-3">
         <form method="get" className="flex flex-wrap items-end gap-2">
           <label className="text-xs font-semibold text-navy-600" htmlFor="filtre-statut">
-            Statut
+            {t('Statut')}
           </label>
           <Select id="filtre-statut" name="status" defaultValue={status} className="w-52">
-            <option value="open">À traiter</option>
-            <option value="NEW">Nouvelles</option>
-            <option value="IN_PROGRESS">En cours</option>
-            <option value="CLOSED">Traitées</option>
-            <option value="all">Toutes</option>
+            <option value="open">{t('À traiter')}</option>
+            <option value="NEW">{t('Nouvelles')}</option>
+            <option value="IN_PROGRESS">{t('En cours')}</option>
+            <option value="CLOSED">{t('Traitées')}</option>
+            <option value="all">{t('Toutes')}</option>
           </Select>
           <Button type="submit" variant="outline" size="sm">
-            Filtrer
+            {t('Filtrer')}
           </Button>
         </form>
       </Card>
@@ -122,14 +125,14 @@ export default async function AdminMessagesPage({
       {result.items.length === 0 ? (
         <EmptyState
           icon={<MessageSquare className="size-10" />}
-          title="Aucune demande dans cette sélection"
+          title={t('Aucune demande dans cette sélection')}
           description="Les messages envoyés depuis la page contact apparaissent ici, avec le moyen de recontacter le client."
         />
       ) : (
         <>
           <div className="space-y-3">
             {result.items.map((message) => (
-              <MessageCard key={message.id} message={message} />
+              <MessageCard key={message.id} message={message} t={t} />
             ))}
           </div>
           <Pagination
@@ -137,7 +140,8 @@ export default async function AdminMessagesPage({
             totalPages={result.totalPages}
             basePath="/admin/messages"
             searchParams={{ status: status !== 'open' ? status : undefined }}
-          />
+            labels={{ nav: t('Pagination'), previous: t('Page précédente'), next: t('Page suivante') }}
+      />
         </>
       )}
     </div>

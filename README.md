@@ -88,12 +88,14 @@ et se ferme définitivement une fois le compte créé. Retirer ensuite `ADMIN_SE
 src/
   app/                 routes App Router
     (site)/            boutique + espace client : mise en page publique (en-tête, panier, pied de page)
-    admin/             back-office protégé par rôle, mise en page propre — sans en-tête ni panier boutique
+    admin/             back-office protégé par rôle, mise en page propre — sans en-tête ni panier boutique,
+                       interface bilingue français / arabe (RTL)
     actions/           Server Actions (panier, commande, paiement, admin, contact)
     api/               recherche, visuelle, webhook Wave, cron, health
   components/          composants d'interface (boutique, compte, admin, ui)
   db/                  schéma Drizzle, connexion, exécuteur de migrations
   lib/                 logique métier (prix, stock, commandes, paiement, recherche…)
+    i18n/              traductions du back-office (français ↔ arabe, direction RTL)
 drizzle/               migrations SQL versionnées
 scripts/               base locale, seed, imports, administration, réindexation
 tests/                 suite Vitest (intégration sur base dédiée)

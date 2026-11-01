@@ -1,4 +1,5 @@
 import { Search } from 'lucide-react';
+import { getAdminI18n } from '@/lib/i18n/admin-server';
 import { listAuditLogs } from '@/lib/audit';
 import { formatDateTime, parsePage } from '@/lib/utils';
 import { Card, EmptyState, Badge } from '@/components/ui/primitives';
@@ -9,6 +10,7 @@ import { Pagination } from '@/components/pagination';
 export const dynamic = 'force-dynamic';
 
 export default async function AuditPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
+  const { t } = await getAdminI18n();
   const params = await searchParams;
   const page = parsePage(params.page);
   const q = typeof params.q === 'string' ? params.q : '';
@@ -17,32 +19,31 @@ export default async function AuditPage({ searchParams }: { searchParams: Promis
   return (
     <div className="space-y-4">
       <header>
-        <h1 className="text-xl font-extrabold tracking-tight">Journal d’activité</h1>
+        <h1 className="text-xl font-extrabold tracking-tight">{t('Journal d’activité')}</h1>
         <p className="text-sm text-navy-600">
-          Actions sensibles horodatées avec l’identité de l’opérateur. Les secrets et mots de passe ne sont jamais journalisés
-          (les champs sensibles sont masqués).
+          {t('Actions sensibles horodatées avec l’identité de l’opérateur. Les secrets et mots de passe ne sont jamais journalisés (les champs sensibles sont masqués).')}
         </p>
       </header>
 
       <Card className="p-3">
         <form method="get" className="flex flex-wrap items-end gap-2">
           <label htmlFor="journal-recherche" className="sr-only">
-            Rechercher dans le journal
+            {t('Rechercher dans le journal')}
           </label>
           <Input
             id="journal-recherche"
             name="q"
             defaultValue={q}
-            placeholder="Action, opérateur, référence…"
-            aria-label="Rechercher dans le journal d’activité"
+            placeholder={t('Action, opérateur, référence…')}
+            aria-label={t('Rechercher dans le journal d’activité')}
             className="w-full sm:w-72"
           />
           <Button type="submit" variant="outline" size="sm">
-            <Search className="size-4" aria-hidden /> Rechercher
+            <Search className="size-4" aria-hidden /> {t('Rechercher')}
           </Button>
           {q ? (
             <a href="/admin/journal" className="text-xs font-semibold text-navy-600 underline">
-              Réinitialiser
+              {t('Réinitialiser')}
             </a>
           ) : null}
         </form>
@@ -62,11 +63,11 @@ export default async function AuditPage({ searchParams }: { searchParams: Promis
           <table className="w-full min-w-[760px] text-sm">
             <thead className="bg-navy-50 text-left text-xs uppercase tracking-wide text-navy-500">
               <tr>
-                <th className="px-3 py-2">Date</th>
-                <th className="px-3 py-2">Opérateur</th>
-                <th className="px-3 py-2">Action</th>
-                <th className="px-3 py-2">Entité</th>
-                <th className="px-3 py-2">Détails</th>
+                <th className="px-3 py-2">{t('Date')}</th>
+                <th className="px-3 py-2">{t('Opérateur')}</th>
+                <th className="px-3 py-2">{t('Action')}</th>
+                <th className="px-3 py-2">{t('Entité')}</th>
+                <th className="px-3 py-2">{t('Détails')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-navy-100">
@@ -84,7 +85,8 @@ export default async function AuditPage({ searchParams }: { searchParams: Promis
         </Card>
       )}
 
-      <Pagination page={page} totalPages={Math.max(1, Math.ceil(total / pageSize))} basePath="/admin/journal" searchParams={{ q: q || undefined }} />
+      <Pagination page={page} totalPages={Math.max(1, Math.ceil(total / pageSize))} basePath="/admin/journal" searchParams={{ q: q || undefined }}   labels={{ nav: t('Pagination'), previous: t('Page précédente'), next: t('Page suivante') }}
+      />
     </div>
   );
 }

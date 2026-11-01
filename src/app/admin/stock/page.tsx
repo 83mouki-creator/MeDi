@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { getAdminI18n } from '@/lib/i18n/admin-server';
 import { Search } from 'lucide-react';
 import { getStockCounters, listStockProducts, type StockFilter } from '@/lib/admin';
 import { StockAdjustForm } from '@/components/admin/stock-adjust';
@@ -16,6 +17,7 @@ const FILTERS: Record<StockFilter, string> = {
 };
 
 export default async function StockPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
+  const { t } = await getAdminI18n();
   const params = await searchParams;
   const q = typeof params.q === 'string' ? params.q : '';
   const rawFilter = typeof params.filter === 'string' ? params.filter : 'all';
@@ -30,24 +32,23 @@ export default async function StockPage({ searchParams }: { searchParams: Promis
   return (
     <div className="space-y-4">
       <header>
-        <h1 className="text-xl font-extrabold tracking-tight">Stock</h1>
+        <h1 className="text-xl font-extrabold tracking-tight">{t('Stock')}</h1>
         <p className="text-sm text-navy-600">
-          Le stock disponible affiché est le stock physique moins les unités réservées par des commandes en cours. Toute
-          modification est tracée dans un mouvement horodaté.
+          {t('Le stock disponible affiché est le stock physique moins les unités réservées par des commandes en cours. Toute modification est tracée dans un mouvement horodaté.')}
         </p>
       </header>
 
       <div className="grid gap-3 sm:grid-cols-3">
         <Card className="p-4">
-          <p className="text-xs uppercase tracking-wide text-navy-500">Produits publiés</p>
+          <p className="text-xs uppercase tracking-wide text-navy-500">{t('Produits publiés')}</p>
           <p className="mt-1 text-2xl font-extrabold">{counters.tracked}</p>
         </Card>
         <Card className="p-4">
-          <p className="text-xs uppercase tracking-wide text-navy-500">Sous le seuil d’alerte</p>
+          <p className="text-xs uppercase tracking-wide text-navy-500">{t('Sous le seuil d’alerte')}</p>
           <p className="mt-1 text-2xl font-extrabold text-amber-600">{counters.low}</p>
         </Card>
         <Card className="p-4">
-          <p className="text-xs uppercase tracking-wide text-navy-500">Épuisés</p>
+          <p className="text-xs uppercase tracking-wide text-navy-500">{t('Épuisés')}</p>
           <p className="mt-1 text-2xl font-extrabold text-rose-600">{counters.out}</p>
         </Card>
       </div>
@@ -60,18 +61,18 @@ export default async function StockPage({ searchParams }: { searchParams: Promis
               name="q"
               defaultValue={q}
               className="pl-9"
-              placeholder="Nom du produit ou référence"
-              aria-label="Rechercher un produit dans le stock"
+              placeholder={t('Nom du produit ou référence')}
+              aria-label={t('Rechercher un produit dans le stock')}
             />
           </div>
-          <Select name="filter" defaultValue={filter} aria-label="Filtrer le stock">
+          <Select name="filter" defaultValue={filter} aria-label={t('Filtrer le stock')}>
             {(Object.keys(FILTERS) as StockFilter[]).map((key) => (
               <option key={key} value={key}>
                 {FILTERS[key]}
               </option>
             ))}
           </Select>
-          <Button type="submit">Afficher</Button>
+          <Button type="submit">{t('Afficher')}</Button>
         </form>
       </Card>
 
@@ -104,7 +105,7 @@ export default async function StockPage({ searchParams }: { searchParams: Promis
                   </Badge>
                 </div>
                 <details className="mt-3">
-                  <summary className="cursor-pointer text-xs font-semibold text-accent-700">Ajuster le stock</summary>
+                  <summary className="cursor-pointer text-xs font-semibold text-accent-700">{t('Ajuster le stock')}</summary>
                   <div className="mt-3">
                     <StockAdjustForm productId={product.id} currentStock={product.stock} reserved={product.reserved} />
                   </div>
@@ -118,7 +119,8 @@ export default async function StockPage({ searchParams }: { searchParams: Promis
             totalPages={result.totalPages}
             basePath="/admin/stock"
             searchParams={{ q: q || undefined, filter: filter !== 'all' ? filter : undefined }}
-          />
+            labels={{ nav: t('Pagination'), previous: t('Page précédente'), next: t('Page suivante') }}
+      />
         </>
       )}
     </div>

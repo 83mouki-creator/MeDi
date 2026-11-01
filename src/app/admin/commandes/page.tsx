@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { getAdminI18n } from '@/lib/i18n/admin-server';
 import { Search } from 'lucide-react';
 import { listOrders } from '@/lib/orders';
 import { ORDER_STATUS_LABELS, PAYMENT_STATUS_LABELS, type OrderStatus } from '@/lib/order-status';
@@ -11,6 +12,7 @@ import { Pagination } from '@/components/pagination';
 export const dynamic = 'force-dynamic';
 
 export default async function AdminOrdersPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
+  const { t } = await getAdminI18n();
   const params = await searchParams;
   const get = (key: string) => (typeof params[key] === 'string' ? (params[key] as string) : undefined);
 
@@ -30,7 +32,7 @@ export default async function AdminOrdersPage({ searchParams }: { searchParams: 
     <div className="space-y-4">
       <header className="flex flex-wrap items-center justify-between gap-2">
         <div>
-          <h1 className="text-xl font-extrabold tracking-tight">Commandes</h1>
+          <h1 className="text-xl font-extrabold tracking-tight">{t('Commandes')}</h1>
           <p className="text-sm text-navy-600">{result.total} commande(s) · recherche par numéro, nom ou téléphone</p>
         </div>
       </header>
@@ -39,47 +41,47 @@ export default async function AdminOrdersPage({ searchParams }: { searchParams: 
         <form method="get" className="grid gap-2 sm:grid-cols-2 lg:grid-cols-6">
           <div className="relative lg:col-span-2">
             <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-navy-400" aria-hidden />
-            <Input name="q" defaultValue={get('q') ?? ''} placeholder="MED-2026-…, téléphone, nom" className="pl-9" aria-label="Rechercher une commande" />
+            <Input name="q" defaultValue={get('q') ?? ''} placeholder={t('MED-2026-…, téléphone, nom')} className="pl-9" aria-label={t('Rechercher une commande')} />
           </div>
-          <Select name="status" defaultValue={get('status') ?? ''} aria-label="Statut">
-            <option value="">Tous les statuts</option>
+          <Select name="status" defaultValue={get('status') ?? ''} aria-label={t('Statut')}>
+            <option value="">{t('Tous les statuts')}</option>
             {Object.entries(ORDER_STATUS_LABELS).map(([value, label]) => (
               <option key={value} value={value}>{label}</option>
             ))}
           </Select>
-          <Select name="paymentStatus" defaultValue={get('paymentStatus') ?? ''} aria-label="Paiement">
-            <option value="">Tous les paiements</option>
+          <Select name="paymentStatus" defaultValue={get('paymentStatus') ?? ''} aria-label={t('Paiement')}>
+            <option value="">{t('Tous les paiements')}</option>
             {Object.entries(PAYMENT_STATUS_LABELS).map(([value, label]) => (
               <option key={value} value={value}>{label}</option>
             ))}
           </Select>
-          <Select name="city" defaultValue={get('city') ?? ''} aria-label="Destination">
-            <option value="">Toutes les destinations</option>
-            <option value="Daloa">Daloa</option>
-            <option value="Abidjan">Abidjan</option>
-            <option value="Yamoussoukro">Yamoussoukro</option>
-            <option value="Bouaké">Bouaké</option>
-            <option value="San-Pédro">San-Pédro</option>
-            <option value="Autre ville">Autre ville</option>
+          <Select name="city" defaultValue={get('city') ?? ''} aria-label={t('Destination')}>
+            <option value="">{t('Toutes les destinations')}</option>
+            <option value="Daloa">{t('Daloa')}</option>
+            <option value="Abidjan">{t('Abidjan')}</option>
+            <option value="Yamoussoukro">{t('Yamoussoukro')}</option>
+            <option value="Bouaké">{t('Bouaké')}</option>
+            <option value="San-Pédro">{t('San-Pédro')}</option>
+            <option value="Autre ville">{t('Autre ville')}</option>
           </Select>
-          <Button type="submit">Filtrer</Button>
+          <Button type="submit">{t('Filtrer')}</Button>
         </form>
       </Card>
 
       {result.orders.length === 0 ? (
-        <EmptyState title="Aucune commande" description="Aucune commande ne correspond à ces filtres." />
+        <EmptyState title={t('Aucune commande')} description="Aucune commande ne correspond à ces filtres." />
       ) : (
         <Card className="overflow-x-auto">
           <table className="w-full min-w-[900px] text-sm">
             <thead className="bg-navy-50 text-left text-xs uppercase tracking-wide text-navy-500">
               <tr>
-                <th className="px-3 py-2">Numéro</th>
-                <th className="px-3 py-2">Client</th>
-                <th className="px-3 py-2">Destination</th>
-                <th className="px-3 py-2">Paiement</th>
-                <th className="px-3 py-2">Statut</th>
-                <th className="px-3 py-2 text-right">Total</th>
-                <th className="px-3 py-2">Date</th>
+                <th className="px-3 py-2">{t('Numéro')}</th>
+                <th className="px-3 py-2">{t('Client')}</th>
+                <th className="px-3 py-2">{t('Destination')}</th>
+                <th className="px-3 py-2">{t('Paiement')}</th>
+                <th className="px-3 py-2">{t('Statut')}</th>
+                <th className="px-3 py-2 text-right">{t('Total')}</th>
+                <th className="px-3 py-2">{t('Date')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-navy-100">
@@ -125,6 +127,7 @@ export default async function AdminOrdersPage({ searchParams }: { searchParams: 
         totalPages={result.totalPages}
         basePath="/admin/commandes"
         searchParams={{ q: get('q'), status: get('status'), paymentStatus: get('paymentStatus'), city: get('city') }}
+        labels={{ nav: t('Pagination'), previous: t('Page précédente'), next: t('Page suivante') }}
       />
     </div>
   );

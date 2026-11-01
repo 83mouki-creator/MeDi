@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { getAdminI18n } from '@/lib/i18n/admin-server';
 import { notFound } from 'next/navigation';
 import { ArrowLeft, Ban, MapPin, Phone, Truck, User } from 'lucide-react';
 import { getOrderDetails, orderTotals } from '@/lib/orders';
@@ -16,6 +17,7 @@ import { Button } from '@/components/ui/button';
 export const dynamic = 'force-dynamic';
 
 export default async function AdminOrderDetail({ params }: { params: Promise<{ id: string }> }) {
+  const { t } = await getAdminI18n();
   const { id } = await params;
   const details = await getOrderDetails(id);
   if (!details) notFound();
@@ -34,7 +36,7 @@ export default async function AdminOrderDetail({ params }: { params: Promise<{ i
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div>
           <Link href="/admin/commandes" className="inline-flex items-center gap-1 text-xs font-medium text-navy-500 hover:text-accent-700">
-            <ArrowLeft className="size-3.5" aria-hidden /> Commandes
+            <ArrowLeft className="size-3.5" aria-hidden /> {t('Commandes')}
           </Link>
           <h1 className="font-mono text-xl font-extrabold">{order.number}</h1>
           <p className="text-xs text-navy-500">Créée le {formatDateTime(order.createdAt)}</p>
@@ -51,7 +53,7 @@ export default async function AdminOrderDetail({ params }: { params: Promise<{ i
 
       {isCarrier && !paid ? (
         <div className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900">
-          Expédition hors Daloa : <strong>prépaiement obligatoire</strong>. Aucune expédition ne peut être enregistrée avant confirmation du paiement.
+          {t('Expédition hors Daloa :')} <strong>{t('prépaiement obligatoire')}</strong>. Aucune expédition ne peut être enregistrée avant confirmation du paiement.
           {order.reservationExpiresAt ? ` La réservation expire le ${formatDateTime(order.reservationExpiresAt)}.` : ''}
         </div>
       ) : null}
@@ -59,7 +61,7 @@ export default async function AdminOrderDetail({ params }: { params: Promise<{ i
       <div className="grid gap-4 lg:grid-cols-[1fr_360px]">
         <div className="space-y-4">
           <Card className="p-4">
-            <h2 className="mb-2 text-sm font-bold">Articles</h2>
+            <h2 className="mb-2 text-sm font-bold">{t('Articles')}</h2>
             <ul className="divide-y divide-navy-100">
               {items.map((item) => (
                 <li key={item.id} className="flex justify-between gap-2 py-2 text-sm">
@@ -72,20 +74,20 @@ export default async function AdminOrderDetail({ params }: { params: Promise<{ i
               ))}
             </ul>
             <dl className="mt-2 space-y-1 border-t border-navy-100 pt-2 text-sm">
-              <div className="flex justify-between"><dt className="text-navy-600">Sous-total</dt><dd>{formatFCFA(totals.subtotal)}</dd></div>
-              <div className="flex justify-between"><dt className="text-navy-600">Livraison</dt><dd>{formatFCFA(totals.shippingFee)}</dd></div>
-              <div className="flex justify-between font-bold"><dt>Total</dt><dd>{formatFCFA(totals.total)}</dd></div>
+              <div className="flex justify-between"><dt className="text-navy-600">{t('Sous-total')}</dt><dd>{formatFCFA(totals.subtotal)}</dd></div>
+              <div className="flex justify-between"><dt className="text-navy-600">{t('Livraison')}</dt><dd>{formatFCFA(totals.shippingFee)}</dd></div>
+              <div className="flex justify-between font-bold"><dt>{t('Total')}</dt><dd>{formatFCFA(totals.total)}</dd></div>
             </dl>
           </Card>
 
           <Card className="p-4">
-            <h2 className="mb-2 text-sm font-bold">Historique</h2>
+            <h2 className="mb-2 text-sm font-bold">{t('Historique')}</h2>
             <OrderTimeline status={order.status as OrderStatus} history={history} />
           </Card>
 
           {canWrite ? (
             <Card className="p-4">
-              <h2 className="mb-2 flex items-center gap-2 text-sm font-bold"><Truck className="size-4 text-navy-400" aria-hidden /> Faire évoluer la commande</h2>
+              <h2 className="mb-2 flex items-center gap-2 text-sm font-bold"><Truck className="size-4 text-navy-400" aria-hidden /> {t('Faire évoluer la commande')}</h2>
               <OrderStatusForm
                 orderId={order.id}
                 currentStatus={order.status as OrderStatus}
@@ -98,43 +100,43 @@ export default async function AdminOrderDetail({ params }: { params: Promise<{ i
 
           {canWrite && order.status !== 'CANCELLED' && order.status !== 'DELIVERED' && order.status !== 'REFUNDED' ? (
             <Card className="border-rose-100 p-4">
-              <h2 className="mb-2 flex items-center gap-2 text-sm font-bold text-rose-800"><Ban className="size-4" aria-hidden /> Annulation</h2>
+              <h2 className="mb-2 flex items-center gap-2 text-sm font-bold text-rose-800"><Ban className="size-4" aria-hidden /> {t('Annulation')}</h2>
               <CancelOrderForm orderId={order.id} />
             </Card>
           ) : null}
 
           <Card className="p-4">
-            <h2 className="mb-2 text-sm font-bold">Note interne</h2>
+            <h2 className="mb-2 text-sm font-bold">{t('Note interne')}</h2>
             <form action={saveAdminNoteAction} className="space-y-2">
               <input type="hidden" name="orderId" value={order.id} />
-              <Textarea name="adminNote" rows={3} defaultValue={order.adminNote ?? ''} maxLength={2000} placeholder="Note visible uniquement par l’équipe…" />
-              <Button type="submit" variant="outline" size="sm">Enregistrer la note</Button>
+              <Textarea name="adminNote" rows={3} defaultValue={order.adminNote ?? ''} maxLength={2000} placeholder={t('Note visible uniquement par l’équipe…')} />
+              <Button type="submit" variant="outline" size="sm">{t('Enregistrer la note')}</Button>
             </form>
           </Card>
         </div>
 
         <aside className="space-y-4">
           <Card className="p-4">
-            <h2 className="mb-2 flex items-center gap-2 text-sm font-bold"><User className="size-4 text-navy-400" aria-hidden /> Client</h2>
+            <h2 className="mb-2 flex items-center gap-2 text-sm font-bold"><User className="size-4 text-navy-400" aria-hidden /> {t('Client')}</h2>
             <p className="text-sm font-medium">{order.customerFirstName} {order.customerLastName}</p>
             <p className="flex items-center gap-1.5 text-xs text-navy-600"><Phone className="size-3.5" aria-hidden /> {order.phone}</p>
             {order.email ? <p className="text-xs text-navy-600">{order.email}</p> : null}
-            {order.userId ? <p className="mt-1 text-[11px] text-navy-400">Compte client lié</p> : <p className="mt-1 text-[11px] text-navy-400">Commande invitée</p>}
+            {order.userId ? <p className="mt-1 text-[11px] text-navy-400">{t('Compte client lié')}</p> : <p className="mt-1 text-[11px] text-navy-400">{t('Commande invitée')}</p>}
             {order.customerNote ? <p className="mt-2 rounded bg-navy-50 p-2 text-xs text-navy-700">{order.customerNote}</p> : null}
           </Card>
 
           <Card className="p-4">
-            <h2 className="mb-2 flex items-center gap-2 text-sm font-bold"><MapPin className="size-4 text-navy-400" aria-hidden /> Livraison</h2>
+            <h2 className="mb-2 flex items-center gap-2 text-sm font-bold"><MapPin className="size-4 text-navy-400" aria-hidden /> {t('Livraison')}</h2>
             <dl className="space-y-1 text-xs text-navy-700">
-              <div><dt className="inline font-semibold">Mode : </dt><dd className="inline">{deliveryMethodLabels[order.deliveryMethod]}</dd></div>
-              <div><dt className="inline font-semibold">Ville : </dt><dd className="inline">{order.city}</dd></div>
-              {order.commune ? <div><dt className="inline font-semibold">Commune : </dt><dd className="inline">{order.commune}</dd></div> : null}
-              {order.addressLine ? <div><dt className="inline font-semibold">Adresse : </dt><dd className="inline">{order.addressLine}</dd></div> : null}
-              {order.landmark ? <div><dt className="inline font-semibold">Repère : </dt><dd className="inline">{order.landmark}</dd></div> : null}
-              {order.carrier ? <div><dt className="inline font-semibold">Transporteur : </dt><dd className="inline">{order.carrier}</dd></div> : null}
-              {order.trackingNumber ? <div><dt className="inline font-semibold">Suivi : </dt><dd className="inline font-mono">{order.trackingNumber}</dd></div> : null}
-              {order.shippedAt ? <div><dt className="inline font-semibold">Expédiée : </dt><dd className="inline">{formatDateTime(order.shippedAt)}</dd></div> : null}
-              {order.deliveredAt ? <div><dt className="inline font-semibold">Livrée : </dt><dd className="inline">{formatDateTime(order.deliveredAt)}</dd></div> : null}
+              <div><dt className="inline font-semibold">{t('Mode :')} </dt><dd className="inline">{deliveryMethodLabels[order.deliveryMethod]}</dd></div>
+              <div><dt className="inline font-semibold">{t('Ville :')} </dt><dd className="inline">{order.city}</dd></div>
+              {order.commune ? <div><dt className="inline font-semibold">{t('Commune :')} </dt><dd className="inline">{order.commune}</dd></div> : null}
+              {order.addressLine ? <div><dt className="inline font-semibold">{t('Adresse :')} </dt><dd className="inline">{order.addressLine}</dd></div> : null}
+              {order.landmark ? <div><dt className="inline font-semibold">{t('Repère :')} </dt><dd className="inline">{order.landmark}</dd></div> : null}
+              {order.carrier ? <div><dt className="inline font-semibold">{t('Transporteur :')} </dt><dd className="inline">{order.carrier}</dd></div> : null}
+              {order.trackingNumber ? <div><dt className="inline font-semibold">{t('Suivi :')} </dt><dd className="inline font-mono">{order.trackingNumber}</dd></div> : null}
+              {order.shippedAt ? <div><dt className="inline font-semibold">{t('Expédiée :')} </dt><dd className="inline">{formatDateTime(order.shippedAt)}</dd></div> : null}
+              {order.deliveredAt ? <div><dt className="inline font-semibold">{t('Livrée :')} </dt><dd className="inline">{formatDateTime(order.deliveredAt)}</dd></div> : null}
             </dl>
             {shipments.length > 0 ? (
               <ul className="mt-2 space-y-1 border-t border-navy-100 pt-2 text-[11px] text-navy-500">
@@ -146,12 +148,12 @@ export default async function AdminOrderDetail({ params }: { params: Promise<{ i
           </Card>
 
           <Card className="p-4">
-            <h2 className="mb-2 text-sm font-bold">Paiement</h2>
+            <h2 className="mb-2 text-sm font-bold">{t('Paiement')}</h2>
             <p className="text-xs text-navy-600">{paymentMethodLabels[order.paymentMethod]}</p>
             {payment ? (
               <div className="mt-2">
                 <p className="mb-2 text-xs text-navy-500">
-                  Statut : <strong>{payment.status}</strong>
+                  {t('Statut :')} <strong>{payment.status}</strong>
                   {payment.confirmedAt ? ` · confirmé le ${formatDateTime(payment.confirmedAt)}` : ''}
                 </p>
                 {payment.status !== 'CONFIRMED' && order.status !== 'CANCELLED' ? (
@@ -164,11 +166,11 @@ export default async function AdminOrderDetail({ params }: { params: Promise<{ i
                   />
                 ) : null}
                 {payment.status === 'CONFIRMED' ? (
-                  <p className="rounded bg-emerald-50 p-2 text-xs text-emerald-800">Paiement confirmé — stock décrémenté.</p>
+                  <p className="rounded bg-emerald-50 p-2 text-xs text-emerald-800">{t('Paiement confirmé — stock décrémenté.')}</p>
                 ) : null}
               </div>
             ) : (
-              <p className="text-xs text-navy-500">Aucun enregistrement de paiement.</p>
+              <p className="text-xs text-navy-500">{t('Aucun enregistrement de paiement.')}</p>
             )}
           </Card>
         </aside>

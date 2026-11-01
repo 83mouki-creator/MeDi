@@ -1,4 +1,5 @@
 import { asc, eq, sql } from 'drizzle-orm';
+import { getAdminI18n } from '@/lib/i18n/admin-server';
 import { db } from '@/db';
 import { categories, brands } from '@/db/schema';
 import { saveCategoryAction, saveBrandAction } from '@/app/actions/admin-products';
@@ -9,6 +10,7 @@ import { Button } from '@/components/ui/button';
 export const dynamic = 'force-dynamic';
 
 export default async function CategoriesPage() {
+  const { t } = await getAdminI18n();
   const [categoryRows, brandRows] = await Promise.all([
     db
       .select({
@@ -37,56 +39,56 @@ export default async function CategoriesPage() {
   return (
     <div className="space-y-4">
       <header>
-        <h1 className="text-xl font-extrabold tracking-tight">Catégories et marques</h1>
-        <p className="text-sm text-navy-600">Les catégories structurent la navigation et les pages indexables du catalogue.</p>
+        <h1 className="text-xl font-extrabold tracking-tight">{t('Catégories et marques')}</h1>
+        <p className="text-sm text-navy-600">{t('Les catégories structurent la navigation et les pages indexables du catalogue.')}</p>
       </header>
 
       <div className="grid gap-4 lg:grid-cols-2">
         <Card className="p-4">
-          <h2 className="mb-3 text-sm font-bold">Nouvelle catégorie</h2>
+          <h2 className="mb-3 text-sm font-bold">{t('Nouvelle catégorie')}</h2>
           <form action={saveCategoryAction} className="space-y-3">
-            <Field label="Nom" htmlFor="new-cat-name" required>
-              <Input id="new-cat-name" name="name" required maxLength={80} placeholder="Ex. Peinture et finitions" />
+            <Field label={t('Nom')} htmlFor="new-cat-name" required>
+              <Input id="new-cat-name" name="name" required maxLength={80} placeholder={t('Ex. Peinture et finitions')} />
             </Field>
-            <Field label="Catégorie parente (facultatif)" htmlFor="new-cat-parent">
+            <Field label={t('Catégorie parente (facultatif)')} htmlFor="new-cat-parent">
               <Select id="new-cat-parent" name="parentId" defaultValue="">
-                <option value="">Aucune (catégorie racine)</option>
+                <option value="">{t('Aucune (catégorie racine)')}</option>
                 {roots.map((category) => (
                   <option key={category.id} value={category.id}>{category.name}</option>
                 ))}
               </Select>
             </Field>
-            <Field label="Description (SEO)" htmlFor="new-cat-desc">
+            <Field label={t('Description (SEO)')} htmlFor="new-cat-desc">
               <Input id="new-cat-desc" name="description" maxLength={300} />
             </Field>
-            <Button type="submit">Créer la catégorie</Button>
+            <Button type="submit">{t('Créer la catégorie')}</Button>
           </form>
         </Card>
 
         <Card className="p-4">
-          <h2 className="mb-3 text-sm font-bold">Nouvelle marque</h2>
+          <h2 className="mb-3 text-sm font-bold">{t('Nouvelle marque')}</h2>
           <form action={saveBrandAction} className="space-y-3">
-            <Field label="Nom de la marque" htmlFor="new-brand-name" required>
-              <Input id="new-brand-name" name="name" required maxLength={80} placeholder="Ex. Nasco" />
+            <Field label={t('Nom de la marque')} htmlFor="new-brand-name" required>
+              <Input id="new-brand-name" name="name" required maxLength={80} placeholder={t('Ex. Nasco')} />
             </Field>
-            <Button type="submit">Créer la marque</Button>
+            <Button type="submit">{t('Créer la marque')}</Button>
           </form>
           <p className="mt-3 text-xs text-navy-500">
-            Les marques et fournisseurs affichés doivent correspondre à des références réellement distribuées par la boutique.
+            {t('Les marques et fournisseurs affichés doivent correspondre à des références réellement distribuées par la boutique.')}
           </p>
         </Card>
       </div>
 
       <Card className="overflow-x-auto">
-        <h2 className="border-b border-navy-100 bg-navy-50 px-4 py-2.5 text-sm font-bold">Catégories ({categoryRows.length})</h2>
+        <h2 className="border-b border-navy-100 bg-navy-50 px-4 py-2.5 text-sm font-bold">{t('Catégories ({count})', { count: categoryRows.length })}</h2>
         <table className="w-full min-w-[560px] text-sm">
           <thead className="text-left text-xs uppercase tracking-wide text-navy-500">
             <tr>
-              <th className="px-3 py-2">Nom</th>
-              <th className="px-3 py-2">Parente</th>
-              <th className="px-3 py-2">Slug</th>
-              <th className="px-3 py-2 text-right">Produits</th>
-              <th className="px-3 py-2">Renommer</th>
+              <th className="px-3 py-2">{t('Nom')}</th>
+              <th className="px-3 py-2">{t('Parente')}</th>
+              <th className="px-3 py-2">{t('Slug')}</th>
+              <th className="px-3 py-2 text-right">{t('Produits')}</th>
+              <th className="px-3 py-2">{t('Renommer')}</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-navy-100">
@@ -102,8 +104,8 @@ export default async function CategoriesPage() {
                   <form action={saveCategoryAction} className="flex gap-1">
                     <input type="hidden" name="id" value={category.id} />
                     <input type="hidden" name="parentId" value={category.parentId ?? ''} />
-                    <Input name="name" defaultValue={category.name} className="h-9 max-w-40" aria-label={`Renommer ${category.name}`} />
-                    <Button type="submit" size="sm" variant="outline">OK</Button>
+                    <Input name="name" defaultValue={category.name} className="h-9 max-w-40" aria-label={t('Renommer {name}', { name: category.name })} />
+                    <Button type="submit" size="sm" variant="outline">{t('OK')}</Button>
                   </form>
                 </td>
               </tr>
@@ -113,13 +115,13 @@ export default async function CategoriesPage() {
       </Card>
 
       <Card className="overflow-x-auto">
-        <h2 className="border-b border-navy-100 bg-navy-50 px-4 py-2.5 text-sm font-bold">Marques ({brandRows.length})</h2>
+        <h2 className="border-b border-navy-100 bg-navy-50 px-4 py-2.5 text-sm font-bold">{t('Marques ({count})', { count: brandRows.length })}</h2>
         <table className="w-full min-w-[560px] text-sm">
           <thead className="text-left text-xs uppercase tracking-wide text-navy-500">
             <tr>
-              <th className="px-3 py-2">Nom</th>
-              <th className="px-3 py-2">Slug</th>
-              <th className="px-3 py-2 text-right">Produits</th>
+              <th className="px-3 py-2">{t('Nom')}</th>
+              <th className="px-3 py-2">{t('Slug')}</th>
+              <th className="px-3 py-2 text-right">{t('Produits')}</th>
             </tr>
           </thead>
           <tbody className="divide-y divide-navy-100">

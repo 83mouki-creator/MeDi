@@ -71,6 +71,30 @@ place (application Plans, GPS du téléphone) — aucune coordonnée n'est estim
 Le logo officiel est décliné automatiquement (`npm run brand:assets`) vers `public/brand/` :
 en-tête et pied de page (fond bleu nuit), favicon, icône iOS, image de partage.
 
+## Langue de l'interface (français / arabe)
+
+Le back-office existe en **français et en arabe**. Le bouton « العربية / Français » de la barre
+supérieure bascule toute l'administration ; le choix est mémorisé dans un cookie
+(`medi_admin_locale`), donc conservé d'une session à l'autre.
+
+Ce qui change en arabe :
+
+- l'interface passe en **RTL** : le panneau de navigation s'ouvre depuis la droite, les libellés et
+  les tableaux sont alignés à droite, les flèches de pagination et l'icône de déconnexion sont
+  inversées ;
+- tous les libellés d'écran, boutons, colonnes, messages d'aide et textes d'erreur sont traduits
+  (arabe standard, registre professionnel) ;
+- les **données restent dans leur langue de saisie** : noms de produits, catégories, marques et
+  fournisseurs ne sont jamais traduits automatiquement. Les villes sont translittérées à l'affichage
+  (دالوا، أبيدجان…) mais les valeurs enregistrées restent inchangées.
+
+Ce qui ne change pas : **la boutique publique reste entièrement en français**, quel que soit le
+choix fait dans l'administration. Le cookie n'est lu que par les pages `/admin`.
+
+Pour ajouter ou corriger une traduction : `src/lib/i18n/admin.ts`. Le texte français sert de clé ;
+une clé absente s'affiche en français plutôt que de casser l'écran, et le test
+`tests/i18n-admin.test.ts` signale toute chaîne d'administration encore non traduite.
+
 ## Navigation
 
 L'administration a sa propre mise en page : **aucun élément de la boutique** n'y apparaît (ni le

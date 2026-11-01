@@ -1,5 +1,6 @@
 'use client';
 
+import { useAdminI18n } from '@/components/admin/admin-i18n';
 import { useActionState } from 'react';
 import { FileSpreadsheet, Images, ScanSearch, Upload } from 'lucide-react';
 import {
@@ -16,6 +17,7 @@ import { Alert, Card } from '../ui/primitives';
 const initial: ImportState = {};
 
 export function CsvImportForm() {
+  const { t } = useAdminI18n();
   const [state, formAction, pending] = useActionState(importCsvAction, initial);
 
   return (
@@ -23,20 +25,20 @@ export function CsvImportForm() {
       {state.success ? <Alert tone="success">{state.success}</Alert> : null}
       {state.error ? <Alert tone="danger">{state.error}</Alert> : null}
 
-      <Field label="Fichier CSV" htmlFor="csvFile" hint="Colonnes obligatoires : sku, nom, prix, stock.">
+      <Field label={t('Fichier CSV')} htmlFor="csvFile" hint="Colonnes obligatoires : sku, nom, prix, stock.">
         <input id="csvFile" type="file" name="csvFile" accept=".csv,text/csv" className="block w-full text-sm" />
       </Field>
 
-      <Field label="…ou collez le contenu CSV" htmlFor="csvText">
+      <Field label={t('…ou collez le contenu CSV')} htmlFor="csvText">
         <Textarea id="csvText" name="csvText" rows={5} placeholder={'sku,nom,prix,stock,categorie,marque\nMED-0100,Perceuse 500W,45000,10,Outillage industriel,Bosch'} />
       </Field>
 
       <div className="flex flex-wrap gap-2">
         <Button type="submit" name="dryRun" value="1" variant="outline" loading={pending}>
-          <ScanSearch className="size-4" aria-hidden /> Vérifier sans importer
+          <ScanSearch className="size-4" aria-hidden /> {t('Vérifier sans importer')}
         </Button>
         <Button type="submit" name="dryRun" value="0" loading={pending}>
-          <FileSpreadsheet className="size-4" aria-hidden /> Importer le catalogue
+          <FileSpreadsheet className="size-4" aria-hidden /> {t('Importer le catalogue')}
         </Button>
       </div>
 
@@ -51,10 +53,10 @@ export function CsvImportForm() {
             <table className="w-full text-xs">
               <thead className="text-left text-navy-500">
                 <tr>
-                  <th className="px-3 py-1.5">Ligne</th>
-                  <th className="px-3 py-1.5">SKU</th>
-                  <th className="px-3 py-1.5">Nom</th>
-                  <th className="px-3 py-1.5">Résultat</th>
+                  <th className="px-3 py-1.5">{t('Ligne')}</th>
+                  <th className="px-3 py-1.5">{t('SKU')}</th>
+                  <th className="px-3 py-1.5">{t('Nom')}</th>
+                  <th className="px-3 py-1.5">{t('Résultat')}</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-navy-100">
@@ -78,6 +80,7 @@ export function CsvImportForm() {
 }
 
 export function MediaUploadForm() {
+  const { t } = useAdminI18n();
   const [state, formAction, pending] = useActionState(uploadMediaBulkAction, initial);
 
   return (
@@ -93,11 +96,10 @@ export function MediaUploadForm() {
         className="block w-full text-sm"
       />
       <p className="text-xs text-navy-500">
-        60 photos max par envoi, 5 Mo par image. Les doublons sont détectés par empreinte SHA-256. Aucun prix ni stock n’est déduit
-        d’une photo : l’affectation à une fiche produit est manuelle.
+        {t('60 photos max par envoi, 5 Mo par image. Les doublons sont détectés par empreinte SHA-256. Aucun prix ni stock n’est déduit d’une photo : l’affectation à une fiche produit est manuelle.')}
       </p>
       <Button type="submit" loading={pending}>
-        <Upload className="size-4" aria-hidden /> Téléverser dans la file
+        <Upload className="size-4" aria-hidden /> {t('Téléverser dans la file')}
       </Button>
     </form>
   );
@@ -110,24 +112,26 @@ export function AssignMediaForm({
   mediaId: string;
   products: { id: string; name: string; sku: string }[];
 }) {
+  const { t } = useAdminI18n();
   const [state, formAction, pending] = useActionState(assignMediaAction, initial);
 
   return (
     <form action={formAction} className="flex flex-wrap items-center gap-2">
       <input type="hidden" name="mediaId" value={mediaId} />
-      <Select name="productId" required className="h-9 max-w-56 text-xs" aria-label="Produit à associer">
-        <option value="">Choisir un produit…</option>
+      <Select name="productId" required className="h-9 max-w-56 text-xs" aria-label={t('Produit à associer')}>
+        <option value="">{t('Choisir un produit…')}</option>
         {products.map((product) => (
           <option key={product.id} value={product.id}>{product.sku} — {product.name}</option>
         ))}
       </Select>
-      <Button type="submit" size="sm" variant="outline" loading={pending}>Associer</Button>
+      <Button type="submit" size="sm" variant="outline" loading={pending}>{t('Associer')}</Button>
       {state.error ? <span className="text-xs text-rose-700">{state.error}</span> : null}
     </form>
   );
 }
 
 export function ReindexVisualForm({ remaining }: { remaining: number }) {
+  const { t } = useAdminI18n();
   const [state, formAction, pending] = useActionState(reindexVisualAction, initial);
 
   return (
@@ -137,24 +141,25 @@ export function ReindexVisualForm({ remaining }: { remaining: number }) {
       <input type="hidden" name="batch" value={20} />
       <p className="text-xs text-navy-500">{remaining} photo(s) sans vecteur visuel.</p>
       <Button type="submit" variant="outline" loading={pending} disabled={remaining === 0}>
-        <Images className="size-4" aria-hidden /> Indexer 20 photos
+        <Images className="size-4" aria-hidden /> {t('Indexer 20 photos')}
       </Button>
     </form>
   );
 }
 
 export function ImportHelp() {
+  const { t } = useAdminI18n();
   return (
     <Card className="p-4 text-xs leading-relaxed text-navy-600">
-      <h2 className="mb-1 text-sm font-bold text-navy-900">Format CSV attendu</h2>
+      <h2 className="mb-1 text-sm font-bold text-navy-900">{t('Format CSV attendu')}</h2>
       <pre className="mt-2 overflow-x-auto rounded bg-navy-950 p-3 text-[11px] text-navy-100">{`sku,nom,prix,stock,categorie,marque,description_courte,prix_promo,mots_cles
 MED-0100,Perceuse à percussion 850 W,78500,12,Outillage industriel,Bosch,Perceuse 850 W,69900,perceuse|chantier
 MED-0101,Ciment CPJ 35 50 kg,5200,400,Matériaux de base,Dangote,Sac de 50 kg,,ciment|beton`}</pre>
       <ul className="mt-2 list-disc space-y-1 pl-4">
-        <li>Encodage UTF-8, séparateur virgule ou point-virgule, guillemets acceptés.</li>
-        <li>Un SKU existant est mis à jour ; un SKU nouveau crée la fiche.</li>
-        <li>Les lignes sans prix positif ou sans stock valide sont rejetées et listées.</li>
-        <li>Les catégories et marques inconnues sont créées automatiquement.</li>
+        <li>{t('Encodage UTF-8, séparateur virgule ou point-virgule, guillemets acceptés.')}</li>
+        <li>{t('Un SKU existant est mis à jour ; un SKU nouveau crée la fiche.')}</li>
+        <li>{t('Les lignes sans prix positif ou sans stock valide sont rejetées et listées.')}</li>
+        <li>{t('Les catégories et marques inconnues sont créées automatiquement.')}</li>
       </ul>
     </Card>
   );
