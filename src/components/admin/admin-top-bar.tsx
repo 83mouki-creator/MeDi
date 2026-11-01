@@ -9,10 +9,11 @@ import {
   ClipboardList,
   CreditCard,
   Download,
+  Languages,
   LayoutDashboard,
   LogOut,
-  MessageSquare,
   Menu,
+  MessageSquare,
   Package,
   Settings,
   ShieldCheck,
@@ -23,7 +24,10 @@ import {
   X,
 } from 'lucide-react';
 import { logoutAction } from '@/app/actions/auth';
+import { setAdminLocaleAction } from '@/app/actions/admin-locale';
+import { useAdminI18n } from '@/components/admin/admin-i18n';
 import { cn } from '@/lib/utils';
+import type { AdminLocale } from '@/lib/i18n/admin';
 
 export type AdminNavItem = {
   href: string;
@@ -61,12 +65,40 @@ const ICONS = {
   stats: BarChart3,
 } as const;
 
+/** Bascule FR / AR, mémorisée par cookie et propre au back-office. */
+function LocaleSwitcher({ locale }: { locale: AdminLocale }) {
+  const { t } = useAdminI18n();
+  const pathname = usePathname();
+  const target: AdminLocale = locale === 'ar' ? 'fr' : 'ar';
+
+  return (
+    <form action={setAdminLocaleAction} className="shrink-0">
+      <input type="hidden" name="locale" value={target} />
+      <input type="hidden" name="next" value={pathname} />
+      <button
+        type="submit"
+        lang={target}
+        dir={target === 'ar' ? 'rtl' : 'ltr'}
+        title={t('Changer de langue')}
+        aria-label={`${t('Changer de langue')} — ${target === 'ar' ? 'العربية' : 'Français'}`}
+        className="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-2 font-semibold text-navy-100 hover:bg-white/10 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-400"
+      >
+        <Languages className="size-4" aria-hidden />
+        <span className="text-xs">{target === 'ar' ? 'العربية' : 'Français'}</span>
+      </button>
+    </form>
+  );
+}
+
 /**
  * Barre supérieure de l'administration.
  *
  * Toute la navigation est repliée derrière la puce à trois traits : un panneau
  * coulissant s'ouvre par-dessus la page. Aucun onglet n'est affiché en
  * permanence, sur mobile comme sur ordinateur.
+ *
+ * En arabe, la mise en page passe en RTL : le panneau s'ouvre depuis la droite
+ * et les icônes directionnelles sont inversées.
  */
 export function AdminTopBar({
   items,
@@ -74,13 +106,18 @@ export function AdminTopBar({
   email,
   pendingPayments,
   newMessages,
+  locale,
+  dir,
 }: {
   items: AdminNavItem[];
   role: string;
   email: string;
   pendingPayments: number;
   newMessages: number;
+  locale: AdminLocale;
+  dir: 'ltr' | 'rtl';
 }) {
+  const { t } = useAdminI18n();
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
   const panelRef = useRef<HTMLDivElement>(null);
@@ -116,18 +153,18 @@ export function AdminTopBar({
   return (
     <>
       <header className="sticky top-0 z-40 border-b border-navy-800 bg-navy-950 text-white">
-        <div className="container-page flex items-center gap-3 py-2.5">
+        <div className="container-page flex items-center gap-2 py-2.5 sm:gap-3">
           <button
             ref={triggerRef}
             type="button"
             onClick={() => setOpen((value) => !value)}
             aria-expanded={open}
             aria-controls="menu-administration"
-            aria-label="Ouvrir le menu de l’administration"
+            aria-label={t('Ouvrir le menu de l’administration')}
             className="flex items-center gap-2 rounded-lg bg-white/10 px-3 py-2 text-sm font-semibold text-white ring-1 ring-white/20 hover:bg-white/20 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-400"
           >
             {open ? <X className="size-5" aria-hidden /> : <Menu className="size-5" aria-hidden />}
-            <span className="hidden sm:inline">Menu</span>
+            <span className="hidden sm:inline">{t('Menu')}</span>
             {pendingPayments > 0 && !open ? (
               <span className="grid min-w-5 place-items-center rounded-full bg-accent-500 px-1 text-[11px] font-bold text-white">
                 {pendingPayments}
@@ -136,27 +173,32 @@ export function AdminTopBar({
           </button>
 
           <Link href="/admin" className="flex items-baseline gap-2 text-sm font-extrabold tracking-tight">
-            MeDi <span className="hidden font-normal text-navy-300 sm:inline">/ administration</span>
+            {t('MeDi')} <span className="hidden font-normal text-navy-300 sm:inline">/ {t('Administration')}</span>
           </Link>
 
-          <span className="ml-1 hidden rounded-full bg-accent-500/15 px-2 py-0.5 text-[11px] font-semibold text-accent-200 md:inline">
+          <span className="hidden rounded-full bg-accent-500/15 px-2 py-0.5 text-[11px] font-semibold text-accent-200 md:inline">
             {role}
           </span>
 
-          <div className="ml-auto flex items-center gap-2 text-xs">
+          <div className="ms-auto flex items-center gap-1 text-xs sm:gap-2">
+            <LocaleSwitcher locale={locale} />
             <Link
               href="/"
               className="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-2 font-semibold text-navy-100 hover:bg-white/10 hover:text-white"
             >
-              <Store className="size-4" aria-hidden /> <span className="hidden sm:inline">Voir la boutique</span>
+              <Store className="size-4" aria-hidden /> <span className="hidden lg:inline">{t('Voir la boutique')}</span>
             </Link>
-            <span className="hidden text-navy-400 md:inline">{email}</span>
+            <span className="hidden text-navy-400 xl:inline" dir="ltr">
+              {email}
+            </span>
             <form action={logoutAction}>
               <button
                 type="submit"
+                aria-label={t('Déconnexion')}
                 className="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-2 font-semibold text-navy-100 hover:bg-white/10 hover:text-white"
               >
-                <LogOut className="size-4" aria-hidden /> <span className="hidden sm:inline">Déconnexion</span>
+                <LogOut className="size-4 rtl:-scale-x-100" aria-hidden />{' '}
+                <span className="hidden lg:inline">{t('Déconnexion')}</span>
               </button>
             </form>
           </div>
@@ -173,27 +215,28 @@ export function AdminTopBar({
         )}
       />
 
-      {/* Panneau coulissant */}
+      {/* Panneau coulissant — ouvert depuis la gauche en français, la droite en arabe */}
       <div
         id="menu-administration"
         ref={panelRef}
         role="dialog"
         aria-modal="true"
-        aria-label="Navigation de l’administration"
+        aria-label={t('Navigation de l’administration')}
         aria-hidden={!open}
         inert={!open}
         tabIndex={-1}
         className={cn(
-          'fixed inset-y-0 left-0 z-50 flex w-[min(20rem,85vw)] flex-col bg-white shadow-2xl transition-transform duration-200 ease-out',
-          open ? 'translate-x-0' : '-translate-x-full',
+          'fixed inset-y-0 z-50 flex w-[min(20rem,85vw)] flex-col bg-white shadow-2xl transition-transform duration-200 ease-out',
+          dir === 'rtl' ? 'end-0' : 'start-0',
+          open ? 'translate-x-0' : dir === 'rtl' ? 'translate-x-full' : '-translate-x-full',
         )}
       >
         <div className="flex items-center justify-between border-b border-navy-100 px-4 py-3">
-          <p className="text-sm font-extrabold text-navy-950">Administration</p>
+          <p className="text-sm font-extrabold text-navy-950">{t('Administration')}</p>
           <button
             type="button"
             onClick={close}
-            aria-label="Fermer le menu"
+            aria-label={t('Fermer le menu')}
             className="grid size-9 place-items-center rounded-lg text-navy-500 hover:bg-navy-50 hover:text-navy-900"
           >
             <X className="size-5" aria-hidden />
@@ -216,7 +259,7 @@ export function AdminTopBar({
                       active ? 'bg-accent-50 text-accent-800 ring-1 ring-accent-200' : 'text-navy-700 hover:bg-navy-50',
                     )}
                   >
-                    <Icon className={cn('size-4', active ? 'text-accent-600' : 'text-navy-400')} aria-hidden />
+                    <Icon className={cn('size-4 shrink-0', active ? 'text-accent-600' : 'text-navy-400')} aria-hidden />
                     <span className="flex-1">{item.label}</span>
                     {item.badge === 'payments' && pendingPayments > 0 ? (
                       <span className="rounded-full bg-accent-500 px-1.5 py-0.5 text-[10px] font-bold text-white">
@@ -241,10 +284,10 @@ export function AdminTopBar({
             onClick={close}
             className="flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-semibold text-navy-700 hover:bg-navy-50"
           >
-            <Store className="size-4 text-navy-400" aria-hidden /> Voir la boutique
+            <Store className="size-4 text-navy-400" aria-hidden /> {t('Voir la boutique')}
           </Link>
           <p className="mt-2 px-1 text-[11px] leading-relaxed text-navy-500">
-            Les actions sensibles (prix, stock, paiement) sont journalisées avec l’identité de l’opérateur.
+            {t('Les actions sensibles (prix, stock, paiement) sont journalisées avec l’identité de l’opérateur.')}
           </p>
         </div>
       </div>

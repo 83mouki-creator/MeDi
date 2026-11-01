@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { getAdminI18n } from '@/lib/i18n/admin-server';
 import Image from 'next/image';
 import { Plus, Search } from 'lucide-react';
 import { sql } from 'drizzle-orm';
@@ -12,6 +13,7 @@ import { Pagination } from '@/components/pagination';
 export const dynamic = 'force-dynamic';
 
 export default async function AdminProductsPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
+  const { t } = await getAdminI18n();
   const params = await searchParams;
   const q = sanitizeSearch(typeof params.q === 'string' ? params.q : '');
   const status = typeof params.status === 'string' ? params.status : 'active';
@@ -49,11 +51,11 @@ export default async function AdminProductsPage({ searchParams }: { searchParams
     <div className="space-y-4">
       <header className="flex flex-wrap items-center justify-between gap-2">
         <div>
-          <h1 className="text-xl font-extrabold tracking-tight">Produits</h1>
+          <h1 className="text-xl font-extrabold tracking-tight">{t('Produits')}</h1>
           <p className="text-sm text-navy-600">{total} produit(s) correspondant au filtre</p>
         </div>
         <ButtonLink href="/admin/produits/nouveau">
-          <Plus className="size-4" aria-hidden /> Nouveau produit
+          <Plus className="size-4" aria-hidden /> {t('Nouveau produit')}
         </ButtonLink>
       </header>
 
@@ -61,36 +63,36 @@ export default async function AdminProductsPage({ searchParams }: { searchParams
         <form method="get" className="grid gap-2 sm:grid-cols-[1fr_200px_auto]">
           <div className="relative">
             <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-navy-400" aria-hidden />
-            <Input name="q" defaultValue={q} className="pl-9" placeholder="Rechercher dans mes produits (nom, référence)" aria-label="Rechercher un produit dans l’administration" />
+            <Input name="q" defaultValue={q} className="pl-9" placeholder={t('Rechercher dans mes produits (nom, référence)')} aria-label={t('Rechercher un produit dans l’administration')} />
           </div>
-          <Select name="status" defaultValue={status} aria-label="Filtrer par état">
-            <option value="active">Publiés</option>
-            <option value="inactive">Masqués</option>
-            <option value="low">Stock faible</option>
-            <option value="archived">Archivés</option>
-            <option value="all">Tous</option>
+          <Select name="status" defaultValue={status} aria-label={t('Filtrer par état')}>
+            <option value="active">{t('Publiés')}</option>
+            <option value="inactive">{t('Masqués')}</option>
+            <option value="low">{t('Stock faible')}</option>
+            <option value="archived">{t('Archivés')}</option>
+            <option value="all">{t('Tous')}</option>
           </Select>
-          <Button type="submit">Filtrer</Button>
+          <Button type="submit">{t('Filtrer')}</Button>
         </form>
       </Card>
 
       {list.length === 0 ? (
         <EmptyState
-          title="Aucun produit"
+          title={t('Aucun produit')}
           description="Créez un produit ou importez votre catalogue CSV."
-          action={<ButtonLink href="/admin/produits/nouveau">Ajouter un produit</ButtonLink>}
+          action={<ButtonLink href="/admin/produits/nouveau">{t('Ajouter un produit')}</ButtonLink>}
         />
       ) : (
         <Card className="overflow-x-auto">
           <table className="w-full min-w-[880px] text-sm">
             <thead className="bg-navy-50 text-left text-xs uppercase tracking-wide text-navy-500">
               <tr>
-                <th className="px-3 py-2">Produit</th>
-                <th className="px-3 py-2">Catégorie</th>
-                <th className="px-3 py-2 text-right">Prix</th>
-                <th className="px-3 py-2 text-center">Stock</th>
-                <th className="px-3 py-2 text-center">Réservé</th>
-                <th className="px-3 py-2">État</th>
+                <th className="px-3 py-2">{t('Produit')}</th>
+                <th className="px-3 py-2">{t('Catégorie')}</th>
+                <th className="px-3 py-2 text-right">{t('Prix')}</th>
+                <th className="px-3 py-2 text-center">{t('Stock')}</th>
+                <th className="px-3 py-2 text-center">{t('Réservé')}</th>
+                <th className="px-3 py-2">{t('État')}</th>
               </tr>
             </thead>
             <tbody className="divide-y divide-navy-100">
@@ -122,15 +124,15 @@ export default async function AdminProductsPage({ searchParams }: { searchParams
                     <td className="px-3 py-2 text-center text-navy-500">{String(row.reserved)}</td>
                     <td className="px-3 py-2">
                       {row.is_archived ? (
-                        <Badge tone="neutral">Archivé</Badge>
+                        <Badge tone="neutral">{t('Archivé')}</Badge>
                       ) : !row.is_active ? (
-                        <Badge tone="neutral">Masqué</Badge>
+                        <Badge tone="neutral">{t('Masqué')}</Badge>
                       ) : available <= 0 ? (
-                        <Badge tone="danger">Épuisé</Badge>
+                        <Badge tone="danger">{t('Épuisé')}</Badge>
                       ) : available <= 5 ? (
-                        <Badge tone="warning">Stock faible</Badge>
+                        <Badge tone="warning">{t('Stock faible')}</Badge>
                       ) : (
-                        <Badge tone="success">En ligne</Badge>
+                        <Badge tone="success">{t('En ligne')}</Badge>
                       )}
                     </td>
                   </tr>
@@ -141,7 +143,8 @@ export default async function AdminProductsPage({ searchParams }: { searchParams
         </Card>
       )}
 
-      <Pagination page={page} totalPages={Math.max(1, Math.ceil(total / perPage))} basePath="/admin/produits" searchParams={{ q, status }} />
+      <Pagination page={page} totalPages={Math.max(1, Math.ceil(total / perPage))} basePath="/admin/produits" searchParams={{ q, status }}   labels={{ nav: t('Pagination'), previous: t('Page précédente'), next: t('Page suivante') }}
+      />
     </div>
   );
 }

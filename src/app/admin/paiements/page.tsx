@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { getAdminI18n } from '@/lib/i18n/admin-server';
 import { desc, eq } from 'drizzle-orm';
 import { CreditCard, Info } from 'lucide-react';
 import { db } from '@/db';
@@ -12,6 +13,7 @@ import { Badge, Card, EmptyState } from '@/components/ui/primitives';
 export const dynamic = 'force-dynamic';
 
 export default async function AdminPaymentsPage() {
+  const { t } = await getAdminI18n();
   const [pending, settings, wave, recent] = await Promise.all([
     findPendingPayments(),
     getStoreSettings(),
@@ -36,10 +38,9 @@ export default async function AdminPaymentsPage() {
   return (
     <div className="space-y-4">
       <header>
-        <h1 className="text-xl font-extrabold tracking-tight">Paiements à vérifier</h1>
+        <h1 className="text-xl font-extrabold tracking-tight">{t('Paiements à vérifier')}</h1>
         <p className="text-sm text-navy-600">
-          Seuls les administrateurs et le propriétaire peuvent confirmer. Vérifiez le crédit réel sur le compte marchand Wave avant
-          toute confirmation : une capture d’écran client n’est pas une preuve.
+          {t('Seuls les administrateurs et le propriétaire peuvent confirmer. Vérifiez le crédit réel sur le compte marchand Wave avant toute confirmation : une capture d’écran client n’est pas une preuve.')}
         </p>
       </header>
 
@@ -58,18 +59,18 @@ export default async function AdminPaymentsPage() {
       </Card>
 
       {pending.length === 0 ? (
-        <EmptyState icon={<CreditCard className="size-10" />} title="Aucun paiement en attente" description="Les nouvelles références déclarées par les clients apparaîtront ici." />
+        <EmptyState icon={<CreditCard className="size-10" />} title={t('Aucun paiement en attente')} description="Les nouvelles références déclarées par les clients apparaîtront ici." />
       ) : (
         <Card className="overflow-x-auto">
           <table className="w-full min-w-[820px] text-sm">
             <thead className="bg-navy-50 text-left text-xs uppercase tracking-wide text-navy-500">
               <tr>
-                <th className="px-3 py-2">Commande</th>
-                <th className="px-3 py-2">Client</th>
-                <th className="px-3 py-2">Référence client</th>
-                <th className="px-3 py-2">Montant</th>
-                <th className="px-3 py-2">Statut</th>
-                <th className="px-3 py-2">Date</th>
+                <th className="px-3 py-2">{t('Commande')}</th>
+                <th className="px-3 py-2">{t('Client')}</th>
+                <th className="px-3 py-2">{t('Référence client')}</th>
+                <th className="px-3 py-2">{t('Montant')}</th>
+                <th className="px-3 py-2">{t('Statut')}</th>
+                <th className="px-3 py-2">{t('Date')}</th>
                 <th className="px-3 py-2" />
               </tr>
             </thead>
@@ -93,7 +94,7 @@ export default async function AdminPaymentsPage() {
                   <td className="px-3 py-2 text-xs text-navy-500">{formatDateTime(payment.createdAt)}</td>
                   <td className="px-3 py-2 text-right">
                     <Link href={`/admin/commandes/${order.id}`} className="rounded-md bg-accent-500 px-2.5 py-1.5 text-xs font-semibold text-white hover:bg-accent-600">
-                      Vérifier
+                      {t('Vérifier')}
                     </Link>
                   </td>
                 </tr>
@@ -104,9 +105,9 @@ export default async function AdminPaymentsPage() {
       )}
 
       <Card className="overflow-hidden">
-        <h2 className="border-b border-navy-100 bg-navy-50 px-4 py-2.5 text-sm font-bold">Confirmations récentes</h2>
+        <h2 className="border-b border-navy-100 bg-navy-50 px-4 py-2.5 text-sm font-bold">{t('Confirmations récentes')}</h2>
         {recent.length === 0 ? (
-          <p className="px-4 py-4 text-sm text-navy-500">Aucune confirmation enregistrée.</p>
+          <p className="px-4 py-4 text-sm text-navy-500">{t('Aucune confirmation enregistrée.')}</p>
         ) : (
           <ul className="divide-y divide-navy-100 text-sm">
             {recent.map((payment) => (

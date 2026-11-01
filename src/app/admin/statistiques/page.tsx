@@ -1,4 +1,5 @@
 import { getDashboardMetrics, salesByDay, paymentMethodBreakdown, deliveryBreakdown } from '@/lib/admin';
+import { getAdminI18n } from '@/lib/i18n/admin-server';
 import { topSearches, searchEventsWithoutResults } from '@/lib/audit';
 import { formatFCFA } from '@/lib/utils';
 import { Card } from '@/components/ui/primitives';
@@ -6,6 +7,7 @@ import { Card } from '@/components/ui/primitives';
 export const dynamic = 'force-dynamic';
 
 export default async function StatisticsPage() {
+  const { t } = await getAdminI18n();
   const [metrics, daily, paymentMethods, delivery, searches, noResults] = await Promise.all([
     getDashboardMetrics(),
     salesByDay(14),
@@ -20,25 +22,24 @@ export default async function StatisticsPage() {
   return (
     <div className="space-y-4">
       <header>
-        <h1 className="text-xl font-extrabold tracking-tight">Statistiques</h1>
+        <h1 className="text-xl font-extrabold tracking-tight">{t('Statistiques')}</h1>
         <p className="text-sm text-navy-600">
-          Chiffre d’affaires = commandes dont le paiement est confirmé, hors annulations et remboursements. Les réservations non
-          payées ne sont jamais comptabilisées.
+          {t('Chiffre d’affaires = commandes dont le paiement est confirmé, hors annulations et remboursements. Les réservations non payées ne sont jamais comptabilisées.')}
         </p>
       </header>
 
       <div className="grid gap-3 sm:grid-cols-3">
         <Card className="p-4">
-          <p className="text-xs uppercase tracking-wide text-navy-500">CA total encaissé</p>
+          <p className="text-xs uppercase tracking-wide text-navy-500">{t('CA total encaissé')}</p>
           <p className="mt-1 text-2xl font-extrabold">{formatFCFA(metrics.revenue)}</p>
           <p className="text-xs text-navy-500">{metrics.paidOrders} commandes payées</p>
         </Card>
         <Card className="p-4">
-          <p className="text-xs uppercase tracking-wide text-navy-500">CA du mois en cours</p>
+          <p className="text-xs uppercase tracking-wide text-navy-500">{t('CA du mois en cours')}</p>
           <p className="mt-1 text-2xl font-extrabold">{formatFCFA(metrics.revenueMonth)}</p>
         </Card>
         <Card className="p-4">
-          <p className="text-xs uppercase tracking-wide text-navy-500">Panier moyen</p>
+          <p className="text-xs uppercase tracking-wide text-navy-500">{t('Panier moyen')}</p>
           <p className="mt-1 text-2xl font-extrabold">
             {formatFCFA(metrics.paidOrders > 0 ? Math.round(metrics.revenue / metrics.paidOrders) : 0)}
           </p>
@@ -46,8 +47,8 @@ export default async function StatisticsPage() {
       </div>
 
       <Card className="p-4">
-        <h2 className="mb-3 text-sm font-bold">Chiffre d’affaires — 14 derniers jours</h2>
-        <div className="flex h-40 items-end gap-1.5" role="img" aria-label="Graphique du chiffre d’affaires sur 14 jours">
+        <h2 className="mb-3 text-sm font-bold">{t('Chiffre d’affaires — 14 derniers jours')}</h2>
+        <div className="flex h-40 items-end gap-1.5" role="img" aria-label={t('Graphique du chiffre d’affaires sur 14 jours')}>
           {daily.map((day) => (
             <div key={day.day} className="group flex flex-1 flex-col items-center justify-end gap-1">
               <span className="text-[9px] text-navy-500 opacity-0 group-hover:opacity-100">{day.revenue > 0 ? formatFCFA(day.revenue, { suffix: false }) : ''}</span>
@@ -64,9 +65,9 @@ export default async function StatisticsPage() {
 
       <div className="grid gap-4 sm:grid-cols-2">
         <Card className="p-4">
-          <h2 className="mb-2 text-sm font-bold">Moyens de paiement (encaissés)</h2>
+          <h2 className="mb-2 text-sm font-bold">{t('Moyens de paiement (encaissés)')}</h2>
           {paymentMethods.length === 0 ? (
-            <p className="text-sm text-navy-500">Aucun paiement confirmé.</p>
+            <p className="text-sm text-navy-500">{t('Aucun paiement confirmé.')}</p>
           ) : (
             <ul className="space-y-1 text-sm">
               {paymentMethods.map((row) => (
@@ -80,7 +81,7 @@ export default async function StatisticsPage() {
         </Card>
 
         <Card className="p-4">
-          <h2 className="mb-2 text-sm font-bold">Modes de livraison</h2>
+          <h2 className="mb-2 text-sm font-bold">{t('Modes de livraison')}</h2>
           <ul className="space-y-1 text-sm">
             {delivery.map((row) => (
               <li key={row.method} className="flex justify-between">
@@ -94,9 +95,9 @@ export default async function StatisticsPage() {
 
       <div className="grid gap-4 sm:grid-cols-2">
         <Card className="p-4">
-          <h2 className="mb-2 text-sm font-bold">Recherches fréquentes (30 j)</h2>
+          <h2 className="mb-2 text-sm font-bold">{t('Recherches fréquentes (30 j)')}</h2>
           {searches.length === 0 ? (
-            <p className="text-sm text-navy-500">Aucune recherche enregistrée.</p>
+            <p className="text-sm text-navy-500">{t('Aucune recherche enregistrée.')}</p>
           ) : (
             <ul className="space-y-1 text-sm">
               {searches.map((row) => (
@@ -107,10 +108,10 @@ export default async function StatisticsPage() {
         </Card>
 
         <Card className="p-4">
-          <h2 className="mb-2 text-sm font-bold">Recherches sans résultat</h2>
-          <p className="mb-2 text-xs text-navy-500">Signe de produits manquants au catalogue à ajouter en priorité.</p>
+          <h2 className="mb-2 text-sm font-bold">{t('Recherches sans résultat')}</h2>
+          <p className="mb-2 text-xs text-navy-500">{t('Signe de produits manquants au catalogue à ajouter en priorité.')}</p>
           {noResults.length === 0 ? (
-            <p className="text-sm text-navy-500">Toutes les recherches ont donné des résultats.</p>
+            <p className="text-sm text-navy-500">{t('Toutes les recherches ont donné des résultats.')}</p>
           ) : (
             <ul className="space-y-1 text-sm">
               {noResults.map((row) => (

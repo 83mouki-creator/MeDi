@@ -1,6 +1,6 @@
 # Tests exécutés
 
-Dernière exécution : **2026-10-31** — `npm run test` → **109 tests, 13 fichiers, 109 réussis, 0 échec**
+Dernière exécution : **2026-11-01** — `npm run test` → **116 tests, 14 fichiers, 116 réussis, 0 échec**
 (`npx tsc --noEmit` : aucune erreur ; `npm run build` : compilation réussie).
 
 Base utilisée : `medi_test` (PostgreSQL local, UTF-8), préparée par `npm run test:setup`.
@@ -39,6 +39,7 @@ Les tests vident leurs tables avant chaque cas : ils ne touchent jamais les donn
 | Écran Stock : compteurs complets, seuil d'alerte, épuisés, recherche, filtre, pagination | `admin-stock.test.ts` (6 cas) | ✔ |
 | Demandes clients : compteurs, fil d'attente, filtre de statut, pagination | `admin-messages.test.ts` (4 cas) | ✔ |
 | Robustesse des filtres d'administration (URL modifiée : statut inconnu, date invalide, octet nul, page absurde) | `admin-filters.test.ts` (5 cas) | ✔ |
+| Traduction arabe du back-office : direction RTL, substitution des variables, repli sur le français, aucune chaîne d'interface oubliée | `i18n-admin.test.ts` (7 cas) | ✔ |
 
 ## Ce qui n'est pas couvert par un test automatisé
 

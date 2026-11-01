@@ -8,11 +8,14 @@ export function Pagination({
   totalPages,
   basePath,
   searchParams,
+  labels,
 }: {
   page: number;
   totalPages: number;
   basePath: string;
   searchParams: Record<string, string | undefined>;
+  /** Libellés accessibles (l'administration les fournit en arabe le cas échéant). */
+  labels?: { nav?: string; previous?: string; next?: string };
 }) {
   if (totalPages <= 1) return null;
 
@@ -29,7 +32,7 @@ export function Pagination({
   const pages = buildPages(page, totalPages);
 
   return (
-    <nav aria-label="Pagination" className="mt-8 flex items-center justify-center gap-1">
+    <nav aria-label={labels?.nav ?? 'Pagination'} className="mt-8 flex items-center justify-center gap-1">
       <Link
         href={href(Math.max(1, page - 1))}
         aria-disabled={page === 1}
@@ -37,9 +40,9 @@ export function Pagination({
           'inline-flex size-10 items-center justify-center rounded-lg border border-navy-200 bg-white text-navy-700 hover:bg-navy-50',
           page === 1 && 'pointer-events-none opacity-40',
         )}
-        aria-label="Page précédente"
+        aria-label={labels?.previous ?? 'Page précédente'}
       >
-        <ChevronLeft className="size-4" aria-hidden />
+        <ChevronLeft className="size-4 rtl:rotate-180" aria-hidden />
       </Link>
 
       {pages.map((p, index) =>
@@ -71,9 +74,9 @@ export function Pagination({
           'inline-flex size-10 items-center justify-center rounded-lg border border-navy-200 bg-white text-navy-700 hover:bg-navy-50',
           page === totalPages && 'pointer-events-none opacity-40',
         )}
-        aria-label="Page suivante"
+        aria-label={labels?.next ?? 'Page suivante'}
       >
-        <ChevronRight className="size-4" aria-hidden />
+        <ChevronRight className="size-4 rtl:rotate-180" aria-hidden />
       </Link>
     </nav>
   );

@@ -1,4 +1,5 @@
 import { desc } from 'drizzle-orm';
+import { getAdminI18n } from '@/lib/i18n/admin-server';
 import { eq, and, gt, isNull } from 'drizzle-orm';
 import { db } from '@/db';
 import { users, passwordResetTokens } from '@/db/schema';
@@ -12,6 +13,7 @@ import { ManagedUserForm } from '@/components/admin/user-form';
 export const dynamic = 'force-dynamic';
 
 export default async function UsersPage() {
+  const { t } = await getAdminI18n();
   const me = await getCurrentUser();
   const rows = await db.select().from(users).orderBy(desc(users.createdAt));
 
@@ -23,15 +25,14 @@ export default async function UsersPage() {
   return (
     <div className="space-y-4">
       <header>
-        <h1 className="text-xl font-extrabold tracking-tight">Utilisateurs et rôles</h1>
+        <h1 className="text-xl font-extrabold tracking-tight">{t('Utilisateurs et rôles')}</h1>
         <p className="text-sm text-navy-600">
-          Seul le propriétaire peut créer des comptes internes. Les rôles limitent les actions sensibles (confirmation de paiement,
-          paramètres, journal).
+          {t('Seul le propriétaire peut créer des comptes internes. Les rôles limitent les actions sensibles (confirmation de paiement, paramètres, journal).')}
         </p>
       </header>
 
       <Card className="p-4">
-        <h2 className="mb-3 text-sm font-bold">Créer un compte interne</h2>
+        <h2 className="mb-3 text-sm font-bold">{t('Créer un compte interne')}</h2>
         <ManagedUserForm />
       </Card>
 
@@ -39,11 +40,11 @@ export default async function UsersPage() {
         <table className="w-full min-w-[760px] text-sm">
           <thead className="bg-navy-50 text-left text-xs uppercase tracking-wide text-navy-500">
             <tr>
-              <th className="px-3 py-2">E-mail</th>
-              <th className="px-3 py-2">Nom</th>
-              <th className="px-3 py-2">Rôle</th>
-              <th className="px-3 py-2">Dernière connexion</th>
-              <th className="px-3 py-2">État</th>
+              <th className="px-3 py-2">{t('E-mail')}</th>
+              <th className="px-3 py-2">{t('Nom')}</th>
+              <th className="px-3 py-2">{t('Rôle')}</th>
+              <th className="px-3 py-2">{t('Dernière connexion')}</th>
+              <th className="px-3 py-2">{t('État')}</th>
               <th className="px-3 py-2" />
             </tr>
           </thead>
@@ -64,7 +65,7 @@ export default async function UsersPage() {
                       <Button type="submit" size="sm" variant="ghost">{user.isActive ? 'Désactiver' : 'Réactiver'}</Button>
                     </form>
                   ) : (
-                    <span className="text-xs text-navy-400">vous</span>
+                    <span className="text-xs text-navy-400">{t('vous')}</span>
                   )}
                 </td>
               </tr>
@@ -74,9 +75,9 @@ export default async function UsersPage() {
       </Card>
 
       <Card className="p-4">
-        <h2 className="mb-2 text-sm font-bold">Réinitialisations de mot de passe en cours</h2>
+        <h2 className="mb-2 text-sm font-bold">{t('Réinitialisations de mot de passe en cours')}</h2>
         {activeResetTokens.length === 0 ? (
-          <p className="text-sm text-navy-500">Aucune demande active.</p>
+          <p className="text-sm text-navy-500">{t('Aucune demande active.')}</p>
         ) : (
           <ul className="space-y-1 text-sm">
             {activeResetTokens.map((token) => {
@@ -86,7 +87,7 @@ export default async function UsersPage() {
                   <span>{user?.email ?? token.userId}</span>
                   <span className="text-xs text-navy-500">expire le {formatDateTime(token.expiresAt)}</span>
                   <span className="text-xs text-navy-500">
-                    Jeton haché en base : transmettez le lien généré côté serveur via un canal sûr (téléphone, en boutique).
+                    {t('Jeton haché en base : transmettez le lien généré côté serveur via un canal sûr (téléphone, en boutique).')}
                   </span>
                 </li>
               );
@@ -94,8 +95,7 @@ export default async function UsersPage() {
           </ul>
         )}
         <p className="mt-2 text-xs text-navy-500">
-          Aucun service d’e-mail n’est configuré dans cette version : les liens de réinitialisation ne peuvent pas être envoyés
-          automatiquement. Voir docs/SECURITE.md.
+          {t('Aucun service d’e-mail n’est configuré dans cette version : les liens de réinitialisation ne peuvent pas être envoyés automatiquement. Voir docs/SECURITE.md.')}
         </p>
       </Card>
     </div>

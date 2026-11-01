@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { getAdminI18n } from '@/lib/i18n/admin-server';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import { asc, desc, eq } from 'drizzle-orm';
@@ -22,6 +23,7 @@ export default async function EditProductPage({
   params: Promise<{ id: string }>;
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
+  const { t } = await getAdminI18n();
   const { id } = await params;
   const query = await searchParams;
   const rows = await db.select().from(products).where(eq(products.id, id)).limit(1);
@@ -45,11 +47,11 @@ export default async function EditProductPage({
       <div className="flex flex-wrap items-start justify-between gap-2">
         <div>
           <Link href="/admin/produits" className="inline-flex items-center gap-1 text-xs font-medium text-navy-500 hover:text-accent-700">
-            <ArrowLeft className="size-3.5" aria-hidden /> Produits
+            <ArrowLeft className="size-3.5" aria-hidden /> {t('Produits')}
           </Link>
           <h1 className="text-xl font-extrabold tracking-tight">{product.name}</h1>
           <p className="text-xs text-navy-500">
-            Réf. <span className="font-mono">{product.sku}</span> · prix affiché {formatFCFA(pricing.price)}
+            {t('Réf.')} <span className="font-mono">{product.sku}</span> · prix affiché {formatFCFA(pricing.price)}
             {pricing.onPromo ? ` (promo -${pricing.discountPercent}%)` : ''} · {availability.label}
           </p>
         </div>
@@ -58,14 +60,14 @@ export default async function EditProductPage({
             {product.isArchived ? 'Archivé' : product.isActive ? 'En ligne' : 'Masqué'}
           </Badge>
           <Link href={`/produit/${product.slug}`} target="_blank" className="inline-flex items-center gap-1 rounded-lg border border-navy-200 px-3 py-1.5 text-xs font-semibold hover:bg-navy-50">
-            <ExternalLink className="size-3.5" aria-hidden /> Voir la fiche
+            <ExternalLink className="size-3.5" aria-hidden /> {t('Voir la fiche')}
           </Link>
         </div>
       </div>
 
       {query.cree === '1' ? (
         <div className="rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-sm text-emerald-900">
-          Produit créé. Ajoutez maintenant les photos et complétez les caractéristiques.
+          {t('Produit créé. Ajoutez maintenant les photos et complétez les caractéristiques.')}
         </div>
       ) : null}
 
@@ -101,18 +103,18 @@ export default async function EditProductPage({
           />
 
           <Card className="p-4">
-            <h2 className="mb-2 text-sm font-bold">Mouvements de stock récents</h2>
+            <h2 className="mb-2 text-sm font-bold">{t('Mouvements de stock récents')}</h2>
             {movements.length === 0 ? (
-              <p className="text-sm text-navy-500">Aucun mouvement enregistré.</p>
+              <p className="text-sm text-navy-500">{t('Aucun mouvement enregistré.')}</p>
             ) : (
               <table className="w-full min-w-[460px] text-xs">
                 <thead className="text-left text-navy-500">
                   <tr>
-                    <th className="py-1">Date</th>
-                    <th className="py-1">Type</th>
-                    <th className="py-1 text-right">Qté</th>
-                    <th className="py-1 text-right">Stock</th>
-                    <th className="py-1">Motif</th>
+                    <th className="py-1">{t('Date')}</th>
+                    <th className="py-1">{t('Type')}</th>
+                    <th className="py-1 text-right">{t('Qté')}</th>
+                    <th className="py-1 text-right">{t('Stock')}</th>
+                    <th className="py-1">{t('Motif')}</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-navy-100">
@@ -142,7 +144,7 @@ export default async function EditProductPage({
                   <Image src={image.url} alt={image.alt ?? ''} width={200} height={200} className="aspect-square w-full object-cover" />
                   <form action={deleteProductImageAction} className="absolute right-1 top-1">
                     <input type="hidden" name="imageId" value={image.id} />
-                    <button type="submit" className="grid size-7 place-items-center rounded-md bg-white/90 text-danger-500 shadow hover:bg-white" aria-label="Supprimer cette photo">
+                    <button type="submit" className="grid size-7 place-items-center rounded-md bg-white/90 text-danger-500 shadow hover:bg-white" aria-label={t('Supprimer cette photo')}>
                       <Trash2 className="size-3.5" aria-hidden />
                     </button>
                   </form>
@@ -152,22 +154,22 @@ export default async function EditProductPage({
             <form action={uploadProductImagesAction} className="mt-3 space-y-2" encType="multipart/form-data">
               <input type="hidden" name="productId" value={product.id} />
               <input type="file" name="images" accept="image/jpeg,image/png,image/webp,image/avif" multiple className="block w-full text-xs" required />
-              <Button type="submit" size="sm" variant="outline">Téléverser les photos</Button>
+              <Button type="submit" size="sm" variant="outline">{t('Téléverser les photos')}</Button>
               <p className="text-[11px] text-navy-500">
-                Les images sont redimensionnées (1600 px max), converties en WebP et dédupliquées par empreinte.
+                {t('Les images sont redimensionnées (1600 px max), converties en WebP et dédupliquées par empreinte.')}
               </p>
             </form>
           </Card>
 
           <Card className="p-4">
-            <h2 className="mb-2 text-sm font-bold">Stock</h2>
+            <h2 className="mb-2 text-sm font-bold">{t('Stock')}</h2>
             <StockAdjustForm productId={product.id} currentStock={product.stock} reserved={product.reserved} />
           </Card>
 
           <Card className="p-4">
-            <h2 className="mb-2 text-sm font-bold">Archivage</h2>
+            <h2 className="mb-2 text-sm font-bold">{t('Archivage')}</h2>
             <p className="mb-2 text-xs text-navy-500">
-              L’archivage retire le produit du catalogue sans supprimer l’historique des commandes.
+              {t('L’archivage retire le produit du catalogue sans supprimer l’historique des commandes.')}
             </p>
             <form action={archiveProductAction}>
               <input type="hidden" name="id" value={product.id} />

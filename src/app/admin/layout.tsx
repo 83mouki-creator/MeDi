@@ -2,7 +2,9 @@ import { redirect } from 'next/navigation';
 import type { Metadata } from 'next';
 import { getCurrentUser, isStaff, can, type Permission } from '@/lib/auth';
 import { countContactMessages, expiringPaymentsCount } from '@/lib/admin';
+import { getAdminI18n } from '@/lib/i18n/admin-server';
 import { AdminTopBar, type AdminNavItem } from '@/components/admin/admin-top-bar';
+import { AdminI18nProvider } from '@/components/admin/admin-i18n';
 
 export const metadata: Metadata = {
   title: 'Administration MeDi',
@@ -11,6 +13,7 @@ export const metadata: Metadata = {
 
 export const dynamic = 'force-dynamic';
 
+/** Libellé bilingue : la clé française sert de référence au dictionnaire. */
 const NAV: (AdminNavItem & { permission?: Permission })[] = [
   { href: '/admin', label: 'Tableau de bord', icon: 'dashboard' },
   { href: '/admin/commandes', label: 'Commandes', icon: 'orders', permission: 'orders.read' },
@@ -32,24 +35,30 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   if (!user) redirect('/connexion?redirectTo=/admin');
   if (!isStaff(user.role)) redirect('/compte');
 
-  const [pendingPayments, messages] = await Promise.all([
+  const [{ locale, dir, t }, pendingPayments, messages] = await Promise.all([
+    getAdminI18n(),
     expiringPaymentsCount().catch(() => 0),
     countContactMessages().catch(() => ({ newCount: 0, open: 0, total: 0 })),
   ]);
+
   const items: AdminNavItem[] = NAV.filter((item) => !item.permission || can(user.role, item.permission)).map(
-    ({ href, label, icon, badge }) => ({ href, label, icon, badge }),
+    ({ href, label, icon, badge }) => ({ href, label: t(label), icon, badge }),
   );
 
   return (
-    <div className="min-h-dvh bg-slate-100">
-      <AdminTopBar
-        items={items}
-        role={user.role}
-        email={user.email}
-        pendingPayments={pendingPayments}
-        newMessages={messages.newCount}
-      />
-      <main className="container-page py-5">{children}</main>
-    </div>
+    <AdminI18nProvider locale={locale}>
+      <div lang={locale} dir={dir} className="min-h-dvh bg-slate-100">
+        <AdminTopBar
+          items={items}
+          role={t(user.role)}
+          email={user.email}
+          pendingPayments={pendingPayments}
+          newMessages={messages.newCount}
+          locale={locale}
+          dir={dir}
+        />
+        <main className="container-page py-5">{children}</main>
+      </div>
+    </AdminI18nProvider>
   );
 }
