@@ -1,6 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import {
   formatCoordinates,
+  formatDms,
   geoJsonLd,
   googleMapsDirectionsUrl,
   googleMapsPlaceUrl,
@@ -89,5 +90,17 @@ describe('Géolocalisation — liens et affichage', () => {
       latitude: 6.87752,
       longitude: -6.45022,
     });
+  });
+});
+
+
+describe('Adresse exacte de la boutique', () => {
+  it('écrit les coordonnées en degrés, minutes, secondes', () => {
+    // Relevé du propriétaire : 6°53'04.4"N 6°26'50.9"W
+    expect(formatDms({ latitude: 6.884556, longitude: -6.447472 })).toBe(`6°53'04.4"N 6°26'50.9"W`);
+  });
+
+  it('gère les hémisphères sud et est', () => {
+    expect(formatDms({ latitude: -5.0, longitude: 10.5 })).toBe(`5°00'00.0"S 10°30'00.0"E`);
   });
 });

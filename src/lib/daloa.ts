@@ -92,9 +92,9 @@ export function pickLocalZone<T extends NeighbourhoodZone>(zones: T[], neighbour
   const target = normalizePlace(neighbourhood);
   if (!target) return null;
 
-  const exact = local.find((zone) => (zone.neighbourhoods ?? []).some((name) => normalizePlace(name) === target));
-  if (exact) return exact;
-
+  // 1. Le quartier connu de Daloa tranche : sa bande (centre / périphérie)
+  //    désigne la zone, même si une liste enregistrée en base est trop large
+  //    (ancien paramétrage qui recopiait tous les quartiers dans chaque zone).
   const band = findNeighbourhood(neighbourhood)?.band ?? null;
   if (band) {
     const needle = band === 'PERIPHERIE' ? 'periph' : 'centre';
@@ -102,11 +102,27 @@ export function pickLocalZone<T extends NeighbourhoodZone>(zones: T[], neighbour
     if (byBand) return byBand;
   }
 
+  // 2. Sinon, la liste de quartiers saisie dans l'administration fait foi.
+  const exact = local.find((zone) => (zone.neighbourhoods ?? []).some((name) => normalizePlace(name) === target));
+  if (exact) return exact;
+
   return [...local].sort((a, b) => a.fee - b.fee)[0] ?? null;
 }
 
 /** Nombre de quartiers proposés au client (diagnostic simple). */
 export const DALOA_NEIGHBOURHOOD_COUNT = DALOA_NEIGHBOURHOODS.length;
+
+/**
+ * Bande desservie par une zone de livraison, d'après son nom
+ * (« Daloa — livraison à domicile (centre) »). Sert à afficher la bonne liste de
+ * quartiers sur la page livraison, sans dépendre d'un ancien paramétrage en base.
+ */
+export function bandFromZoneName(name: string): DaloaBand | null {
+  const normalized = normalizePlace(name);
+  if (normalized.includes('periph')) return 'PERIPHERIE';
+  if (normalized.includes('centre')) return 'CENTRE';
+  return null;
+}
 
 export function neighbourhoodsForBand(band: DaloaBand): string[] {
   return DALOA_NEIGHBOURHOODS.filter((entry) => entry.band === band).map((entry) => entry.name);

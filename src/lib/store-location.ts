@@ -1,4 +1,4 @@
-import { googleMapsDirectionsUrl, googleMapsPlaceUrl, osmPageUrl, type GeoPoint } from './geo';
+import { formatDms, googleMapsDirectionsUrl, googleMapsPlaceUrl, osmPageUrl, type GeoPoint } from './geo';
 import type { PublicSettings } from './settings';
 
 /**
@@ -37,12 +37,13 @@ export type StoreLocation = {
  */
 export function storeLocation(settings: PublicSettings): StoreLocation {
   const point = settings.geo ?? STORE_COORDINATES;
-  const isSeeded = settings.geo !== null;
   const city = settings.city;
   const country = settings.country;
   return {
     point,
-    dms: isSeeded ? `${point.latitude.toFixed(6)}, ${point.longitude.toFixed(6)}` : STORE_GPS_DMS,
+    // Toujours en degrés/minutes/secondes : c'est la forme demandée, et elle
+    // reste juste même si les coordonnées sont mises à jour depuis l'admin.
+    dms: formatDms(point),
     decimal: `${point.latitude.toFixed(6)}, ${point.longitude.toFixed(6)}`,
     addressLine: settings.addressLine ?? `${STORE_GPS_DMS} — ${city}`,
     city,
