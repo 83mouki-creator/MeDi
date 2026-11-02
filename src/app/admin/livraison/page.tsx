@@ -20,9 +20,9 @@ export default async function DeliveryPage({ searchParams }: { searchParams: Pro
   return (
     <div className="space-y-4">
       <header>
-        <h1 className="text-xl font-extrabold tracking-tight">{t('Livraison et expédition')}</h1>
+        <h1 className="text-xl font-extrabold tracking-tight">{t('Les livraisons')}</h1>
         <p className="text-sm text-navy-600">
-          {t('Les frais affichés au client proviennent uniquement de ces zones. Aucun barème national n’est appliqué automatiquement : les tarifs de démonstration marqués « DÉMO » doivent être remplacés par ceux de la boutique.')}
+          {t('Vous fixez ici le prix de la livraison pour chaque ville et chaque commune. Ce sont ces prix que le client voit quand il commande. Remplacez les tarifs marqués « DÉMO » par les vôtres.')}
         </p>
       </header>
 

@@ -24,9 +24,9 @@ export default async function StatisticsPage() {
   return (
     <div className="space-y-4">
       <header>
-        <h1 className="text-xl font-extrabold tracking-tight">{t('Statistiques')}</h1>
+        <h1 className="text-xl font-extrabold tracking-tight">{t('Les chiffres de la boutique')}</h1>
         <p className="text-sm text-navy-600">
-          {t('Chiffre d’affaires = commandes dont le paiement est confirmé, hors annulations et remboursements. Les réservations non payées ne sont jamais comptabilisées.')}
+          {t('Argent réellement encaissé : uniquement les commandes payées, sans les annulations ni les remboursements. Une commande non payée ne compte pas.')}
         </p>
       </header>
 

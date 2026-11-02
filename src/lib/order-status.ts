@@ -25,6 +25,25 @@ export const ORDER_STATUS_LABELS: Record<OrderStatus, string> = {
   REFUNDED: 'Remboursée',
 };
 
+/**
+ * Le même statut, dit comme une action concrète.
+ * Dans la fiche commande, le menu déroulant propose « J'ai donné le colis au
+ * transporteur » plutôt que « Expédiée » : on choisit ce qu'on fait, pas un code.
+ */
+export const ORDER_STATUS_ACTIONS: Record<OrderStatus, string> = {
+  PENDING_CONFIRMATION: 'La commande vient d’arriver',
+  AWAITING_PAYMENT: 'Le client doit encore payer',
+  AWAITING_PAYMENT_VERIFICATION: 'Le client dit avoir payé (à vérifier)',
+  PAYMENT_CONFIRMED: 'J’ai reçu l’argent',
+  PREPARING: 'Je prépare le colis',
+  READY_TO_SHIP: 'Le colis est prêt',
+  SHIPPED: 'J’ai donné le colis au transporteur',
+  OUT_FOR_DELIVERY: 'Le livreur est en route',
+  DELIVERED: 'Le client a reçu son colis',
+  CANCELLED: 'Annuler la commande',
+  REFUNDED: 'J’ai remboursé le client',
+};
+
 export const ORDER_STATUS_TONE: Record<OrderStatus, string> = {
   PENDING_CONFIRMATION: 'bg-navy-100 text-navy-800',
   AWAITING_PAYMENT: 'bg-amber-100 text-amber-900',
@@ -85,4 +104,33 @@ export function canTransition(from: OrderStatus, to: OrderStatus): boolean {
 
 export function isTerminal(status: OrderStatus) {
   return status === 'DELIVERED' || status === 'CANCELLED' || status === 'REFUNDED';
+}
+
+export const ORDER_STEPS: { label: string; hint: string }[] = [
+  { label: 'Commande reçue', hint: 'Le client a commandé' },
+  { label: 'Argent reçu', hint: 'Vous avez vérifié le paiement' },
+  { label: 'Colis prêt', hint: 'Tout est emballé' },
+  { label: 'Colis livré', hint: 'Le client a son colis' },
+];
+
+/**
+ * Position d'une commande sur les quatre grandes étapes.
+ *
+ * Onze statuts techniques, c'est trop pour décider quoi faire. Quatre étapes
+ * suffisent : reçue, payée, prête, livrée.
+ */
+export function orderStep(status: OrderStatus): number {
+  switch (status) {
+    case 'PAYMENT_CONFIRMED':
+    case 'PREPARING':
+      return 1;
+    case 'READY_TO_SHIP':
+    case 'SHIPPED':
+    case 'OUT_FOR_DELIVERY':
+      return 2;
+    case 'DELIVERED':
+      return 3;
+    default:
+      return 0;
+  }
 }

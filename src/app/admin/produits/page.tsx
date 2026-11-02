@@ -53,8 +53,10 @@ export default async function AdminProductsPage({ searchParams }: { searchParams
     <div className="space-y-4">
       <header className="flex flex-wrap items-center justify-between gap-2">
         <div>
-          <h1 className="text-xl font-extrabold tracking-tight">{t('Produits')}</h1>
-          <p className="text-sm text-navy-600">{total} produit(s) correspondant au filtre</p>
+          <h1 className="text-xl font-extrabold tracking-tight">{t('Mes produits')}</h1>
+          <p className="text-sm text-navy-600">
+            {t('{total} produit(s) affiché(s). Ouvrez un produit pour changer son prix, sa photo ou son stock.', { total })}
+          </p>
         </div>
         <ButtonLink href="/admin/produits/nouveau">
           <Plus className="size-4" aria-hidden /> {t('Nouveau produit')}

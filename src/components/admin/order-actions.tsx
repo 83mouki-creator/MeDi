@@ -4,7 +4,7 @@ import { useAdminI18n } from '@/components/admin/admin-i18n';
 import { useActionState, useState } from 'react';
 import { AlertTriangle, Check, PackageCheck, Send, X } from 'lucide-react';
 import { transitionOrderAction, confirmPaymentAction, cancelOrderAction, type AdminActionState } from '@/app/actions/admin-orders';
-import { ORDER_STATUS_LABELS, ALLOWED_TRANSITIONS, type OrderStatus } from '@/lib/order-status';
+import { ORDER_STATUS_ACTIONS, ALLOWED_TRANSITIONS, type OrderStatus } from '@/lib/order-status';
 import { Button } from '../ui/button';
 import { Field, Select, Textarea, Input } from '../ui/form';
 import { Alert } from '../ui/primitives';
@@ -42,12 +42,16 @@ export function OrderStatusForm({
         </Alert>
       ) : null}
 
-      <Field label={t('Nouveau statut')} htmlFor={`to-${orderId}`}>
+      <Field
+        label={t('Que se passe-t-il maintenant ?')}
+        htmlFor={`to-${orderId}`}
+        hint={t('Choisissez l’étape qui vient d’arriver, puis appuyez sur le bouton.')}
+      >
         <Select id={`to-${orderId}`} name="to" value={target} onChange={(e) => setTarget(e.target.value)}>
           {ALLOWED_TRANSITIONS[currentStatus].map((status) => (
             <option key={status} value={status}>
-              {ORDER_STATUS_LABELS[status]}
-              {status === 'SHIPPED' && isCarrier && !paid ? ' — paiement requis' : ''}
+              {t(ORDER_STATUS_ACTIONS[status])}
+              {status === 'SHIPPED' && isCarrier && !paid ? ` — ${t('paiement à recevoir d’abord')}` : ''}
             </option>
           ))}
         </Select>
@@ -64,12 +68,16 @@ export function OrderStatusForm({
         </div>
       ) : null}
 
-      <Field label={t('Note de suivi (visible dans l’historique)')} htmlFor="note">
-        <Textarea id="note" name="note" rows={2} maxLength={500} placeholder={t('Précisions sur le changement de statut…')} />
+      <Field
+        label={t('Une précision à noter ? (facultatif)')}
+        htmlFor="note"
+        hint={t('Ex. « Le client passe demain matin ». Cette note reste dans l’historique.')}
+      >
+        <Textarea id="note" name="note" rows={2} maxLength={500} />
       </Field>
 
       <Button type="submit" loading={pending} disabled={blocked && (target === 'SHIPPED' || target === 'READY_TO_SHIP')}>
-        <PackageCheck className="size-4" aria-hidden /> {t('Appliquer')}
+        <PackageCheck className="size-4" aria-hidden /> {t('Enregistrer cette étape')}
       </Button>
     </form>
   );
@@ -108,9 +116,11 @@ export function PaymentReviewForm({
       {state.error ? <Alert tone="danger">{state.error}</Alert> : null}
 
       <div className="rounded-lg border border-navy-100 bg-navy-50 p-3 text-sm">
-        <p className="font-semibold">Montant attendu : {amountLabel}</p>
-        <p className="text-xs text-navy-600">Référence interne : {reference}</p>
-        <p className="text-xs text-navy-600">{t('Référence client déclarée :')} <strong>{customerReference ?? 'non fournie'}</strong></p>
+        <p className="font-semibold">{t('Le client doit payer : {montant}', { montant: amountLabel })}</p>
+        <p className="text-xs text-navy-600">{t('Commande n° {numero}', { numero: reference })}</p>
+        <p className="text-xs text-navy-600">
+          {t('Référence que le client a indiquée :')} <strong>{customerReference ?? t('aucune')}</strong>
+        </p>
       </div>
 
       <div className="flex gap-2">
@@ -119,42 +129,42 @@ export function PaymentReviewForm({
           onClick={() => setDecision('CONFIRM')}
           className={`flex flex-1 items-center justify-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-semibold ${decision === 'CONFIRM' ? 'border-emerald-400 bg-emerald-50 text-emerald-800' : 'border-navy-200 text-navy-600'}`}
         >
-          <Check className="size-4" aria-hidden /> {t('Confirmer')}
+          <Check className="size-4" aria-hidden /> {t('J’ai reçu l’argent')}
         </button>
         <button
           type="button"
           onClick={() => setDecision('REJECT')}
           className={`flex flex-1 items-center justify-center gap-1.5 rounded-lg border px-3 py-2 text-sm font-semibold ${decision === 'REJECT' ? 'border-rose-400 bg-rose-50 text-rose-800' : 'border-navy-200 text-navy-600'}`}
         >
-          <X className="size-4" aria-hidden /> {t('Rejeter')}
+          <X className="size-4" aria-hidden /> {t('Je n’ai rien reçu')}
         </button>
       </div>
 
       {decision === 'CONFIRM' ? (
         <Field
-          label={t('Numéro de transaction Wave (vérifié sur le compte marchand)')}
+          label={t('Numéro de la transaction Wave (facultatif)')}
           htmlFor="transactionReference"
-          hint="Facultatif mais recommandé : assure la traçabilité et l’idempotence."
+          hint={t('Vous le trouvez dans votre application Wave, sur le reçu du client.')}
         >
           <Input id="transactionReference" name="transactionReference" maxLength={60} placeholder={t('TDH5TEWTLFE')} />
         </Field>
       ) : null}
 
       <Field
-        label={decision === 'CONFIRM' ? 'Justification de la confirmation (obligatoire)' : 'Motif du rejet'}
+        label={decision === 'CONFIRM' ? t('Où avez-vous vérifié ? (obligatoire)') : t('Pourquoi ? (obligatoire)')}
         htmlFor="note"
         required
-        hint="Ex. « Crédit Wave du 12/03 10:42 retrouvé sur le compte marchand, réf. TDH… »"
+        hint={t('Une phrase suffit. Ex. « Vu sur mon téléphone Wave à 10:42 ».')}
       >
         <Textarea id="note" name="note" rows={2} maxLength={500} required />
       </Field>
 
       <Button type="submit" variant={decision === 'CONFIRM' ? 'primary' : 'danger'} loading={pending}>
-        {decision === 'CONFIRM' ? 'Confirmer le paiement' : 'Rejeter le paiement'}
+        {decision === 'CONFIRM' ? t('Oui, l’argent est arrivé') : t('Non, je n’ai rien reçu')}
       </Button>
       <p className="flex items-start gap-1.5 text-[11px] text-navy-500">
         <AlertTriangle className="mt-0.5 size-3 shrink-0" aria-hidden />
-        {t('Une capture d’écran client ne vaut pas preuve. Vérifiez le crédit réel sur le compte marchand avant confirmation.')}
+        {t('Ne vous fiez pas à une capture d’écran : ouvrez votre application Wave et vérifiez vous-même.')}
       </p>
     </form>
   );

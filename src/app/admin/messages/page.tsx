@@ -99,10 +99,9 @@ export default async function AdminMessagesPage({
   return (
     <div className="space-y-4">
       <header>
-        <h1 className="text-xl font-extrabold tracking-tight">{t('Demandes clients')}</h1>
+        <h1 className="text-xl font-extrabold tracking-tight">{t('Messages des clients')}</h1>
         <p className="text-sm text-navy-600">
-          Messages envoyés depuis le formulaire de contact. {counters.newCount} nouvelle(s) · {counters.open} à traiter ·{' '}
-          {counters.total} au total.
+          {t('Les questions posées depuis la boutique. {nouveaux} nouveau(x) · {atraiter} à traiter · {total} au total.', { nouveaux: counters.newCount, atraiter: counters.open, total: counters.total })}
         </p>
       </header>
 

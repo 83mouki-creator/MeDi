@@ -34,9 +34,9 @@ export default async function StockPage({ searchParams }: { searchParams: Promis
   return (
     <div className="space-y-4">
       <header>
-        <h1 className="text-xl font-extrabold tracking-tight">{t('Stock')}</h1>
+        <h1 className="text-xl font-extrabold tracking-tight">{t('Ce qu’il reste en boutique')}</h1>
         <p className="text-sm text-navy-600">
-          {t('Le stock disponible affiché est le stock physique moins les unités réservées par des commandes en cours. Toute modification est tracée dans un mouvement horodaté.')}
+          {t('« Disponible » veut dire : ce que vous avez en rayon, moins ce qui est déjà promis à un client. Pour ajouter ou retirer des pièces, utilisez la case à côté du produit : chaque changement est noté dans l’historique.')}
         </p>
       </header>
 

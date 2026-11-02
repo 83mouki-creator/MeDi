@@ -41,8 +41,10 @@ export default async function CategoriesPage() {
   return (
     <div className="space-y-4">
       <header>
-        <h1 className="text-xl font-extrabold tracking-tight">{t('Catégories et marques')}</h1>
-        <p className="text-sm text-navy-600">{t('Les catégories structurent la navigation et les pages indexables du catalogue.')}</p>
+        <h1 className="text-xl font-extrabold tracking-tight">{t('Rayons et marques')}</h1>
+        <p className="text-sm text-navy-600">
+          {t('Les rayons sont les grandes familles du magasin (outillage, plomberie…). Ranger un produit dans un rayon aide le client à le trouver.')}
+        </p>
       </header>
 
       <div className="grid gap-4 lg:grid-cols-2">

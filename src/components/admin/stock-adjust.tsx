@@ -21,17 +21,17 @@ export function StockAdjustForm({ productId, currentStock, reserved }: { product
       {state.error ? <Alert tone="danger">{state.error}</Alert> : null}
 
       <div className="grid gap-3 sm:grid-cols-3">
-        <Field label={t('Opération')} htmlFor={`mode-${productId}`}>
+        <Field label={t('Que voulez-vous faire ?')} htmlFor={`mode-${productId}`}>
           <Select id={`mode-${productId}`} name="mode" value={mode} onChange={(e) => setMode(e.target.value as 'delta' | 'set')}>
-            <option value="delta">{t('Ajouter / retirer')}</option>
-            <option value="set">{t('Définir le stock exact')}</option>
+            <option value="delta">{t('J’ajoute ou je retire des pièces')}</option>
+            <option value="set">{t('Je compte et je corrige le total')}</option>
           </Select>
         </Field>
-        <Field label={mode === 'delta' ? t('Quantité (±)') : t('Nouveau stock')} htmlFor={`qty-${productId}`} required>
+        <Field label={mode === 'delta' ? t('Combien de pièces ?') : t('Nouveau stock')} htmlFor={`qty-${productId}`} required>
           <Input id={`qty-${productId}`} name="quantity" type="number" step={1} required placeholder={mode === 'delta' ? '10 ou -2' : '0'} />
         </Field>
-        <Field label={t('Motif (obligatoire)')} htmlFor={`reason-${productId}`} required>
-          <Input id={`reason-${productId}`} name="reason" required maxLength={120} placeholder={t('Réapprovisionnement, casse, inventaire…')} />
+        <Field label={t('Pourquoi ? (obligatoire)')} htmlFor={`reason-${productId}`} required>
+          <Input id={`reason-${productId}`} name="reason" required maxLength={120} placeholder={t('Ex. livraison reçue, pièce cassée, comptage du samedi')} />
         </Field>
       </div>
 
@@ -41,7 +41,7 @@ export function StockAdjustForm({ productId, currentStock, reserved }: { product
         {t('Le stock ne peut jamais devenir négatif ni passer sous les unités réservées.')}
       </p>
 
-      <Button type="submit" variant="secondary" loading={pending}>{t('Enregistrer le mouvement')}</Button>
+      <Button type="submit" variant="secondary" loading={pending}>{t('Enregistrer')}</Button>
     </form>
   );
 }

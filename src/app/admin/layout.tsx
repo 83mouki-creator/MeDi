@@ -15,19 +15,19 @@ export const dynamic = 'force-dynamic';
 
 /** Libellé bilingue : la clé française sert de référence au dictionnaire. */
 const NAV: (AdminNavItem & { permission?: Permission })[] = [
-  { href: '/admin', label: 'Tableau de bord', icon: 'dashboard' },
-  { href: '/admin/commandes', label: 'Commandes', icon: 'orders', permission: 'orders.read' },
-  { href: '/admin/messages', label: 'Demandes clients', icon: 'messages', permission: 'messages.handle', badge: 'messages' },
-  { href: '/admin/paiements', label: 'Paiements à vérifier', icon: 'payments', permission: 'payments.read', badge: 'payments' },
-  { href: '/admin/produits', label: 'Produits', icon: 'products', permission: 'products.read' },
-  { href: '/admin/stock', label: 'Stock', icon: 'stock', permission: 'products.read' },
-  { href: '/admin/categories', label: 'Catégories & marques', icon: 'categories', permission: 'products.write' },
-  { href: '/admin/import', label: 'Import catalogue & photos', icon: 'import', permission: 'catalog.import' },
-  { href: '/admin/livraison', label: 'Livraison', icon: 'delivery', permission: 'delivery.manage' },
-  { href: '/admin/parametres', label: 'Paramètres boutique', icon: 'settings', permission: 'settings.write' },
-  { href: '/admin/utilisateurs', label: 'Utilisateurs', icon: 'users', permission: 'users.manage' },
-  { href: '/admin/journal', label: 'Journal d’activité', icon: 'audit', permission: 'audit.read' },
-  { href: '/admin/statistiques', label: 'Statistiques', icon: 'stats', permission: 'stats.read' },
+  { href: '/admin', label: 'Accueil', hint: 'Ce qui se passe aujourd’hui', icon: 'dashboard' },
+  { href: '/admin/commandes', label: 'Commandes', hint: 'Qui a commandé quoi', icon: 'orders', permission: 'orders.read' },
+  { href: '/admin/messages', label: 'Messages des clients', hint: 'Questions et demandes', icon: 'messages', permission: 'messages.handle', badge: 'messages' },
+  { href: '/admin/paiements', label: 'Encaissements', hint: 'Vérifier l’argent reçu', icon: 'payments', permission: 'payments.read', badge: 'payments' },
+  { href: '/admin/produits', label: 'Produits', hint: 'Fiches, prix et photos', icon: 'products', permission: 'products.read' },
+  { href: '/admin/stock', label: 'Stock', hint: 'Combien il en reste', icon: 'stock', permission: 'products.read' },
+  { href: '/admin/categories', label: 'Rayons et marques', hint: 'Ranger les produits', icon: 'categories', permission: 'products.write' },
+  { href: '/admin/import', label: 'Photos et imports', hint: 'Ajouter en grand nombre', icon: 'import', permission: 'catalog.import' },
+  { href: '/admin/livraison', label: 'Livraisons', hint: 'Zones, frais, transporteurs', icon: 'delivery', permission: 'delivery.manage' },
+  { href: '/admin/parametres', label: 'Réglages', hint: 'Téléphone, adresse, horaires', icon: 'settings', permission: 'settings.write' },
+  { href: '/admin/utilisateurs', label: 'Comptes et accès', hint: 'Qui travaille ici et ce qu’il peut faire', icon: 'users', permission: 'users.manage' },
+  { href: '/admin/journal', label: 'Historique', hint: 'Qui a fait quoi, en clair', icon: 'audit', permission: 'audit.read' },
+  { href: '/admin/statistiques', label: 'Chiffres', hint: 'Ventes et tendances', icon: 'stats', permission: 'stats.read' },
 ];
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -42,7 +42,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   ]);
 
   const items: AdminNavItem[] = NAV.filter((item) => !item.permission || can(user.role, item.permission)).map(
-    ({ href, label, icon, badge }) => ({ href, label: t(label), icon, badge }),
+    ({ href, label, icon, badge, hint }) => ({ href, label: t(label), icon, badge, hint: hint ? t(hint) : undefined }),
   );
 
   return (

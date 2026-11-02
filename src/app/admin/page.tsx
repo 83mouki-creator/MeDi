@@ -36,48 +36,60 @@ export default async function AdminDashboard() {
 
   const kpis = [
     {
-      label: 'Chiffre d’affaires encaissé',
+      label: 'Argent encaissé',
       value: formatFCFA(metrics.revenue),
-      hint: `${metrics.paidOrders} commande(s) payée(s) · ce mois : ${formatFCFA(metrics.revenueMonth)}`,
+      hint: `${metrics.paidOrders} commande(s) payée(s) · ce mois-ci : ${formatFCFA(metrics.revenueMonth)}`,
       icon: Banknote,
       href: '/admin/statistiques',
       permission: 'stats.read' as const,
     },
     {
-      label: 'Paiements à vérifier',
+      label: 'Paiements à contrôler',
       value: String(metrics.pendingVerifications),
-      hint: 'Références déclarées, à contrôler sur le compte marchand',
+      hint: 'Le client dit avoir payé : vérifiez avant de préparer',
       icon: CreditCard,
       href: '/admin/paiements',
       alert: metrics.pendingVerifications > 0,
       permission: 'payments.read' as const,
     },
     {
-      label: 'Commandes à préparer / expédier',
+      label: 'Colis à préparer',
       value: String(metrics.toShip),
-      hint: 'Payées, en préparation ou prêtes à expédier',
+      hint: 'Commandes payées qui attendent leur carton',
       icon: Truck,
       href: '/admin/commandes?status=PAYMENT_CONFIRMED',
       permission: 'orders.read' as const,
     },
     {
-      label: 'Produits en alerte de stock',
+      label: 'Produits bientôt finis',
       value: String(metrics.lowStock.length),
-      hint: `${metrics.outOfStock} épuisé(s)`,
+      hint: `${metrics.outOfStock} produit(s) déjà en rupture`,
       icon: AlertTriangle,
       href: '/admin/stock',
       alert: metrics.lowStock.length > 0,
       permission: 'stock.write' as const,
     },
     {
-      label: 'Demandes clients à traiter',
+      label: 'Messages de clients',
       value: String(messages.open),
-      hint: `${messages.newCount} nouvelle(s) · ${messages.total} message(s) reçus`,
+      hint: `${messages.newCount} nouveau(x) · ${messages.total} au total`,
       icon: MessageSquare,
       href: '/admin/messages',
       alert: messages.open > 0,
       permission: 'messages.handle' as const,
     },
+  ];
+
+  // Actions rapides : une phrase par besoin réel, dans les mots du quotidien.
+  const quickActions = [
+    { href: '/admin/paiements', label: 'Vérifier un paiement', hint: 'Le client dit avoir payé', permission: 'payments.confirm' as const },
+    { href: '/admin/commandes?status=PAYMENT_CONFIRMED', label: 'Préparer un colis', hint: 'Commande payée à emballer', permission: 'orders.read' as const },
+    { href: '/admin/commandes', label: 'Regarder les commandes', hint: 'Qui a commandé quoi', permission: 'orders.read' as const },
+    { href: '/admin/stock', label: 'Compter le stock', hint: 'Ajouter ou retirer des pièces', permission: 'stock.write' as const },
+    { href: '/admin/produits/nouveau', label: 'Ajouter un produit', hint: 'Une nouvelle référence', permission: 'products.write' as const },
+    { href: '/admin/livraison', label: 'Modifier les livraisons', hint: 'Zones et frais', permission: 'delivery.manage' as const },
+    { href: '/admin/utilisateurs', label: 'Créer un accès agent', hint: 'Un code part par WhatsApp', permission: 'users.manage' as const },
+    { href: '/admin/journal', label: 'Voir qui a fait quoi', hint: 'L’historique expliqué', permission: 'audit.read' as const },
   ];
 
   // Chaque agent ne voit que les indicateurs de sa fonction.
@@ -88,10 +100,11 @@ export default async function AdminDashboard() {
   return (
     <div className="space-y-5">
       <header>
-        <h1 className="text-xl font-extrabold tracking-tight">{t('Tableau de bord')}</h1>
+        <h1 className="text-xl font-extrabold tracking-tight">{t('Bonjour {name} 👋', { name: user?.firstName ?? user?.email ?? '' })}</h1>
         <p className="text-sm text-navy-600">
-          {t('Bonjour {name}.', { name: user?.firstName ?? user?.email ?? '' })}{' '}
-          {t('Le chiffre d’affaires comptabilise uniquement les commandes dont le paiement a été confirmé (hors annulations et remboursements).')}
+          {user?.staffTask
+            ? t('Votre tâche aujourd’hui : {task}. Choisissez ci-dessous ce que vous voulez faire.', { task: user.staffTask })
+            : t('Voici l’essentiel de la boutique aujourd’hui. Choisissez une carte pour agir.')}
         </p>
       </header>
 
@@ -124,10 +137,31 @@ export default async function AdminDashboard() {
         })}
       </div>
 
+      <Card className="p-4">
+        <h2 className="text-sm font-bold">{t('Que voulez-vous faire ?')}</h2>
+        <p className="mt-0.5 text-xs text-navy-600">
+          {t('Une seule chose à la fois : appuyez sur le bouton qui correspond à votre besoin.')}
+        </p>
+        <div className="mt-3 grid gap-2 sm:grid-cols-2 lg:grid-cols-4">
+          {quickActions
+            .filter((action) => !action.permission || can(user?.role, action.permission))
+            .map((action) => (
+              <Link
+                key={action.href}
+                href={action.href}
+                className="rounded-xl border border-navy-100 bg-white p-3 transition-colors hover:border-accent-300 hover:bg-accent-50/40"
+              >
+                <p className="text-sm font-semibold text-navy-900">{t(action.label)}</p>
+                <p className="mt-0.5 text-xs text-navy-500">{t(action.hint)}</p>
+              </Link>
+            ))}
+        </div>
+      </Card>
+
       <div className="grid gap-4 lg:grid-cols-2">
         <Card className="overflow-hidden">
           <div className="flex items-center justify-between border-b border-navy-100 bg-navy-50 px-4 py-2.5">
-            <h2 className="text-sm font-bold">{t('Commandes par statut')}</h2>
+            <h2 className="text-sm font-bold">{t('Où en sont les commandes ?')}</h2>
             <Link href="/admin/commandes" className="text-xs font-semibold text-accent-700 hover:underline">{t('Tout voir')}</Link>
           </div>
           <ul className="divide-y divide-navy-100 text-sm">

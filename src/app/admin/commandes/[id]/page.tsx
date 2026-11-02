@@ -10,6 +10,7 @@ import { formatDateTime, formatFCFA } from '@/lib/utils';
 import { Badge, Card } from '@/components/ui/primitives';
 import { OrderTimeline } from '@/components/order-timeline';
 import { OrderStatusForm, PaymentReviewForm, CancelOrderForm } from '@/components/admin/order-actions';
+import { OrderProgress } from '@/components/admin/order-progress';
 import { saveAdminNoteAction } from '@/app/actions/admin-orders';
 import { Textarea } from '@/components/ui/form';
 import { Button } from '@/components/ui/button';
@@ -40,7 +41,7 @@ export default async function AdminOrderDetail({ params }: { params: Promise<{ i
             <ArrowLeft className="size-3.5" aria-hidden /> {t('Commandes')}
           </Link>
           <h1 className="font-mono text-xl font-extrabold">{order.number}</h1>
-          <p className="text-xs text-navy-500">Créée le {formatDateTime(order.createdAt)}</p>
+          <p className="text-sm text-navy-600">{t('Commande passée le {date}', { date: formatDateTime(order.createdAt) })}</p>
         </div>
         <div className="flex flex-wrap gap-2">
           <Badge tone={paid ? 'success' : order.paymentStatus === 'AWAITING_VERIFICATION' ? 'warning' : 'neutral'}>
@@ -52,9 +53,11 @@ export default async function AdminOrderDetail({ params }: { params: Promise<{ i
         </div>
       </div>
 
+      <OrderProgress status={order.status as OrderStatus} t={t} />
+
       {isCarrier && !paid ? (
         <div className="rounded-lg border border-amber-200 bg-amber-50 px-3 py-2 text-sm text-amber-900">
-          {t('Expédition hors Daloa :')} <strong>{t('prépaiement obligatoire')}</strong>. Aucune expédition ne peut être enregistrée avant confirmation du paiement.
+          {t('Cette commande part hors de Daloa. Il faut donc que le client paie d’abord : on ne peut pas expédier avant d’avoir reçu l’argent.')}
           {order.reservationExpiresAt ? ` La réservation expire le ${formatDateTime(order.reservationExpiresAt)}.` : ''}
         </div>
       ) : null}
@@ -82,13 +85,13 @@ export default async function AdminOrderDetail({ params }: { params: Promise<{ i
           </Card>
 
           <Card className="p-4">
-            <h2 className="mb-2 text-sm font-bold">{t('Historique')}</h2>
+            <h2 className="mb-2 text-sm font-bold">{t('Tout ce qui s’est passé sur cette commande')}</h2>
             <OrderTimeline status={order.status as OrderStatus} history={history} />
           </Card>
 
           {canWrite ? (
             <Card className="p-4">
-              <h2 className="mb-2 flex items-center gap-2 text-sm font-bold"><Truck className="size-4 text-navy-400" aria-hidden /> {t('Faire évoluer la commande')}</h2>
+              <h2 className="mb-2 flex items-center gap-2 text-sm font-bold"><Truck className="size-4 text-navy-400" aria-hidden /> {t('Faire avancer la commande')}</h2>
               <OrderStatusForm
                 orderId={order.id}
                 currentStatus={order.status as OrderStatus}
