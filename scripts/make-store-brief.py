@@ -48,8 +48,8 @@ from reportlab.platypus import (
 
 ROOT = Path(__file__).resolve().parent.parent
 OUT = ROOT / "docs" / "MeDi-dossier-boutique.pdf"
-# Le même fichier est publié par le site : https://<domaine>/dossier/MeDi-dossier-boutique.pdf
-PUBLIC_OUT = ROOT / "public" / "dossier" / "MeDi-dossier-boutique.pdf"
+# Le même fichier est publié par le site : https://<domaine>/dossier/dossier-boutique-medi.pdf
+PUBLIC_OUT = ROOT / "public" / "dossier" / "dossier-boutique-medi.pdf"
 BUILD = ROOT / ".brief-build"
 LOGO_WHITE = ROOT / "public" / "brand" / "medi-logo-horizontal-blanc.png"
 
