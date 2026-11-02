@@ -84,11 +84,29 @@ export default async function UsersPage({
   return (
     <div className="space-y-4">
       <header>
-        <h1 className="text-xl font-extrabold tracking-tight">{t('Utilisateurs et rôles')}</h1>
+        <h1 className="text-xl font-extrabold tracking-tight">{t('Qui travaille ici ?')}</h1>
         <p className="text-sm text-navy-600">
-          {t('Les comptes internes sont créés exclusivement par un administrateur. Chaque agent reçoit un code d’accès personnel par WhatsApp, choisit son mot de passe et ne voit que les écrans de sa fonction.')}
+          {t('Vous créez le compte d’un agent, il reçoit un code par WhatsApp, et il ne voit que ce qui concerne son travail.')}
         </p>
       </header>
+
+      <Card className="p-4">
+        <h2 className="text-sm font-bold">{t('Comment ça marche ?')}</h2>
+        <ol className="mt-2 grid gap-2 text-sm sm:grid-cols-3">
+          <li className="rounded-lg bg-navy-50 p-3">
+            <span className="text-xs font-bold text-accent-700">{t('1. Vous créez')}</span>
+            <p className="mt-0.5 text-navy-700">{t('Prénom, nom, téléphone et tâche. C’est tout.')}</p>
+          </li>
+          <li className="rounded-lg bg-navy-50 p-3">
+            <span className="text-xs font-bold text-accent-700">{t('2. Le code part')}</span>
+            <p className="mt-0.5 text-navy-700">{t('Un code personnel est affiché : envoyez-le sur WhatsApp.')}</p>
+          </li>
+          <li className="rounded-lg bg-navy-50 p-3">
+            <span className="text-xs font-bold text-accent-700">{t('3. L’agent commence')}</span>
+            <p className="mt-0.5 text-navy-700">{t('Il choisit son mot de passe et arrive sur son écran de travail.')}</p>
+          </li>
+        </ol>
+      </Card>
 
       {refusal ? (
         <div className="rounded-lg border border-amber-300 bg-amber-50 p-3 text-sm text-amber-900" role="alert">
@@ -99,7 +117,7 @@ export default async function UsersPage({
       <Card className="p-4">
         <h2 className="text-sm font-bold">{t('Créer un agent et générer son code')}</h2>
         <p className="mb-3 mt-1 text-xs text-navy-600">
-          {t('Renseignez le prénom, le nom, le téléphone ivoirien et la tâche assignée. MeDi affiche un code à usage unique : transmettez-le par WhatsApp, l’agent active son accès lui-même.')}
+          {t('Remplissez les cases, puis appuyez sur le bouton. Un code apparaîtra : ne le perdez pas, il ne s’affiche qu’une fois.')}
         </p>
         <StaffForm roles={roleOptions} />
       </Card>
@@ -115,9 +133,9 @@ export default async function UsersPage({
       </Card>
 
       <Card className="p-4">
-        <h2 className="text-sm font-bold">{t('Rôles et droits')}</h2>
+        <h2 className="text-sm font-bold">{t('Ce que chacun peut faire')}</h2>
         <p className="mb-3 mt-1 text-xs text-navy-600">
-          {t('Onze rôles couvrent les postes d’une quincaillerie : direction, caisse, vente, magasin, catalogue, comptabilité, livraison et service client. Les droits sont appliqués côté serveur, pas seulement masqués dans le menu.')}
+          {t('Chaque métier a sa liste de choses autorisées. Ce qui n’est pas dans la liste est vraiment interdit, même en tapant l’adresse de la page.')}
         </p>
         <div className="grid gap-3 md:grid-cols-2">
           {ROLES.map((role) => {
@@ -171,15 +189,20 @@ export default async function UsersPage({
             </dd>
           </div>
         </dl>
-        <p className="mt-2 text-xs text-navy-500">
-          {t('Pour activer l’envoi automatique des e-mails, renseignez RESEND_API_KEY (ou BREVO_API_KEY) et EMAIL_FROM dans les variables d’environnement. Sans cela, les liens restent disponibles ici et partent par WhatsApp.')}
-        </p>
+        <details className="mt-2">
+          <summary className="cursor-pointer text-xs font-semibold text-navy-500 hover:text-navy-700">
+            {t('Réglage technique (pour l’informaticien)')}
+          </summary>
+          <p className="mt-1 text-xs text-navy-500">
+            {t('Pour activer l’envoi automatique des e-mails, renseignez RESEND_API_KEY (ou BREVO_API_KEY) et EMAIL_FROM dans les variables d’environnement. Sans cela, les liens restent disponibles ici et partent par WhatsApp.')}
+          </p>
+        </details>
       </Card>
 
       <Card className="p-4">
         <h2 className="text-sm font-bold">{t('Clients de la boutique')}</h2>
         <p className="mb-2 mt-1 text-xs text-navy-600">
-          {t('Les clients ne peuvent pas créer de compte interne : leur inscription reste limitée à la boutique.')}
+          {t('Les clients s’inscrivent seuls sur la boutique. Ils ne peuvent jamais entrer dans cet outil.')}
         </p>
         {customers.length === 0 ? (
           <p className="text-sm text-navy-500">{t('Aucun client inscrit pour le moment.')}</p>

@@ -48,9 +48,9 @@ export default async function SettingsPage() {
   return (
     <div className="space-y-4">
       <header>
-        <h1 className="text-xl font-extrabold tracking-tight">{t('Paramètres de la boutique')}</h1>
+        <h1 className="text-xl font-extrabold tracking-tight">{t('Les réglages de la boutique')}</h1>
         <p className="text-sm text-navy-600">
-          {t('Les coordonnées, horaires et informations Wave sont affichés aux clients. Aucune valeur n’est inventée : laissez vide si l’information n’est pas confirmée par le propriétaire.')}
+          {t('Votre téléphone, votre adresse et vos horaires : ils s’affichent tels quels sur la boutique. Si vous n’êtes pas sûr d’une information, laissez la case vide plutôt que d’écrire une erreur.')}
         </p>
       </header>
 
