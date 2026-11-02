@@ -16,7 +16,14 @@ import {
 } from '../db/schema';
 import { newId, parsePage, sanitizeSearch, toFcfa } from './utils';
 import { computeAvailability, computePricing } from './pricing';
-import { quoteDelivery, type DeliveryMethod, type PaymentMethod } from './delivery';
+import {
+  findLocalZoneForNeighbourhood,
+  findPickupZone,
+  listZones,
+  quoteDelivery,
+  type DeliveryMethod,
+  type PaymentMethod,
+} from './delivery';
 import { getStoreSettings } from './settings';
 import { ORDER_STATUS_LABELS, PAYMENT_STATUS_LABELS } from './order-status';
 import { canTransition, type OrderStatus } from './order-status';
@@ -152,9 +159,39 @@ export async function createOrder(params: {
   const subtotal = lines.reduce((sum, l) => sum + l.unitPrice * l.quantity, 0);
 
   // 2. Frais de livraison et moyens de paiement autorisés (calcul serveur)
+  //
+  // La zone n'est plus choisie « à la main » pour Daloa : elle découle du
+  // quartier indiqué par le client, donc du tarif configuré par la boutique.
+  // Hors Daloa, la ville choisie dans la liste détermine la zone.
+  let resolvedZoneId: string | null = input.zoneId || null;
+  if (input.deliveryMethod === 'PICKUP') {
+    resolvedZoneId = (await findPickupZone())?.id ?? null;
+  } else if (input.deliveryMethod === 'LOCAL_DELIVERY') {
+    if (input.neighbourhood) {
+      const localZone = await findLocalZoneForNeighbourhood(input.neighbourhood);
+      if (!localZone) {
+        throw new OrderError(
+          'Nous ne livrons pas encore ce quartier. Choisissez un quartier de la liste ou écrivez-nous sur WhatsApp.',
+          'ZONE',
+        );
+      }
+      resolvedZoneId = localZone.id;
+    } else {
+      // Sans quartier (ancien formulaire, appel interne), on retombe sur la zone
+      // locale explicitement fournie par l'appelant : le contrôle du quartier
+      // s'ajoute, il ne casse pas les commandes déjà acceptées.
+      const zones = (await listZones(true)).filter((zone) => zone.isLocal && !zone.isPickup);
+      const chosen = input.zoneId ? zones.find((zone) => zone.id === input.zoneId) : zones.length === 1 ? zones[0] : null;
+      if (!chosen) {
+        throw new OrderError('Choisissez votre quartier de livraison à Daloa.', 'ZONE');
+      }
+      resolvedZoneId = chosen.id;
+    }
+  }
+
   const quote = await quoteDelivery({
     method: input.deliveryMethod as DeliveryMethod,
-    zoneId: input.zoneId ?? null,
+    zoneId: resolvedZoneId,
     subtotal,
     settings,
   });
@@ -225,11 +262,14 @@ export async function createOrder(params: {
         email: input.email || null,
         deliveryMethod: input.deliveryMethod,
         zoneId: quote.zone?.id ?? null,
-        city: quote.zone?.city ?? input.city,
-        commune: input.commune || null,
-        addressLine: input.addressLine || null,
-        landmark: input.landmark || null,
-        carrier: input.carrier || null,
+        city: quote.zone?.city ?? input.city ?? settings.city,
+        // `commune` conserve le quartier de Daloa : c'est l'information qui sert
+        // au livreur. L'adresse libre, le transporteur et les notes clients ont
+        // été retirés du tunnel de commande à la demande du propriétaire.
+        commune: input.deliveryMethod === 'LOCAL_DELIVERY' ? input.neighbourhood || null : null,
+        addressLine: null,
+        landmark: null,
+        carrier: null,
         shippingFee: String(shippingFee),
         subtotal: String(subtotal),
         discount: String(discount),
@@ -238,7 +278,7 @@ export async function createOrder(params: {
         paymentStatus: 'UNPAID',
         status: initialStatus,
         reservationExpiresAt: new Date(Date.now() + reservationMinutes * 60 * 1000),
-        customerNote: input.customerNote || null,
+        customerNote: null,
         accessToken,
       })
       .returning();

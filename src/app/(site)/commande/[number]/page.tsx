@@ -15,6 +15,10 @@ import { ButtonLink } from '@/components/ui/button';
 import { PaymentInstructions } from '@/components/payment-instructions';
 import { WavePayButton } from '@/components/wave-pay-button';
 import { OrderTimeline } from '@/components/order-timeline';
+import { getSiteI18n } from '@/lib/i18n/site-server';
+import { storeLocation, whatsappWithMessage } from '@/lib/store-location';
+import { PurchaseNotice } from '@/components/purchase-notice';
+import { PICKUP_HOLD_HOURS, OUTSIDE_DALOA_MAX_DAYS } from '@/lib/store-policy';
 
 export const metadata: Metadata = { title: 'Confirmation de commande', robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
@@ -28,6 +32,7 @@ export default async function OrderConfirmationPage({ params, searchParams }: Pr
 
   const order = await getOrderByNumber(number);
   if (!order) notFound();
+  const { t } = await getSiteI18n();
 
   const user = await getCurrentUser();
   const authorised = (user && order.userId === user.id) || (token && token === order.accessToken);
@@ -35,14 +40,13 @@ export default async function OrderConfirmationPage({ params, searchParams }: Pr
     return (
       <div className="container-page max-w-xl py-12">
         <Card className="p-6 text-center">
-          <h1 className="text-xl font-bold">Accès à la commande protégé</h1>
+          <h1 className="text-xl font-bold">{t('Accès à la commande protégé')}</h1>
           <p className="mt-2 text-sm text-navy-600">
-            Pour consulter la commande {number}, utilisez le lien de suivi reçu à la validation, ou vérifiez votre identité depuis
-            la page de suivi.
+            {t('Pour consulter la commande {number}, utilisez le lien de suivi reçu à la validation, ou vérifiez votre identité depuis la page de suivi.', { number })}
           </p>
           <div className="mt-4 flex justify-center gap-2">
-            <ButtonLink href="/suivi">Suivre ma commande</ButtonLink>
-            <ButtonLink href="/connexion" variant="outline">Se connecter</ButtonLink>
+            <ButtonLink href="/suivi">{t('Suivre ma commande')}</ButtonLink>
+            <ButtonLink href="/connexion" variant="outline">{t('Se connecter')}</ButtonLink>
           </div>
         </Card>
       </div>
@@ -52,6 +56,7 @@ export default async function OrderConfirmationPage({ params, searchParams }: Pr
   const details = await getOrderDetails(order.id);
   if (!details) notFound();
   const settings = await getStoreSettings();
+  const location = storeLocation(settings);
   const totals = orderTotals(order);
   const wave = waveStatus();
   const payment = details.payments[0];
@@ -62,9 +67,9 @@ export default async function OrderConfirmationPage({ params, searchParams }: Pr
     <div className="container-page max-w-4xl py-8">
       <div className="rounded-2xl border border-emerald-200 bg-emerald-50 p-5 text-center">
         <CheckCircle2 className="mx-auto size-10 text-emerald-600" aria-hidden />
-        <h1 className="mt-2 text-2xl font-extrabold text-emerald-950">Commande enregistrée</h1>
+        <h1 className="mt-2 text-2xl font-extrabold text-emerald-950">{t('Commande enregistrée')}</h1>
         <p className="mt-1 text-sm text-emerald-900">
-          Numéro <strong className="font-mono">{order.number}</strong> · {ORDER_STATUS_LABELS[order.status as OrderStatus]}
+          {t('Numéro')} <strong className="font-mono">{order.number}</strong> · {t(ORDER_STATUS_LABELS[order.status as OrderStatus])}
         </p>
       </div>
 
@@ -100,8 +105,8 @@ export default async function OrderConfirmationPage({ params, searchParams }: Pr
               customerReference={payment?.customerReference ?? null}
             />
           ) : (
-            <Alert tone="success" title="Paiement confirmé">
-              Votre commande est en préparation. Vous serez contacté au {order.phone} pour la livraison ou le retrait.
+            <Alert tone="success" title={t('Paiement confirmé')}>
+              {t('Votre commande est en préparation. Vous serez contacté au {phone} pour la livraison ou le retrait.', { phone: order.phone })}
             </Alert>
           )}
 
@@ -118,14 +123,14 @@ export default async function OrderConfirmationPage({ params, searchParams }: Pr
           ) : null}
 
           <Card className="overflow-hidden">
-            <h2 className="border-b border-navy-100 bg-navy-50 px-4 py-2.5 text-sm font-bold">Articles commandés</h2>
+            <h2 className="border-b border-navy-100 bg-navy-50 px-4 py-2.5 text-sm font-bold">{t('Articles commandés')}</h2>
             <ul className="divide-y divide-navy-100">
               {details.items.map((item) => (
                 <li key={item.id} className="flex items-center justify-between gap-3 px-4 py-3 text-sm">
                   <div>
                     <p className="font-medium text-navy-900">{item.nameSnapshot}</p>
                     <p className="text-xs text-navy-500">
-                      Réf. {item.skuSnapshot} · {item.quantity} × {formatFCFA(item.unitPrice)}
+                      {t('Réf.')} {item.skuSnapshot} · {item.quantity} × {formatFCFA(item.unitPrice)}
                     </p>
                   </div>
                   <p className="font-semibold">{formatFCFA(item.lineTotal)}</p>
@@ -133,24 +138,24 @@ export default async function OrderConfirmationPage({ params, searchParams }: Pr
               ))}
             </ul>
             <dl className="space-y-1.5 border-t border-navy-100 px-4 py-3 text-sm">
-              <div className="flex justify-between"><dt className="text-navy-600">Sous-total</dt><dd>{formatFCFA(totals.subtotal)}</dd></div>
-              <div className="flex justify-between"><dt className="text-navy-600">Livraison</dt><dd>{totals.shippingFee === 0 ? 'Gratuit' : formatFCFA(totals.shippingFee)}</dd></div>
-              <div className="flex justify-between border-t border-navy-100 pt-1.5 text-base font-bold"><dt>Total</dt><dd>{formatFCFA(totals.total)}</dd></div>
+              <div className="flex justify-between"><dt className="text-navy-600">{t('Sous-total')}</dt><dd>{formatFCFA(totals.subtotal)}</dd></div>
+              <div className="flex justify-between"><dt className="text-navy-600">{t('Livraison')}</dt><dd>{totals.shippingFee === 0 ? t('Gratuit') : formatFCFA(totals.shippingFee)}</dd></div>
+              <div className="flex justify-between border-t border-navy-100 pt-1.5 text-base font-bold"><dt>{t('Total')}</dt><dd>{formatFCFA(totals.total)}</dd></div>
             </dl>
           </Card>
 
           <Card className="p-4">
-            <h2 className="mb-2 text-sm font-bold">Suivi de la commande</h2>
+            <h2 className="mb-2 text-sm font-bold">{t('Suivi de la commande')}</h2>
             <OrderTimeline status={order.status as OrderStatus} history={details.history} />
           </Card>
         </div>
 
         <aside className="space-y-4">
           <Card className="p-4">
-            <h2 className="text-sm font-bold">Récapitulatif</h2>
+            <h2 className="text-sm font-bold">{t('Récapitulatif')}</h2>
             <dl className="mt-2 space-y-2 text-sm">
               <div>
-                <dt className="text-xs uppercase tracking-wide text-navy-400">Paiement</dt>
+                <dt className="text-xs uppercase tracking-wide text-navy-400">{t('Paiement')}</dt>
                 <dd className="font-medium">{paymentMethodLabels[order.paymentMethod]}</dd>
                 <dd className="mt-0.5">
                   <Badge tone={order.paymentStatus === 'PAID' ? 'success' : order.paymentStatus === 'AWAITING_VERIFICATION' ? 'warning' : 'neutral'}>
@@ -159,7 +164,7 @@ export default async function OrderConfirmationPage({ params, searchParams }: Pr
                 </dd>
               </div>
               <div>
-                <dt className="text-xs uppercase tracking-wide text-navy-400">Livraison</dt>
+                <dt className="text-xs uppercase tracking-wide text-navy-400">{t('Livraison')}</dt>
                 <dd className="font-medium">{deliveryMethodLabels[order.deliveryMethod]}</dd>
                 <dd className="text-xs text-navy-600">
                   {order.addressLine ? `${order.addressLine}, ` : ''}
@@ -167,11 +172,11 @@ export default async function OrderConfirmationPage({ params, searchParams }: Pr
                   {order.city}
                   {order.landmark ? ` (${order.landmark})` : ''}
                 </dd>
-                {order.carrier ? <dd className="text-xs text-navy-600">Transporteur : {order.carrier}</dd> : null}
-                {order.trackingNumber ? <dd className="text-xs font-medium text-navy-800">Suivi : {order.trackingNumber}</dd> : null}
+                {order.carrier ? <dd className="text-xs text-navy-600">{t('Transporteur :')} {order.carrier}</dd> : null}
+                {order.trackingNumber ? <dd className="text-xs font-medium text-navy-800">{t('Suivi :')} {order.trackingNumber}</dd> : null}
               </div>
               <div>
-                <dt className="text-xs uppercase tracking-wide text-navy-400">Contact</dt>
+                <dt className="text-xs uppercase tracking-wide text-navy-400">{t('Contact')}</dt>
                 <dd className="flex items-center gap-1.5 text-xs text-navy-700"><Phone className="size-3.5" aria-hidden /> {order.phone}</dd>
                 {order.email ? <dd className="text-xs text-navy-700">{order.email}</dd> : null}
               </div>
@@ -179,27 +184,60 @@ export default async function OrderConfirmationPage({ params, searchParams }: Pr
           </Card>
 
           <Card className="p-4 text-sm">
-            <h2 className="flex items-center gap-2 font-bold"><MapPin className="size-4 text-accent-600" aria-hidden /> Où retirer ?</h2>
+            <h2 className="flex items-center gap-2 font-bold"><MapPin className="size-4 text-accent-600" aria-hidden /> {t('Où retirer ?')}</h2>
             <p className="mt-1 text-xs text-navy-600">
-              {settings.addressLine ? `${settings.addressLine}, ${settings.city}` : `Boutique MeDi à ${settings.city}`}
+              {t('Boutique MeDi — {city}', { city: settings.city })}
+            </p>
+            <p className="text-xs font-semibold text-navy-800" dir="ltr">{location.dms}</p>
+            <p className="mt-1 text-xs text-navy-600">
+              {order.deliveryMethod === 'CARRIER'
+                ? t('Livraison hors Daloa : {days} jours maximum, transport à convenir sur WhatsApp.', { days: OUTSIDE_DALOA_MAX_DAYS })
+                : t('Retrait ou livraison sous {hours} h maximum.', { hours: PICKUP_HOLD_HOURS })}
             </p>
             {settings.openingHours ? <p className="text-xs text-navy-600">{settings.openingHours}</p> : null}
+            <a href={location.mapsUrl} target="_blank" rel="noopener noreferrer" className="mt-1 inline-block text-xs font-semibold text-accent-700 underline">
+              {t('Voir sur Google Maps')}
+            </a>
             {settings.phone ? <p className="mt-1 text-xs text-navy-600">{settings.phone}</p> : null}
           </Card>
 
           <div className="rounded-xl border border-navy-100 bg-white p-4">
-            <p className="flex items-center gap-2 text-sm font-bold"><Truck className="size-4 text-accent-600" aria-hidden /> Conservez ce lien</p>
+            <p className="flex items-center gap-2 text-sm font-bold"><Truck className="size-4 text-accent-600" aria-hidden /> {t('Conservez ce lien')}</p>
             <p className="mt-1 text-xs break-all text-navy-600">{`${env.appUrl.replace(/\/$/, '')}/commande/${order.number}?t=${order.accessToken}`}</p>
             <Link
               href={`/suivi/${order.number}?t=${encodeURIComponent(order.accessToken)}`}
               className="mt-2 inline-flex items-center gap-1 text-sm font-semibold text-accent-700 hover:underline"
             >
-              <Receipt className="size-4" aria-hidden /> Page de suivi <ArrowRight className="size-3.5" aria-hidden />
+              <Receipt className="size-4" aria-hidden /> {t('Page de suivi')} <ArrowRight className="size-3.5 rtl:rotate-180" aria-hidden />
             </Link>
           </div>
 
+          {order.deliveryMethod === 'CARRIER' ? (
+            (() => {
+              const link = whatsappWithMessage(
+                settings,
+                t('Bonjour MeDi, je souhaite convenir du prix du transport pour ma commande {number} à destination de {city}.', {
+                  number: order.number,
+                  city: order.city,
+                }),
+              );
+              return link ? (
+                <a
+                  href={link}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-bold text-white hover:bg-emerald-700"
+                >
+                  <Phone className="size-4" aria-hidden /> {t('Convenir du transport sur WhatsApp')}
+                </a>
+              ) : null;
+            })()
+          ) : null}
+
+          <PurchaseNotice phone={settings.phone} />
+
           <ButtonLink href="/" variant="outline" className="w-full">
-            <Home className="size-4" aria-hidden /> Retour à l&apos;accueil
+            <Home className="size-4" aria-hidden /> {t('Retour à l’accueil')}
           </ButtonLink>
         </aside>
       </div>

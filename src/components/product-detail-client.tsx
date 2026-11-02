@@ -6,6 +6,7 @@ import { Check, Copy, Link2, Loader2, MessageCircle, Minus, Plus, Share2, Shoppi
 import { addToCartAction, type CartActionState } from '@/app/actions/cart';
 import { Button } from './ui/button';
 import { cn, formatFCFA } from '@/lib/utils';
+import { useSiteI18n } from './site-i18n';
 
 // ────────────────────────────── Galerie ──────────────────────────────
 
@@ -18,6 +19,7 @@ export function ProductGallery({
   name: string;
   discountPercent: number;
 }) {
+  const { t } = useSiteI18n();
   const [activeIndex, setActiveIndex] = useState(0);
   const active = images[activeIndex];
 
@@ -35,23 +37,23 @@ export function ProductGallery({
             className="size-full object-contain"
           />
         ) : (
-          <div className="flex size-full items-center justify-center text-sm text-navy-400">Photo à venir</div>
+          <div className="flex size-full items-center justify-center text-sm text-navy-400">{t('Photo à venir')}</div>
         )}
         {discountPercent > 0 ? (
-          <span className="absolute left-3 top-3 rounded-md bg-accent-500 px-2 py-1 text-xs font-bold text-white">
+          <span className="absolute left-3 top-3 rounded-md bg-accent-500 px-2 py-1 text-xs font-bold text-navy-950">
             -{discountPercent}%
           </span>
         ) : null}
       </div>
 
       {images.length > 1 ? (
-        <ul className="mt-3 flex gap-2 overflow-x-auto pb-1" aria-label="Photos du produit">
+        <ul className="mt-3 flex gap-2 overflow-x-auto pb-1" aria-label={t('Photos du produit')}>
           {images.map((image, index) => (
             <li key={image.id}>
               <button
                 type="button"
                 onClick={() => setActiveIndex(index)}
-                aria-label={`Voir la photo ${index + 1}`}
+                aria-label={t('Voir la photo {number}', { number: index + 1 })}
                 aria-pressed={index === activeIndex}
                 className={cn(
                   'size-16 overflow-hidden rounded-lg border-2 bg-white',
@@ -83,6 +85,7 @@ export function AddToCart({
   canOrder: boolean;
   availabilityState: 'IN_STOCK' | 'LOW_STOCK' | 'OUT_OF_STOCK' | 'PREORDER';
 }) {
+  const { t } = useSiteI18n();
   const [quantity, setQuantity] = useState(1);
   const [state, formAction, pending] = useActionState(addToCartAction, initialState);
 
@@ -95,7 +98,7 @@ export function AddToCart({
   if (!canOrder) {
     return (
       <div className="rounded-lg border border-navy-200 bg-navy-50 p-3 text-sm text-navy-700">
-        Ce produit est actuellement épuisé. Contactez la boutique pour connaître la prochaine disponibilité.
+        {t('Ce produit est actuellement épuisé. Contactez la boutique pour connaître la prochaine disponibilité.')}
       </div>
     );
   }
@@ -106,14 +109,14 @@ export function AddToCart({
       <input type="hidden" name="quantity" value={quantity} />
 
       <div className="flex items-center gap-3">
-        <span className="text-sm font-medium text-navy-700">Quantité</span>
+        <span className="text-sm font-medium text-navy-700">{t('Quantité')}</span>
         <div className="flex items-center rounded-lg border border-navy-200">
           <button
             type="button"
             onClick={() => setQuantity((q) => Math.max(1, q - 1))}
             className="grid size-11 place-items-center text-navy-700 hover:bg-navy-50 disabled:opacity-40"
             disabled={quantity <= 1}
-            aria-label="Diminuer la quantité"
+            aria-label={t('Diminuer la quantité')}
           >
             <Minus className="size-4" aria-hidden />
           </button>
@@ -125,23 +128,23 @@ export function AddToCart({
             onClick={() => setQuantity((q) => Math.min(max, q + 1))}
             className="grid size-11 place-items-center text-navy-700 hover:bg-navy-50 disabled:opacity-40"
             disabled={quantity >= max}
-            aria-label="Augmenter la quantité"
+            aria-label={t('Augmenter la quantité')}
           >
             <Plus className="size-4" aria-hidden />
           </button>
         </div>
         {availabilityState !== 'PREORDER' ? (
-          <span className="text-xs text-navy-500">{available} disponible(s)</span>
+          <span className="text-xs text-navy-500">{t('{count} disponible(s)', { count: available })}</span>
         ) : null}
       </div>
 
       <div className="grid gap-2 sm:grid-cols-2">
         <Button type="submit" size="lg" name="buyNow" value="0" loading={pending && !state.message}>
           {pending ? <Loader2 className="size-4 animate-spin" aria-hidden /> : <ShoppingCart className="size-4" aria-hidden />}
-          Ajouter au panier
+          {t('Ajouter au panier')}
         </Button>
         <Button type="submit" size="lg" variant="secondary" name="buyNow" value="1">
-          <Zap className="size-4" aria-hidden /> Commander maintenant
+          <Zap className="size-4" aria-hidden /> {t('Commander maintenant')}
         </Button>
       </div>
 
@@ -157,6 +160,7 @@ export function AddToCart({
 // ────────────────────────────── Partage ──────────────────────────────
 
 export function ShareButtons({ name, url, price }: { name: string; url: string; price: number }) {
+  const { t } = useSiteI18n();
   const [copied, setCopied] = useState(false);
   const message = `${name} — ${formatFCFA(price)} sur MeDi Daloa : ${url}`;
 
@@ -184,13 +188,13 @@ export function ShareButtons({ name, url, price }: { name: string; url: string; 
 
   return (
     <div className="flex items-center gap-2">
-      <span className="text-xs font-semibold uppercase tracking-wide text-navy-400">Partager</span>
+      <span className="text-xs font-semibold uppercase tracking-wide text-navy-400">{t('Partager')}</span>
       <a
         href={`https://wa.me/?text=${encodeURIComponent(message)}`}
         target="_blank"
         rel="noopener noreferrer"
         className="grid size-9 place-items-center rounded-lg border border-navy-200 text-emerald-600 hover:bg-emerald-50"
-        aria-label="Partager sur WhatsApp"
+        aria-label={t('Partager sur WhatsApp')}
       >
         <MessageCircle className="size-4" aria-hidden />
       </a>
@@ -199,7 +203,7 @@ export function ShareButtons({ name, url, price }: { name: string; url: string; 
         target="_blank"
         rel="noopener noreferrer"
         className="grid size-9 place-items-center rounded-lg border border-navy-200 text-navy-700 hover:bg-navy-50"
-        aria-label="Partager sur Facebook"
+        aria-label={t('Partager sur Facebook')}
       >
         <Share2 className="size-4" aria-hidden />
       </a>
@@ -207,7 +211,7 @@ export function ShareButtons({ name, url, price }: { name: string; url: string; 
         type="button"
         onClick={nativeShare}
         className="grid size-9 place-items-center rounded-lg border border-navy-200 text-navy-700 hover:bg-navy-50"
-        aria-label="Partager le lien"
+        aria-label={t('Partager le lien')}
       >
         <Link2 className="size-4" aria-hidden />
       </button>
@@ -217,7 +221,7 @@ export function ShareButtons({ name, url, price }: { name: string; url: string; 
         className="flex items-center gap-1 rounded-lg border border-navy-200 px-2 py-2 text-xs font-medium text-navy-700 hover:bg-navy-50"
       >
         {copied ? <Check className="size-4 text-emerald-600" aria-hidden /> : <Copy className="size-4" aria-hidden />}
-        {copied ? 'Copié' : 'Copier le lien'}
+        {copied ? t('Copié') : t('Copier le lien')}
       </button>
     </div>
   );

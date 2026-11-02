@@ -95,7 +95,7 @@ export default async function AdminPaymentsPage() {
                   </td>
                   <td className="px-3 py-2 text-xs text-navy-500">{formatDateTime(payment.createdAt)}</td>
                   <td className="px-3 py-2 text-right">
-                    <Link href={`/admin/commandes/${order.id}`} className="rounded-md bg-accent-500 px-2.5 py-1.5 text-xs font-semibold text-white hover:bg-accent-600">
+                    <Link href={`/admin/commandes/${order.id}`} className="rounded-md bg-accent-500 px-2.5 py-1.5 text-xs font-bold text-navy-950 hover:bg-accent-400">
                       {t('Vérifier')}
                     </Link>
                   </td>

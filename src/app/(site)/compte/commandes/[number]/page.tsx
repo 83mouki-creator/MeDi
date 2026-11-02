@@ -4,7 +4,9 @@ import { notFound, redirect } from 'next/navigation';
 import { getCurrentUser } from '@/lib/auth';
 import { getOrderByNumber, getOrderDetails, orderTotals } from '@/lib/orders';
 import { deliveryMethodLabels, paymentMethodLabels } from '@/lib/delivery';
-import { ORDER_STATUS_LABELS, PAYMENT_STATUS_LABELS, type OrderStatus } from '@/lib/order-status';
+import { PAYMENT_STATUS_LABELS, type OrderStatus } from '@/lib/order-status';
+import { getSiteI18n } from '@/lib/i18n/site-server';
+import { siteOrderStatusLabel } from '@/lib/i18n/order-labels';
 import { formatDateTime, formatFCFA } from '@/lib/utils';
 import { Badge, Card } from '@/components/ui/primitives';
 import { OrderTimeline } from '@/components/order-timeline';
@@ -24,17 +26,18 @@ export default async function AccountOrderDetail({ params }: { params: Promise<{
   const details = await getOrderDetails(order.id);
   if (!details) notFound();
   const totals = orderTotals(order);
+  const { t } = await getSiteI18n();
 
   return (
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-2">
         <div>
           <h2 className="font-mono text-lg font-bold">{order.number}</h2>
-          <p className="text-xs text-navy-500">Passée le {formatDateTime(order.createdAt)}</p>
+          <p className="text-xs text-navy-500">{t('Passée le {date}', { date: formatDateTime(order.createdAt) })}</p>
         </div>
         <div className="flex gap-2">
-          <Badge tone="neutral">{ORDER_STATUS_LABELS[order.status as OrderStatus]}</Badge>
-          <Badge tone={order.paymentStatus === 'PAID' ? 'success' : 'warning'}>{PAYMENT_STATUS_LABELS[order.paymentStatus]}</Badge>
+          <Badge tone="neutral">{siteOrderStatusLabel(t, order.status as OrderStatus)}</Badge>
+          <Badge tone={order.paymentStatus === 'PAID' ? 'success' : 'warning'}>{t(PAYMENT_STATUS_LABELS[order.paymentStatus])}</Badge>
         </div>
       </div>
 
@@ -43,7 +46,7 @@ export default async function AccountOrderDetail({ params }: { params: Promise<{
       </Card>
 
       <Card className="overflow-hidden">
-        <h3 className="border-b border-navy-100 bg-navy-50 px-4 py-2 text-sm font-bold">Articles</h3>
+        <h3 className="border-b border-navy-100 bg-navy-50 px-4 py-2 text-sm font-bold">{t('Articles')}</h3>
         <ul className="divide-y divide-navy-100">
           {details.items.map((item) => (
             <li key={item.id} className="flex justify-between gap-3 px-4 py-3 text-sm">
@@ -56,22 +59,24 @@ export default async function AccountOrderDetail({ params }: { params: Promise<{
           ))}
         </ul>
         <dl className="space-y-1 border-t border-navy-100 px-4 py-3 text-sm">
-          <div className="flex justify-between"><dt className="text-navy-600">Sous-total</dt><dd>{formatFCFA(totals.subtotal)}</dd></div>
-          <div className="flex justify-between"><dt className="text-navy-600">Livraison</dt><dd>{formatFCFA(totals.shippingFee)}</dd></div>
-          <div className="flex justify-between font-bold"><dt>Total</dt><dd>{formatFCFA(totals.total)}</dd></div>
+          <div className="flex justify-between"><dt className="text-navy-600">{t('Sous-total')}</dt><dd>{formatFCFA(totals.subtotal)}</dd></div>
+          <div className="flex justify-between"><dt className="text-navy-600">{t('Livraison')}</dt><dd>{formatFCFA(totals.shippingFee)}</dd></div>
+          <div className="flex justify-between font-bold"><dt>{t('Total')}</dt><dd>{formatFCFA(totals.total)}</dd></div>
         </dl>
       </Card>
 
       <div className="grid gap-4 sm:grid-cols-2">
         <Card className="p-4 text-sm">
-          <h3 className="mb-2 font-bold">Livraison</h3>
-          <p>{deliveryMethodLabels[order.deliveryMethod]}</p>
+          <h3 className="mb-2 font-bold">{t('Livraison')}</h3>
+          <p>{t(deliveryMethodLabels[order.deliveryMethod])}</p>
           <p className="text-xs text-navy-600">{order.addressLine ? `${order.addressLine}, ` : ''}{order.city}</p>
-          {order.trackingNumber ? <p className="mt-1 text-xs">N° de suivi : <strong>{order.trackingNumber}</strong></p> : null}
+          {order.trackingNumber ? (
+            <p className="mt-1 text-xs">{t('N° de suivi :')} <strong dir="ltr">{order.trackingNumber}</strong></p>
+          ) : null}
         </Card>
         <Card className="p-4 text-sm">
-          <h3 className="mb-2 font-bold">Paiement</h3>
-          <p>{paymentMethodLabels[order.paymentMethod]}</p>
+          <h3 className="mb-2 font-bold">{t('Paiement')}</h3>
+          <p>{t(paymentMethodLabels[order.paymentMethod])}</p>
           {details.payments.map((payment) => (
             <p key={payment.id} className="mt-1 text-xs text-navy-600">
               {payment.status} {payment.customerReference ? `· réf. ${payment.customerReference}` : ''}
@@ -82,11 +87,11 @@ export default async function AccountOrderDetail({ params }: { params: Promise<{
       </div>
 
       <div className="flex flex-wrap gap-2">
-        <Link href={`/commande/${order.number}?t=${encodeURIComponent(order.accessToken)}`} className="rounded-lg bg-accent-500 px-4 py-2 text-sm font-semibold text-white hover:bg-accent-600">
-          Payer / déclarer une référence
+        <Link href={`/commande/${order.number}?t=${encodeURIComponent(order.accessToken)}`} className="rounded-lg bg-accent-500 px-4 py-2 text-sm font-bold text-navy-950 hover:bg-accent-400">
+          {t('Payer / déclarer une référence')}
         </Link>
         <Link href="/compte/commandes" className="rounded-lg border border-navy-200 px-4 py-2 text-sm font-semibold hover:bg-navy-50">
-          Retour à mes commandes
+          {t('Retour à mes commandes')}
         </Link>
       </div>
     </div>

@@ -20,6 +20,7 @@ import {
   uniqueIndex,
   primaryKey,
 } from 'drizzle-orm/pg-core';
+import { sql } from 'drizzle-orm';
 
 /**
  * Rôles applicatifs.
@@ -378,6 +379,14 @@ export const deliveryZones = pgTable(
     fee: numeric('fee', { precision: 12, scale: 2 }).notNull(),
     freeAbove: numeric('free_above', { precision: 12, scale: 2 }),
     estimatedDelay: text('estimated_delay'),
+    /**
+     * Quartiers desservis par cette zone (Daloa).
+     *
+     * À Daloa, le client ne choisit pas « centre » ou « périphérie » : il choisit
+     * son quartier. C'est ici que le rattachement quartier → tarif est stocké,
+     * pour que le propriétaire puisse le corriger depuis l'administration.
+     */
+    neighbourhoods: text('neighbourhoods').array().notNull().default(sql`'{}'::text[]`),
     isActive: boolean('is_active').notNull().default(true),
     sortOrder: integer('sort_order').notNull().default(0),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
@@ -575,6 +584,85 @@ export const storeSettings = pgTable('store_settings', {
   returnPolicy: text('return_policy'),
   updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
 });
+
+// ───────────────────────────── Caisse (ouverture / fermeture) ─────────────────────────────
+
+/**
+ * Une session de caisse : ouverte le matin avec un fond, fermée le soir avec le
+ * comptage réel. L'écart entre l'attendu et le compté est figé au moment de la
+ * fermeture pour rester lisible même si des commandes changent plus tard.
+ */
+export const cashSessions = pgTable(
+  'cash_sessions',
+  {
+    id: text('id').primaryKey(),
+    openedByUserId: text('opened_by_user_id').references(() => users.id, { onDelete: 'set null' }),
+    openedAt: timestamp('opened_at', { withTimezone: true }).notNull().defaultNow(),
+    openingFloat: numeric('opening_float', { precision: 12, scale: 2 }).notNull().default('0'),
+    closedByUserId: text('closed_by_user_id').references(() => users.id, { onDelete: 'set null' }),
+    closedAt: timestamp('closed_at', { withTimezone: true }),
+    countedCash: numeric('counted_cash', { precision: 12, scale: 2 }),
+    expectedCash: numeric('expected_cash', { precision: 12, scale: 2 }),
+    difference: numeric('difference', { precision: 12, scale: 2 }),
+    cashOrderCount: integer('cash_order_count'),
+    cashTotal: numeric('cash_total', { precision: 12, scale: 2 }),
+    note: text('note'),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index('cash_sessions_opened_idx').on(t.openedAt)],
+);
+
+export type CashSession = typeof cashSessions.$inferSelect;
+
+// ───────────────────────────── Promotions manuelles ─────────────────────────────
+
+export const promoCampaignTypeEnum = pgEnum('promo_campaign_type', ['PERCENT', 'FIXED']);
+
+/**
+ * Une opération commerciale montée à la main depuis l'administration :
+ * « -20 % sur tout l'outillage jusqu'à dimanche ». Une campagne s'applique aux
+ * produits choisis et peut être arrêtée d'un clic (les prix d'origine sont
+ * conservés dans `promo_campaign_products`, donc rien n'est perdu).
+ */
+export const promoCampaigns = pgTable(
+  'promo_campaigns',
+  {
+    id: text('id').primaryKey(),
+    name: text('name').notNull(),
+    /** Phrase du bandeau affiché sur la boutique (facultative). */
+    bannerText: text('banner_text'),
+    type: promoCampaignTypeEnum('type').notNull(),
+    /** Pourcentage (1–90) ou montant fixe en FCFA selon `type`. */
+    value: numeric('value', { precision: 12, scale: 2 }).notNull(),
+    startsAt: timestamp('starts_at', { withTimezone: true }).notNull(),
+    endsAt: timestamp('ends_at', { withTimezone: true }).notNull(),
+    isActive: boolean('is_active').notNull().default(true),
+    createdByUserId: text('created_by_user_id').references(() => users.id, { onDelete: 'set null' }),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index('promo_campaigns_window_idx').on(t.isActive, t.startsAt, t.endsAt)],
+);
+
+export type PromoCampaign = typeof promoCampaigns.$inferSelect;
+export type PromoCampaignProduct = typeof promoCampaignProducts.$inferSelect;
+
+export const promoCampaignProducts = pgTable(
+  'promo_campaign_products',
+  {
+    campaignId: text('campaign_id')
+      .notNull()
+      .references(() => promoCampaigns.id, { onDelete: 'cascade' }),
+    productId: text('product_id')
+      .notNull()
+      .references(() => products.id, { onDelete: 'cascade' }),
+    /** Prix catalogue au moment de la campagne : sert à rétablir le prix. */
+    basePrice: numeric('base_price', { precision: 12, scale: 2 }).notNull(),
+    /** Prix promotionnel calculé et appliqué. */
+    promoPrice: numeric('promo_price', { precision: 12, scale: 2 }).notNull(),
+  },
+  (t) => [primaryKey({ columns: [t.campaignId, t.productId] })],
+);
 
 // ───────────────────────────── Journalisation ─────────────────────────────
 

@@ -28,7 +28,7 @@ export default async function PrivacyPage() {
       </LegalSection>
 
       <LegalSection title="Données collectées">
-        <ul className="list-disc space-y-1 pl-5">
+        <ul className="list-disc space-y-1 ps-5">
           <li>
             <strong>Compte client</strong> : nom, adresse e-mail, numéro de téléphone et mot de passe (jamais conservé en clair).
           </li>
@@ -52,7 +52,7 @@ export default async function PrivacyPage() {
       </LegalSection>
 
       <LegalSection title="Finalités et bases légales">
-        <ul className="list-disc space-y-1 pl-5">
+        <ul className="list-disc space-y-1 ps-5">
           <li>Exécuter une commande et assurer sa livraison ou son retrait.</li>
           <li>Gérer la relation client, répondre aux demandes d’aide et traiter les réclamations.</li>
           <li>Assurer la sécurité du site, prévenir la fraude et vérifier les paiements.</li>
@@ -62,7 +62,7 @@ export default async function PrivacyPage() {
       </LegalSection>
 
       <LegalSection title="Durées de conservation">
-        <ul className="list-disc space-y-1 pl-5">
+        <ul className="list-disc space-y-1 ps-5">
           <li>Compte client : tant que le compte est actif, puis suppression sur demande.</li>
           <li>Commandes et factures : conservées pendant la durée légale applicable à la comptabilité ivoirienne.</li>
           <li>Demandes d’aide : le temps nécessaire au traitement, puis archivage limité.</li>

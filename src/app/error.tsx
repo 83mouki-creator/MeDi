@@ -23,7 +23,7 @@ export default function GlobalError({ error, reset }: { error: Error & { digest?
         <button
           type="button"
           onClick={reset}
-          className="inline-flex items-center gap-2 rounded-lg bg-accent-500 px-4 py-2.5 text-sm font-semibold text-white hover:bg-accent-600"
+          className="inline-flex items-center gap-2 rounded-lg bg-accent-500 px-4 py-2.5 text-sm font-bold text-navy-950 hover:bg-accent-400"
         >
           <RefreshCw className="size-4" aria-hidden /> Réessayer
         </button>

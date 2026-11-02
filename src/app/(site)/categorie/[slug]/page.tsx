@@ -11,6 +11,7 @@ import { CatalogFilters, SortSelect } from '@/components/catalog-filters';
 import { Pagination } from '@/components/pagination';
 import { EmptyState } from '@/components/ui/primitives';
 import { parsePage } from '@/lib/utils';
+import { getSiteI18n } from '@/lib/i18n/site-server';
 type Params = { slug: string };
 type SearchParams = Record<string, string | string[] | undefined>;
 
@@ -62,13 +63,14 @@ export default async function CategoryPage({
   ]);
 
   const children = tree.childrenOf(category.id);
+  const { t } = await getSiteI18n();
 
   return (
     <div className="container-page py-6">
       <nav aria-label="Fil d'Ariane" className="mb-3 flex flex-wrap items-center gap-1 text-xs text-navy-500">
-        <Link href="/" className="hover:text-accent-700">Accueil</Link>
+        <Link href="/" className="hover:text-accent-700">{t('Accueil')}</Link>
         <ChevronRight className="size-3" aria-hidden />
-        <Link href="/catalogue" className="hover:text-accent-700">Catalogue</Link>
+        <Link href="/catalogue" className="hover:text-accent-700">{t('Catalogue')}</Link>
         <ChevronRight className="size-3" aria-hidden />
         <span className="font-medium text-navy-800">{category.name}</span>
       </nav>
@@ -76,7 +78,7 @@ export default async function CategoryPage({
       <header className="mb-4">
         <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">{category.name}</h1>
         {category.description ? <p className="mt-2 max-w-3xl text-sm text-navy-600">{category.description}</p> : null}
-        <p className="mt-2 text-sm text-navy-500">{result.total} produit(s)</p>
+        <p className="mt-2 text-sm text-navy-500">{t('{count} produit(s)', { count: result.total })}</p>
       </header>
 
       {children.length > 0 ? (
@@ -96,7 +98,7 @@ export default async function CategoryPage({
       <div className="grid gap-6 lg:grid-cols-[260px_1fr]">
         <aside className="lg:sticky lg:top-40 lg:self-start">
           <details className="rounded-xl border border-navy-100 bg-white p-4" open>
-            <summary className="cursor-pointer text-sm font-semibold lg:hidden">Afficher les filtres</summary>
+            <summary className="cursor-pointer text-sm font-semibold lg:hidden">{t('Afficher les filtres')}</summary>
             <div className="mt-3 lg:mt-0">
               <CatalogFilters
                 basePath={`/categorie/${slug}`}
@@ -114,9 +116,9 @@ export default async function CategoryPage({
           </div>
           {result.items.length === 0 ? (
             <EmptyState
-              title="Aucun produit dans cette catégorie pour le moment"
-              description="Les produits arrivent progressivement. Explorez le reste du catalogue ou contactez-nous pour une demande spécifique."
-              action={<Link href="/catalogue" className="font-semibold text-accent-700 hover:underline">Voir tout le catalogue</Link>}
+              title={t('Aucun produit dans cette catégorie pour le moment')}
+              description={t('Les produits arrivent progressivement. Explorez le reste du catalogue ou contactez-nous pour une demande spécifique.')}
+              action={<Link href="/catalogue" className="font-semibold text-accent-700 hover:underline">{t('Voir tout le catalogue')}</Link>}
             />
           ) : (
             <>

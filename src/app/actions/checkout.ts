@@ -46,12 +46,8 @@ export async function placeOrderAction(_prev: CheckoutState, formData: FormData)
     deliveryMethod: String(formData.get('deliveryMethod') ?? ''),
     zoneId: String(formData.get('zoneId') ?? ''),
     city: String(formData.get('city') ?? ''),
-    commune: String(formData.get('commune') ?? ''),
-    addressLine: String(formData.get('addressLine') ?? ''),
-    landmark: String(formData.get('landmark') ?? ''),
-    carrier: String(formData.get('carrier') ?? ''),
+    neighbourhood: String(formData.get('neighbourhood') ?? ''),
     paymentMethod: String(formData.get('paymentMethod') ?? ''),
-    customerNote: String(formData.get('customerNote') ?? ''),
     items: parseItems(formData.get('items')),
   };
 

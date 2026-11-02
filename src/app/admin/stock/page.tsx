@@ -4,6 +4,7 @@ import { getAdminI18n } from '@/lib/i18n/admin-server';
 import { Search } from 'lucide-react';
 import { getStockCounters, listStockProducts, type StockFilter } from '@/lib/admin';
 import { StockAdjustForm } from '@/components/admin/stock-adjust';
+import { GlobalStockForm } from '@/components/admin/global-stock-form';
 import { Badge, Card, EmptyState } from '@/components/ui/primitives';
 import { Button } from '@/components/ui/button';
 import { Input, Select } from '@/components/ui/form';
@@ -54,6 +55,16 @@ export default async function StockPage({ searchParams }: { searchParams: Promis
           <p className="mt-1 text-2xl font-extrabold text-rose-600">{counters.out}</p>
         </Card>
       </div>
+
+      <Card className="border-accent-200 bg-accent-50/40 p-4">
+        <h2 className="flex items-center gap-2 text-sm font-bold">
+          {t('Ajouter ou retirer sur tout le stock')}
+        </h2>
+        <p className="mb-3 mt-1 text-xs text-navy-600">
+          {t('Un seul geste pour toutes les références : livraison du fournisseur, inventaire, casse constatée.')}
+        </p>
+        <GlobalStockForm productCount={counters.tracked} />
+      </Card>
 
       <Card className="p-3">
         <form method="get" className="grid gap-2 sm:grid-cols-[1fr_220px_auto]">

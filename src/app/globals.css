@@ -3,7 +3,8 @@
 /*
  * Identité visuelle MeDi
  *  - bleu nuit : confiance, professionnalisme (quincaillerie / industrie)
- *  - orange vif : actions commerciales (prix, CTA, promotions)
+ *  - jaune doré : actions commerciales (prix, CTA, promotions) — lisible sur
+ *    fond blanc comme sur fond bleu nuit, avec un texte bleu nuit dessus
  *  - blanc / gris clair : fonds, respiration
  * Typographie : pile système (aucune requête réseau bloquante) — remplacer par
  * une police auto-hébergée via next/font/local si le propriétaire en fournit une.
@@ -23,16 +24,16 @@
   --color-navy-900: #0e2340;
   --color-navy-950: #081729;
 
-  --color-accent-50: #fff7ed;
-  --color-accent-100: #ffedd5;
-  --color-accent-200: #fed7aa;
-  --color-accent-300: #fdba74;
-  --color-accent-400: #fb923c;
-  --color-accent-500: #f97316;
-  --color-accent-600: #ea580c;
-  --color-accent-700: #c2410c;
-  --color-accent-800: #9a3412;
-  --color-accent-900: #7c2d12;
+  --color-accent-50: #fffbeb;
+  --color-accent-100: #fef3c7;
+  --color-accent-200: #fde68a;
+  --color-accent-300: #fcd34d;
+  --color-accent-400: #fbbf24;
+  --color-accent-500: #f2b705;
+  --color-accent-600: #d99e05;
+  --color-accent-700: #a16207;
+  --color-accent-800: #854d0e;
+  --color-accent-900: #713f12;
 
   --color-success-500: #16a34a;
   --color-success-50: #f0fdf4;
@@ -56,6 +57,21 @@
     color: var(--color-navy-950);
     font-family: var(--font-sans);
     -webkit-font-smoothing: antialiased;
+  }
+
+  /*
+   * Arabe : pile de polices système (aucun téléchargement réseau). Les chiffres
+   * et le latin restent lisibles grâce à la seconde moitié de la pile.
+   */
+  :lang(ar) {
+    font-family: 'Noto Naskh Arabic', 'Segoe UI', 'Geeza Pro', 'Traditional Arabic', Tahoma, var(--font-sans);
+    letter-spacing: normal;
+  }
+
+  /* En arabe, les libellés latins techniques (références, e-mails) restent LTR. */
+  [dir='rtl'] .ltr-inline {
+    direction: ltr;
+    unicode-bidi: embed;
   }
 
   /* Accessibilité clavier : anneau de focus toujours visible */
@@ -105,5 +121,24 @@
     animation-duration: 0.01ms !important;
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
+  }
+}
+
+/*
+ * Impression des bons de livraison (petites imprimantes de comptoir).
+ * Rien d'autre que le bon ne doit sortir : ni menus, ni fonds colorés.
+ */
+@media print {
+  @page {
+    margin: 6mm;
+  }
+
+  body {
+    background: #fff !important;
+  }
+
+  .print-actions,
+  [data-print='hide'] {
+    display: none !important;
   }
 }

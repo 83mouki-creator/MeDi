@@ -5,7 +5,10 @@ import { getCurrentUser, isStaff } from '@/lib/auth';
 import { readCart } from '@/lib/cart';
 import { getStoreSettings, whatsappLink } from '@/lib/settings';
 import { countActivePromotions, getCategoryTree } from '@/lib/catalog';
+import { getSiteI18n } from '@/lib/i18n/site-server';
 import { SearchBar } from './search-bar';
+import { SiteLocaleSelector } from './site-locale-selector';
+import { PromoBanner } from './promo-banner';
 
 const FALLBACK_CATEGORIES = [
   { slug: 'outillage-industriel', name: 'Outillage industriel' },
@@ -17,17 +20,23 @@ const FALLBACK_CATEGORIES = [
 ];
 
 export async function SiteHeader() {
-  const [settings, user, cart, tree, promoCount] = await Promise.all([
+  const [settings, user, cart, tree, promoCount, { t }] = await Promise.all([
     getStoreSettings(),
     getCurrentUser(),
     readCart(),
     getCategoryTree().catch(() => ({ roots: [], childrenOf: () => [], all: [] })),
     countActivePromotions().catch(() => 0),
+    getSiteI18n(),
   ]);
 
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
   const roots = tree.roots.length > 0 ? tree.roots : FALLBACK_CATEGORIES.map((c, i) => ({ ...c, id: c.slug, productCount: 0, position: i, parentId: null, imageUrl: null }));
-  const whatsapp = whatsappLink(settings);
+  const whatsapp = whatsappLink(
+    settings,
+    settings.whatsapp
+      ? 'Bonjour MeDi, je souhaite des informations sur un produit.'
+      : undefined,
+  );
 
   return (
     <header className="sticky top-0 z-40 border-b border-navy-800 bg-navy-950 text-white">
@@ -35,8 +44,8 @@ export async function SiteHeader() {
       <div className="hidden bg-navy-900 text-[12px] text-navy-100 md:block">
         <div className="container-page flex h-9 items-center justify-between gap-4">
           <p className="flex items-center gap-2">
-            <MapPin className="size-3.5 text-accent-400" aria-hidden />
-            Retrait en boutique à {settings.city} · Livraison locale et expédition dans toute la Côte d&apos;Ivoire
+            <MapPin className="size-3.5 shrink-0 text-accent-400" aria-hidden />
+            {t('Retrait en boutique à {city} · Livraison à Daloa et expédition dans toute la Côte d’Ivoire', { city: settings.city })}
           </p>
           <div className="flex items-center gap-4">
             {settings.phone ? (
@@ -45,18 +54,19 @@ export async function SiteHeader() {
               </a>
             ) : null}
             <Link href="/livraison" className="flex items-center gap-1.5 hover:text-white">
-              <Truck className="size-3.5" aria-hidden /> Livraison
+              <Truck className="size-3.5" aria-hidden /> {t('Livraison')}
             </Link>
             <Link href="/suivi" className="hover:text-white">
-              Suivre ma commande
+              {t('Suivre ma commande')}
             </Link>
+            <SiteLocaleSelector tone="dark" />
           </div>
         </div>
       </div>
 
       {/* Barre principale */}
       <div className="container-page flex flex-wrap items-center gap-3 py-3 lg:gap-6">
-        <Link href="/" className="flex shrink-0 items-center" aria-label="MeDi — accueil">
+        <Link href="/" className="flex shrink-0 items-center" aria-label={t('MeDi — accueil')}>
           <Image src="/brand/medi-logo-horizontal-blanc.png" alt="MeDi" width={703} height={200} priority className="h-11 w-auto lg:h-12" />
         </Link>
 
@@ -64,11 +74,13 @@ export async function SiteHeader() {
           <SearchBar />
         </div>
 
-        <div className="order-2 ml-auto flex items-center gap-1 lg:order-3 lg:gap-2">
+        <div className="order-2 ms-auto flex items-center gap-1 lg:order-3 lg:gap-2">
+          <SiteLocaleSelector tone="dark" className="md:hidden" />
+
           <Link
             href="/recherche-visuelle"
             className="flex items-center gap-1.5 rounded-lg px-2.5 py-2 text-sm font-medium text-navy-100 hover:bg-navy-800 hover:text-white lg:hidden"
-            aria-label="Rechercher par photo"
+            aria-label={t('Rechercher par photo')}
           >
             <Camera className="size-5" aria-hidden />
           </Link>
@@ -78,19 +90,19 @@ export async function SiteHeader() {
             className="flex items-center gap-2 rounded-lg px-2.5 py-2 text-sm font-medium text-navy-100 hover:bg-navy-800 hover:text-white"
           >
             <User className="size-5" aria-hidden />
-            <span className="hidden text-left leading-tight sm:block">
-              <span className="block text-[11px] text-navy-300">{user ? 'Bonjour' : 'Compte'}</span>
-              <span className="block font-semibold text-white">{user ? (user.firstName ?? 'Mon compte') : 'Connexion'}</span>
+            <span className="hidden text-start leading-tight sm:block">
+              <span className="block text-[11px] text-navy-300">{user ? t('Bonjour') : t('Compte')}</span>
+              <span className="block font-semibold text-white">{user ? (user.firstName ?? t('Mon compte')) : t('Connexion')}</span>
             </span>
           </Link>
 
           <Link
             href="/panier"
-            className="relative flex items-center gap-2 rounded-lg bg-accent-500 px-3 py-2 text-sm font-semibold text-white hover:bg-accent-600"
-            aria-label={`Panier, ${cartCount} article(s)`}
+            className="relative flex items-center gap-2 rounded-lg bg-accent-500 px-3 py-2 text-sm font-bold text-navy-950 hover:bg-accent-400"
+            aria-label={t('Panier, {count} article(s)', { count: cartCount })}
           >
             <ShoppingCart className="size-5" aria-hidden />
-            <span className="hidden sm:inline">Panier</span>
+            <span className="hidden sm:inline">{t('Panier')}</span>
             {cartCount > 0 ? (
               <span className="absolute -right-1 -top-1 grid min-w-5 place-items-center rounded-full bg-white px-1 text-[11px] font-bold text-accent-700 ring-2 ring-navy-950">
                 {cartCount > 99 ? '99+' : cartCount}
@@ -101,33 +113,38 @@ export async function SiteHeader() {
           {/*
             Bouton d'administration : visible en permanence pour les comptes de la
             boutique (propriétaire, admin, stock, commandes), jamais pour un visiteur
-            ni pour un client. Il occupe l'angle supérieur droit de la barre.
+            ni pour un client.
           */}
           {isStaff(user?.role) ? (
             <Link
               href="/admin"
-              aria-label="Administration de la boutique"
-              title="Administration de la boutique"
+              aria-label={t('Administration de la boutique')}
+              title={t('Administration de la boutique')}
               className="flex items-center gap-2 rounded-lg bg-white px-3 py-2 text-sm font-extrabold text-navy-950 shadow-sm ring-1 ring-white/60 hover:bg-accent-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-400"
             >
               <LayoutDashboard className="size-5 text-accent-600" aria-hidden />
-              <span className="hidden sm:inline">Administration</span>
-              <span className="sm:hidden">Admin</span>
+              <span className="hidden sm:inline">{t('Administration')}</span>
+              <span className="sm:hidden">{t('Admin')}</span>
             </Link>
           ) : null}
         </div>
       </div>
 
+      {/* Bandeau de promotion (créé dans l'administration) */}
+      <PromoBanner />
+
       {/* Navigation par catégories */}
-      <nav aria-label="Catégories" className="border-t border-navy-800 bg-navy-900">
+      <nav aria-label={t('Catégories')} className="border-t border-navy-800 bg-navy-900">
         <div className="container-page flex items-center gap-1">
           <details className="group relative lg:hidden">
             <summary className="flex cursor-pointer list-none items-center gap-2 px-2 py-2.5 text-sm font-semibold text-white">
               <Menu className="size-5" aria-hidden />
-              Catégories
+              {t('Catégories')}
               <ChevronDown className="size-4 transition-transform group-open:rotate-180" aria-hidden />
             </summary>
-            <div className="absolute left-0 z-50 mt-1 w-72 rounded-xl border border-navy-100 bg-white p-2 text-navy-900 shadow-xl">
+            {/* `start-0` (et non `left-0`) : en arabe le panneau s'ouvre du bon côté
+                et ne recouvre plus les libellés. */}
+            <div className="absolute start-0 z-50 mt-1 w-[min(18rem,calc(100vw-2rem))] rounded-xl border border-navy-100 bg-white p-2 text-navy-900 shadow-xl">
               <ul className="max-h-[70vh] overflow-y-auto">
                 {roots.map((category) => (
                   <li key={category.id}>
@@ -138,7 +155,12 @@ export async function SiteHeader() {
                 ))}
                 <li className="mt-1 border-t border-navy-100 pt-1">
                   <Link href="/catalogue" className="block rounded-lg px-3 py-2.5 text-sm font-semibold text-accent-700 hover:bg-navy-50">
-                    Tout le catalogue
+                    {t('Tout le catalogue')}
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/nous-trouver" className="block rounded-lg px-3 py-2.5 text-sm font-semibold text-navy-800 hover:bg-navy-50">
+                    {t('Nous trouver')}
                   </Link>
                 </li>
               </ul>
@@ -159,26 +181,31 @@ export async function SiteHeader() {
             {promoCount > 0 ? (
               <li className="shrink-0">
                 <Link href="/catalogue?promo=1" className="block whitespace-nowrap px-3 py-2.5 text-[13px] font-semibold text-accent-300 hover:bg-navy-800">
-                  Promotions
+                  {t('Promotions')}
                 </Link>
               </li>
             ) : null}
           </ul>
 
-          {whatsapp ? (
-            <a
-              href={whatsapp}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="ml-auto hidden items-center gap-1.5 py-2.5 text-[13px] font-semibold text-emerald-300 hover:text-emerald-200 lg:flex"
-            >
-              Besoin d&apos;aide ? WhatsApp
-            </a>
-          ) : (
-            <Link href="/contact" className="ml-auto hidden py-2.5 text-[13px] font-semibold text-navy-200 hover:text-white lg:block">
-              Besoin d&apos;aide ?
+          <div className="ms-auto flex shrink-0 items-center gap-3">
+            <Link href="/nous-trouver" className="hidden py-2.5 text-[13px] font-semibold text-accent-300 hover:text-accent-200 lg:block">
+              {t('Nous trouver')}
             </Link>
-          )}
+            {whatsapp ? (
+              <a
+                href={whatsapp}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="hidden items-center gap-1.5 py-2.5 text-[13px] font-semibold text-emerald-300 hover:text-emerald-200 lg:flex"
+              >
+                {t('Besoin d’aide ? WhatsApp')}
+              </a>
+            ) : (
+              <Link href="/contact" className="hidden py-2.5 text-[13px] font-semibold text-navy-200 hover:text-white lg:block">
+                {t('Besoin d’aide ?')}
+              </Link>
+            )}
+          </div>
         </div>
       </nav>
     </header>

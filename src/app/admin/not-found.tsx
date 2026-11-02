@@ -14,7 +14,7 @@ export default async function AdminNotFound() {
       </p>
       <Link
         href="/admin"
-        className="mt-4 inline-flex min-h-11 items-center rounded-lg bg-accent-500 px-4 py-2.5 text-sm font-semibold text-white hover:bg-accent-600"
+        className="mt-4 inline-flex min-h-11 items-center rounded-lg bg-accent-500 px-4 py-2.5 text-sm font-bold text-navy-950 hover:bg-accent-400"
       >
         {t('Retour au tableau de bord')}
       </Link>

@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import Image from 'next/image';
 import { ImageOff, ShoppingCart } from 'lucide-react';
@@ -5,9 +7,11 @@ import { cn, formatFCFA, toFcfa, truncate } from '@/lib/utils';
 import { computeAvailability } from '@/lib/pricing';
 import type { ProductCard as ProductCardType } from '@/lib/catalog';
 import { Badge } from './ui/primitives';
+import { useSiteI18n } from './site-i18n';
 
 /** Vignette produit — mobile-first, image optimisée, prix toujours visible. */
 export function ProductCardView({ product, className }: { product: ProductCardType; className?: string }) {
+  const { t } = useSiteI18n();
   const availability = computeAvailability(product, 5);
   const price = toFcfa(product.effectivePrice);
   const base = toFcfa(product.price);
@@ -34,21 +38,21 @@ export function ProductCardView({ product, className }: { product: ProductCardTy
           ) : (
             <div className="flex size-full flex-col items-center justify-center gap-2 text-navy-300">
               <ImageOff aria-hidden className="size-8" />
-              <span className="px-2 text-center text-[11px] font-medium text-navy-400">Photo à venir</span>
+              <span className="px-2 text-center text-[11px] font-medium text-navy-400">{t('Photo à venir')}</span>
             </div>
           )}
         </Link>
 
         <div className="pointer-events-none absolute inset-x-2 top-2 flex items-start justify-between gap-2">
           {product.onPromo ? (
-            <span className="rounded-md bg-accent-500 px-1.5 py-0.5 text-[11px] font-bold text-white">-{product.discountPercent}%</span>
+            <span className="rounded-md bg-accent-500 px-1.5 py-0.5 text-[11px] font-bold text-navy-950">-{product.discountPercent}%</span>
           ) : (
             <span />
           )}
           {availability.state === 'OUT_OF_STOCK' ? (
-            <span className="rounded-md bg-navy-900/90 px-1.5 py-0.5 text-[11px] font-semibold text-white">Épuisé</span>
+            <span className="rounded-md bg-navy-900/90 px-1.5 py-0.5 text-[11px] font-semibold text-white">{t('Épuisé')}</span>
           ) : availability.state === 'LOW_STOCK' ? (
-            <span className="rounded-md bg-amber-500 px-1.5 py-0.5 text-[11px] font-semibold text-white">Stock faible</span>
+            <span className="rounded-md bg-amber-500 px-1.5 py-0.5 text-[11px] font-semibold text-white">{t('Stock faible')}</span>
           ) : null}
         </div>
       </div>
@@ -74,13 +78,17 @@ export function ProductCardView({ product, className }: { product: ProductCardTy
             ) : null}
           </div>
           {availability.state === 'OUT_OF_STOCK' ? (
-            <p className="mt-1 text-xs font-medium text-danger-500">Indisponible</p>
+            <p className="mt-1 text-xs font-medium text-danger-500">{t('Indisponible')}</p>
           ) : availability.state === 'PREORDER' ? (
             <p className="mt-1 flex items-center gap-1 text-xs font-medium text-navy-500">
-              <ShoppingCart aria-hidden className="size-3.5" /> Précommande
+              <ShoppingCart aria-hidden className="size-3.5" /> {t('Précommande')}
             </p>
           ) : (
-            <p className="mt-1 text-xs text-navy-500">{availability.label}</p>
+            <p className="mt-1 text-xs text-navy-500">
+              {availability.state === 'LOW_STOCK'
+                ? t('Plus que {count} en stock', { count: availability.available })
+                : t('En stock')}
+            </p>
           )}
         </div>
       </div>

@@ -8,18 +8,23 @@
  *   • horaires      : lundi – samedi 7h30 – 18h00, dimanche fermé
  *   • WhatsApp      : +225 07 08 90 48 91
  *   • numéro Wave   : le numéro WhatsApp ci-dessus (solution provisoire)
+ *   • adresse exacte : 6°53'04.4"N 6°26'50.9"W (relevé Google Maps)
+ *   • retrait       : 48 h maximum après confirmation
+ *   • hors Daloa    : 7 jours maximum selon la ville, transport convenu sur WhatsApp
  *
  * Le barème de livraison a été ARRÊTÉ PAR LE PRESTATAIRE à la demande du
  * propriétaire ; il est entièrement modifiable dans /admin/livraison. Aucun
  * montant n'est calculé ailleurs : le tunnel de commande lit ces lignes.
  *
- * L'adresse de la boutique n'a pas été communiquée : elle reste vide, et le site
- * affiche « à compléter » plutôt qu'une adresse inventée.
+ * Daloa : le client choisit son QUARTIER, et le quartier détermine la zone donc le
+ * tarif. Chaque zone locale porte donc la liste de ses quartiers.
  */
 import 'dotenv/config';
 import { eq } from 'drizzle-orm';
 import { db, pool } from '../src/db';
 import { deliveryZones, storeSettings } from '../src/db/schema';
+import { neighbourhoodsForBand } from '../src/lib/daloa';
+import { STORE_COORDINATES, STORE_GPS_DMS } from '../src/lib/store-location';
 
 const FORCE = process.argv.includes('--force');
 
@@ -35,12 +40,15 @@ type ZoneSeed = {
   fee: number;
   delay: string;
   order: number;
+  /** Quartiers desservis (Daloa uniquement). */
+  neighbourhoods?: string[];
 };
 
 /**
  * Barème de livraison.
  * Daloa : retrait gratuit, livraison à domicile 1 000 FCFA, périphérie 2 000 FCFA.
- * Hors Daloa : expédition en prépaiement, tarif indicatif par ville desservie.
+ * Hors Daloa : le site n'ajoute AUCUN frais de transport — le prix se convient sur
+ * WhatsApp, et les articles se règlent avant l'expédition (7 jours maximum).
  */
 const ZONES: ZoneSeed[] = [
   {
@@ -50,7 +58,7 @@ const ZONES: ZoneSeed[] = [
     isLocal: true,
     isPickup: true,
     fee: 0,
-    delay: 'Pendant les horaires d’ouverture (lun–sam 7h30–18h)',
+    delay: 'Retrait sous 48 h maximum, pendant les heures d’ouverture',
     order: 0,
   },
   {
@@ -60,8 +68,9 @@ const ZONES: ZoneSeed[] = [
     isLocal: true,
     isPickup: false,
     fee: 1_000,
-    delay: 'Sous 24 h ouvrées',
+    delay: 'Le jour même ou le lendemain, aux heures d’ouverture',
     order: 1,
+    neighbourhoods: neighbourhoodsForBand('CENTRE'),
   },
   {
     id: 'zone_medi_daloa_peripherie',
@@ -70,8 +79,9 @@ const ZONES: ZoneSeed[] = [
     isLocal: true,
     isPickup: false,
     fee: 2_000,
-    delay: 'Sous 48 h ouvrées',
+    delay: 'Sous 48 h, aux heures d’ouverture',
     order: 2,
+    neighbourhoods: neighbourhoodsForBand('PERIPHERIE'),
   },
   {
     id: 'zone_medi_abidjan',
@@ -79,8 +89,8 @@ const ZONES: ZoneSeed[] = [
     city: 'Abidjan',
     isLocal: false,
     isPickup: false,
-    fee: 4_000,
-    delay: '2 à 4 jours par car, après paiement confirmé',
+    fee: 0,
+    delay: '7 jours maximum, transport à convenir sur WhatsApp',
     order: 3,
   },
   {
@@ -89,8 +99,8 @@ const ZONES: ZoneSeed[] = [
     city: 'Yamoussoukro',
     isLocal: false,
     isPickup: false,
-    fee: 3_000,
-    delay: '2 à 3 jours par car, après paiement confirmé',
+    fee: 0,
+    delay: '7 jours maximum, transport à convenir sur WhatsApp',
     order: 4,
   },
   {
@@ -99,8 +109,8 @@ const ZONES: ZoneSeed[] = [
     city: 'Bouaké',
     isLocal: false,
     isPickup: false,
-    fee: 4_000,
-    delay: '2 à 4 jours par car, après paiement confirmé',
+    fee: 0,
+    delay: '7 jours maximum, transport à convenir sur WhatsApp',
     order: 5,
   },
   {
@@ -109,8 +119,8 @@ const ZONES: ZoneSeed[] = [
     city: 'San-Pédro',
     isLocal: false,
     isPickup: false,
-    fee: 6_000,
-    delay: '3 à 5 jours par transporteur, après paiement confirmé',
+    fee: 0,
+    delay: '7 jours maximum, transport à convenir sur WhatsApp',
     order: 6,
   },
   {
@@ -119,8 +129,8 @@ const ZONES: ZoneSeed[] = [
     city: 'Autre ville',
     isLocal: false,
     isPickup: false,
-    fee: 5_000,
-    delay: '3 à 5 jours, transporteur confirmé par la boutique',
+    fee: 0,
+    delay: '7 jours maximum, transport à convenir sur WhatsApp',
     order: 7,
   },
 ];
@@ -134,6 +144,10 @@ async function main() {
     openingHours: 'Lundi – samedi : 7h30 – 18h00 · Dimanche : fermé',
     waveNumber: PHONE_DISPLAY,
     waveMerchantName: existing?.waveMerchantName ?? 'MeDi',
+    // Adresse exacte communiquée par le propriétaire (relevé Google Maps).
+    addressLine: `${STORE_GPS_DMS} — Daloa`,
+    latitude: String(STORE_COORDINATES.latitude),
+    longitude: String(STORE_COORDINATES.longitude),
   };
 
   if (!existing) {
@@ -184,6 +198,7 @@ async function main() {
       fee: String(zone.fee),
       freeAbove: null,
       estimatedDelay: zone.delay,
+      neighbourhoods: zone.neighbourhoods ?? [],
       sortOrder: zone.order,
       isActive: true,
       updatedAt: new Date(),
@@ -203,6 +218,7 @@ async function main() {
           fee: values.fee,
           freeAbove: null,
           estimatedDelay: values.estimatedDelay,
+          neighbourhoods: values.neighbourhoods,
           sortOrder: values.sortOrder,
           isActive: true,
           updatedAt: values.updatedAt,
@@ -236,7 +252,7 @@ async function main() {
 
   console.log(`   zones de livraison : ${created} créée(s), ${updated} mise(s) à jour, ${ZONES.length} au total`);
   if (deactivated > 0) console.log(`   anciennes zones de démonstration désactivées : ${deactivated}`);
-  console.log('   adresse de la boutique : non communiquée → laissée vide (affichage « à compléter »)');
+  console.log(`   adresse exacte de la boutique : ${STORE_GPS_DMS} (${STORE_COORDINATES.latitude}, ${STORE_COORDINATES.longitude})`);
   await pool.end();
 }
 
