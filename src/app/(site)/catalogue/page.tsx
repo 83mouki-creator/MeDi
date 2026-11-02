@@ -11,6 +11,7 @@ import { Pagination } from '@/components/pagination';
 import { EmptyState } from '@/components/ui/primitives';
 import { ButtonLink } from '@/components/ui/button';
 import { parsePage } from '@/lib/utils';
+import { getSiteI18n } from '@/lib/i18n/site-server';
 type SearchParams = Record<string, string | string[] | undefined>;
 
 export const metadata: Metadata = {
@@ -26,6 +27,7 @@ function first(value: string | string[] | undefined) {
 
 export default async function CatalogPage({ searchParams }: { searchParams: Promise<SearchParams> }) {
   const params = await searchParams;
+  const { t } = await getSiteI18n();
   const q = first(params.q)?.trim() ?? '';
   const category = first(params.category) ?? '';
   const brand = first(params.brand) ?? '';
@@ -74,25 +76,25 @@ export default async function CatalogPage({ searchParams }: { searchParams: Prom
 
   return (
     <div className="container-page py-6">
-      <nav aria-label="Fil d'Ariane" className="mb-3 text-xs text-navy-500">
-        <Link href="/" className="hover:text-accent-700">Accueil</Link>
+      <nav aria-label={t('Fil d’Ariane')} className="mb-3 text-xs text-navy-500">
+        <Link href="/" className="hover:text-accent-700">{t('Accueil')}</Link>
         <span className="mx-1.5" aria-hidden>/</span>
-        <span className="font-medium text-navy-800">{q ? 'Résultats de recherche' : 'Catalogue'}</span>
+        <span className="font-medium text-navy-800">{q ? t('Résultats de recherche') : t('Catalogue')}</span>
       </nav>
 
       <header className="mb-5">
         <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">
-          {q ? `Résultats pour « ${q} »` : 'Tout le catalogue'}
+          {q ? t('Résultats pour « {query} »', { query: q }) : t('Tout le catalogue')}
         </h1>
         <p className="mt-1 text-sm text-navy-600" aria-live="polite">
-          {q ? `${total} produit${total > 1 ? 's' : ''} trouvé${total > 1 ? 's' : ''}` : `${total} produit${total > 1 ? 's' : ''} disponible${total > 1 ? 's' : ''}`}
+          {q ? t('{count} produit(s) trouvé(s)', { count: total }) : t('{count} produit(s) disponible(s)', { count: total })}
         </p>
       </header>
 
       <div className="grid gap-6 lg:grid-cols-[260px_1fr]">
         <aside className="lg:sticky lg:top-40 lg:self-start">
           <details className="rounded-xl border border-navy-100 bg-white p-4 lg:open:block" open>
-            <summary className="cursor-pointer text-sm font-semibold lg:hidden">Afficher les filtres</summary>
+            <summary className="cursor-pointer text-sm font-semibold lg:hidden">{t('Afficher les filtres')}</summary>
             <div className="mt-3 lg:mt-0">
               <CatalogFilters
                 basePath="/catalogue"
@@ -107,9 +109,9 @@ export default async function CatalogPage({ searchParams }: { searchParams: Prom
         <div>
           <div className="mb-4 flex flex-wrap items-center justify-between gap-3 rounded-lg border border-navy-100 bg-white px-3 py-2">
             <div className="flex flex-wrap gap-1.5">
-              {q ? <Chip label={`Recherche : ${q}`} /> : null}
-              {promo ? <Chip label="Promotions" /> : null}
-              {availability === 'in_stock' ? <Chip label="En stock" /> : null}
+              {q ? <Chip label={t('Recherche : {query}', { query: q })} /> : null}
+              {promo ? <Chip label={t('Promotions')} /> : null}
+              {availability === 'in_stock' ? <Chip label={t('En stock')} /> : null}
               {category ? <Chip label={tree.all.find((c) => c.slug === category)?.name ?? category} /> : null}
               {brand ? <Chip label={brands.find((b) => b.slug === brand)?.name ?? brand} /> : null}
               {min || max ? <Chip label={`${min ?? 0} – ${max ?? '∞'} FCFA`} /> : null}
@@ -120,16 +122,16 @@ export default async function CatalogPage({ searchParams }: { searchParams: Prom
           {items.length === 0 ? (
             <EmptyState
               icon={q ? <SearchX className="size-10" /> : <PackageSearch className="size-10" />}
-              title={q ? 'Aucun produit ne correspond à votre recherche' : 'Aucun produit dans cette sélection'}
+              title={q ? t('Aucun produit ne correspond à votre recherche') : t('Aucun produit dans cette sélection')}
               description={
                 q
-                  ? 'Vérifiez l’orthographe, essayez un terme plus général (ex. « perceuse » au lieu de « perceuse à percussion Bosch ») ou parcourez les catégories.'
-                  : 'Modifiez vos filtres ou parcourez tout le catalogue.'
+                  ? t('Vérifiez l’orthographe, essayez un terme plus général ou parcourez les catégories.')
+                  : t('Modifiez vos filtres ou parcourez tout le catalogue.')
               }
               action={
                 <div className="flex flex-wrap justify-center gap-2">
-                  <ButtonLink href="/catalogue" variant="outline">Tout le catalogue</ButtonLink>
-                  <ButtonLink href="/contact">Demander un produit</ButtonLink>
+                  <ButtonLink href="/catalogue" variant="outline">{t('Tout le catalogue')}</ButtonLink>
+                  <ButtonLink href="/contact">{t('Demander un produit')}</ButtonLink>
                 </div>
               }
             />

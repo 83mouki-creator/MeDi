@@ -1,7 +1,11 @@
+'use client';
+
 import { Check, Clock, X } from 'lucide-react';
-import { ORDER_STATUS_LABELS, TRACKING_STEPS, type OrderStatus } from '@/lib/order-status';
+import { TRACKING_STEPS, type OrderStatus } from '@/lib/order-status';
 import { formatDateTime } from '@/lib/utils';
 import { cn } from '@/lib/utils';
+import { useSiteT } from '@/components/site-i18n';
+import { siteOrderStatusLabel } from '@/lib/i18n/order-labels';
 
 type HistoryEntry = {
   id: string;
@@ -14,6 +18,7 @@ type HistoryEntry = {
 
 /** Frise de progression + historique horodaté des changements de statut. */
 export function OrderTimeline({ status, history }: { status: OrderStatus; history: HistoryEntry[] }) {
+  const t = useSiteT();
   const cancelled = status === 'CANCELLED' || status === 'REFUNDED';
   const currentIndex = TRACKING_STEPS.indexOf(status);
 
@@ -21,7 +26,7 @@ export function OrderTimeline({ status, history }: { status: OrderStatus; histor
     <div>
       {cancelled ? (
         <div className="mb-4 flex items-center gap-2 rounded-lg border border-rose-200 bg-rose-50 p-3 text-sm font-semibold text-rose-900">
-          <X className="size-4" aria-hidden /> Commande {ORDER_STATUS_LABELS[status].toLowerCase()}
+          <X className="size-4" aria-hidden /> {t('Commande {status}', { status: siteOrderStatusLabel(t, status).toLowerCase() })}
         </div>
       ) : (
         <ol className="mb-5 grid gap-1 sm:grid-cols-5">
@@ -42,7 +47,7 @@ export function OrderTimeline({ status, history }: { status: OrderStatus; histor
                   {done ? <Check className="size-3.5" /> : index + 1}
                 </span>
                 <span className={cn('text-xs', done ? 'font-semibold text-navy-900' : 'text-navy-500')}>
-                  {ORDER_STATUS_LABELS[step]}
+                  {siteOrderStatusLabel(t, step)}
                 </span>
                 {index < arr.length - 1 ? <span className="hidden h-0.5 flex-1 bg-navy-100 sm:block" aria-hidden /> : null}
               </li>
@@ -51,7 +56,7 @@ export function OrderTimeline({ status, history }: { status: OrderStatus; histor
         </ol>
       )}
 
-      <h3 className="mb-2 text-sm font-bold text-navy-900">Historique</h3>
+      <h3 className="mb-2 text-sm font-bold text-navy-900">{t('Historique')}</h3>
       <ol className="space-y-3">
         {history.map((entry) => (
           <li key={entry.id} className="flex gap-3">
@@ -60,8 +65,10 @@ export function OrderTimeline({ status, history }: { status: OrderStatus; histor
             </span>
             <div className="min-w-0">
               <p className="text-sm font-medium text-navy-900">
-                {ORDER_STATUS_LABELS[entry.toStatus]}
-                {entry.fromStatus ? <span className="font-normal text-navy-500"> (depuis {ORDER_STATUS_LABELS[entry.fromStatus]})</span> : null}
+                {siteOrderStatusLabel(t, entry.toStatus)}
+                {entry.fromStatus ? (
+                  <span className="font-normal text-navy-500"> ({t('depuis {status}', { status: siteOrderStatusLabel(t, entry.fromStatus) })})</span>
+                ) : null}
               </p>
               <p className="text-xs text-navy-500">
                 {formatDateTime(entry.createdAt)} · {entry.actorLabel}

@@ -9,7 +9,7 @@ export function WavePayButton({ orderId, returnTo, label = 'Payer avec Wave' }: 
       <input type="hidden" name="returnTo" value={returnTo} />
       <button
         type="submit"
-        className="inline-flex items-center gap-2 rounded-lg bg-accent-500 px-4 py-3 text-sm font-semibold text-white hover:bg-accent-600"
+        className="inline-flex items-center gap-2 rounded-lg bg-accent-500 px-4 py-3 text-sm font-bold text-navy-950 hover:bg-accent-400"
       >
         <ExternalLink className="size-4" aria-hidden /> {label}
       </button>

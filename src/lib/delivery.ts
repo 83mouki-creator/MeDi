@@ -3,6 +3,7 @@ import { db } from '../db';
 import { deliveryZones, type DeliveryZone } from '../db/schema';
 import { toFcfa } from './utils';
 import type { PublicSettings } from './settings';
+import { pickLocalZone } from './daloa';
 
 export type DeliveryMethod = 'PICKUP' | 'LOCAL_DELIVERY' | 'CARRIER';
 export type PaymentMethod = 'WAVE' | 'CASH_ON_DELIVERY' | 'CASH_IN_STORE';
@@ -15,6 +16,11 @@ export type DeliveryQuote = {
   fee: number;
   /** prépaiement obligatoire (hors Daloa) */
   prepaymentRequired: boolean;
+  /**
+   * Hors Daloa : le prix du transport n'est pas fixé par le site, il se
+   * négocie sur WhatsApp. `fee` vaut alors 0 et aucun montant n'est inventé.
+   */
+  transportToNegotiate: boolean;
   availableMethods: PaymentMethod[];
   errors: string[];
 };
@@ -60,19 +66,21 @@ export async function quoteDelivery(params: {
       isLocal: true,
       fee: 0,
       prepaymentRequired: false,
+      transportToNegotiate: false,
       availableMethods: buildPaymentMethods({ isLocal: true, method, total: subtotal, settings }),
       errors,
     };
   }
 
   if (!zone) {
-    errors.push('Sélectionnez une zone de livraison.');
+    errors.push('Sélectionnez une destination de livraison.');
     return {
       zone: null,
       method,
       isLocal: false,
       fee: 0,
       prepaymentRequired: true,
+      transportToNegotiate: false,
       availableMethods: ['WAVE'],
       errors,
     };
@@ -90,12 +98,27 @@ export async function quoteDelivery(params: {
     errors.push('Pour Daloa, choisissez le retrait en boutique ou la livraison à domicile.');
   }
 
+  // Hors Daloa : le montant du transport est négocié sur WhatsApp, donc le site
+  // n'ajoute AUCUN frais au total. Le prix affiché reste celui des articles.
+  if (!isLocal) {
+    return {
+      zone,
+      method,
+      isLocal: false,
+      fee: 0,
+      prepaymentRequired: true,
+      transportToNegotiate: true,
+      availableMethods: buildPaymentMethods({ isLocal: false, method, total: subtotal, settings }),
+      errors,
+    };
+  }
+
   const baseFee = toFcfa(zone.fee);
   const freeAbove = zone.freeAbove !== null ? toFcfa(zone.freeAbove) : settings.freeDeliveryAbove;
   const fee = method === 'LOCAL_DELIVERY' && freeAbove !== null && subtotal >= freeAbove ? 0 : baseFee;
 
   // Hors de Daloa : prépaiement intégral obligatoire avant expédition.
-  const prepaymentRequired = !isLocal;
+  const prepaymentRequired = false;
 
   return {
     zone,
@@ -103,6 +126,7 @@ export async function quoteDelivery(params: {
     isLocal,
     fee,
     prepaymentRequired,
+    transportToNegotiate: false,
     availableMethods: buildPaymentMethods({
       isLocal,
       method,
@@ -139,7 +163,7 @@ export function buildPaymentMethods(params: {
 export const deliveryMethodLabels: Record<DeliveryMethod, string> = {
   PICKUP: 'Retrait en boutique (Daloa)',
   LOCAL_DELIVERY: 'Livraison à domicile (Daloa)',
-  CARRIER: 'Expédition par transporteur (hors Daloa)',
+  CARRIER: 'Livraison hors Daloa (transport à convenir sur WhatsApp)',
 };
 
 export const paymentMethodLabels: Record<PaymentMethod, string> = {
@@ -153,6 +177,34 @@ export function isMethodAvailable(
   method: PaymentMethod,
 ): boolean {
   return quote.availableMethods.includes(method);
+}
+
+/**
+ * Zone de livraison locale correspondant à un quartier de Daloa.
+ *
+ * Le client ne choisit plus une « zone » abstraite : il choisit son quartier,
+ * et le tarif découle du rattachement configuré par le propriétaire. Si le
+ * quartier n'est rattaché à aucune zone (base pas encore configurée), on
+ * retombe sur la bande géographique connue (centre / périphérie) pour ne
+ * jamais bloquer une commande.
+ */
+export async function findLocalZoneForNeighbourhood(neighbourhood: string): Promise<DeliveryZone | null> {
+  const zones = (await listZones(true)).filter((zone) => zone.isLocal && !zone.isPickup);
+  if (zones.length === 0) return null;
+  const candidates = zones.map((zone) => ({
+    id: zone.id,
+    name: zone.name,
+    fee: toFcfa(zone.fee),
+    neighbourhoods: zone.neighbourhoods ?? [],
+  }));
+  const chosen = pickLocalZone(candidates, neighbourhood);
+  return chosen ? zones.find((zone) => zone.id === chosen.id) ?? null : null;
+}
+
+/** Zone de retrait en boutique (gratuite). */
+export async function findPickupZone(): Promise<DeliveryZone | null> {
+  const zones = await listZones(true);
+  return zones.find((zone) => zone.isPickup) ?? null;
 }
 
 export async function findZoneByCity(city: string) {

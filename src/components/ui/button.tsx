@@ -6,8 +6,9 @@ type Variant = 'primary' | 'secondary' | 'outline' | 'ghost' | 'danger' | 'navy'
 type Size = 'sm' | 'md' | 'lg' | 'icon';
 
 const variants: Record<Variant, string> = {
+  // Jaune doré avec texte bleu nuit : contraste très élevé, identité « chantier ».
   primary:
-    'bg-accent-500 text-white hover:bg-accent-600 active:bg-accent-700 shadow-sm shadow-accent-900/10',
+    'bg-accent-500 text-navy-950 hover:bg-accent-400 active:bg-accent-600 shadow-sm shadow-accent-900/25 ring-1 ring-accent-600/25',
   secondary: 'bg-navy-900 text-white hover:bg-navy-800 active:bg-navy-950',
   outline: 'border border-navy-200 bg-white text-navy-900 hover:bg-navy-50 hover:border-navy-300',
   ghost: 'text-navy-800 hover:bg-navy-50',

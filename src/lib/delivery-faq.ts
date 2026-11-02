@@ -1,18 +1,24 @@
 import type { FaqEntry } from './faq';
 
 /**
- * Contenu de la FAQ « livraisons et expéditions ».
+ * Les délais s'écrivent `{days}` / `{hours}` : la page les remplit avec
+ * `STORE_POLICY_VARS`, ce qui permet de traduire la phrase sans figer un
+ * chiffre dans la clé de traduction.
+ */
+
+/**
+ * Contenu de la FAQ « livraisons ».
  *
  * Source unique : la page /livraison, les données structurées FAQPage et les
- * tests lisent tous ce même tableau. Chaque réponse renvoie vers le WhatsApp de
- * la boutique : aucun cas particulier n'est tranché par une règle inventée.
+ * tests lisent tous ce même tableau. Les règles sont celles fixées par le
+ * propriétaire : 48 h pour retirer un colis, 7 jours maximum hors Daloa, prix
+ * du transport convenu sur WhatsApp.
  */
 export const DELIVERY_FAQ: readonly FaqEntry[] = [
   {
     id: 'hors-daloa',
     question: 'Livrez-vous en dehors de Daloa ?',
-    answer:
-      'Oui. Pour toute ville située hors de Daloa, la commande part par transporteur. Le montant du transport dépend de la destination : il est ajouté au panier après le choix de la ville et s’affiche avant le paiement. Si votre ville n’apparaît pas dans la liste, ne devinez pas le tarif : écrivez-nous avec la ville et la référence du produit, nous vous communiquons le coût réel du transport avant tout règlement.',
+    answer: 'Oui. Choisissez votre ville au moment de la commande, puis écrivez-nous sur WhatsApp : c’est là que le prix du transport est convenu, selon la ville et le volume du colis. La livraison prend {days} jours maximum. Si votre ville n’apparaît pas dans la liste, écrivez-nous avec la référence du produit : nous vous répondons avant tout règlement.',
     whatsappMessage:
       'Bonjour MeDi, je souhaite une livraison hors Daloa. Ma ville de destination est : … et les produits qui m’intéressent sont : …',
   },
@@ -20,35 +26,33 @@ export const DELIVERY_FAQ: readonly FaqEntry[] = [
     id: 'daloa',
     question: 'Comment se passe une livraison ou un retrait à Daloa ?',
     answer:
-      'À Daloa, deux possibilités : le retrait gratuit en boutique pendant les heures d’ouverture, ou la livraison à domicile dans votre quartier. Vous indiquez votre quartier ou un point de repère au moment de la commande, les frais de la zone s’ajoutent au total et le créneau de passage est convenu avec vous. Le paiement à la livraison n’est proposé que si la boutique l’a autorisé pour la zone et le montant concernés.',
+      'À Daloa, deux possibilités : le retrait gratuit en boutique, ou la livraison dans votre quartier. Vous choisissez votre quartier dans la liste au moment de la commande : les frais de livraison s’affichent aussitôt, avant le paiement. Un colis payé en ligne est gardé {hours} heures maximum en boutique.',
     whatsappMessage:
-      'Bonjour MeDi, je souhaite organiser une livraison à Daloa (ou un retrait en boutique). Mon quartier / point de repère : …',
+      'Bonjour MeDi, je souhaite organiser une livraison à Daloa (ou un retrait en boutique). Mon quartier : …',
   },
   {
     id: 'prepaiement',
-    question: 'Pourquoi le paiement intégral est-il exigé hors Daloa ?',
+    question: 'Pourquoi le paiement des articles est-il demandé avant l’expédition hors Daloa ?',
     answer:
-      'Parce que le transporteur est réglé au départ du colis et qu’aucun encaissement n’a lieu à l’arrivée. La commande ne devient « prête à expédier » qu’après vérification du paiement reçu par la boutique : une capture d’écran, un SMS ou une déclaration ne valent jamais preuve de paiement. Tant que le paiement n’est pas confirmé, la commande reste « paiement à vérifier » et le colis reste en boutique.',
+      'Parce que le transporteur est réglé au départ du colis. La commande ne part qu’après vérification du paiement reçu par la boutique : une capture d’écran ou une déclaration ne valent jamais preuve de paiement. Tant que le paiement n’est pas confirmé, la commande reste « paiement à vérifier » et le colis reste en boutique.',
     whatsappMessage:
-      'Bonjour MeDi, je souhaite expédier une commande hors Daloa et j’ai une question sur le prépaiement. Ma référence de commande / de transaction : …',
+      'Bonjour MeDi, je souhaite expédier une commande hors Daloa et j’ai une question sur le paiement. Ma référence de commande : …',
   },
   {
     id: 'delais-suivi',
-    question: 'Quel délai prévoir et comment suivre mon expédition ?',
-    answer:
-      'Le délai dépend du transporteur et de la destination : aucun délai garanti n’est annoncé à l’avance, la boutique vous confirme l’estimation au moment de la commande. Dès que le colis est remis au transporteur, la référence de suivi est enregistrée sur votre commande et reste consultable avec votre numéro de commande sur la page de suivi. Pour un point de situation précis, le plus rapide reste WhatsApp.',
-    whatsappMessage:
-      'Bonjour MeDi, je voudrais le point sur l’expédition de ma commande. Numéro de commande : …',
+    question: 'Quel délai prévoir et comment suivre ma commande ?',
+    answer: 'Hors Daloa : {days} jours maximum selon la ville. À Daloa : livraison le jour même ou le lendemain, aux heures d’ouverture. Chaque étape est enregistrée sur votre commande : ouvrez la page de suivi avec votre numéro de commande pour voir où en est le colis.',
+    whatsappMessage: 'Bonjour MeDi, je souhaite avoir une point sur ma commande. Numéro : …',
   },
   {
     id: 'modification',
     question: 'Puis-je modifier la commande ou changer la ville avant l’expédition ?',
     answer:
-      'Oui, tant que le colis n’a pas été remis au transporteur. Signalez-le immédiatement sur WhatsApp en indiquant votre numéro de commande : la boutique vérifie l’état réel de la commande et la disponibilité du stock avant de modifier la destination, les articles ou le mode de retrait. Si un supplément de transport s’applique, il est annoncé et réglé avant l’expédition ; aucune modification n’est appliquée sans votre accord.',
-    whatsappMessage:
-      'Bonjour MeDi, je souhaite modifier ma commande avant expédition. Numéro de commande : … Modification souhaitée : …',
+      'Oui, tant que la commande n’est pas partie. Écrivez sur WhatsApp avec votre numéro de commande : si le colis est encore en boutique, la boutique ajuste la ville ou le mode de livraison. Une fois le colis remis au transporteur, le changement n’est plus possible.',
+    whatsappMessage: 'Bonjour MeDi, je souhaite modifier ma commande avant expédition. Numéro : … Changement souhaité : …',
   },
-] as const;
+];
 
+/** Message WhatsApp proposé à la fin de la FAQ livraisons. */
 export const DELIVERY_FAQ_FALLBACK_MESSAGE =
   'Bonjour MeDi, j’ai une question sur la livraison ou l’expédition d’une commande.';

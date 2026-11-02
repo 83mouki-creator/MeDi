@@ -21,6 +21,9 @@ const NAV: (AdminNavItem & { permission?: Permission })[] = [
   { href: '/admin/paiements', label: 'Encaissements', hint: 'Vérifier l’argent reçu', icon: 'payments', permission: 'payments.read', badge: 'payments' },
   { href: '/admin/produits', label: 'Produits', hint: 'Fiches, prix et photos', icon: 'products', permission: 'products.read' },
   { href: '/admin/stock', label: 'Stock', hint: 'Combien il en reste', icon: 'stock', permission: 'products.read' },
+  { href: '/admin/promotions', label: 'Promotions', hint: 'Baisser les prix pour un temps', icon: 'promos', permission: 'products.write' },
+  { href: '/admin/caisse', label: 'Caisse', hint: 'Ouvrir et fermer la journée', icon: 'cash', permission: 'payments.read' },
+  { href: '/admin/bons', label: 'Bons de livraison', hint: 'Papiers à donner au livreur', icon: 'notes', permission: 'delivery.manage' },
   { href: '/admin/categories', label: 'Rayons et marques', hint: 'Ranger les produits', icon: 'categories', permission: 'products.write' },
   { href: '/admin/import', label: 'Photos et imports', hint: 'Ajouter en grand nombre', icon: 'import', permission: 'catalog.import' },
   { href: '/admin/livraison', label: 'Livraisons', hint: 'Zones, frais, transporteurs', icon: 'delivery', permission: 'delivery.manage' },
@@ -47,7 +50,16 @@ export default async function AdminLayout({ children }: { children: React.ReactN
 
   return (
     <AdminI18nProvider locale={locale}>
-      <div lang={locale} dir={dir} className="min-h-dvh bg-slate-100">
+      <div lang={locale} dir={dir} className="relative min-h-dvh bg-slate-100">
+        {/*
+          Logo MeDi en filigrane : il habille l'espace de gestion sans gêner la
+          lecture (4 % d'opacité, jamais cliquable, jamais imprimé).
+        */}
+        <div
+          aria-hidden
+          className="pointer-events-none fixed inset-0 z-0 bg-[url('/brand/medi-icon.svg')] bg-center bg-no-repeat bg-[length:min(72vw,540px)] opacity-[0.045] print:hidden"
+        />
+        <div className="relative z-10">
         <AdminTopBar
           items={items}
           role={t(user.role)}
@@ -59,6 +71,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           dir={dir}
         />
         <main className="container-page py-5">{children}</main>
+        </div>
       </div>
     </AdminI18nProvider>
   );

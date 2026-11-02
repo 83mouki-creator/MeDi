@@ -19,7 +19,7 @@ export default function NotFound() {
       <div className="mt-5 flex flex-wrap justify-center gap-2">
         <Link
           href="/"
-          className="inline-flex items-center gap-2 rounded-lg bg-accent-500 px-4 py-2.5 text-sm font-semibold text-white hover:bg-accent-600"
+          className="inline-flex items-center gap-2 rounded-lg bg-accent-500 px-4 py-2.5 text-sm font-bold text-navy-950 hover:bg-accent-400"
         >
           <Home className="size-4" aria-hidden /> Accueil
         </Link>

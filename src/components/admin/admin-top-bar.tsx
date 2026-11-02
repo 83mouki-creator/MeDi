@@ -19,8 +19,10 @@ import {
   ShieldCheck,
   ShoppingBag,
   Store,
+  Tags,
   Truck,
   Users,
+  Wallet,
   X,
 } from 'lucide-react';
 import { logoutAction } from '@/app/actions/auth';
@@ -45,7 +47,10 @@ export type AdminNavItem = {
     | 'settings'
     | 'users'
     | 'audit'
-    | 'stats';
+    | 'stats'
+    | 'promos'
+    | 'cash'
+    | 'notes';
   badge?: 'payments' | 'messages';
   /** Petite phrase qui explique le menu en mots simples. */
   hint?: string;
@@ -65,6 +70,9 @@ const ICONS = {
   users: Users,
   audit: ShieldCheck,
   stats: BarChart3,
+  promos: Tags,
+  cash: Wallet,
+  notes: Truck,
 } as const;
 
 /** Bascule FR / AR, mémorisée par cookie et propre au back-office. */
@@ -171,7 +179,7 @@ export function AdminTopBar({
             {open ? <X className="size-5" aria-hidden /> : <Menu className="size-5" aria-hidden />}
             <span className="hidden sm:inline">{t('Menu')}</span>
             {pendingPayments > 0 && !open ? (
-              <span className="grid min-w-5 place-items-center rounded-full bg-accent-500 px-1 text-[11px] font-bold text-white">
+              <span className="grid min-w-5 place-items-center rounded-full bg-accent-500 px-1 text-[11px] font-bold text-navy-950">
                 {pendingPayments}
               </span>
             ) : null}
@@ -279,7 +287,7 @@ export function AdminTopBar({
                       ) : null}
                     </span>
                     {item.badge === 'payments' && pendingPayments > 0 ? (
-                      <span className="rounded-full bg-accent-500 px-1.5 py-0.5 text-[10px] font-bold text-white">
+                      <span className="rounded-full bg-accent-500 px-1.5 py-0.5 text-[10px] font-bold text-navy-950">
                         {pendingPayments}
                       </span>
                     ) : null}

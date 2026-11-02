@@ -42,7 +42,7 @@ export default async function ActivationPage({
           </p>
           <Link
             href="/connexion?redirectTo=/admin"
-            className="mt-5 inline-flex min-h-11 items-center gap-2 rounded-lg bg-accent-500 px-4 py-2.5 text-sm font-semibold text-white hover:bg-accent-600"
+            className="mt-5 inline-flex min-h-11 items-center gap-2 rounded-lg bg-accent-500 px-4 py-2.5 text-sm font-bold text-navy-950 hover:bg-accent-400"
           >
             <KeyRound className="size-4" aria-hidden /> Se connecter à l’administration
           </Link>

@@ -1,5 +1,8 @@
 import { SiteHeader } from '@/components/site-header';
 import { SiteFooter } from '@/components/site-footer';
+import { SiteI18nProvider } from '@/components/site-i18n';
+import { getSiteLocale } from '@/lib/i18n/site-server';
+import { translate } from '@/lib/i18n/site';
 
 /**
  * Habillage de la boutique : en-tête (recherche, catégories, panier) et pied de page.
@@ -7,20 +10,22 @@ import { SiteFooter } from '@/components/site-footer';
  * L'administration vit hors de ce groupe de routes : elle n'affiche donc ni
  * barre de recherche produits, ni panier, ni navigation par rayons.
  */
-export default function SiteLayout({ children }: { children: React.ReactNode }) {
+export default async function SiteLayout({ children }: { children: React.ReactNode }) {
+  const locale = await getSiteLocale();
+
   return (
-    <>
+    <SiteI18nProvider locale={locale}>
       <a
         href="#contenu"
-        className="sr-only focus:not-sr-only focus:fixed focus:left-3 focus:top-3 focus:z-50 focus:rounded-md focus:bg-navy-950 focus:px-3 focus:py-2 focus:text-sm focus:font-semibold focus:text-white"
+        className="sr-only focus:not-sr-only focus:fixed focus:start-3 focus:top-3 focus:z-50 focus:rounded-md focus:bg-navy-950 focus:px-3 focus:py-2 focus:text-sm focus:font-semibold focus:text-white"
       >
-        Aller au contenu principal
+        {translate(locale, 'Aller au contenu principal')}
       </a>
       <SiteHeader />
       <main id="contenu" className="min-h-[60vh]">
         {children}
       </main>
       <SiteFooter />
-    </>
+    </SiteI18nProvider>
   );
 }

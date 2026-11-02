@@ -8,6 +8,8 @@ import { getStoreSettings } from '@/lib/settings';
 import { getCurrentUser } from '@/lib/auth';
 import { CheckoutForm } from '@/components/checkout-form';
 import { toFcfa } from '@/lib/utils';
+import { storeLocation } from '@/lib/store-location';
+import { getSiteI18n } from '@/lib/i18n/site-server';
 
 export const metadata: Metadata = { title: 'Commande', robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
@@ -22,16 +24,20 @@ export default async function CheckoutPage() {
 
   if (cart.isEmpty) redirect('/panier');
 
+  const location = storeLocation(settings);
+  const { t } = await getSiteI18n();
+
   return (
     <div className="container-page py-6">
-      <h1 className="mb-1 text-2xl font-extrabold tracking-tight sm:text-3xl">Finaliser ma commande</h1>
+      <h1 className="mb-1 text-2xl font-extrabold tracking-tight sm:text-3xl">{t('Finaliser ma commande')}</h1>
       <p className="mb-6 text-sm text-navy-600">
-        {cart.itemCount} article(s) · {cart.lines.length} référence(s). Les prix, frais et disponibilités sont vérifiés définitivement au moment de la validation.
+        {t('{items} article(s) · {refs} référence(s). Les prix, frais et disponibilités sont vérifiés définitivement au moment de la validation.', { items: cart.itemCount, refs: cart.lines.length })}
       </p>
 
       <CheckoutForm
         items={cart.lines.map((line) => ({ productId: line.productId, quantity: line.quantity }))}
         subtotal={cart.subtotal}
+        lines={cart.lines.map((line) => ({ name: line.name, quantity: line.quantity }))}
         zones={zones.map((zone) => ({
           id: zone.id,
           name: zone.name,
@@ -41,7 +47,17 @@ export default async function CheckoutPage() {
           fee: toFcfa(zone.fee),
           freeAbove: zone.freeAbove === null ? null : toFcfa(zone.freeAbove),
           estimatedDelay: zone.estimatedDelay,
+          neighbourhoods: zone.neighbourhoods ?? [],
         }))}
+        store={{
+          city: location.city,
+          addressLine: location.addressLine,
+          gps: location.dms,
+          mapsUrl: location.mapsUrl,
+          directionsUrl: location.directionsUrl,
+          openingHours: settings.openingHours,
+          whatsapp: settings.whatsapp ?? settings.phone,
+        }}
         user={user ? { firstName: user.firstName, lastName: user.lastName, phone: user.phone, email: user.email } : null}
         settings={{
           allowCod: settings.allowCod,

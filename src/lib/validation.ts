@@ -1,4 +1,5 @@
 import { z } from 'zod';
+import { findNeighbourhood } from './daloa';
 
 /** Téléphone ivoirien : 10 chiffres (ex. 0701020304) ou format international +225… */
 export const phoneSchema = z
@@ -42,6 +43,13 @@ export const cartSchema = z.object({
   items: z.array(cartItemSchema).max(60),
 });
 
+/**
+ * Tunnel de commande.
+ *
+ * Volontairement court : plus d'adresse à saisir, plus de transporteur à
+ * choisir, plus de note. À Daloa le client donne son quartier ; hors Daloa il
+ * choisit sa ville et le prix du transport se discute sur WhatsApp.
+ */
 export const checkoutSchema = z
   .object({
     firstName: z.string().trim().min(2, 'Prénom requis').max(60),
@@ -49,31 +57,27 @@ export const checkoutSchema = z
     phone: phoneSchema,
     email: z.union([emailSchema, z.literal('')]).optional(),
     deliveryMethod: z.enum(['PICKUP', 'LOCAL_DELIVERY', 'CARRIER']),
-    zoneId: z.string().optional(),
-    city: z.string().trim().min(2, 'Ville requise').max(80),
-    commune: z.string().trim().max(80).optional(),
-    addressLine: z.string().trim().max(200).optional(),
-    landmark: z.string().trim().max(200).optional(),
-    carrier: z.string().trim().max(80).optional(),
+    zoneId: z.string().trim().max(80).optional(),
+    city: z.string().trim().max(80).optional(),
+    neighbourhood: z.string().trim().max(80).optional(),
     paymentMethod: z.enum(['WAVE', 'CASH_ON_DELIVERY', 'CASH_IN_STORE']),
-    customerNote: z.string().trim().max(500).optional(),
     items: z.array(cartItemSchema).min(1, 'Votre panier est vide').max(60),
   })
   .superRefine((data, ctx) => {
     if (data.deliveryMethod === 'LOCAL_DELIVERY') {
-      if (!data.addressLine || data.addressLine.length < 5) {
-        ctx.addIssue({ code: 'custom', path: ['addressLine'], message: 'Adresse de livraison requise' });
+      if (!data.neighbourhood || data.neighbourhood.length < 2) {
+        ctx.addIssue({ code: 'custom', path: ['neighbourhood'], message: 'Choisissez votre quartier à Daloa' });
+      } else if (!findNeighbourhood(data.neighbourhood)) {
+        ctx.addIssue({
+          code: 'custom',
+          path: ['neighbourhood'],
+          message: 'Ce quartier n’est pas dans la liste. Choisissez-en un, ou écrivez-nous sur WhatsApp.',
+        });
       }
     }
     if (data.deliveryMethod === 'CARRIER') {
-      if (!data.addressLine || data.addressLine.length < 5) {
-        ctx.addIssue({ code: 'custom', path: ['addressLine'], message: 'Adresse du destinataire requise' });
-      }
-      if (!data.commune) {
-        ctx.addIssue({ code: 'custom', path: ['commune'], message: 'Commune ou quartier requis' });
-      }
-      if (!data.carrier) {
-        ctx.addIssue({ code: 'custom', path: ['carrier'], message: 'Indiquez le transporteur souhaité' });
+      if (!data.zoneId) {
+        ctx.addIssue({ code: 'custom', path: ['zoneId'], message: 'Choisissez votre ville de livraison' });
       }
     }
   });

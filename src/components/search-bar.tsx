@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { Camera, Loader2, Search, X } from 'lucide-react';
 import { cn, formatFCFA } from '@/lib/utils';
+import { useSiteI18n } from './site-i18n';
 
 type Suggestion = {
   kind: 'product' | 'category' | 'brand';
@@ -20,8 +21,16 @@ const KIND_LABEL: Record<Suggestion['kind'], string> = {
   brand: 'Marque',
 };
 
+/** Abréviation affichée dans la pastille (traduite par le sélecteur de langue). */
+const KIND_SHORT: Record<Suggestion['kind'], string> = {
+  product: 'PRO',
+  category: 'CAT',
+  brand: 'MAR',
+};
+
 /** Barre de recherche centrale, accessible sur toutes les pages, avec suggestions. */
 export function SearchBar({ initialQuery = '', className, autoFocus }: { initialQuery?: string; className?: string; autoFocus?: boolean }) {
+  const { t } = useSiteI18n();
   const router = useRouter();
   const [query, setQuery] = useState(initialQuery);
   const [suggestions, setSuggestions] = useState<Suggestion[]>([]);
@@ -110,7 +119,7 @@ export function SearchBar({ initialQuery = '', className, autoFocus }: { initial
         className="flex items-stretch overflow-hidden rounded-xl bg-white shadow-sm ring-1 ring-navy-200 focus-within:ring-2 focus-within:ring-accent-400"
       >
         <label htmlFor={`${listId}-input`} className="sr-only">
-          Rechercher un produit, une marque ou une référence
+          {t('Rechercher un produit, une marque ou une référence')}
         </label>
         <input
           id={`${listId}-input`}
@@ -125,7 +134,7 @@ export function SearchBar({ initialQuery = '', className, autoFocus }: { initial
           }}
           onFocus={() => suggestions.length > 0 && setOpen(true)}
           onKeyDown={onKeyDown}
-          placeholder="Perceuse, ciment, Nasco, ventilateur…"
+          placeholder={t('Perceuse, ciment, Nasco, ventilateur…')}
           aria-autocomplete="list"
           aria-controls={listId}
           aria-expanded={open}
@@ -140,7 +149,7 @@ export function SearchBar({ initialQuery = '', className, autoFocus }: { initial
               setSuggestions([]);
             }}
             className="px-2 text-navy-400 hover:text-navy-700"
-            aria-label="Effacer la recherche"
+            aria-label={t('Effacer la recherche')}
           >
             <X className="size-4" />
           </button>
@@ -148,24 +157,24 @@ export function SearchBar({ initialQuery = '', className, autoFocus }: { initial
         <Link
           href="/recherche-visuelle"
           className="hidden items-center gap-1.5 border-l border-navy-100 px-3 text-xs font-semibold text-navy-700 hover:bg-navy-50 sm:flex"
-          title="Rechercher par photo"
+          title={t('Rechercher par photo')}
         >
           <Camera className="size-4 text-accent-600" />
-          <span className="hidden lg:inline">Par photo</span>
+          <span className="hidden lg:inline">{t('Par photo')}</span>
         </Link>
         <button
           type="submit"
-          className="flex items-center gap-2 bg-accent-500 px-4 text-sm font-semibold text-white hover:bg-accent-600"
+          className="flex items-center gap-2 bg-accent-500 px-4 text-sm font-bold text-navy-950 hover:bg-accent-400"
         >
           {loading ? <Loader2 className="size-4 animate-spin" aria-hidden /> : <Search className="size-4" aria-hidden />}
-          <span className="hidden sm:inline">Rechercher</span>
+          <span className="hidden sm:inline">{t('Rechercher')}</span>
         </button>
       </form>
 
       {open && (query.trim().length >= 2) ? (
         <div className="absolute inset-x-0 top-full z-50 mt-2 overflow-hidden rounded-xl border border-navy-100 bg-white shadow-xl">
           {suggestions.length === 0 && !loading ? (
-            <p className="px-4 py-3 text-sm text-navy-500">Aucune suggestion. Lancez la recherche complète.</p>
+            <p className="px-4 py-3 text-sm text-navy-500">{t('Aucune suggestion. Lancez la recherche complète.')}</p>
           ) : (
             <ul id={listId} role="listbox" className="max-h-[22rem] overflow-y-auto py-1">
               {suggestions.map((suggestion, index) => (
@@ -188,12 +197,12 @@ export function SearchBar({ initialQuery = '', className, autoFocus }: { initial
                       <img src={suggestion.imageUrl} alt="" className="size-9 rounded-md object-cover" loading="lazy" />
                     ) : (
                       <span className="grid size-9 place-items-center rounded-md bg-navy-100 text-[10px] font-bold text-navy-500">
-                        {KIND_LABEL[suggestion.kind].slice(0, 3).toUpperCase()}
+                        {KIND_SHORT[suggestion.kind]}
                       </span>
                     )}
                     <span className="min-w-0 flex-1">
                       <span className="block truncate font-medium text-navy-900">{suggestion.label}</span>
-                      <span className="block text-xs text-navy-400">{KIND_LABEL[suggestion.kind]}</span>
+                      <span className="block text-xs text-navy-400">{t(KIND_LABEL[suggestion.kind])}</span>
                     </span>
                     {suggestion.price ? (
                       <span className="text-xs font-semibold text-navy-800">{formatFCFA(Number(suggestion.price))}</span>

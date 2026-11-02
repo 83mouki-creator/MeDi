@@ -1,6 +1,9 @@
+'use client';
+
 import Link from 'next/link';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { cn } from '@/lib/utils';
+import { useSiteI18n } from './site-i18n';
 
 /** Pagination conservant tous les filtres présents dans l'URL. */
 export function Pagination({
@@ -29,10 +32,11 @@ export function Pagination({
     return query ? `${basePath}?${query}` : basePath;
   };
 
+  const { t } = useSiteI18n();
   const pages = buildPages(page, totalPages);
 
   return (
-    <nav aria-label={labels?.nav ?? 'Pagination'} className="mt-8 flex items-center justify-center gap-1">
+    <nav aria-label={labels?.nav ?? t('Pagination')} className="mt-8 flex items-center justify-center gap-1">
       <Link
         href={href(Math.max(1, page - 1))}
         aria-disabled={page === 1}
@@ -40,7 +44,7 @@ export function Pagination({
           'inline-flex size-10 items-center justify-center rounded-lg border border-navy-200 bg-white text-navy-700 hover:bg-navy-50',
           page === 1 && 'pointer-events-none opacity-40',
         )}
-        aria-label={labels?.previous ?? 'Page précédente'}
+        aria-label={labels?.previous ?? t('Page précédente')}
       >
         <ChevronLeft className="size-4 rtl:rotate-180" aria-hidden />
       </Link>
@@ -58,7 +62,7 @@ export function Pagination({
             className={cn(
               'inline-flex size-10 items-center justify-center rounded-lg border text-sm font-semibold',
               p === page
-                ? 'border-accent-500 bg-accent-500 text-white'
+                ? 'border-accent-600 bg-accent-500 text-navy-950'
                 : 'border-navy-200 bg-white text-navy-700 hover:bg-navy-50',
             )}
           >
@@ -74,7 +78,7 @@ export function Pagination({
           'inline-flex size-10 items-center justify-center rounded-lg border border-navy-200 bg-white text-navy-700 hover:bg-navy-50',
           page === totalPages && 'pointer-events-none opacity-40',
         )}
-        aria-label={labels?.next ?? 'Page suivante'}
+        aria-label={labels?.next ?? t('Page suivante')}
       >
         <ChevronRight className="size-4 rtl:rotate-180" aria-hidden />
       </Link>

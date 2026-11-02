@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from 'next';
 import './globals.css';
 import { env } from '@/lib/env';
+import { getSiteLocale } from '@/lib/i18n/site-server';
+import { siteDir, siteHtmlLang } from '@/lib/i18n/site';
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.appUrl),
@@ -52,9 +54,14 @@ export const viewport: Viewport = {
   themeColor: '#0b2545',
 };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  // La langue de la boutique est lue dans le cookie : elle détermine la langue
+  // du document et le sens de lecture (arabe = droite à gauche). Le back-office
+  // impose ensuite sa propre langue, indépendamment de la vitrine.
+  const locale = await getSiteLocale();
+
   return (
-    <html lang="fr-CI">
+    <html lang={siteHtmlLang(locale)} dir={siteDir(locale)}>
       <body className="min-h-dvh bg-white font-sans text-navy-900 antialiased">{children}</body>
     </html>
   );

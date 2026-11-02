@@ -7,8 +7,10 @@ import { Minus, Plus, Trash2 } from 'lucide-react';
 import { removeFromCartAction, updateCartQuantityAction } from '@/app/actions/cart';
 import { formatFCFA } from '@/lib/utils';
 import type { CartLine } from '@/lib/cart';
+import { useSiteI18n } from './site-i18n';
 
 export function CartLineRow({ line }: { line: CartLine }) {
+  const { t } = useSiteI18n();
   const [pending, startTransition] = useTransition();
 
   function setQuantity(quantity: number) {
@@ -34,7 +36,7 @@ export function CartLineRow({ line }: { line: CartLine }) {
         {line.imageUrl ? (
           <Image src={line.imageUrl} alt={line.name} width={192} height={192} className="size-full object-cover" />
         ) : (
-          <span className="grid size-full place-items-center text-[10px] text-navy-400">Photo à venir</span>
+          <span className="grid size-full place-items-center text-[10px] text-navy-400">{t('Photo à venir')}</span>
         )}
       </Link>
 
@@ -44,10 +46,10 @@ export function CartLineRow({ line }: { line: CartLine }) {
             <Link href={`/produit/${line.slug}`} className="line-clamp-2 text-sm font-semibold text-navy-900 hover:text-accent-700">
               {line.name}
             </Link>
-            <p className="mt-0.5 text-xs text-navy-500">Réf. {line.sku}</p>
+            <p className="mt-0.5 text-xs text-navy-500">{t('Réf.')} {line.sku}</p>
             <p className="mt-1 text-sm font-bold text-navy-950">
               {formatFCFA(line.unitPrice)}
-              {line.onPromo ? <span className="ml-2 text-xs font-normal text-navy-400 line-through">{formatFCFA(line.basePrice)}</span> : null}
+              {line.onPromo ? <span className="ms-2 text-xs font-normal text-navy-400 line-through">{formatFCFA(line.basePrice)}</span> : null}
             </p>
           </div>
           <button
@@ -55,7 +57,7 @@ export function CartLineRow({ line }: { line: CartLine }) {
             onClick={remove}
             disabled={pending}
             className="grid size-9 shrink-0 place-items-center rounded-lg text-navy-400 hover:bg-rose-50 hover:text-danger-500"
-            aria-label={`Retirer ${line.name} du panier`}
+            aria-label={t('Retirer {name} du panier', { name: line.name })}
           >
             <Trash2 className="size-4" aria-hidden />
           </button>
@@ -70,7 +72,7 @@ export function CartLineRow({ line }: { line: CartLine }) {
               onClick={() => setQuantity(line.quantity - 1)}
               disabled={pending || line.quantity <= 1}
               className="grid size-9 place-items-center text-navy-700 hover:bg-navy-50 disabled:opacity-40"
-              aria-label="Diminuer la quantité"
+              aria-label={t('Diminuer la quantité')}
             >
               <Minus className="size-3.5" aria-hidden />
             </button>
@@ -80,7 +82,7 @@ export function CartLineRow({ line }: { line: CartLine }) {
               onClick={() => setQuantity(line.quantity + 1)}
               disabled={pending || (line.availability !== 'PREORDER' && line.quantity >= line.available)}
               className="grid size-9 place-items-center text-navy-700 hover:bg-navy-50 disabled:opacity-40"
-              aria-label="Augmenter la quantité"
+              aria-label={t('Augmenter la quantité')}
             >
               <Plus className="size-3.5" aria-hidden />
             </button>
