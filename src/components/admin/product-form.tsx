@@ -62,10 +62,10 @@ export function ProductForm({
           <Field label={t('Nom du produit')} htmlFor="name" required error={state.fieldErrors?.name} className="sm:col-span-2">
             <Input id="name" name="name" defaultValue={product?.name ?? ''} required maxLength={160} />
           </Field>
-          <Field label={t('Référence (SKU)')} htmlFor="sku" required error={state.fieldErrors?.sku}>
+          <Field label={t('Référence du produit (le code sur l’étiquette)')} htmlFor="sku" required error={state.fieldErrors?.sku}>
             <Input id="sku" name="sku" defaultValue={product?.sku ?? ''} required maxLength={60} placeholder={t('MED-0001')} />
           </Field>
-          <Field label={t('Slug URL (facultatif)')} htmlFor="slug" error={state.fieldErrors?.slug} hint="Généré automatiquement si vide.">
+          <Field label={t('Adresse de la page (facultatif)')} htmlFor="slug" error={state.fieldErrors?.slug} hint="Généré automatiquement si vide.">
             <Input id="slug" name="slug" defaultValue={product?.slug ?? ''} maxLength={80} />
           </Field>
           <Field label={t('Catégorie')} htmlFor="categoryId">
@@ -122,10 +122,10 @@ export function ProductForm({
           <Field label={t('Fin promo')} htmlFor="promoEndsAt">
             <Input id="promoEndsAt" name="promoEndsAt" type="datetime-local" defaultValue={product?.promoEndsAt ?? ''} />
           </Field>
-          <Field label={t('Stock physique')} htmlFor="stock" required error={state.fieldErrors?.stock} hint="Toute variation est journalisée.">
+          <Field label={t('Combien j’en ai')} htmlFor="stock" required error={state.fieldErrors?.stock} hint="Toute variation est journalisée.">
             <Input id="stock" name="stock" type="number" min={0} step={1} defaultValue={product?.stock ?? 0} required />
           </Field>
-          <Field label={t('Seuil stock faible')} htmlFor="lowStockThreshold">
+          <Field label={t('Me prévenir quand il en reste')} htmlFor="lowStockThreshold">
             <Input id="lowStockThreshold" name="lowStockThreshold" type="number" min={0} step={1} defaultValue={product?.lowStockThreshold ?? ''} placeholder="5" />
           </Field>
         </div>
@@ -146,7 +146,7 @@ export function ProductForm({
       </Card>
 
       <Card className="space-y-3 p-4">
-        <h2 className="text-sm font-bold">{t('Caractéristiques techniques')}</h2>
+        <h2 className="text-sm font-bold">{t('Détails techniques (puissance, taille…)')}</h2>
         {rows.map((row, index) => (
           <div key={index} className="flex gap-2">
             <Input

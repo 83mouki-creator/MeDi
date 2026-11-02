@@ -34,8 +34,10 @@ export default async function AdminOrdersPage({ searchParams }: { searchParams: 
     <div className="space-y-4">
       <header className="flex flex-wrap items-center justify-between gap-2">
         <div>
-          <h1 className="text-xl font-extrabold tracking-tight">{t('Commandes')}</h1>
-          <p className="text-sm text-navy-600">{result.total} commande(s) · recherche par numéro, nom ou téléphone</p>
+          <h1 className="text-xl font-extrabold tracking-tight">{t('Les commandes')}</h1>
+          <p className="text-sm text-navy-600">
+            {t('{total} commande(s) trouvée(s). Cherchez un numéro, un nom ou un téléphone, puis ouvrez la commande pour la faire avancer.', { total: result.total })}
+          </p>
         </div>
       </header>
 
@@ -71,7 +73,10 @@ export default async function AdminOrdersPage({ searchParams }: { searchParams: 
       </Card>
 
       {result.orders.length === 0 ? (
-        <EmptyState title={t('Aucune commande')} description="Aucune commande ne correspond à ces filtres." />
+        <EmptyState
+          title={t('Aucune commande ici')}
+          description={t('Aucune commande ne correspond à ces filtres. Effacez la recherche ou choisissez « Tous les statuts ».')}
+        />
       ) : (
         <Card className="overflow-x-auto">
           <table className="w-full min-w-[900px] text-sm">

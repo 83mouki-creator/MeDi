@@ -40,9 +40,9 @@ export default async function AdminPaymentsPage() {
   return (
     <div className="space-y-4">
       <header>
-        <h1 className="text-xl font-extrabold tracking-tight">{t('Paiements à vérifier')}</h1>
+        <h1 className="text-xl font-extrabold tracking-tight">{t('Argent reçu')}</h1>
         <p className="text-sm text-navy-600">
-          {t('Seuls les administrateurs et le propriétaire peuvent confirmer. Vérifiez le crédit réel sur le compte marchand Wave avant toute confirmation : une capture d’écran client n’est pas une preuve.')}
+          {t('Un client dit avoir payé ? Ouvrez votre téléphone Wave, vérifiez que l’argent est bien arrivé, puis appuyez sur « J’ai reçu l’argent ». Une capture d’écran ne suffit pas.')}
         </p>
       </header>
 

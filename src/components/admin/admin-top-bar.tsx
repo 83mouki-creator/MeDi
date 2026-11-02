@@ -47,6 +47,8 @@ export type AdminNavItem = {
     | 'audit'
     | 'stats';
   badge?: 'payments' | 'messages';
+  /** Petite phrase qui explique le menu en mots simples. */
+  hint?: string;
 };
 
 const ICONS = {
@@ -268,7 +270,14 @@ export function AdminTopBar({
                     )}
                   >
                     <Icon className={cn('size-4 shrink-0', active ? 'text-accent-600' : 'text-navy-400')} aria-hidden />
-                    <span className="flex-1">{item.label}</span>
+                    <span className="min-w-0 flex-1">
+                      <span className="block">{item.label}</span>
+                      {item.hint ? (
+                        <span className={cn('block text-[11px] font-normal', active ? 'text-accent-700' : 'text-navy-500')}>
+                          {item.hint}
+                        </span>
+                      ) : null}
+                    </span>
                     {item.badge === 'payments' && pendingPayments > 0 ? (
                       <span className="rounded-full bg-accent-500 px-1.5 py-0.5 text-[10px] font-bold text-white">
                         {pendingPayments}

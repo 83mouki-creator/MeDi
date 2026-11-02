@@ -38,9 +38,9 @@ export default async function ImportPage() {
   return (
     <div className="space-y-4">
       <header>
-        <h1 className="text-xl font-extrabold tracking-tight">{t('Import catalogue & photos')}</h1>
+        <h1 className="text-xl font-extrabold tracking-tight">{t('Ajouter beaucoup de produits d’un coup')}</h1>
         <p className="text-sm text-navy-600">
-          {t('Flux prévu pour les 200+ photos du propriétaire : téléversement en masse, dédoublonnage, affectation manuelle à une fiche produit, puis indexation visuelle.')}
+          {t('Deux façons d’aller vite : poser des dizaines de photos en une fois, ou remplir un tableau (fichier) pour créer plusieurs produits. Les images en double sont repérées automatiquement.')}
         </p>
       </header>
 
