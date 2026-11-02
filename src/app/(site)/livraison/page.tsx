@@ -14,7 +14,7 @@ import { RETURNS_FAQ, RETURNS_FAQ_FALLBACK_MESSAGE } from '@/lib/returns-faq';
 import { getSiteI18n } from '@/lib/i18n/site-server';
 import { storeLocation, whatsappWithMessage } from '@/lib/store-location';
 import { OUTSIDE_DALOA_MAX_DAYS, PICKUP_HOLD_HOURS, FINAL_SALE_NOTICE, STORE_POLICY_VARS } from '@/lib/store-policy';
-import { DALOA_NEIGHBOURHOODS } from '@/lib/daloa';
+import { DALOA_NEIGHBOURHOODS, bandFromZoneName, neighbourhoodsForBand } from '@/lib/daloa';
 import { PurchaseNotice } from '@/components/purchase-notice';
 
 export const metadata: Metadata = {
@@ -101,9 +101,12 @@ export default async function DeliveryPage() {
         </p>
         <div className="mt-3 grid gap-3 sm:grid-cols-2">
           {local.map((zone) => {
-            const names = (zone.neighbourhoods ?? []).length > 0
-              ? [...zone.neighbourhoods].sort((a, b) => a.localeCompare(b, 'fr'))
-              : neighbourhoodRows.filter((row) => !row.zone).map((row) => row.name);
+            // La liste canonique du quartier prime sur un ancien paramétrage
+            // qui aurait recopié tous les quartiers dans les deux zones.
+            const band = bandFromZoneName(zone.name);
+            const names = (band ? neighbourhoodsForBand(band) : (zone.neighbourhoods ?? []))
+              .slice()
+              .sort((a, b) => a.localeCompare(b, 'fr'));
             return (
               <Card key={zone.id} className="p-4">
                 <div className="flex items-center justify-between gap-2">

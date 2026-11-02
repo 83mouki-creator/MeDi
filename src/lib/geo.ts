@@ -71,6 +71,28 @@ export function parseCoordinates({ latitude, longitude }: CoordinateInput): Pars
 }
 
 /** Coordonnées affichables (6 décimales, point décimal). */
+/**
+ * Coordonnées écrites en degrés, minutes, secondes — la forme que Google Maps
+ * affiche et que le propriétaire recopie dans ses messages :
+ * `6°53'04.4"N 6°26'50.9"W`. Utilisée pour que l'adresse exacte de la boutique
+ * s'affiche toujours sous la même forme, quelle que soit la saisie d'origine.
+ */
+export function formatDms(point: GeoPoint): string {
+  const format = (value: number) => {
+    const absolute = Math.abs(value);
+    const degrees = Math.floor(absolute);
+    const minutesTotal = (absolute - degrees) * 60;
+    const minutes = Math.floor(minutesTotal);
+    const seconds = (minutesTotal - minutes) * 60;
+    // Les secondes sont arrondies au dixième, comme sur Google Maps.
+    const secondsLabel = seconds.toFixed(1).padStart(4, '0');
+    return { degrees, minutes, seconds: secondsLabel };
+  };
+  const latitude = format(point.latitude);
+  const longitude = format(point.longitude);
+  return `${latitude.degrees}°${String(latitude.minutes).padStart(2, '0')}'${latitude.seconds}"${point.latitude >= 0 ? 'N' : 'S'} ${longitude.degrees}°${String(longitude.minutes).padStart(2, '0')}'${longitude.seconds}"${point.longitude >= 0 ? 'E' : 'W'}`;
+}
+
 export function formatCoordinates(point: GeoPoint) {
   return `${point.latitude.toFixed(6)}, ${point.longitude.toFixed(6)}`;
 }
