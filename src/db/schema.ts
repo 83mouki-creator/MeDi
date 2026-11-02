@@ -21,12 +21,37 @@ import {
   primaryKey,
 } from 'drizzle-orm/pg-core';
 
+/**
+ * Rôles applicatifs.
+ *
+ * `CUSTOMER` = client de la boutique. Les autres rôles sont des comptes internes
+ * créés uniquement par un administrateur (aucune inscription libre) :
+ *
+ *   OWNER              propriétaire — tous les droits
+ *   ADMIN              administrateur — tout sauf la gestion du propriétaire
+ *   ACCOUNTANT         comptable — paiements, statistiques, journal (lecture)
+ *   CASHIER            caissier — encaissements et confirmation des paiements
+ *   SALES_ADVISOR      conseiller de vente — commandes et demandes clients
+ *   WAREHOUSE_KEEPER   magasinier — stock, réception, préparation
+ *   CATALOG_MANAGER    gestionnaire catalogue — fiches produits, photos, import
+ *   DELIVERY_MANAGER   responsable livraisons — expéditions et zones
+ *   SUPPORT_AGENT      service client — suivi des demandes et des commandes
+ *   STOCK_MANAGER      responsable stock (rôle historique)
+ *   ORDER_MANAGER      responsable commandes (rôle historique)
+ */
 export const roleEnum = pgEnum('role', [
   'CUSTOMER',
   'STOCK_MANAGER',
   'ORDER_MANAGER',
   'ADMIN',
   'OWNER',
+  'ACCOUNTANT',
+  'CASHIER',
+  'SALES_ADVISOR',
+  'WAREHOUSE_KEEPER',
+  'CATALOG_MANAGER',
+  'DELIVERY_MANAGER',
+  'SUPPORT_AGENT',
 ]);
 
 export const orderStatusEnum = pgEnum('order_status', [
@@ -106,10 +131,30 @@ export const users = pgTable(
     lastLoginAt: timestamp('last_login_at', { withTimezone: true }),
     failedAttempts: integer('failed_attempts').notNull().default(0),
     lockedUntil: timestamp('locked_until', { withTimezone: true }),
+
+    /** Téléphone canonique (+225XXXXXXXXXX) : identifiant de connexion du personnel. */
+    phoneNormalized: text('phone_normalized'),
+    /** Tâche confiée par l'administrateur (ex. « Caisse du matin », « Réception »). */
+    staffTask: text('staff_task'),
+    /** Code d'accès à usage unique : seul son condensat SHA-256 est stocké. */
+    staffCodeHash: text('staff_code_hash'),
+    staffCodeCreatedAt: timestamp('staff_code_created_at', { withTimezone: true }),
+    staffCodeExpiresAt: timestamp('staff_code_expires_at', { withTimezone: true }),
+    staffCodeUsedAt: timestamp('staff_code_used_at', { withTimezone: true }),
+    staffCodeSentAt: timestamp('staff_code_sent_at', { withTimezone: true }),
+    /** Administrateur qui a créé le compte (traçabilité). */
+    createdByUserId: text('created_by_user_id'),
+
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
   },
-  (t) => [uniqueIndex('users_email_key').on(t.email), index('users_role_idx').on(t.role)],
+  (t) => [
+    uniqueIndex('users_email_key').on(t.email),
+    index('users_role_idx').on(t.role),
+    // Plusieurs NULL sont autorisés : un client peut ne pas avoir de téléphone.
+    uniqueIndex('users_phone_normalized_key').on(t.phoneNormalized),
+    uniqueIndex('users_staff_code_hash_key').on(t.staffCodeHash),
+  ],
 );
 
 export const sessions = pgTable(

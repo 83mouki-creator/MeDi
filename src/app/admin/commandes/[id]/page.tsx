@@ -3,7 +3,7 @@ import { getAdminI18n } from '@/lib/i18n/admin-server';
 import { notFound } from 'next/navigation';
 import { ArrowLeft, Ban, MapPin, Phone, Truck, User } from 'lucide-react';
 import { getOrderDetails, orderTotals } from '@/lib/orders';
-import { getCurrentUser, can } from '@/lib/auth';
+import { can, getCurrentUser, requirePagePermission } from '@/lib/auth';
 import { deliveryMethodLabels, paymentMethodLabels } from '@/lib/delivery';
 import { ORDER_STATUS_LABELS, PAYMENT_STATUS_LABELS, ALLOWED_TRANSITIONS, type OrderStatus } from '@/lib/order-status';
 import { formatDateTime, formatFCFA } from '@/lib/utils';
@@ -17,6 +17,7 @@ import { Button } from '@/components/ui/button';
 export const dynamic = 'force-dynamic';
 
 export default async function AdminOrderDetail({ params }: { params: Promise<{ id: string }> }) {
+  await requirePagePermission('orders.read');
   const { t } = await getAdminI18n();
   const { id } = await params;
   const details = await getOrderDetails(id);

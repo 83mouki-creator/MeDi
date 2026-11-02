@@ -32,7 +32,7 @@ export async function activateOwnerAction(_prev: ActivationState, formData: Form
 
   await createSession(result.userId);
   await audit(
-    { id: result.userId, email: result.email, firstName: result.name, lastName: '', phone: null, role: 'OWNER' },
+    { id: result.userId, email: result.email, firstName: result.name, lastName: '', phone: null, role: 'OWNER', staffTask: null },
     { action: 'admin.owner_created', entity: 'user', entityId: result.userId, ip },
   );
 

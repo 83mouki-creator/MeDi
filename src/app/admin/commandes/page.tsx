@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { requirePagePermission } from '@/lib/auth';
 import { getAdminI18n } from '@/lib/i18n/admin-server';
 import { Search } from 'lucide-react';
 import { listOrders } from '@/lib/orders';
@@ -12,6 +13,7 @@ import { Pagination } from '@/components/pagination';
 export const dynamic = 'force-dynamic';
 
 export default async function AdminOrdersPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
+  await requirePagePermission('orders.read');
   const { t } = await getAdminI18n();
   const params = await searchParams;
   const get = (key: string) => (typeof params[key] === 'string' ? (params[key] as string) : undefined);

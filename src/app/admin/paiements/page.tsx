@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { requirePagePermission } from '@/lib/auth';
 import { getAdminI18n } from '@/lib/i18n/admin-server';
 import { desc, eq } from 'drizzle-orm';
 import { CreditCard, Info } from 'lucide-react';
@@ -13,6 +14,7 @@ import { Badge, Card, EmptyState } from '@/components/ui/primitives';
 export const dynamic = 'force-dynamic';
 
 export default async function AdminPaymentsPage() {
+  await requirePagePermission('payments.read');
   const { t } = await getAdminI18n();
   const [pending, settings, wave, recent] = await Promise.all([
     findPendingPayments(),

@@ -103,6 +103,7 @@ function LocaleSwitcher({ locale }: { locale: AdminLocale }) {
 export function AdminTopBar({
   items,
   role,
+  task,
   email,
   pendingPayments,
   newMessages,
@@ -111,6 +112,8 @@ export function AdminTopBar({
 }: {
   items: AdminNavItem[];
   role: string;
+  /** Tâche assignée par l'administrateur (facultative). */
+  task?: string | null;
   email: string;
   pendingPayments: number;
   newMessages: number;
@@ -179,6 +182,11 @@ export function AdminTopBar({
           <span className="hidden rounded-full bg-accent-500/15 px-2 py-0.5 text-[11px] font-semibold text-accent-200 md:inline">
             {role}
           </span>
+          {task ? (
+            <span className="hidden rounded-full bg-white/10 px-2 py-0.5 text-[11px] text-navy-100 lg:inline">
+              {task}
+            </span>
+          ) : null}
 
           <div className="ms-auto flex items-center gap-1 text-xs sm:gap-2">
             <LocaleSwitcher locale={locale} />

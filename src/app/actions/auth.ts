@@ -12,38 +12,60 @@ import {
   destroySession,
   getCurrentUser,
   hashPassword,
+  lookupUsersByIdentifier,
   verifyPassword,
-  requirePermission,
 } from '@/lib/auth';
-import { loginSchema, registerSchema, fieldErrors } from '@/lib/validation';
+import { registerSchema, fieldErrors } from '@/lib/validation';
 import { rateLimit } from '@/lib/rate-limit';
 import { audit } from '@/lib/audit';
+import { roleHome } from '@/lib/roles';
 import { newId, slugify } from '@/lib/utils';
 import { createHash, randomBytes } from 'node:crypto';
+import { normalizeIvorianPhone, staffResetMessage } from '@/lib/staff-access';
+import { sendEmail, emailStatus } from '@/lib/email';
+import { getStoreSettings } from '@/lib/settings';
+import { env } from '@/lib/env';
 
 export type AuthState = { error?: string; fieldErrors?: Record<string, string>; success?: string };
 
+/**
+ * Connexion : e-mail **ou** numéro ivoirien.
+ *
+ * Un agent créé par l'administrateur n'a pas forcément d'adresse e-mail : son
+ * numéro de téléphone fait office d'identifiant.
+ */
 export async function loginAction(_prev: AuthState, formData: FormData): Promise<AuthState> {
-  const parsed = loginSchema.safeParse({
-    email: String(formData.get('email') ?? ''),
-    password: String(formData.get('password') ?? ''),
-  });
-  if (!parsed.success) return { fieldErrors: fieldErrors(parsed.error) };
+  const identifier = String(formData.get('identifier') ?? formData.get('email') ?? '').trim();
+  const password = String(formData.get('password') ?? '');
+
+  const fieldErrorsMap: Record<string, string> = {};
+  if (!identifier) fieldErrorsMap.identifier = 'E-mail ou numéro de téléphone requis';
+  if (!password) fieldErrorsMap.password = 'Mot de passe requis';
+  if (Object.keys(fieldErrorsMap).length > 0) return { fieldErrors: fieldErrorsMap };
+
+  const isEmail = identifier.includes('@');
+  if (isEmail && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(identifier)) {
+    return { fieldErrors: { identifier: 'Adresse e-mail invalide' } };
+  }
+  if (!isEmail && !normalizeIvorianPhone(identifier).ok && identifier.replace(/\D/g, '').length < 8) {
+    return { fieldErrors: { identifier: 'Numéro ivoirien invalide (ex. 07 08 90 48 91)' } };
+  }
 
   const h = await headers();
   const ip = clientIpFrom(h);
-  const limit = rateLimit(`login:${ip ?? 'local'}:${parsed.data.email}`, 10, 300);
+  const limit = rateLimit(`login:${ip ?? 'local'}:${identifier.toLowerCase()}`, 10, 300);
   if (!limit.allowed) return { error: 'Trop de tentatives de connexion. Réessayez dans quelques minutes.' };
 
   const redirectTo = String(formData.get('redirectTo') ?? '');
 
   try {
-    const user = await authenticate(parsed.data.email, parsed.data.password);
+    const user = await authenticate(identifier, password);
     await audit(
-      { id: user.id, email: user.email, firstName: user.firstName, lastName: user.lastName, phone: user.phone, role: user.role },
+      { id: user.id, email: user.email, firstName: user.firstName, lastName: user.lastName, phone: user.phone, role: user.role, staffTask: user.staffTask },
       { action: 'auth.login', entity: 'user', entityId: user.id, ip },
     );
-    const target = redirectTo && redirectTo.startsWith('/') && !redirectTo.startsWith('//') ? redirectTo : user.role === 'CUSTOMER' ? '/compte' : '/admin';
+    const fallback = user.role === 'CUSTOMER' ? '/compte' : roleHome(user.role);
+    const target = redirectTo && redirectTo.startsWith('/') && !redirectTo.startsWith('//') ? redirectTo : fallback;
     redirect(target);
   } catch (error) {
     if (error instanceof AuthError) return { error: error.message };
@@ -53,6 +75,12 @@ export async function loginAction(_prev: AuthState, formData: FormData): Promise
   }
 }
 
+/**
+ * Inscription **client** uniquement (boutique).
+ *
+ * Aucun compte interne ne se crée ici : le rôle est forcé à `CUSTOMER` et les
+ * comptes du personnel naissent exclusivement dans /admin/utilisateurs.
+ */
 export async function registerAction(_prev: AuthState, formData: FormData): Promise<AuthState> {
   const parsed = registerSchema.safeParse({
     firstName: String(formData.get('firstName') ?? ''),
@@ -75,6 +103,18 @@ export async function registerAction(_prev: AuthState, formData: FormData): Prom
     return { fieldErrors: { email: 'Un compte existe déjà avec cette adresse.' } };
   }
 
+  const phone = normalizeIvorianPhone(parsed.data.phone);
+  let phoneNormalized: string | null = null;
+  if (phone.ok) {
+    const takenPhone = await db
+      .select({ id: users.id })
+      .from(users)
+      .where(eq(users.phoneNormalized, phone.canonical))
+      .limit(1);
+    if (takenPhone[0]) return { fieldErrors: { phone: 'Ce numéro est déjà rattaché à un compte.' } };
+    phoneNormalized = phone.canonical;
+  }
+
   const id = newId('usr_');
   await db.insert(users).values({
     id,
@@ -82,7 +122,9 @@ export async function registerAction(_prev: AuthState, formData: FormData): Prom
     passwordHash: await hashPassword(parsed.data.password),
     firstName: parsed.data.firstName,
     lastName: parsed.data.lastName,
-    phone: parsed.data.phone,
+    phone: phone.ok ? phone.display : parsed.data.phone,
+    phoneNormalized,
+    // Rôle imposé : impossible de s'octroyer un accès au back-office.
     role: 'CUSTOMER',
   });
 
@@ -119,7 +161,29 @@ export async function updateProfileAction(_prev: AuthState, formData: FormData):
     if (taken[0] && taken[0].id !== user.id) return { fieldErrors: { email: 'Cette adresse est déjà utilisée.' } };
   }
 
-  await db.update(users).set({ firstName, lastName, phone, email, updatedAt: new Date() }).where(eq(users.id, user.id));
+  const normalized = normalizeIvorianPhone(phone);
+  if (normalized.ok) {
+    const clash = await db
+      .select({ id: users.id })
+      .from(users)
+      .where(eq(users.phoneNormalized, normalized.canonical))
+      .limit(1);
+    if (clash[0] && clash[0].id !== user.id) {
+      return { fieldErrors: { phone: 'Ce numéro est déjà rattaché à un autre compte.' } };
+    }
+  }
+
+  await db
+    .update(users)
+    .set({
+      firstName,
+      lastName,
+      phone: normalized.ok ? normalized.display : phone,
+      phoneNormalized: normalized.ok ? normalized.canonical : null,
+      email,
+      updatedAt: new Date(),
+    })
+    .where(eq(users.id, user.id));
   await audit(user, { action: 'account.profile_updated', entity: 'user', entityId: user.id });
   return { success: 'Vos informations ont été mises à jour.' };
 }
@@ -194,31 +258,55 @@ export async function deleteAddressAction(formData: FormData) {
 }
 
 /**
- * Demande de réinitialisation. Un jeton est créé mais n'est jamais renvoyé au
- * navigateur : sans service d'e-mail configuré, l'administrateur transmet le lien
- * de façon sécurisée depuis /admin/utilisateurs. La réponse est identique que le
- * compte existe ou non (pas d'énumération des comptes).
+ * Demande de réinitialisation depuis la page publique.
+ *
+ * Si un service d'e-mail est configuré (`RESEND_API_KEY` ou `BREVO_API_KEY` +
+ * `EMAIL_FROM`), le lien part immédiatement par e-mail. Sinon, le jeton est créé
+ * et l'administrateur transmet le lien depuis /admin/utilisateurs (WhatsApp).
+ * La réponse est identique que le compte existe ou non (pas d'énumération).
  */
 export async function requestPasswordResetAction(_prev: AuthState, formData: FormData): Promise<AuthState> {
-  const email = String(formData.get('email') ?? '').trim().toLowerCase();
+  const identifier = String(formData.get('identifier') ?? formData.get('email') ?? '').trim();
   const generic = {
-    success:
-      'Si un compte existe pour cette adresse, une procédure de réinitialisation a été enregistrée. Contactez la boutique si vous ne recevez rien.',
+    success: emailStatus().configured
+      ? 'Si un compte existe pour cet identifiant, un lien de réinitialisation vient d’être envoyé. Pensez à vérifier vos indésirables.'
+      : 'Demande enregistrée. Aucun service d’e-mail n’est configuré : contactez la boutique (WhatsApp) pour recevoir votre lien de réinitialisation.',
   };
-  if (!email) return { fieldErrors: { email: 'Adresse requise' } };
+  if (!identifier) return { fieldErrors: { identifier: 'E-mail ou téléphone requis' } };
 
-  const rows = await db.select().from(users).where(eq(users.email, email)).limit(1);
+  const rows = await lookupUsersByIdentifier(identifier).then((list) => list.slice(0, 1));
   const user = rows[0];
-  if (user) {
-    const token = randomBytes(32).toString('base64url');
-    await db.insert(passwordResetTokens).values({
-      id: newId('rst_'),
-      tokenHash: createHash('sha256').update(token).digest('hex'),
-      userId: user.id,
-      expiresAt: new Date(Date.now() + 60 * 60 * 1000),
+  if (!user) return generic;
+
+  const token = randomBytes(32).toString('base64url');
+  await db.insert(passwordResetTokens).values({
+    id: newId('rst_'),
+    tokenHash: createHash('sha256').update(token).digest('hex'),
+    userId: user.id,
+    expiresAt: new Date(Date.now() + 60 * 60 * 1000),
+  });
+
+  let sent = false;
+  if (emailStatus().configured) {
+    const settings = await getStoreSettings().catch(() => null);
+    const url = `${env.appUrl.replace(/\/$/, '')}/reinitialiser-mot-de-passe?token=${encodeURIComponent(token)}`;
+    const text = staffResetMessage({
+      firstName: user.firstName || user.email,
+      resetUrl: url,
+      storeName: settings?.storeName,
     });
-    await audit(null, { action: 'auth.password_reset_requested', entity: 'user', entityId: user.id });
+    const result = await sendEmail({ to: user.email, subject: 'MeDi — réinitialisation de votre mot de passe', text });
+    sent = result.sent;
+    if (!result.sent) console.error('[auth] envoi e-mail de réinitialisation', result.error);
   }
+
+  await audit(null, {
+    action: 'auth.password_reset_requested',
+    entity: 'user',
+    entityId: user.id,
+    metadata: { channel: sent ? 'email' : 'manual' },
+  });
+
   return generic;
 }
 
@@ -240,49 +328,6 @@ export async function resetPasswordAction(_prev: AuthState, formData: FormData):
   await db.update(passwordResetTokens).set({ usedAt: new Date() }).where(eq(passwordResetTokens.id, record.id));
   await audit(null, { action: 'auth.password_reset_completed', entity: 'user', entityId: record.userId });
   redirect('/connexion?reset=1');
-}
-
-export async function createManagedUserAction(_prev: AuthState, formData: FormData): Promise<AuthState> {
-  const actor = await requirePermission('users.manage').catch(() => null);
-  if (!actor) return { error: 'Action réservée au propriétaire.' };
-
-  const email = String(formData.get('email') ?? '').trim().toLowerCase();
-  const firstName = String(formData.get('firstName') ?? '').trim();
-  const lastName = String(formData.get('lastName') ?? '').trim();
-  const role = String(formData.get('role') ?? 'ADMIN') as 'OWNER' | 'ADMIN' | 'STOCK_MANAGER' | 'ORDER_MANAGER' | 'CUSTOMER';
-  const password = String(formData.get('password') ?? '');
-
-  if (!/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return { fieldErrors: { email: 'E-mail invalide' } };
-  if (password.length < 12) return { fieldErrors: { password: '12 caractères minimum pour un compte interne' } };
-
-  const existing = await db.select({ id: users.id }).from(users).where(eq(users.email, email)).limit(1);
-  if (existing[0]) return { fieldErrors: { email: 'Un compte utilise déjà cette adresse.' } };
-
-  const id = newId('usr_');
-  await db.insert(users).values({
-    id,
-    email,
-    passwordHash: await hashPassword(password),
-    firstName: firstName || null,
-    lastName: lastName || null,
-    role,
-  });
-
-  await audit(actor, { action: 'user.created', entity: 'user', entityId: id, metadata: { email, role } });
-  return { success: `Compte ${role} créé pour ${email}.` };
-}
-
-export async function toggleUserActiveAction(formData: FormData) {
-  const actor = await requirePermission('users.manage').catch(() => null);
-  if (!actor) redirect('/admin');
-  const id = String(formData.get('id') ?? '');
-  const rows = await db.select().from(users).where(eq(users.id, id)).limit(1);
-  const target = rows[0];
-  if (!target || target.id === actor.id) redirect('/admin/utilisateurs');
-
-  await db.update(users).set({ isActive: !target.isActive }).where(eq(users.id, id));
-  await audit(actor, { action: target.isActive ? 'user.disabled' : 'user.enabled', entity: 'user', entityId: id });
-  redirect('/admin/utilisateurs');
 }
 
 export { slugify };

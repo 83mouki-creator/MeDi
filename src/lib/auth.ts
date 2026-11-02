@@ -1,4 +1,5 @@
 import { cookies, headers } from 'next/headers';
+import { redirect } from 'next/navigation';
 import { randomBytes, scrypt as scryptCb, timingSafeEqual, createHash } from 'node:crypto';
 import { promisify } from 'node:util';
 import { and, eq, gt, sql } from 'drizzle-orm';
@@ -6,6 +7,8 @@ import { db } from '../db';
 import { users, sessions, loginAttempts, type User } from '../db/schema';
 import { env } from './env';
 import { newId } from './utils';
+import { normalizeIvorianPhone } from './staff-access';
+import { roleHome } from './roles';
 
 const scrypt = promisify(scryptCb) as (p: string | Buffer, s: string | Buffer, k: number, o?: object) => Promise<Buffer>;
 
@@ -76,7 +79,7 @@ export async function destroySession() {
   store.delete(env.sessionCookieName);
 }
 
-export type SessionUser = Pick<User, 'id' | 'email' | 'firstName' | 'lastName' | 'phone' | 'role'>;
+export type SessionUser = Pick<User, 'id' | 'email' | 'firstName' | 'lastName' | 'phone' | 'role' | 'staffTask'>;
 
 /** Retourne l'utilisateur connecté ou null. Ne lève jamais d'exception. */
 export async function getCurrentUser(): Promise<SessionUser | null> {
@@ -93,6 +96,7 @@ export async function getCurrentUser(): Promise<SessionUser | null> {
         lastName: users.lastName,
         phone: users.phone,
         role: users.role,
+        staffTask: users.staffTask,
         isActive: users.isActive,
       })
       .from(sessions)
@@ -109,6 +113,7 @@ export async function getCurrentUser(): Promise<SessionUser | null> {
       lastName: row.lastName,
       phone: row.phone,
       role: row.role,
+      staffTask: row.staffTask,
     };
   } catch (error) {
     // Next.js signale par une exception interne qu'une route ne peut pas être
@@ -130,27 +135,60 @@ function isNextDynamicUsageError(error: unknown): boolean {
 
 // ─────────────────────────────── Rôles & permissions ───────────────────────────────
 
-export const STAFF_ROLES = ['STOCK_MANAGER', 'ORDER_MANAGER', 'ADMIN', 'OWNER'] as const;
+/** Tous les comptes internes (jamais le client final). */
+export const STAFF_ROLES = [
+  'OWNER',
+  'ADMIN',
+  'ACCOUNTANT',
+  'CASHIER',
+  'SALES_ADVISOR',
+  'WAREHOUSE_KEEPER',
+  'CATALOG_MANAGER',
+  'DELIVERY_MANAGER',
+  'SUPPORT_AGENT',
+  'STOCK_MANAGER',
+  'ORDER_MANAGER',
+] as const;
+
+export type StaffRole = (typeof STAFF_ROLES)[number];
 
 export type Permission =
   | 'products.read'
   | 'products.write'
+  | 'stock.write'
+  | 'catalog.import'
   | 'orders.read'
   | 'orders.write'
+  | 'payments.read'
   | 'payments.confirm'
+  | 'messages.handle'
+  | 'delivery.manage'
   | 'settings.write'
   | 'users.manage'
-  | 'audit.read';
+  | 'audit.read'
+  | 'stats.read';
 
+/**
+ * Matrice des droits — la seule source de vérité.
+ *
+ * Elle est appliquée côté serveur (`requirePermission`) et utilisée pour filtrer
+ * la navigation. Un droit absent ici est refusé, même si le lien est connu.
+ */
 const PERMISSIONS: Record<Permission, readonly string[]> = {
-  'products.read': ['STOCK_MANAGER', 'ORDER_MANAGER', 'ADMIN', 'OWNER'],
-  'products.write': ['STOCK_MANAGER', 'ADMIN', 'OWNER'],
-  'orders.read': ['STOCK_MANAGER', 'ORDER_MANAGER', 'ADMIN', 'OWNER'],
-  'orders.write': ['ORDER_MANAGER', 'ADMIN', 'OWNER'],
-  'payments.confirm': ['ADMIN', 'OWNER'],
+  'products.read': ['STOCK_MANAGER', 'ORDER_MANAGER', 'CASHIER', 'SALES_ADVISOR', 'WAREHOUSE_KEEPER', 'CATALOG_MANAGER', 'DELIVERY_MANAGER', 'SUPPORT_AGENT', 'ACCOUNTANT', 'ADMIN', 'OWNER'],
+  'products.write': ['STOCK_MANAGER', 'CATALOG_MANAGER', 'ADMIN', 'OWNER'],
+  'stock.write': ['STOCK_MANAGER', 'WAREHOUSE_KEEPER', 'CATALOG_MANAGER', 'ADMIN', 'OWNER'],
+  'catalog.import': ['STOCK_MANAGER', 'CATALOG_MANAGER', 'ADMIN', 'OWNER'],
+  'orders.read': ['STOCK_MANAGER', 'ORDER_MANAGER', 'CASHIER', 'SALES_ADVISOR', 'WAREHOUSE_KEEPER', 'DELIVERY_MANAGER', 'SUPPORT_AGENT', 'ACCOUNTANT', 'ADMIN', 'OWNER'],
+  'orders.write': ['ORDER_MANAGER', 'SALES_ADVISOR', 'DELIVERY_MANAGER', 'ADMIN', 'OWNER'],
+  'payments.read': ['ORDER_MANAGER', 'CASHIER', 'ACCOUNTANT', 'ADMIN', 'OWNER'],
+  'payments.confirm': ['CASHIER', 'ACCOUNTANT', 'ADMIN', 'OWNER'],
+  'messages.handle': ['ORDER_MANAGER', 'SALES_ADVISOR', 'SUPPORT_AGENT', 'ADMIN', 'OWNER'],
+  'delivery.manage': ['DELIVERY_MANAGER', 'ADMIN', 'OWNER'],
   'settings.write': ['ADMIN', 'OWNER'],
-  'users.manage': ['OWNER'],
-  'audit.read': ['ADMIN', 'OWNER'],
+  'users.manage': ['ADMIN', 'OWNER'],
+  'audit.read': ['ACCOUNTANT', 'ADMIN', 'OWNER'],
+  'stats.read': ['ACCOUNTANT', 'ADMIN', 'OWNER'],
 };
 
 export function can(role: string | null | undefined, permission: Permission): boolean {
@@ -158,8 +196,72 @@ export function can(role: string | null | undefined, permission: Permission): bo
   return PERMISSIONS[permission].includes(role);
 }
 
-export function isStaff(role: string | null | undefined) {
+export function isStaff(role: string | null | undefined): role is StaffRole {
   return Boolean(role && (STAFF_ROLES as readonly string[]).includes(role));
+}
+
+/** Droits effectifs d'un rôle (utilisé par l'écran d'administration). */
+export function permissionsFor(role: string | null | undefined): Permission[] {
+  if (!role) return [];
+  return (Object.keys(PERMISSIONS) as Permission[]).filter((permission) => PERMISSIONS[permission].includes(role));
+}
+
+/**
+ * Hiérarchie : un administrateur gère les agents, jamais un autre administrateur
+ * ni le propriétaire. Seul le propriétaire peut nommer ou modifier un
+ * administrateur/propriétaire.
+ */
+export const ROLE_LEVEL: Record<string, number> = {
+  OWNER: 100,
+  ADMIN: 80,
+  ACCOUNTANT: 50,
+  CASHIER: 40,
+  SALES_ADVISOR: 40,
+  WAREHOUSE_KEEPER: 30,
+  CATALOG_MANAGER: 40,
+  DELIVERY_MANAGER: 40,
+  SUPPORT_AGENT: 30,
+  STOCK_MANAGER: 50,
+  ORDER_MANAGER: 50,
+  CUSTOMER: 0,
+};
+
+export function roleLevel(role: string | null | undefined): number {
+  return role ? (ROLE_LEVEL[role] ?? 0) : 0;
+}
+
+/** Rôles qu'un acteur peut attribuer (strictement inférieurs au sien). */
+export function assignableRoles(actorRole: string | null | undefined): StaffRole[] {
+  const actorLevel = roleLevel(actorRole);
+  if (actorRole === 'OWNER') return [...STAFF_ROLES];
+  return STAFF_ROLES.filter((role) => roleLevel(role) < actorLevel);
+}
+
+/** Peut-on administrer ce compte ? (création, désactivation, nouveau code) */
+export function canManageUser(actorRole: string | null | undefined, targetRole: string | null | undefined): boolean {
+  if (!actorRole || !can(actorRole, 'users.manage')) return false;
+  // On ne modifie jamais un compte de niveau égal ou supérieur au sien.
+  return roleLevel(targetRole) < roleLevel(actorRole);
+}
+
+/**
+ * Garde-fou des pages du back-office.
+ *
+ * Les liens de navigation sont déjà filtrés, mais un agent qui tape une URL
+ * directe doit être arrêté ici : ses droits sont limités à sa fonction. En cas
+ * de refus, on le renvoie vers l'écran de sa propre tâche (jamais une erreur
+ * sèche qui laisserait croire que l'outil est cassé).
+ */
+export async function requirePagePermission(permission: Permission): Promise<SessionUser> {
+  const user = await getCurrentUser();
+  if (!user) redirect('/connexion?redirectTo=/admin');
+  if (!isStaff(user.role)) redirect('/compte');
+  if (!can(user.role, permission)) {
+    const home = roleHome(user.role);
+    if (home && home !== '/admin') redirect(`${home}?refus=droits`);
+    redirect('/compte');
+  }
+  return user;
 }
 
 /** Vérification d'autorisation côté serveur — à appeler dans chaque action sensible. */
@@ -215,10 +317,34 @@ export class AuthError extends Error {
 }
 
 /** Authentification e-mail + mot de passe avec limitation des tentatives. */
-export async function authenticate(email: string, password: string): Promise<SessionUser> {
+/**
+ * Retrouve un compte par e-mail **ou** par téléphone ivoirien.
+ * Le personnel se connecte avec son numéro s'il n'a pas d'adresse e-mail.
+ */
+export async function lookupUsersByIdentifier(identifier: string) {
+  const raw = identifier.trim();
+  if (!raw) return [];
+  if (raw.includes('@')) {
+    return db.select().from(users).where(eq(users.email, raw.toLowerCase())).limit(1);
+  }
+  const phone = normalizeIvorianPhone(raw);
+  if (phone.ok) {
+    const byPhone = await db.select().from(users).where(eq(users.phoneNormalized, phone.canonical)).limit(1);
+    if (byPhone.length > 0) return byPhone;
+  }
+  // Repli : numéro saisi dans un format historique (« +225 07 … »).
+  const digits = raw.replace(/[^\d]/g, '');
+  if (digits.length >= 8) {
+    return db.select().from(users).where(eq(users.phone, raw)).limit(1);
+  }
+  return [];
+}
+
+/** Authentification par e-mail ou téléphone + mot de passe, avec limitation des tentatives. */
+export async function authenticate(identifier: string, password: string): Promise<SessionUser> {
   const h = await headers();
   const ip = clientIpFrom(h);
-  const normalizedEmail = email.toLowerCase().trim();
+  const normalizedEmail = identifier.toLowerCase().trim();
 
   const failures = await recentFailedAttempts(normalizedEmail, ip);
   if (failures >= MAX_FAILED_ATTEMPTS) {
@@ -228,7 +354,7 @@ export async function authenticate(email: string, password: string): Promise<Ses
     );
   }
 
-  const rows = await db.select().from(users).where(eq(users.email, normalizedEmail)).limit(1);
+  const rows = await lookupUsersByIdentifier(identifier).then((list) => list.slice(0, 1));
   const user = rows[0];
 
   // Comparaison effectuée même si l'utilisateur n'existe pas (temps de réponse constant).
@@ -238,7 +364,7 @@ export async function authenticate(email: string, password: string): Promise<Ses
 
   if (!user || !ok) {
     await recordLoginAttempt(normalizedEmail, ip, false);
-    throw new AuthError('Adresse e-mail ou mot de passe incorrect.', 'INVALID_CREDENTIALS');
+    throw new AuthError('Identifiant ou mot de passe incorrect.', 'INVALID_CREDENTIALS');
   }
   if (!user.isActive) {
     await recordLoginAttempt(normalizedEmail, ip, false);
@@ -259,5 +385,6 @@ export async function authenticate(email: string, password: string): Promise<Ses
     lastName: user.lastName,
     phone: user.phone,
     role: user.role,
+    staffTask: user.staffTask,
   };
 }
