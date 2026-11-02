@@ -20,6 +20,8 @@ public/uploads/*
 
 # Divers
 .DS_Store
+# Fichiers intermédiaires du dossier PDF (scripts/make-store-brief.py)
+.brief-build/
 *.log
 *.tsbuildinfo
 next-env.d.ts

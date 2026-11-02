@@ -25,6 +25,7 @@ et recherche visuelle par photo.
 | Sauvegardes et restauration | [`docs/SAUVEGARDES.md`](docs/SAUVEGARDES.md) |
 | Données personnelles (Côte d'Ivoire) | [`docs/DONNEES-PERSONNELLES.md`](docs/DONNEES-PERSONNELLES.md) |
 | Tests exécutés | [`docs/TESTS.md`](docs/TESTS.md) |
+| Dossier de la boutique (PDF : présentation, expérience client, étapes restantes) | [`docs/MeDi-dossier-boutique.pdf`](docs/MeDi-dossier-boutique.pdf) — régénéré par `python3 scripts/make-store-brief.py` |
 
 ## Stack
 
