@@ -1,4 +1,5 @@
 import { asc, eq, sql } from 'drizzle-orm';
+import { requirePagePermission } from '@/lib/auth';
 import { getAdminI18n } from '@/lib/i18n/admin-server';
 import { db } from '@/db';
 import { categories, brands } from '@/db/schema';
@@ -10,6 +11,7 @@ import { Button } from '@/components/ui/button';
 export const dynamic = 'force-dynamic';
 
 export default async function CategoriesPage() {
+  await requirePagePermission('products.write');
   const { t } = await getAdminI18n();
   const [categoryRows, brandRows] = await Promise.all([
     db

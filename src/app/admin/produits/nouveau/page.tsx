@@ -1,4 +1,5 @@
 import { asc } from 'drizzle-orm';
+import { requirePagePermission } from '@/lib/auth';
 import { getAdminI18n } from '@/lib/i18n/admin-server';
 import { db } from '@/db';
 import { categories, brands, suppliers } from '@/db/schema';
@@ -7,6 +8,7 @@ import { ProductForm } from '@/components/admin/product-form';
 export const dynamic = 'force-dynamic';
 
 export default async function NewProductPage() {
+  await requirePagePermission('products.write');
   const { t } = await getAdminI18n();
   const [categoryRows, brandRows, supplierRows] = await Promise.all([
     db.select({ id: categories.id, name: categories.name }).from(categories).orderBy(asc(categories.position)),

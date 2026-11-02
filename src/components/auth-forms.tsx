@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { loginAction, registerAction, requestPasswordResetAction, changePasswordAction, type AuthState } from '@/app/actions/auth';
 import { Button } from './ui/button';
 import { Field, Input } from './ui/form';
+import { PasswordInput } from './ui/password-input';
 import { Alert } from './ui/primitives';
 
 const initial: AuthState = {};
@@ -16,11 +17,17 @@ export function LoginForm({ redirectTo }: { redirectTo?: string }) {
     <form action={formAction} className="space-y-3">
       {redirectTo ? <input type="hidden" name="redirectTo" value={redirectTo} /> : null}
       {state.error ? <Alert tone="danger">{state.error}</Alert> : null}
-      <Field label="Adresse e-mail" htmlFor="email" required error={state.fieldErrors?.email}>
-        <Input id="email" name="email" type="email" autoComplete="email" required />
+      <Field
+        label="Adresse e-mail ou téléphone"
+        htmlFor="identifier"
+        required
+        error={state.fieldErrors?.identifier}
+        hint="Agents : votre numéro ivoirien suffit (ex. 07 08 90 48 91)."
+      >
+        <Input id="identifier" name="identifier" autoComplete="username" required />
       </Field>
       <Field label="Mot de passe" htmlFor="password" required error={state.fieldErrors?.password}>
-        <Input id="password" name="password" type="password" autoComplete="current-password" required />
+        <PasswordInput id="password" name="password" autoComplete="current-password" required />
       </Field>
       <Button type="submit" size="lg" className="w-full" loading={pending}>
         Se connecter
@@ -56,7 +63,7 @@ export function RegisterForm() {
         error={state.fieldErrors?.password}
         hint="10 caractères minimum, avec au moins une lettre et un chiffre."
       >
-        <Input id="password" name="password" type="password" autoComplete="new-password" required minLength={10} />
+        <PasswordInput id="password" name="password" autoComplete="new-password" required minLength={10} />
       </Field>
       <label className="flex items-start gap-2 text-sm text-navy-700">
         <input type="checkbox" name="acceptTerms" className="mt-0.5 size-4 accent-accent-500" required />
@@ -81,8 +88,14 @@ export function ForgotPasswordForm() {
     <form action={formAction} className="space-y-3">
       {state.success ? <Alert tone="success">{state.success}</Alert> : null}
       {state.error ? <Alert tone="danger">{state.error}</Alert> : null}
-      <Field label="Adresse e-mail du compte" htmlFor="email" required error={state.fieldErrors?.email}>
-        <Input id="email" name="email" type="email" required />
+      <Field
+        label="E-mail ou téléphone du compte"
+        htmlFor="identifier"
+        required
+        error={state.fieldErrors?.identifier}
+        hint="Le lien de réinitialisation est envoyé par e-mail si le service est configuré ; sinon la boutique vous le transmet par WhatsApp."
+      >
+        <Input id="identifier" name="identifier" required />
       </Field>
       <Button type="submit" className="w-full" loading={pending}>
         Envoyer la demande
@@ -99,10 +112,10 @@ export function ChangePasswordForm() {
       {state.success ? <Alert tone="success">{state.success}</Alert> : null}
       {state.error ? <Alert tone="danger">{state.error}</Alert> : null}
       <Field label="Mot de passe actuel" htmlFor="currentPassword" required error={state.fieldErrors?.currentPassword}>
-        <Input id="currentPassword" name="currentPassword" type="password" autoComplete="current-password" required />
+        <PasswordInput id="currentPassword" name="currentPassword" autoComplete="current-password" required />
       </Field>
       <Field label="Nouveau mot de passe" htmlFor="newPassword" required error={state.fieldErrors?.newPassword}>
-        <Input id="newPassword" name="newPassword" type="password" autoComplete="new-password" required minLength={10} />
+        <PasswordInput id="newPassword" name="newPassword" autoComplete="new-password" required minLength={10} />
       </Field>
       <Button type="submit" loading={pending}>Modifier le mot de passe</Button>
     </form>

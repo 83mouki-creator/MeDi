@@ -17,17 +17,17 @@ export const dynamic = 'force-dynamic';
 const NAV: (AdminNavItem & { permission?: Permission })[] = [
   { href: '/admin', label: 'Tableau de bord', icon: 'dashboard' },
   { href: '/admin/commandes', label: 'Commandes', icon: 'orders', permission: 'orders.read' },
-  { href: '/admin/messages', label: 'Demandes clients', icon: 'messages', permission: 'orders.read', badge: 'messages' },
-  { href: '/admin/paiements', label: 'Paiements à vérifier', icon: 'payments', permission: 'orders.read', badge: 'payments' },
+  { href: '/admin/messages', label: 'Demandes clients', icon: 'messages', permission: 'messages.handle', badge: 'messages' },
+  { href: '/admin/paiements', label: 'Paiements à vérifier', icon: 'payments', permission: 'payments.read', badge: 'payments' },
   { href: '/admin/produits', label: 'Produits', icon: 'products', permission: 'products.read' },
   { href: '/admin/stock', label: 'Stock', icon: 'stock', permission: 'products.read' },
   { href: '/admin/categories', label: 'Catégories & marques', icon: 'categories', permission: 'products.write' },
-  { href: '/admin/import', label: 'Import catalogue & photos', icon: 'import', permission: 'products.write' },
-  { href: '/admin/livraison', label: 'Livraison', icon: 'delivery', permission: 'settings.write' },
+  { href: '/admin/import', label: 'Import catalogue & photos', icon: 'import', permission: 'catalog.import' },
+  { href: '/admin/livraison', label: 'Livraison', icon: 'delivery', permission: 'delivery.manage' },
   { href: '/admin/parametres', label: 'Paramètres boutique', icon: 'settings', permission: 'settings.write' },
   { href: '/admin/utilisateurs', label: 'Utilisateurs', icon: 'users', permission: 'users.manage' },
   { href: '/admin/journal', label: 'Journal d’activité', icon: 'audit', permission: 'audit.read' },
-  { href: '/admin/statistiques', label: 'Statistiques', icon: 'stats', permission: 'orders.read' },
+  { href: '/admin/statistiques', label: 'Statistiques', icon: 'stats', permission: 'stats.read' },
 ];
 
 export default async function AdminLayout({ children }: { children: React.ReactNode }) {
@@ -51,6 +51,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
         <AdminTopBar
           items={items}
           role={t(user.role)}
+          task={user.staffTask ? t(user.staffTask) : null}
           email={user.email}
           pendingPayments={pendingPayments}
           newMessages={messages.newCount}

@@ -1,4 +1,5 @@
 import Image from 'next/image';
+import { requirePagePermission } from '@/lib/auth';
 import { getAdminI18n } from '@/lib/i18n/admin-server';
 import { asc, sql } from 'drizzle-orm';
 import { db } from '@/db';
@@ -13,6 +14,7 @@ import { Button } from '@/components/ui/button';
 export const dynamic = 'force-dynamic';
 
 export default async function ImportPage() {
+  await requirePagePermission('catalog.import');
   const { t } = await getAdminI18n();
   const [productRows, mediaRows, embeddingStats] = await Promise.all([
     db.select({ id: products.id, name: products.name, sku: products.sku }).from(products).orderBy(asc(products.name)).limit(500),

@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { requirePagePermission } from '@/lib/auth';
 import { getAdminI18n } from '@/lib/i18n/admin-server';
 import Image from 'next/image';
 import { Plus, Search } from 'lucide-react';
@@ -13,6 +14,7 @@ import { Pagination } from '@/components/pagination';
 export const dynamic = 'force-dynamic';
 
 export default async function AdminProductsPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
+  await requirePagePermission('products.read');
   const { t } = await getAdminI18n();
   const params = await searchParams;
   const q = sanitizeSearch(typeof params.q === 'string' ? params.q : '');

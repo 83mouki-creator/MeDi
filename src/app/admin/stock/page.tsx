@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { requirePagePermission } from '@/lib/auth';
 import { getAdminI18n } from '@/lib/i18n/admin-server';
 import { Search } from 'lucide-react';
 import { getStockCounters, listStockProducts, type StockFilter } from '@/lib/admin';
@@ -17,6 +18,7 @@ const FILTERS: Record<StockFilter, string> = {
 };
 
 export default async function StockPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
+  await requirePagePermission('products.read');
   const { t } = await getAdminI18n();
   const params = await searchParams;
   const q = typeof params.q === 'string' ? params.q : '';

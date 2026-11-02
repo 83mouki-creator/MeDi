@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { requirePagePermission } from '@/lib/auth';
 import { getAdminI18n } from '@/lib/i18n/admin-server';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
@@ -23,6 +24,7 @@ export default async function EditProductPage({
   params: Promise<{ id: string }>;
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
+  await requirePagePermission('products.write');
   const { t } = await getAdminI18n();
   const { id } = await params;
   const query = await searchParams;

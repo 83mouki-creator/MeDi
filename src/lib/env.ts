@@ -82,6 +82,29 @@ export const env = {
     dim: Number(optional('VISION_DIM', '0')) || undefined,
   },
 
+  /** WhatsApp Business (Meta Cloud API) — envoi des codes d'accès au personnel. */
+  whatsapp: {
+    apiToken: optional('WHATSAPP_API_TOKEN'),
+    phoneNumberId: optional('WHATSAPP_PHONE_NUMBER_ID'),
+    apiVersion: optional('WHATSAPP_API_VERSION', 'v21.0'),
+    /** Modèle approuvé par Meta, requis pour une première prise de contact. */
+    templateName: optional('WHATSAPP_TEMPLATE_NAME'),
+    templateLang: optional('WHATSAPP_TEMPLATE_LANG', 'fr'),
+    get configured() {
+      return Boolean(optional('WHATSAPP_API_TOKEN') && optional('WHATSAPP_PHONE_NUMBER_ID'));
+    },
+  },
+
+  /** E-mails transactionnels (réinitialisation de mot de passe). */
+  email: {
+    resendApiKey: optional('RESEND_API_KEY'),
+    brevoApiKey: optional('BREVO_API_KEY'),
+    from: optional('EMAIL_FROM'),
+    get configured() {
+      return Boolean((optional('RESEND_API_KEY') || optional('BREVO_API_KEY')) && optional('EMAIL_FROM'));
+    },
+  },
+
   sessionCookieName: 'medi_session',
   cartCookieName: 'medi_cart',
   sessionTtlDays: 30,

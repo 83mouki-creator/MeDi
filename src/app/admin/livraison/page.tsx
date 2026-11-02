@@ -1,4 +1,5 @@
 import { asc } from 'drizzle-orm';
+import { requirePagePermission } from '@/lib/auth';
 import { getAdminI18n } from '@/lib/i18n/admin-server';
 import { db } from '@/db';
 import { deliveryZones } from '@/db/schema';
@@ -11,6 +12,7 @@ import { Button } from '@/components/ui/button';
 export const dynamic = 'force-dynamic';
 
 export default async function DeliveryPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
+  await requirePagePermission('delivery.manage');
   const { t } = await getAdminI18n();
   const params = await searchParams;
   const zones = await db.select().from(deliveryZones).orderBy(asc(deliveryZones.sortOrder), asc(deliveryZones.name));

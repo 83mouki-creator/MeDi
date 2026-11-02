@@ -1,4 +1,5 @@
 import { Mail, MessageSquare, Phone } from 'lucide-react';
+import { requirePagePermission } from '@/lib/auth';
 import { getAdminI18n } from '@/lib/i18n/admin-server';
 import type { AdminTranslator } from '@/lib/i18n/admin';
 import { CONTACT_STATUS_LABELS, countContactMessages, listContactMessages, type ContactMessageRow } from '@/lib/admin';
@@ -84,6 +85,7 @@ export default async function AdminMessagesPage({
 }: {
   searchParams: Promise<Record<string, string | string[] | undefined>>;
 }) {
+  await requirePagePermission('messages.handle');
   const { t } = await getAdminI18n();
   const params = await searchParams;
   const rawStatus = typeof params.status === 'string' ? params.status : 'open';

@@ -1,4 +1,5 @@
 import { getDashboardMetrics, salesByDay, paymentMethodBreakdown, deliveryBreakdown } from '@/lib/admin';
+import { requirePagePermission } from '@/lib/auth';
 import { getAdminI18n } from '@/lib/i18n/admin-server';
 import { topSearches, searchEventsWithoutResults } from '@/lib/audit';
 import { formatFCFA } from '@/lib/utils';
@@ -7,6 +8,7 @@ import { Card } from '@/components/ui/primitives';
 export const dynamic = 'force-dynamic';
 
 export default async function StatisticsPage() {
+  await requirePagePermission('stats.read');
   const { t } = await getAdminI18n();
   const [metrics, daily, paymentMethods, delivery, searches, noResults] = await Promise.all([
     getDashboardMetrics(),

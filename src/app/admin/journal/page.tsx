@@ -1,4 +1,5 @@
 import { Search } from 'lucide-react';
+import { requirePagePermission } from '@/lib/auth';
 import { getAdminI18n } from '@/lib/i18n/admin-server';
 import { listAuditLogs } from '@/lib/audit';
 import { formatDateTime, parsePage } from '@/lib/utils';
@@ -10,6 +11,7 @@ import { Pagination } from '@/components/pagination';
 export const dynamic = 'force-dynamic';
 
 export default async function AuditPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {
+  await requirePagePermission('audit.read');
   const { t } = await getAdminI18n();
   const params = await searchParams;
   const page = parsePage(params.page);
