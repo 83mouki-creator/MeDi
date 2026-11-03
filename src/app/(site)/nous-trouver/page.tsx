@@ -121,7 +121,11 @@ export default async function FindUsPage() {
           />
           <div className="border-t border-navy-100 p-4">
             <p className="text-sm font-semibold text-navy-900">
-              {settings.addressLine ?? t('Boutique {store}', { store: settings.storeName })} — {location.city}
+              {formatStoreAddress({
+                addressLine: settings.addressLine ?? t('Boutique {store}', { store: settings.storeName }),
+                city: location.city,
+                country: '',
+              })}
             </p>
             <p className="mt-0.5 font-mono text-xs text-navy-500" dir="ltr">
               {location.decimal}
