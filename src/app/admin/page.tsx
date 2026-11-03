@@ -167,7 +167,7 @@ export default async function AdminDashboard() {
           <ul className="divide-y divide-navy-100 text-sm">
             {Object.entries(ORDER_STATUS_LABELS).map(([status, label]) => (
               <li key={status} className="flex items-center justify-between px-4 py-2">
-                <Link href={`/admin/commandes?status=${status}`} className="text-navy-700 hover:text-accent-700">{label}</Link>
+                <Link href={`/admin/commandes?status=${status}`} className="text-navy-700 hover:text-accent-700">{t(label)}</Link>
                 <span className="font-semibold text-navy-900">{metrics.counts[status] ?? 0}</span>
               </li>
             ))}
@@ -191,7 +191,7 @@ export default async function AdminDashboard() {
                       <p className="text-xs text-navy-500">{product.sku} · seuil {product.threshold}</p>
                     </div>
                     <Badge tone={product.available <= 0 ? 'danger' : 'warning'}>
-                      {product.available <= 0 ? 'Épuisé' : `${product.available} restant(s)`}
+                      {product.available <= 0 ? t('Épuisé') : t('{count} restant(s)', { count: product.available })}
                     </Badge>
                   </li>
                 ))}
@@ -235,7 +235,7 @@ export default async function AdminDashboard() {
                   </div>
                   <div className="flex items-center gap-2">
                     <Badge tone={order.paymentStatus === 'PAID' ? 'success' : order.paymentStatus === 'AWAITING_VERIFICATION' ? 'warning' : 'neutral'}>
-                      {ORDER_STATUS_LABELS[order.status as OrderStatus]}
+                      {t(ORDER_STATUS_LABELS[order.status as OrderStatus])}
                     </Badge>
                     <span className="text-xs text-navy-500">{formatDateTime(order.createdAt)}</span>
                     <span className="font-semibold">{formatFCFA(order.total)}</span>

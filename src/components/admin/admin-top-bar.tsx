@@ -29,6 +29,7 @@ import { logoutAction } from '@/app/actions/auth';
 import { setAdminLocaleAction } from '@/app/actions/admin-locale';
 import { useAdminI18n } from '@/components/admin/admin-i18n';
 import { cn } from '@/lib/utils';
+import { drawerGeometry } from '@/lib/drawer';
 import type { AdminLocale } from '@/lib/i18n/admin';
 
 export type AdminNavItem = {
@@ -163,6 +164,9 @@ export function AdminTopBar({
 
   const isActive = (href: string) => (href === '/admin' ? pathname === '/admin' : pathname.startsWith(href));
 
+  // Ancrage et glissade en coordonnées physiques : voir `lib/drawer`.
+  const geometry = drawerGeometry(dir);
+
   return (
     <>
       <header className="sticky top-0 z-40 border-b border-navy-800 bg-navy-950 text-white">
@@ -223,31 +227,22 @@ export function AdminTopBar({
         </div>
       </header>
 
-      {/* Voile */}
-      <div
-        onClick={close}
-        aria-hidden
-        className={cn(
-          'fixed inset-0 z-40 bg-navy-950/60 transition-opacity duration-200',
-          open ? 'opacity-100' : 'pointer-events-none opacity-0',
-        )}
-      />
+      {/* Voile : masqué et inerte dès que le panneau est fermé. */}
+      <div onClick={close} aria-hidden className="drawer-veil" data-open={open} />
 
       {/* Panneau coulissant — ouvert depuis la gauche en français, la droite en arabe */}
       <div
         id="menu-administration"
         ref={panelRef}
         role="dialog"
-        aria-modal="true"
+        aria-modal={open ? true : undefined}
         aria-label={t('Navigation de l’administration')}
         aria-hidden={!open}
         inert={!open}
         tabIndex={-1}
-        className={cn(
-          'fixed inset-y-0 z-50 flex w-[min(20rem,85vw)] flex-col bg-white shadow-2xl transition-transform duration-200 ease-out',
-          dir === 'rtl' ? 'end-0' : 'start-0',
-          open ? 'translate-x-0' : dir === 'rtl' ? 'translate-x-full' : '-translate-x-full',
-        )}
+        data-side={geometry.side}
+        data-open={open}
+        className="drawer-panel w-[min(20rem,85vw)] shadow-2xl"
       >
         <div className="flex items-center justify-between border-b border-navy-100 px-4 py-3">
           <p className="text-sm font-extrabold text-navy-950">{t('Administration')}</p>

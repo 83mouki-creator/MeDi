@@ -33,6 +33,12 @@ export type TranslationVars = Record<string, string | number>;
 /** Traductions arabes (arabe standard, registre professionnel). */
 const AR: Record<string, string> = {
   // ── Navigation et structure ────────────────────────────────────────────────
+  // Petites phrases du menu (sous chaque titre d'onglet).
+  'Baisser les prix pour un temps': 'خفض الأسعار لمدة محدّدة',
+  'Ouvrir et fermer la journée': 'فتح الصندوق وإغلاقه في نهاية اليوم',
+  'Papiers à donner au livreur': 'الأوراق التي تُسلَّم إلى عامل التوصيل',
+  'Produit livré': 'منتج تم تسليمه',
+  'En stock': 'متوفر في المخزون',
   'Tableau de bord': 'لوحة التحكم',
   Commandes: 'الطلبات',
   'Demandes clients': 'استفسارات العملاء',

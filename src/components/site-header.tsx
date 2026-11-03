@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { Camera, ChevronDown, LayoutDashboard, MapPin, Menu, Phone, ShoppingCart, Truck, User } from 'lucide-react';
+import { Camera, LayoutDashboard, MapPin, Phone, ShoppingCart, Truck, User } from 'lucide-react';
 import { getCurrentUser, isStaff } from '@/lib/auth';
 import { readCart } from '@/lib/cart';
 import { getStoreSettings, whatsappLink } from '@/lib/settings';
@@ -9,6 +9,7 @@ import { getSiteI18n } from '@/lib/i18n/site-server';
 import { SearchBar } from './search-bar';
 import { SiteLocaleSelector } from './site-locale-selector';
 import { PromoBanner } from './promo-banner';
+import { SiteCategoryMenu } from './site-category-menu';
 
 const FALLBACK_CATEGORIES = [
   { slug: 'outillage-industriel', name: 'Outillage industriel' },
@@ -136,36 +137,9 @@ export async function SiteHeader() {
       {/* Navigation par catégories */}
       <nav aria-label={t('Catégories')} className="border-t border-navy-800 bg-navy-900">
         <div className="container-page flex items-center gap-1">
-          <details className="group relative lg:hidden">
-            <summary className="flex cursor-pointer list-none items-center gap-2 px-2 py-2.5 text-sm font-semibold text-white">
-              <Menu className="size-5" aria-hidden />
-              {t('Catégories')}
-              <ChevronDown className="size-4 transition-transform group-open:rotate-180" aria-hidden />
-            </summary>
-            {/* `start-0` (et non `left-0`) : en arabe le panneau s'ouvre du bon côté
-                et ne recouvre plus les libellés. */}
-            <div className="absolute start-0 z-50 mt-1 w-[min(18rem,calc(100vw-2rem))] rounded-xl border border-navy-100 bg-white p-2 text-navy-900 shadow-xl">
-              <ul className="max-h-[70vh] overflow-y-auto">
-                {roots.map((category) => (
-                  <li key={category.id}>
-                    <Link href={`/categorie/${category.slug}`} className="block rounded-lg px-3 py-2.5 text-sm font-medium hover:bg-navy-50">
-                      {category.name}
-                    </Link>
-                  </li>
-                ))}
-                <li className="mt-1 border-t border-navy-100 pt-1">
-                  <Link href="/catalogue" className="block rounded-lg px-3 py-2.5 text-sm font-semibold text-accent-700 hover:bg-navy-50">
-                    {t('Tout le catalogue')}
-                  </Link>
-                </li>
-                <li>
-                  <Link href="/nous-trouver" className="block rounded-lg px-3 py-2.5 text-sm font-semibold text-navy-800 hover:bg-navy-50">
-                    {t('Nous trouver')}
-                  </Link>
-                </li>
-              </ul>
-            </div>
-          </details>
+          <SiteCategoryMenu
+            categories={roots.map((category) => ({ id: category.id, slug: category.slug, name: category.name }))}
+          />
 
           <ul className="no-scrollbar hidden items-center gap-0.5 overflow-x-auto lg:flex">
             {roots.slice(0, 8).map((category) => (
