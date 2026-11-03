@@ -129,6 +129,22 @@ export default async function ReturnsPage() {
         <li>{t('La boutique vous répond le jour même pendant les heures d’ouverture.')}</li>
       </ol>
 
+      {/* Précisions écrites par le propriétaire : elles n'apparaissent que s'il les a saisies. */}
+      {settings.returnPolicy ? (
+        <section className="mt-6 rounded-2xl border border-navy-200 bg-white p-4">
+          <h2 className="text-base font-extrabold text-navy-950">{t('Précisions de la boutique')}</h2>
+          <div className="mt-2 space-y-2 text-sm leading-relaxed text-navy-700">
+            {settings.returnPolicy
+              .split(/\n\s*\n|\n/)
+              .map((line) => line.trim())
+              .filter(Boolean)
+              .map((line, index) => (
+                <p key={index}>{line}</p>
+              ))}
+          </div>
+        </section>
+      ) : null}
+
       <PurchaseNotice className="mt-6" phone={settings.phone} />
 
       <p className="mt-4 text-xs text-navy-500">

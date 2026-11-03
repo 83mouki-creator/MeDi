@@ -641,6 +641,7 @@ const EN: Record<string, string> = {
   "Épuisé": "Sold out",
   "Épuisé — indisponible actuellement": "Sold out — currently unavailable",
   "— les réponses sont données pendant les heures d’ouverture.": "— answers are given during opening hours.",
+  "Précisions de la boutique": "Store details",
 };
 
 /**
@@ -648,6 +649,7 @@ const EN: Record<string, string> = {
  * La clé est le texte français exact affiché sur le site.
  */
 const AR: Record<string, string> = {
+  "Précisions de la boutique": "تفاصيل المتجر",
   "+225 …": "+225 …",
   "10 caractères minimum, avec au moins une lettre et un chiffre.": "١٠ أحرف على الأقل، مع حرف ورقم على الأقل.",
   "10 caractères minimum, lettres et chiffres.": "١٠ أحرف على الأقل، حروف وأرقام.",

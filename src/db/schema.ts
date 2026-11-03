@@ -19,8 +19,20 @@ import {
   index,
   uniqueIndex,
   primaryKey,
+  customType,
 } from 'drizzle-orm/pg-core';
 import { sql } from 'drizzle-orm';
+
+/**
+ * Colonne binaire. Sert uniquement au stockage des photos téléversées quand
+ * aucun service d'images externe (Cloudinary) n'est configuré : les fichiers
+ * sont écrits dans PostgreSQL et servis par la route `/media/[id]`. Sur un
+ * hébergement sans disque persistant (Vercel), c'est ce qui permet à la
+ * boutique d'ajouter ses propres photos sans identifiants supplémentaires.
+ */
+const bytea = customType<{ data: Buffer; driverData: Buffer }>({
+  dataType: () => 'bytea',
+});
 
 /**
  * Rôles applicatifs.
@@ -747,6 +759,34 @@ export type Category = typeof categories.$inferSelect;
 export type Order = typeof orders.$inferSelect;
 export type OrderItem = typeof orderItems.$inferSelect;
 export type DeliveryZone = typeof deliveryZones.$inferSelect;
+/**
+ * Photos téléversées et conservées **dans la base**.
+ *
+ * Sur un hébergement sans disque persistant (Vercel), un fichier écrit dans
+ * `public/uploads` disparaît au déploiement suivant : la fiche produit garde
+ * alors une image introuvable. Quand aucun service d'images externe
+ * (Cloudinary) n'est configuré, l'image normalisée est donc stockée ici et
+ * servie par la route `/media/[id]`. Aucun identifiant supplémentaire n'est
+ * nécessaire : la base de données suffit.
+ */
+export const storedImages = pgTable(
+  'stored_images',
+  {
+    id: text('id').primaryKey(),
+    filename: text('filename').notNull(),
+    mimeType: text('mime_type').notNull().default('image/webp'),
+    width: integer('width').notNull(),
+    height: integer('height').notNull(),
+    bytes: integer('bytes').notNull(),
+    checksum: text('checksum').notNull(),
+    data: bytea('data').notNull(),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [uniqueIndex('stored_images_checksum_key').on(t.checksum)],
+);
+
+export type StoredImageRow = typeof storedImages.$inferSelect;
+
 export type StoreSetting = typeof storeSettings.$inferSelect;
 export type Payment = typeof payments.$inferSelect;
 export type ProductImage = typeof productImages.$inferSelect;

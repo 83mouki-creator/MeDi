@@ -164,10 +164,22 @@ export function SettingsForm({
             <Input id="instagramUrl" name="instagramUrl" defaultValue={settings.instagramUrl ?? ''} />
           </Field>
         </div>
-        <Field label={t('Mentions légales / informations commerciales')} htmlFor="legalNotice">
+        <Field
+          label={t('Mentions légales / informations commerciales')}
+          htmlFor="legalNotice"
+          hint={t(
+            'Écrivez ici ce qui identifie l’entreprise : raison sociale, numéro RCCM, compte contribuable (NCC), siège. Ce texte s’affiche tel quel sur la page « Mentions légales » du site.',
+          )}
+        >
           <Textarea id="legalNotice" name="legalNotice" rows={4} defaultValue={settings.legalNotice ?? ''} maxLength={4000} />
         </Field>
-        <Field label={t('Politique de retour')} htmlFor="returnPolicy">
+        <Field
+          label={t('Politique de retour')}
+          htmlFor="returnPolicy"
+          hint={t(
+            'Précisions sur les retours, échanges et garanties, en plus de la règle « ni remboursé, ni remplacé ». Ce texte s’affiche sur la page « Retours ».',
+          )}
+        >
           <Textarea id="returnPolicy" name="returnPolicy" rows={4} defaultValue={settings.returnPolicy ?? ''} maxLength={4000} />
         </Field>
       </Card>

@@ -29,6 +29,7 @@ import { PurchaseNotice } from '@/components/purchase-notice';
 import { getSiteI18n } from '@/lib/i18n/site-server';
 import { storeLocation } from '@/lib/store-location';
 import { OUTSIDE_DALOA_MAX_DAYS, PICKUP_HOLD_HOURS } from '@/lib/store-policy';
+import { sweepExpiredReservations } from '@/lib/reservations';
 
 type Params = { slug: string };
 
@@ -61,6 +62,8 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
 }
 
 export default async function ProductPage({ params }: { params: Promise<Params> }) {
+  // Avant d'afficher une disponibilité, on rend à la vente les réservations expirées.
+  await sweepExpiredReservations();
   const { slug } = await params;
   const [product, settings, { t }] = await Promise.all([getProductBySlug(slug), getStoreSettings(), getSiteI18n()]);
   if (!product || !product.isActive || product.isArchived) notFound();

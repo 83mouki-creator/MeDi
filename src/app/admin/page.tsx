@@ -17,6 +17,7 @@ import {
   Truck,
   UserPlus,
   BookOpen,
+  BadgeCheck,
 } from 'lucide-react';
 import { getAdminI18n } from '@/lib/i18n/admin-server';
 import { countContactMessages, getDashboardMetrics } from '@/lib/admin';
@@ -25,6 +26,7 @@ import { getStoreSettings } from '@/lib/settings';
 import { ORDER_STATUS_LABELS, type OrderStatus } from '@/lib/order-status';
 import { formatDateTime, formatFCFA } from '@/lib/utils';
 import { Badge, Card } from '@/components/ui/primitives';
+import { getReadinessReport } from '@/lib/readiness-server';
 import { cn } from '@/lib/utils';
 
 export const dynamic = 'force-dynamic';
@@ -42,11 +44,15 @@ export default async function AdminDashboard() {
   // Tout le personnel entre par ici ; les cartes affichées dépendent de sa fonction.
   await requirePagePermission('orders.read');
   const { t, locale } = await getAdminI18n();
-  const [metrics, user, settings, messages] = await Promise.all([
+  const [metrics, user, settings, messages, readiness] = await Promise.all([
     getDashboardMetrics().catch(() => null),
     getCurrentUser(),
     getStoreSettings(),
     countContactMessages().catch(() => ({ newCount: 0, open: 0, total: 0 })),
+    // Diagnostic « prêt à vendre » : réservé au propriétaire, jamais bloquant pour l'affichage.
+    getReadinessReport()
+      .then(({ report }) => report)
+      .catch(() => null),
   ]);
 
   if (!metrics) {
@@ -197,6 +203,33 @@ export default async function AdminDashboard() {
               {t('Ces informations sont affichées telles quelles aux clients, sans valeur inventée.')}
             </p>
           </div>
+        </div>
+      ) : null}
+
+      {/*
+        Ce qui manque pour vendre sans aide : un seul chiffre, un seul lien.
+        Le détail point par point est sur /admin/pret-a-vendre.
+      */}
+      {readiness && readiness.verdict !== 'pret' ? (
+        <div className="flex flex-wrap items-center gap-3 rounded-xl border border-navy-200 bg-white p-4 text-sm text-navy-800">
+          <BadgeCheck className="size-4 shrink-0 text-accent-600" aria-hidden />
+          <div className="min-w-0 flex-1">
+            <p className="font-semibold">
+              {readiness.blocking > 0
+                ? t('{count} point(s) empêchent encore la boutique de vendre toute seule', { count: readiness.blocking })
+                : t('Il reste {count} finition(s) avant que la boutique soit totalement autonome', { count: readiness.todo })}
+            </p>
+            <p className="mt-0.5 text-xs text-navy-600">
+              {t('Le contrôle « Prêt à vendre » montre quoi corriger, écran par écran.')}
+            </p>
+          </div>
+          <Link
+            href="/admin/pret-a-vendre"
+            className="inline-flex items-center gap-2 rounded-lg bg-navy-900 px-3 py-2 text-sm font-semibold text-white hover:bg-navy-800"
+          >
+            {t('Vérifier')}
+            <ArrowRight className="size-4 rtl:-scale-x-100" aria-hidden />
+          </Link>
         </div>
       ) : null}
 

@@ -74,8 +74,15 @@ photos et catalogue réels, configuration du stockage d'images et de la base Neo
   l'URL poolée.
 - Transactions avec verrou `FOR UPDATE` sur le stock ; numérotation `MED-AAAA-NNNNN` par séquence.
 - Webhook Wave : signature HMAC, anti-rejeu, idempotence par événement, revérification du montant.
-- Tâche planifiée d'expiration des réservations protégée par `CRON_SECRET`.
-- Stockage d'images : local ou Cloudinary, validation du type réel, normalisation WebP.
+- Tâche planifiée d'expiration des réservations (`vercel.json`, quotidienne) protégée par
+  `CRON_SECRET`, doublée d'un balayage à chaque visite du catalogue : le stock réservé se libère
+  même si la tâche planifiée ne tourne pas.
+- Stockage d'images : local en développement, Cloudinary si configuré, sinon **dans la base**
+  (table `stored_images` + route `/media/<id>`, cache immuable). Validation du type réel,
+  normalisation WebP, empreinte SHA-256 pour éviter les doublons.
+- Diagnostic « Prêt à vendre » (`/admin/pret-a-vendre`, `src/lib/readiness.ts`) : 19 points
+  vérifiés sur les données réelles, classés bloquants / à compléter / en place, avec le lien vers
+  l'écran à corriger. Le tableau de bord affiche le nombre de points bloquants.
 - SEO : métadonnées, canoniques, plan du site, robots, données structurées.
 - Build de production et TypeScript strict sans erreur ; 194 tests passants (22 fichiers).
 
@@ -86,9 +93,9 @@ photos et catalogue réels, configuration du stockage d'images et de la base Neo
 | Paiement Wave automatique | clé API, secret de webhook, test réel. Le mode manuel est opérationnel. |
 | Recherche visuelle « calibrée » | fournisseur sémantique (`VISION_PROVIDER=http`) et recalibrage des seuils. En l'état : descripteur local, résultats présentés comme pistes. |
 | Envoi d'e-mails (mot de passe oublié) | fournisseur SMTP/API e-mail. Le mécanisme existe, l'expédition réelle doit être branchée. |
-| Stockage des images en production | identifiants Cloudinary (sinon le disque des fonctions Vercel n'est pas persistant). |
+| Stockage des images en production | plus rien d'obligatoire : les photos vont dans la base. Cloudinary reste une option si la boutique veut alléger la base. |
 | Vérification mobile réelle | test sur téléphone (mise en page, caméra, lenteur réseau). |
-| Mentions légales / CGV définitives | RCCM, compte contribuable, forme juridique, adresse, tribunal compétent, politique de retour. |
+| Mentions légales / CGV définitives | RCCM, compte contribuable, forme juridique, adresse, tribunal compétent, politique de retour — à saisir dans `/admin/parametres` ; le site les affiche tels quels sur `/mentions-legales` et `/retours` (sinon « à compléter »). |
 
 ## Renseigné par le propriétaire (2026-10-29)
 

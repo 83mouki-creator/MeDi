@@ -102,6 +102,21 @@ Dans cet ordre. Si l'équipe ne fait que cela, la boutique tourne.
 - **Erreur de prix ou de stock** : corriger dans la bonne page, puis vérifier
   l'historique ; chaque changement est daté et signé, rien n'est effacé.
 
+## 6 bis. Vérifier que tout est prêt à vendre
+
+Dans le menu, ouvrez **Prêt à vendre** (`/admin/pret-a-vendre`). La page regarde
+les vraies données de la boutique et répond à une seule question : *peut-on
+vendre sans aide extérieure ?*
+
+- **Bloquant** (rouge) : sans cela, une commande ne peut pas aboutir. À corriger
+  d'abord (numéro Wave, produits publiés, stock, zones de livraison de Daloa).
+- **À compléter** (orange) : la vente fonctionne, mais le client hésitera
+  (photos manquantes, mentions légales, horaires).
+- **En place** (vert) : rien à faire.
+
+Chaque ligne mène directement à l'écran à corriger. La page se recalcule à
+chaque ouverture : dès qu'un champ est enregistré, le point passe au vert.
+
 ## 7. Langues
 
 - La boutique (ce que voient les clients) : sélecteur **FR / EN / ع** dans
