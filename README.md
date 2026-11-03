@@ -18,6 +18,7 @@ et recherche visuelle par photo.
 | Base Neon, connexions poolée / directe | [`docs/NEON.md`](docs/NEON.md) |
 | Déploiement Vercel | [`docs/DEPLOIEMENT.md`](docs/DEPLOIEMENT.md) |
 | Comptes, rôles, création d'un administrateur | [`docs/ADMINISTRATION.md`](docs/ADMINISTRATION.md) |
+| Guide de l'équipe : comment utiliser le site (aussi dans `/admin/guide`) | [`docs/GUIDE-EQUIPE.md`](docs/GUIDE-EQUIPE.md) |
 | Import des 200+ photos | [`docs/IMPORT-PHOTOS.md`](docs/IMPORT-PHOTOS.md) |
 | Import du catalogue (CSV) | [`docs/IMPORT-CATALOGUE.md`](docs/IMPORT-CATALOGUE.md) |
 | Paiement Wave (réel et manuel) | [`docs/WAVE.md`](docs/WAVE.md) |

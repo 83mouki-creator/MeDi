@@ -1,13 +1,13 @@
 # État du projet
 
-Dernière mise à jour : **2026-11-01**.
+Dernière mise à jour : **2026-11-03**.
 
 ## Résumé honnête
 
 La plateforme est **fonctionnelle de bout en bout sur le plan logiciel** : catalogue réel en base,
 recherche texte et visuelle, panier recalculé côté serveur, commandes avec réservation de stock,
 paiement Wave (mode manuel vérifié par un administrateur), espace client, back-office complet,
-migrations versionnées, build de production et **116 tests d'intégration exécutés avec succès**.
+migrations versionnées, build de production et **194 tests d'intégration exécutés avec succès**.
 
 Elle n'est **pas encore « prête à vendre »** en production, pour des raisons qui ne sont pas du code :
 identifiants Wave (ou validation du mode manuel), coordonnées et mentions légales de la boutique,
@@ -55,6 +55,14 @@ photos et catalogue réels, configuration du stockage d'images et de la base Neo
   import CSV, import de photos, utilisateurs, journal d'activité (recherche), statistiques.
 - Import CSV du catalogue avec simulation, rapport ligne par ligne, mise à jour par référence.
 - Import massif de photos avec empreinte SHA-256, file de validation, rattachement manuel, rejet motivé.
+- **Guide de l'équipe `/admin/guide`** : mode d'emploi du site en six parties (comprendre en une
+  minute, voyage d'une commande, routine du jour, gestes utiles, lexique, problèmes courants),
+  entièrement bilingue français / arabe, accessible depuis le menu et le tableau de bord.
+- Tableau de bord redessiné : bandeau d'accueil, indicateurs colorés par famille, actions du
+  quotidien, barres de proportion par statut de commande, rappel du guide.
+- Panneaux coulissants fiabilisés dans toutes les langues (`src/lib/drawer.ts`, CSS
+  `.drawer-panel` / `.drawer-veil`) : un menu fermé est hors écran, masqué et inerte — plus de
+  voile bloquant la page en arabe, ni sur le site ni dans l'administration.
 
 ### Technique
 - Schéma relationnel normalisé (24 tables) avec clés étrangères, contraintes `CHECK` (stock ≥ 0,
@@ -69,7 +77,7 @@ photos et catalogue réels, configuration du stockage d'images et de la base Neo
 - Tâche planifiée d'expiration des réservations protégée par `CRON_SECRET`.
 - Stockage d'images : local ou Cloudinary, validation du type réel, normalisation WebP.
 - SEO : métadonnées, canoniques, plan du site, robots, données structurées.
-- Build de production et TypeScript strict sans erreur ; 116 tests passants.
+- Build de production et TypeScript strict sans erreur ; 194 tests passants (22 fichiers).
 
 ## Partiel — code présent, à valider avec les moyens du propriétaire
 

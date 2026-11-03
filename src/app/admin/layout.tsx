@@ -16,6 +16,7 @@ export const dynamic = 'force-dynamic';
 /** Libellé bilingue : la clé française sert de référence au dictionnaire. */
 const NAV: (AdminNavItem & { permission?: Permission })[] = [
   { href: '/admin', label: 'Accueil', hint: 'Ce qui se passe aujourd’hui', icon: 'dashboard' },
+  { href: '/admin/guide', label: 'Guide du site', hint: 'Comment utiliser MeDi, pas à pas', icon: 'guide' },
   { href: '/admin/commandes', label: 'Commandes', hint: 'Qui a commandé quoi', icon: 'orders', permission: 'orders.read' },
   { href: '/admin/messages', label: 'Messages des clients', hint: 'Questions et demandes', icon: 'messages', permission: 'messages.handle', badge: 'messages' },
   { href: '/admin/paiements', label: 'Encaissements', hint: 'Vérifier l’argent reçu', icon: 'payments', permission: 'payments.read', badge: 'payments' },
