@@ -3,6 +3,7 @@ import { readFileSync } from 'node:fs';
 import { computeReadiness, type ReadinessSnapshot } from '@/lib/readiness';
 import { resolveStorageMode } from '@/lib/storage';
 import { shouldSweep, sweepIntervalMs } from '@/lib/reservations';
+import { formatStoreAddress } from '@/lib/store-location';
 import { translate } from '@/lib/i18n/admin';
 import { storedImages } from '@/db/schema';
 import { db } from '@/db';
@@ -183,6 +184,28 @@ describe('Libération automatique des réservations', () => {
   it('la migration des photos en base est enregistrée dans le journal Drizzle', () => {
     const journal = JSON.parse(readFileSync('drizzle/meta/_journal.json', 'utf8')) as { entries: { tag: string }[] };
     expect(journal.entries.some((entry) => entry.tag === '0005_stored_images')).toBe(true);
+  });
+});
+
+describe('Adresse affichée', () => {
+  it('ne répète pas la ville déjà écrite dans l’adresse', () => {
+    expect(
+      formatStoreAddress({
+        addressLine: `6°53'04.4"N 6°26'50.9"W — Daloa`,
+        city: 'Daloa',
+        country: "Côte d'Ivoire",
+      }),
+    ).toBe(`6°53'04.4"N 6°26'50.9"W — Daloa, Côte d'Ivoire`);
+  });
+
+  it('ajoute la ville quand elle manque', () => {
+    expect(formatStoreAddress({ addressLine: 'Rue du commerce', city: 'Daloa', country: "Côte d'Ivoire" })).toBe(
+      "Rue du commerce, Daloa, Côte d'Ivoire",
+    );
+  });
+
+  it('reste lisible quand l’adresse n’est pas renseignée', () => {
+    expect(formatStoreAddress({ addressLine: '', city: 'Daloa', country: "Côte d'Ivoire" })).toBe("Daloa, Côte d'Ivoire");
   });
 });
 

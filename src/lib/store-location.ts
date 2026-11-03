@@ -54,6 +54,24 @@ export function storeLocation(settings: PublicSettings): StoreLocation {
   };
 }
 
+/**
+ * Adresse complète en une seule ligne, sans répéter la ville.
+ *
+ * Le propriétaire saisit souvent l'adresse en y incluant déjà la ville
+ * (« 6°53'…W — Daloa »). Affichée naïve­ment à côté du champ `city`, cela donnait
+ * « Daloa, Daloa ». On ne répète donc la ville que si elle n'est pas déjà écrite.
+ */
+export function formatStoreAddress(location: Pick<StoreLocation, 'addressLine' | 'city' | 'country'>): string {
+  const address = (location.addressLine ?? '').trim();
+  const city = (location.city ?? '').trim();
+  const country = (location.country ?? '').trim();
+  const parts = address ? [address] : [];
+  const normalized = address.toLowerCase();
+  if (city && !normalized.includes(city.toLowerCase())) parts.push(city);
+  if (country && !normalized.includes(country.toLowerCase())) parts.push(country);
+  return parts.join(', ');
+}
+
 /** Lien WhatsApp vers la boutique avec un message déjà écrit. */
 export function whatsappWithMessage(settings: { whatsapp?: string | null; phone?: string | null }, message: string): string | null {
   const raw = settings.whatsapp ?? settings.phone;
