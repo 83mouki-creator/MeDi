@@ -1,6 +1,6 @@
 # Tests exécutés
 
-Dernière exécution : **2026-11-03** — `npm run test` → **194 tests, 22 fichiers, 194 réussis, 0 échec**
+Dernière exécution : **2026-11-03** — `npm run test` → **211 tests, 23 fichiers, 211 réussis, 0 échec**
 (`npx tsc --noEmit` : aucune erreur ; `npm run build` : compilation réussie).
 
 Base utilisée : `medi_test` (PostgreSQL local, UTF-8), préparée par `npm run test:setup`.
@@ -28,6 +28,10 @@ Les tests vident leurs tables avant chaque cas : ils ne touchent jamais les donn
 | Confirmation en double (idempotence) et confirmations simultanées | `orders-flow.test.ts` (stock décrémenté une seule fois) | ✔ |
 | Refus de paiement justifié | `orders-flow.test.ts` | ✔ |
 | Interdiction d'expédier une commande hors Daloa non payée | `orders-flow.test.ts` (`PREPAYMENT_REQUIRED`) | ✔ |
+| Diagnostic « prêt à vendre » : blocages, finitions, verdict | `readiness.test.ts` (7 cas : boutique vide, complète, base injoignable, compteurs, liens) | ✔ |
+| Photos conservées en base (Vercel sans disque) | `readiness.test.ts` (mode de stockage, table, empreinte unique) ; `uploads-visual.test.ts` | ✔ |
+| Libération automatique du stock réservé | `readiness.test.ts` (intervalle de balayage, `vercel.json`, journal Drizzle) | ✔ |
+| Traduction arabe des textes du contrôle « prêt à vendre » | `readiness.test.ts` (aucune phrase laissée en français) | ✔ |
 | Cycle de vie : préparation → prête → expédiée, historique horodaté | `orders-flow.test.ts` | ✔ |
 | Annulation et libération du stock | `orders-flow.test.ts` | ✔ |
 | Expiration automatique des réservations | `orders-flow.test.ts` (+ route `/api/cron/expire-reservations`) | ✔ |

@@ -12,6 +12,7 @@ import { EmptyState } from '@/components/ui/primitives';
 import { ButtonLink } from '@/components/ui/button';
 import { parsePage } from '@/lib/utils';
 import { getSiteI18n } from '@/lib/i18n/site-server';
+import { sweepExpiredReservations } from '@/lib/reservations';
 type SearchParams = Record<string, string | string[] | undefined>;
 
 export const metadata: Metadata = {
@@ -26,6 +27,8 @@ function first(value: string | string[] | undefined) {
 }
 
 export default async function CatalogPage({ searchParams }: { searchParams: Promise<SearchParams> }) {
+  // Une visite suffit à rendre à la vente les articles dont la réservation a expiré.
+  await sweepExpiredReservations();
   const params = await searchParams;
   const { t } = await getSiteI18n();
   const q = first(params.q)?.trim() ?? '';

@@ -1,9 +1,12 @@
 import { createHash, randomBytes, createHash as sha1 } from 'node:crypto';
 import { mkdir, writeFile, unlink } from 'node:fs/promises';
 import path from 'node:path';
+import { eq, sql } from 'drizzle-orm';
 import sharp from 'sharp';
 import { env } from './env';
-import { slugify } from './utils';
+import { db } from '../db';
+import { storedImages } from '../db/schema';
+import { slugify, newId } from './utils';
 
 export const ALLOWED_IMAGE_TYPES = ['image/jpeg', 'image/png', 'image/webp', 'image/avif'] as const;
 export const MAX_IMAGE_BYTES = Number(process.env.UPLOAD_MAX_BYTES ?? 5 * 1024 * 1024);
@@ -17,6 +20,36 @@ export type StoredImage = {
   checksum: string;
   filename: string;
 };
+
+/**
+ * Où va une photo téléversée ?
+ *
+ *  • `cloudinary` : un service d'images externe est configuré ;
+ *  • `database`   : pas de service externe et pas de disque durable (production) —
+ *    l'image part dans PostgreSQL, sinon elle serait perdue au déploiement ;
+ *  • `local`      : développement, écriture dans `public/uploads`.
+ *
+ * La décision est une fonction pure : elle est testable sans base ni réseau.
+ */
+export type StorageMode = 'cloudinary' | 'database' | 'local';
+
+export function resolveStorageMode(input: {
+  driver: 'local' | 'cloudinary';
+  cloudinaryReady: boolean;
+  isProduction: boolean;
+}): StorageMode {
+  if (input.driver === 'cloudinary' && input.cloudinaryReady) return 'cloudinary';
+  if (input.isProduction) return 'database';
+  return 'local';
+}
+
+export function storageMode(): StorageMode {
+  return resolveStorageMode({
+    driver: env.storage.driver,
+    cloudinaryReady: env.storage.configured && Boolean(env.storage.cloudinary.cloudName),
+    isProduction: env.isProduction,
+  });
+}
 
 export class UploadError extends Error {
   constructor(message: string) {
@@ -77,8 +110,14 @@ export async function storeImage(input: {
   const base = slugify(input.name?.replace(/\.[a-z0-9]+$/i, '') ?? input.file.name.replace(/\.[a-z0-9]+$/i, '')) || 'image';
   const unique = `${base}-${randomBytes(4).toString('hex')}`;
 
-  if (env.storage.driver === 'cloudinary' && env.storage.cloudinary.cloudName) {
+  const mode = storageMode();
+
+  if (mode === 'cloudinary') {
     return cloudinaryUpload({ data, filename: unique, folder: input.folder ?? env.storage.cloudinary.folder, width, height, checksum });
+  }
+
+  if (mode === 'database') {
+    return storeImageInDatabase({ data, filename: `${unique}.webp`, width, height, checksum });
   }
 
   const dir = path.join(process.cwd(), env.storage.localDir);
@@ -94,6 +133,93 @@ export async function storeImage(input: {
     bytes: data.byteLength,
     checksum,
     filename: `${unique}.webp`,
+  };
+}
+
+/**
+ * Écrit l'image normalisée dans PostgreSQL et renvoie une URL servie par
+ * `/media/[id]`. Une image identique (même empreinte) n'est jamais stockée
+ * deux fois : la première suffit.
+ */
+/**
+ * Crée la table au premier envoi si elle n'existe pas encore.
+ *
+ * La migration `0005_stored_images` fait le même travail, mais elle n'est jouée
+ * que par `npm run db:migrate` ; sur un hébergement où ce script n'a jamais été
+ * lancé, un téléversement échouerait sans explication. La commande ci-dessous
+ * est idempotente et ne coûte qu'une fois par instance.
+ */
+let storedImagesTableReady: Promise<void> | null = null;
+
+async function ensureStoredImagesTable(): Promise<void> {
+  if (!storedImagesTableReady) {
+    storedImagesTableReady = (async () => {
+      await db.execute(sql`
+        CREATE TABLE IF NOT EXISTS "stored_images" (
+          "id" text PRIMARY KEY NOT NULL,
+          "filename" text NOT NULL,
+          "mime_type" text DEFAULT 'image/webp' NOT NULL,
+          "width" integer NOT NULL,
+          "height" integer NOT NULL,
+          "bytes" integer NOT NULL,
+          "checksum" text NOT NULL,
+          "data" bytea NOT NULL,
+          "created_at" timestamp with time zone DEFAULT now() NOT NULL
+        )
+      `);
+      await db.execute(
+        sql`CREATE UNIQUE INDEX IF NOT EXISTS "stored_images_checksum_key" ON "stored_images" ("checksum")`,
+      );
+    })().catch((error) => {
+      storedImagesTableReady = null; // nouvelle tentative au prochain envoi
+      throw error;
+    });
+  }
+  return storedImagesTableReady;
+}
+
+async function storeImageInDatabase(params: {
+  data: Buffer;
+  filename: string;
+  width: number;
+  height: number;
+  checksum: string;
+}): Promise<StoredImage> {
+  await ensureStoredImagesTable();
+
+  const existing = await db
+    .select({ id: storedImages.id, filename: storedImages.filename, width: storedImages.width, height: storedImages.height, bytes: storedImages.bytes })
+    .from(storedImages)
+    .where(eq(storedImages.checksum, params.checksum))
+    .limit(1);
+
+  const row =
+    existing[0] ??
+    (
+      await db
+        .insert(storedImages)
+        .values({
+          id: newId('img_'),
+          filename: params.filename,
+          mimeType: 'image/webp',
+          width: params.width,
+          height: params.height,
+          bytes: params.data.byteLength,
+          checksum: params.checksum,
+          data: params.data,
+        })
+        .returning({ id: storedImages.id, filename: storedImages.filename, width: storedImages.width, height: storedImages.height, bytes: storedImages.bytes })
+    )[0];
+
+  if (!row) throw new UploadError('Enregistrement de la photo impossible.');
+  return {
+    url: `/media/${row.id}.webp`,
+    publicId: `db:${row.id}`,
+    width: row.width,
+    height: row.height,
+    bytes: row.bytes,
+    checksum: params.checksum,
+    filename: row.filename,
   };
 }
 
@@ -143,6 +269,12 @@ async function cloudinaryUpload(params: {
 
 /** Supprime un fichier local (uniquement pour le driver `local`). */
 export async function deleteStoredImage(publicId: string | null, url: string) {
+  // Photo conservée en base : on supprime la ligne (le fichier n'existe pas ailleurs).
+  if (publicId?.startsWith('db:')) {
+    await db.delete(storedImages).where(eq(storedImages.id, publicId.slice(3)));
+    return;
+  }
+
   if (env.storage.driver !== 'local') return;
   const target = publicId ?? path.basename(url);
   if (!target || target.includes('..') || target.includes('/')) return;

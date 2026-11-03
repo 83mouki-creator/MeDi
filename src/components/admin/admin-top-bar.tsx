@@ -4,6 +4,7 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
+  BadgeCheck,
   BarChart3,
   BookOpen,
   Boxes,
@@ -53,7 +54,8 @@ export type AdminNavItem = {
     | 'promos'
     | 'cash'
     | 'notes'
-    | 'guide';
+    | 'guide'
+    | 'ready';
   badge?: 'payments' | 'messages';
   /** Petite phrase qui explique le menu en mots simples. */
   hint?: string;
@@ -77,6 +79,7 @@ const ICONS = {
   cash: Wallet,
   notes: Truck,
   guide: BookOpen,
+  ready: BadgeCheck,
 } as const;
 
 /** Bascule FR / AR, mémorisée par cookie et propre au back-office. */

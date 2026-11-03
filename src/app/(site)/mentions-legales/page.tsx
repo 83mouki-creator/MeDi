@@ -43,6 +43,26 @@ export default async function LegalNoticePage() {
         </p>
       </LegalSection>
 
+      {/*
+        Texte libre saisi par le propriétaire dans /admin/parametres : raison
+        sociale, RCCM, compte contribuable. Rien n'est inventé ici : tant que le
+        champ est vide, la page le dit clairement au visiteur.
+      */}
+      <LegalSection title="Identification de l’entreprise">
+        {settings.legalNotice ? (
+          settings.legalNotice
+            .split(/\n\s*\n|\n/)
+            .map((line) => line.trim())
+            .filter(Boolean)
+            .map((line, index) => <p key={index}>{line}</p>)
+        ) : (
+          <p className="rounded-lg border border-navy-200 bg-navy-50 p-3 text-xs text-navy-700">
+            Informations d’identification complémentaires (raison sociale, numéro RCCM, compte contribuable) : à compléter par
+            la boutique.
+          </p>
+        )}
+      </LegalSection>
+
       <LegalSection title="Hébergement">
         <p>Le site est hébergé par Vercel Inc., sur une infrastructure cloud.</p>
       </LegalSection>

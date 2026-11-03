@@ -83,6 +83,15 @@ export async function createOrder(params: {
   const { input } = params;
   if (!input.items.length) throw new OrderError('Votre panier est vide.', 'EMPTY_CART');
 
+  // Les réservations expirées sont libérées avant de juger la disponibilité :
+  // un client ne doit pas se voir refuser une pièce qui est en rayon depuis
+  // qu'une commande non payée a expiré.
+  try {
+    await expireReservations(20);
+  } catch (error) {
+    console.error('[orders] libération des réservations impossible', error);
+  }
+
   const settings = await getStoreSettings();
 
   const ids = [...new Set(input.items.map((i) => i.productId))].sort();

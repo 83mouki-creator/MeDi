@@ -34,7 +34,7 @@ et recherche visuelle par photo.
 - **Tailwind CSS 4** + composants de style shadcn (écrits dans le dépôt, sans dépendance UI lourde)
 - **PostgreSQL** (Neon en production) + **Drizzle ORM** et **migrations SQL versionnées** (`drizzle/`)
 - Authentification maison : mots de passe **scrypt**, sessions opaques en base, cookie `httpOnly`
-- Images : stockage local en développement, **Cloudinary** ou stockage objet en production
+- Images : stockage local en développement, **Cloudinary** si configuré, sinon conservation **dans la base** (table `stored_images`, route `/media/<id>`) — les photos survivent aux déploiements sans service externe
 - Recherche : PostgreSQL **full-text français** + **pg_trgm** (tolérance aux fautes)
 - Recherche visuelle : descripteur perceptif local, ou modèle d'embeddings externe via HTTP
 - **Vitest** pour les tests d'intégration sur une base dédiée
