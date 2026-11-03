@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getStoreSettings } from '@/lib/settings';
+import { formatStoreAddress, storeLocation } from '@/lib/store-location';
 import { LegalPage, LegalSection } from '@/components/legal-page';
 
 export const metadata: Metadata = {
@@ -13,6 +14,7 @@ export const dynamic = 'force-dynamic';
 
 export default async function LegalNoticePage() {
   const settings = await getStoreSettings();
+  const location = storeLocation(settings);
 
   return (
     <LegalPage
@@ -21,13 +23,7 @@ export default async function LegalNoticePage() {
     >
       <LegalSection title="Éditeur du site">
         <p>
-          Dénomination commerciale : <strong>{settings.storeName}</strong>
-          {settings.addressLine ? (
-            <>
-              , {settings.addressLine}
-            </>
-          ) : null}
-          , {settings.city}, {settings.country}.
+          Dénomination commerciale : <strong>{settings.storeName}</strong>, {formatStoreAddress(location)}.
         </p>
         <p>
           Éditeur et responsable de la publication : la direction de {settings.storeName}.

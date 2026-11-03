@@ -3,7 +3,7 @@ import Link from 'next/link';
 import { Clock, Compass, MapPin, MessageCircle, Navigation, Phone, Store } from 'lucide-react';
 import { getStoreSettings, whatsappLink } from '@/lib/settings';
 import { geoJsonLd, osmEmbedUrl, osmPageUrl } from '@/lib/geo';
-import { storeLocation } from '@/lib/store-location';
+import { formatStoreAddress, storeLocation } from '@/lib/store-location';
 import { Card } from '@/components/ui/primitives';
 import { getSiteI18n } from '@/lib/i18n/site-server';
 import { PICKUP_HOLD_HOURS } from '@/lib/store-policy';
@@ -63,7 +63,7 @@ export default async function FindUsPage() {
           {location.dms}
         </p>
         <p className="mt-1 text-sm text-navy-700">
-          {location.addressLine} · {location.city}, {location.country}
+          {formatStoreAddress(location)}
         </p>
         <p className="mt-1 font-mono text-xs text-navy-500" dir="ltr">
           {t('Coordonnées GPS :')} {location.decimal}
