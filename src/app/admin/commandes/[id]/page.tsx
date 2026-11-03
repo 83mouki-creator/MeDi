@@ -45,10 +45,10 @@ export default async function AdminOrderDetail({ params }: { params: Promise<{ i
         </div>
         <div className="flex flex-wrap gap-2">
           <Badge tone={paid ? 'success' : order.paymentStatus === 'AWAITING_VERIFICATION' ? 'warning' : 'neutral'}>
-            {PAYMENT_STATUS_LABELS[order.paymentStatus]}
+            {t(PAYMENT_STATUS_LABELS[order.paymentStatus])}
           </Badge>
           <Badge tone={order.status === 'CANCELLED' ? 'danger' : isCarrier && !paid ? 'warning' : 'neutral'}>
-            {ORDER_STATUS_LABELS[order.status as OrderStatus]}
+            {t(ORDER_STATUS_LABELS[order.status as OrderStatus])}
           </Badge>
         </div>
       </div>

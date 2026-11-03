@@ -50,13 +50,13 @@ export default async function AdminOrdersPage({ searchParams }: { searchParams: 
           <Select name="status" defaultValue={get('status') ?? ''} aria-label={t('Statut')}>
             <option value="">{t('Tous les statuts')}</option>
             {Object.entries(ORDER_STATUS_LABELS).map(([value, label]) => (
-              <option key={value} value={value}>{label}</option>
+              <option key={value} value={value}>{t(label)}</option>
             ))}
           </Select>
           <Select name="paymentStatus" defaultValue={get('paymentStatus') ?? ''} aria-label={t('Paiement')}>
             <option value="">{t('Tous les paiements')}</option>
             {Object.entries(PAYMENT_STATUS_LABELS).map(([value, label]) => (
-              <option key={value} value={value}>{label}</option>
+              <option key={value} value={value}>{t(label)}</option>
             ))}
           </Select>
           <Select name="city" defaultValue={get('city') ?? ''} aria-label={t('Destination')}>
@@ -107,16 +107,16 @@ export default async function AdminOrdersPage({ searchParams }: { searchParams: 
                     </td>
                     <td className="px-3 py-2">
                       <p>{row.city}</p>
-                      <p className="text-xs text-navy-500">{row.delivery_method}</p>
+                      <p className="text-xs text-navy-500">{t(row.delivery_method)}</p>
                     </td>
                     <td className="px-3 py-2">
                       <Badge tone={row.payment_status === 'PAID' ? 'success' : row.payment_status === 'AWAITING_VERIFICATION' ? 'warning' : 'neutral'}>
-                        {PAYMENT_STATUS_LABELS[row.payment_status as keyof typeof PAYMENT_STATUS_LABELS] ?? row.payment_status}
+                        {t(PAYMENT_STATUS_LABELS[row.payment_status as keyof typeof PAYMENT_STATUS_LABELS] ?? row.payment_status)}
                       </Badge>
                     </td>
                     <td className="px-3 py-2">
                       <Badge tone={row.status === 'CANCELLED' ? 'danger' : row.status === 'DELIVERED' ? 'success' : 'neutral'}>
-                        {ORDER_STATUS_LABELS[row.status as OrderStatus] ?? row.status}
+                        {t(ORDER_STATUS_LABELS[row.status as OrderStatus] ?? row.status)}
                       </Badge>
                     </td>
                     <td className="px-3 py-2 text-right font-semibold">{formatFCFA(row.total)}</td>
