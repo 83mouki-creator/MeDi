@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import {
   BarChart3,
+  BookOpen,
   Boxes,
   ClipboardList,
   CreditCard,
@@ -51,7 +52,8 @@ export type AdminNavItem = {
     | 'stats'
     | 'promos'
     | 'cash'
-    | 'notes';
+    | 'notes'
+    | 'guide';
   badge?: 'payments' | 'messages';
   /** Petite phrase qui explique le menu en mots simples. */
   hint?: string;
@@ -74,6 +76,7 @@ const ICONS = {
   promos: Tags,
   cash: Wallet,
   notes: Truck,
+  guide: BookOpen,
 } as const;
 
 /** Bascule FR / AR, mémorisée par cookie et propre au back-office. */
@@ -205,6 +208,13 @@ export function AdminTopBar({
           <div className="ms-auto flex items-center gap-1 text-xs sm:gap-2">
             <LocaleSwitcher locale={locale} />
             <Link
+              href="/admin/guide"
+              title={t('Comment utiliser le site')}
+              className="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-2 font-semibold text-navy-100 hover:bg-white/10 hover:text-white"
+            >
+              <BookOpen className="size-4" aria-hidden /> <span className="hidden lg:inline">{t('Guide')}</span>
+            </Link>
+            <Link
               href="/"
               className="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-2 font-semibold text-navy-100 hover:bg-white/10 hover:text-white"
             >
@@ -299,6 +309,13 @@ export function AdminTopBar({
         </nav>
 
         <div className="border-t border-navy-100 p-3">
+          <Link
+            href="/admin/guide"
+            onClick={close}
+            className="flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-semibold text-accent-800 hover:bg-accent-50"
+          >
+            <BookOpen className="size-4 text-accent-600" aria-hidden /> {t('Comment utiliser le site')}
+          </Link>
           <Link
             href="/"
             onClick={close}
