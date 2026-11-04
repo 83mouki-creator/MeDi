@@ -1,5 +1,5 @@
 /**
- * Données de démonstration MeDi — CLIQUEMENT IDENTIFIÉES COMME DÉMO.
+ * Données de démonstration MeDi Shop — CLIQUEMENT IDENTIFIÉES COMME DÉMO.
  *
  * Ce script ne crée AUCUNE information commerciale réelle : numéros de téléphone,
  * adresse et horaires restent vides (le propriétaire doit les saisir dans
@@ -100,7 +100,7 @@ const BRANDS = [
   { slug: 'karcher', name: 'Kärcher', description: 'Nettoyage haute pression.' },
   { slug: 'ingco', name: 'Ingco', description: 'Outillage et quincaillerie.' },
   { slug: 'dangote', name: 'Dangote', description: 'Ciment.' },
-  { slug: 'medi-pro', name: 'MeDi Pro', description: 'Sélection de la boutique MeDi.' },
+  { slug: 'medi-pro', name: 'MeDi Shop Pro', description: 'Sélection de la boutique MeDi Shop.' },
 ];
 
 const SUPPLIERS = [
@@ -194,7 +194,7 @@ async function ensurePlaceholderImage(params: { name: string; sku: string; index
     <text x="450" y="560" font-family="Helvetica, Arial, sans-serif" font-size="22"
       fill="${palette.text}" opacity="0.75" text-anchor="middle">Photo de démonstration — à remplacer</text>
     <text x="450" y="830" font-family="Helvetica, Arial, sans-serif" font-size="30" font-weight="800"
-      fill="${palette.text}" opacity="0.9" text-anchor="middle">MeDi</text>
+      fill="${palette.text}" opacity="0.9" text-anchor="middle">MeDi Shop</text>
   </svg>`;
 
   const buffer = await sharp(Buffer.from(svg))
@@ -219,12 +219,12 @@ function escapeXml(input: string) {
 }
 
 async function main() {
-  console.log('→ Données de démonstration MeDi');
+  console.log('→ Données de démonstration MeDi Shop');
 
   // Réglages boutique (aucune donnée commerciale inventée)
   await db
     .insert(storeSettings)
-    .values({ id: 1, storeName: 'MeDi', tagline: null, city: 'Daloa', country: "Côte d'Ivoire", waveMode: 'MANUAL', allowCod: false, allowPickup: true, allowLocalDelivery: true, lowStockThreshold: 5, reservationMinutes: 120 })
+    .values({ id: 1, storeName: 'MeDi Shop', tagline: null, city: 'Daloa', country: "Côte d'Ivoire", waveMode: 'MANUAL', allowCod: false, allowPickup: true, allowLocalDelivery: true, lowStockThreshold: 5, reservationMinutes: 120 })
     .onConflictDoNothing();
 
   // Catégories
@@ -370,8 +370,8 @@ async function main() {
   if (process.env.SEED_DEMO === '1') {
     const demoPassword = process.env.SEED_DEMO_PASSWORD ?? 'DemoMedi2026!';
     const accounts = [
-      { email: 'proprietaire@medi.demo', role: 'OWNER' as const, firstName: 'Propriétaire', lastName: 'MeDi (démo)' },
-      { email: 'admin@medi.demo', role: 'ADMIN' as const, firstName: 'Admin', lastName: 'MeDi (démo)' },
+      { email: 'proprietaire@medi.demo', role: 'OWNER' as const, firstName: 'Propriétaire', lastName: 'MeDi Shop (démo)' },
+      { email: 'admin@medi.demo', role: 'ADMIN' as const, firstName: 'Admin', lastName: 'MeDi Shop (démo)' },
       { email: 'stock@medi.demo', role: 'STOCK_MANAGER' as const, firstName: 'Gestion', lastName: 'Stock (démo)' },
       { email: 'commandes@medi.demo', role: 'ORDER_MANAGER' as const, firstName: 'Gestion', lastName: 'Commandes (démo)' },
       { email: 'client@medi.demo', role: 'CUSTOMER' as const, firstName: 'Client', lastName: 'Démonstration' },

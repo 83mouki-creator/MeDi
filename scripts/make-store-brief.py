@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Génère le dossier PDF de la boutique MeDi.
+"""Génère le dossier PDF de la boutique MeDi Shop.
 
     python3 scripts/make-store-brief.py
 
@@ -52,6 +52,9 @@ OUT = ROOT / "docs" / "MeDi-dossier-boutique.pdf"
 PUBLIC_OUT = ROOT / "public" / "dossier" / "dossier-boutique-medi.pdf"
 BUILD = ROOT / ".brief-build"
 LOGO_WHITE = ROOT / "public" / "brand" / "medi-logo-horizontal-blanc.png"
+# Proportions réelles du logo (il s'élargit quand le nom s'allonge).
+with Image.open(LOGO_WHITE) as _logo:
+    LOGO_WHITE_RATIO = _logo.size[1] / _logo.size[0]
 
 STORE_URL = "https://medi-daloa.vercel.app"
 GENERATED = "Novembre 2026"
@@ -74,7 +77,7 @@ INK = colors.HexColor("#1F2937")
 # Informations de la boutique, telles qu'enregistrées dans /admin/parametres
 # (voir scripts/store-config.ts et docs/ETAT-DU-PROJET.md).
 STORE = {
-    "name": "MeDi",
+    "name": "MeDi Shop",
     "sector": "Quincaillerie — outillage, plomberie, électricité, peinture",
     "city": "Daloa, Côte d'Ivoire",
     "hours": "Lundi au samedi : 7h30 – 18h00 · Dimanche : fermé",
@@ -231,7 +234,7 @@ class Brief(BaseDocTemplate):
         canv.line(doc.leftMargin, top, w - doc.rightMargin, top)
         canv.setFont("DejaVu-Bold", 8)
         canv.setFillColor(NAVY)
-        canv.drawString(doc.leftMargin, top + 3.5 * mm, "MeDi  ·  dossier de la boutique")
+        canv.drawString(doc.leftMargin, top + 3.5 * mm, "MeDi Shop  ·  dossier de la boutique")
         canv.setFont("DejaVu", 8)
         canv.setFillColor(GREY_LIGHT)
         canv.drawRightString(w - doc.rightMargin, top + 3.5 * mm, GENERATED)
@@ -248,10 +251,10 @@ class Brief(BaseDocTemplate):
 def cover(st: dict[str, ParagraphStyle]) -> list[Flowable]:
     story: list[Flowable] = []
     story.append(Spacer(1, 6 * mm))
-    story.append(RLImage(pil(LOGO_WHITE), width=58 * mm, height=58 * mm * 200 / 703))
+    story.append(RLImage(pil(LOGO_WHITE), width=64 * mm, height=64 * mm * LOGO_WHITE_RATIO))
     story.append(Spacer(1, 7 * mm))
     story.append(Paragraph("DOSSIER DE LA BOUTIQUE", st["cover_kicker"]))
-    story.append(Paragraph("Tout ce qu'il faut savoir<br/>sur MeDi en ligne", st["cover_title"]))
+    story.append(Paragraph("Tout ce qu'il faut savoir<br/>sur MeDi Shop en ligne", st["cover_title"]))
     story.append(Paragraph(
         "Comment la boutique fonctionne pour vos clients, comment l'équipe la fait vivre, "
         "et ce qu'il reste à mettre en place avant l'ouverture au public.",
@@ -331,7 +334,7 @@ def cover(st: dict[str, ParagraphStyle]) -> list[Flowable]:
     story.append(Rule(174 * mm))
     story.append(Spacer(1, 3.5 * mm))
     story.append(Paragraph(
-        "Document préparé pour la direction de MeDi. Les informations commerciales ci-dessus "
+        "Document préparé pour la direction de MeDi Shop. Les informations commerciales ci-dessus "
         "proviennent des réglages de la boutique et se modifient à tout moment dans "
         "<b>/admin/parametres</b>. Le QR code ouvre la version en ligne actuelle — il sera "
         "régénéré au nom de domaine définitif.",
@@ -890,8 +893,8 @@ def main() -> None:
         rightMargin=18 * mm,
         topMargin=20 * mm,
         bottomMargin=18 * mm,
-        title="MeDi — dossier de la boutique",
-        author="MeDi",
+        title="MeDi Shop — dossier de la boutique",
+        author="MeDi Shop",
         subject="Informations boutique, expérience client et étapes restantes",
         creator="scripts/make-store-brief.py",
     )

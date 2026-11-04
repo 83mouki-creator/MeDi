@@ -53,7 +53,7 @@ export default async function ActivationPage({
 
   return (
     <div className="container-page max-w-lg py-10">
-      <p className="mb-3 text-center text-sm font-extrabold tracking-tight text-navy-950">MeDi</p>
+      <p className="mb-3 text-center text-sm font-extrabold tracking-tight text-navy-950">MeDi Shop</p>
       <Card className="p-6">
         <h1 className="flex items-center gap-2 text-xl font-extrabold">
           <ShieldCheck className="size-5 text-accent-600" aria-hidden /> Créer le compte propriétaire
@@ -66,7 +66,7 @@ export default async function ActivationPage({
           Les actions sensibles (prix, stock, paiement, comptes) sont ensuite journalisées avec votre identité.
         </p>
         <div className="mt-5">
-          <AdminActivationForm token={token} defaultName="MeDi" />
+          <AdminActivationForm token={token} defaultName="MeDi Shop" />
         </div>
       </Card>
       <p className="mt-4 text-center text-xs text-navy-500">

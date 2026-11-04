@@ -7,7 +7,7 @@ import { AdminTopBar, type AdminNavItem } from '@/components/admin/admin-top-bar
 import { AdminI18nProvider } from '@/components/admin/admin-i18n';
 
 export const metadata: Metadata = {
-  title: 'Administration MeDi',
+  title: 'Administration MeDi Shop',
   robots: { index: false, follow: false },
 };
 
@@ -16,7 +16,7 @@ export const dynamic = 'force-dynamic';
 /** Libellé bilingue : la clé française sert de référence au dictionnaire. */
 const NAV: (AdminNavItem & { permission?: Permission })[] = [
   { href: '/admin', label: 'Accueil', hint: 'Ce qui se passe aujourd’hui', icon: 'dashboard' },
-  { href: '/admin/guide', label: 'Guide du site', hint: 'Comment utiliser MeDi, pas à pas', icon: 'guide' },
+  { href: '/admin/guide', label: 'Guide du site', hint: 'Comment utiliser MeDi Shop, pas à pas', icon: 'guide' },
   { href: '/admin/pret-a-vendre', label: 'Prêt à vendre', hint: 'Ce qui manque pour vendre', icon: 'ready', permission: 'settings.write' },
   { href: '/admin/commandes', label: 'Commandes', hint: 'Qui a commandé quoi', icon: 'orders', permission: 'orders.read' },
   { href: '/admin/messages', label: 'Messages des clients', hint: 'Questions et demandes', icon: 'messages', permission: 'messages.handle', badge: 'messages' },
@@ -54,7 +54,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     <AdminI18nProvider locale={locale}>
       <div lang={locale} dir={dir} className="relative min-h-dvh bg-slate-100">
         {/*
-          Logo MeDi en filigrane : il habille l'espace de gestion sans gêner la
+          Logo MeDi Shop en filigrane : il habille l'espace de gestion sans gêner la
           lecture (4 % d'opacité, jamais cliquable, jamais imprimé).
         */}
         <div

@@ -7,31 +7,31 @@ import { siteDir, siteHtmlLang } from '@/lib/i18n/site';
 export const metadata: Metadata = {
   metadataBase: new URL(env.appUrl),
   title: {
-    default: 'MeDi — Quincaillerie, outillage et équipement à Daloa',
-    template: '%s | MeDi',
+    default: 'MeDi Shop — Quincaillerie, outillage et équipement à Daloa',
+    template: '%s | MeDi Shop',
   },
   description:
-    'MeDi, votre quincaillerie à Daloa : outillage professionnel, matériaux de construction, équipement maison et électroménager. Paiement Wave, retrait en boutique et livraison.',
-  applicationName: 'MeDi',
+    'MeDi Shop, votre quincaillerie à Daloa : outillage professionnel, matériaux de construction, équipement maison et électroménager. Paiement Wave, retrait en boutique et livraison.',
+  applicationName: 'MeDi Shop',
   keywords: [
     'quincaillerie Daloa',
     'outillage Côte d’Ivoire',
     'matériaux construction Daloa',
     'électroménager Daloa',
-    'MeDi',
+    'MeDi Shop',
   ],
   openGraph: {
     type: 'website',
     locale: 'fr_CI',
-    siteName: 'MeDi',
-    title: 'MeDi — Quincaillerie, outillage et équipement à Daloa',
+    siteName: 'MeDi Shop',
+    title: 'MeDi Shop — Quincaillerie, outillage et équipement à Daloa',
     description:
       'Outillage professionnel, matériaux de construction et équipement de la maison. Commande en ligne, retrait à Daloa ou livraison.',
-    images: [{ url: '/brand/medi-og.png', width: 1200, height: 630, alt: 'MeDi — Daloa, Côte d’Ivoire' }],
+    images: [{ url: '/brand/medi-og.png', width: 1200, height: 630, alt: 'MeDi Shop — Daloa, Côte d’Ivoire' }],
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'MeDi — Quincaillerie, outillage et équipement à Daloa',
+    title: 'MeDi Shop — Quincaillerie, outillage et équipement à Daloa',
     description:
       'Outillage professionnel, matériaux de construction et équipement de la maison. Retrait à Daloa ou livraison.',
     images: ['/brand/medi-og.png'],

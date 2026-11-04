@@ -6,7 +6,7 @@ import { LegalPage, LegalSection } from '@/components/legal-page';
 
 export const metadata: Metadata = {
   title: 'Mentions légales',
-  description: 'Éditeur du site MeDi, hébergement et informations légales.',
+  description: 'Éditeur du site MeDi Shop, hébergement et informations légales.',
   alternates: { canonical: '/mentions-legales' },
 };
 
@@ -19,7 +19,7 @@ export default async function LegalNoticePage() {
   return (
     <LegalPage
       title="Mentions légales"
-      intro="Informations relatives à l’éditeur du site MeDi et à son hébergement."
+      intro="Informations relatives à l’éditeur du site MeDi Shop et à son hébergement."
     >
       <LegalSection title="Éditeur du site">
         <p>
@@ -65,7 +65,7 @@ export default async function LegalNoticePage() {
 
       <LegalSection title="Propriété intellectuelle">
         <p>
-          La marque, le logo, les textes et les photographies produits du site MeDi sont la propriété de la boutique ; toute
+          La marque, le logo, les textes et les photographies produits du site MeDi Shop sont la propriété de la boutique ; toute
           reproduction sans autorisation est interdite.
         </p>
         <p>

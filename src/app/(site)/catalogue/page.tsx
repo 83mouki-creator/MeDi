@@ -18,7 +18,7 @@ type SearchParams = Record<string, string | string[] | undefined>;
 export const metadata: Metadata = {
   title: 'Catalogue — outillage, construction, quincaillerie',
   description:
-    "Parcourez tout le catalogue MeDi : outillage industriel, matériel de construction, quincaillerie, électroménager et équipement de la maison à Daloa.",
+    "Parcourez tout le catalogue MeDi Shop : outillage industriel, matériel de construction, quincaillerie, électroménager et équipement de la maison à Daloa.",
   alternates: { canonical: '/catalogue' },
 };
 

@@ -1,5 +1,5 @@
 /**
- * Génération des fichiers de marque MeDi à partir du logo officiel.
+ * Génération des fichiers de marque MeDi Shop à partir du logo officiel.
  *
  *   npx tsx scripts/make-brand-assets.ts
  *
@@ -17,6 +17,12 @@
  * fond transparent, puis décline une version « fond sombre » où le bleu nuit
  * devient blanc (l'orange est conservé). Aucun autre traitement n'est appliqué
  * au dessin d'origine.
+ *
+ * Le logo fourni n'écrit que « MeDi ». Le mot « Shop » est ajouté à droite du
+ * mot d'origine à partir de son tracé vectoriel (scripts/brand/shop-wordmark.svg,
+ * produit par scripts/make-shop-wordmark.py) : même hauteur de capitale, même
+ * ligne de base, même couleur. Le nom écrit sur toutes les images de marque est
+ * donc « MeDi Shop ».
  */
 import { readFile, writeFile, mkdir } from 'node:fs/promises';
 import path from 'node:path';
@@ -24,6 +30,14 @@ import sharp from 'sharp';
 
 const BRAND_DIR = path.join(process.cwd(), 'public', 'brand');
 const SOURCE = path.join(BRAND_DIR, 'medi-logo-source.png');
+/** Tracé du mot « Shop » qui complète « MeDi » (voir scripts/make-shop-wordmark.py). */
+const SHOP_SVG = path.join(process.cwd(), 'scripts', 'brand', 'shop-wordmark.svg');
+/** Repères du tracé : marge de 40 unités, haut de capitale à y = 0, ligne de base à y = 705. */
+const SHOP_MARGIN_UNITS = 40;
+const SHOP_CAP_UNITS = 705;
+const SHOP_BOX_UNITS = 1095;
+/** Espace entre « MeDi » et « Shop », exprimé en hauteurs de capitale. */
+const SHOP_SPACE_RATIO = 222 / 705;
 
 /** Rend transparent tout ce qui est proche du blanc, sans toucher aux aplats. */
 function alphaFromWhite(data: Buffer): void {
@@ -66,7 +80,65 @@ async function rgbaOf(input: Buffer) {
 }
 
 /**
- * Trouve la ligne où couper le logo pour isoler l'emblème des mots « MeDi » :
+ * Hauteur de capitale et ligne de base d'un mot écrit en capitales pleines.
+ *
+ * Les lettres montantes (M, D) donnent le haut de capitale ; le point du « i »,
+ * plus court en largeur d'encre, est écarté par un seuil sur le nombre de pixels
+ * encrés par ligne. La ligne de base est la dernière ligne encrée.
+ */
+function capMetrics(data: Buffer, width: number, height: number) {
+  const ink = new Array<number>(height).fill(0);
+  for (let y = 0; y < height; y += 1) {
+    let count = 0;
+    for (let x = 0; x < width; x += 1) {
+      if (data[(y * width + x) * 4 + 3] > 24) count += 1;
+    }
+    ink[y] = count;
+  }
+  const max = Math.max(...ink);
+  const threshold = max * 0.35;
+  let capTop = 0;
+  while (capTop < height && ink[capTop] < threshold) capTop += 1;
+  let baseline = height - 1;
+  while (baseline > 0 && ink[baseline] === 0) baseline -= 1;
+  return { capTop, baseline, cap: baseline - capTop + 1 };
+}
+
+/**
+ * Complète le mot du logo (« MeDi ») par le mot « Shop » : collé à droite, à la
+ * même ligne de base et à la même hauteur de capitale, dans la couleur du logo.
+ */
+async function appendShop(wordmark: Buffer) {
+  const base = await rgbaOf(wordmark);
+  const { capTop, baseline, cap } = capMetrics(base.data, base.info.width, base.info.height);
+
+  const space = Math.round(cap * SHOP_SPACE_RATIO);
+  const shopHeight = Math.round((cap * SHOP_BOX_UNITS) / SHOP_CAP_UNITS);
+  const shopPng = await sharp(await readFile(SHOP_SVG), { density: 600 })
+    .resize({ height: shopHeight })
+    .png()
+    .toBuffer();
+  const shopMeta = await sharp(shopPng).metadata();
+  const shopScale = shopHeight / SHOP_BOX_UNITS;
+
+  const shopTop = capTop - Math.round(SHOP_MARGIN_UNITS * shopScale);
+  const width = base.info.width + space + (shopMeta.width ?? 0);
+  // Le mot ajouté descend sous la ligne de base (jambage du « p »).
+  const height = Math.max(base.info.height, shopTop + shopHeight);
+  const composed = await sharp({
+    create: { width, height, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0 } },
+  })
+    .composite([
+      { input: wordmark, top: 0, left: 0 },
+      { input: shopPng, top: shopTop, left: base.info.width + space },
+    ])
+    .png()
+    .toBuffer();
+  return { image: composed, width, height, base, capTop, baseline, cap };
+}
+
+/**
+ * Trouve la ligne où couper le logo pour isoler l'emblème des mots « MeDi Shop » :
  * plus grande bande horizontale sans encre entre 45 % et 92 % de la hauteur.
  */
 async function findEmblemCut(data: Buffer, width: number, height: number): Promise<number> {
@@ -115,23 +187,7 @@ async function main() {
   const alphaData = Buffer.from(trimmedData);
   alphaFromWhite(alphaData);
 
-  // 2. Logo fond clair (fond déjà transparent).
-  const light = sharp(alphaData, { raw: { ...size, channels: 4 } });
-  await light
-    .clone()
-    .resize({ width: 900, withoutEnlargement: true })
-    .png({ compressionLevel: 9 })
-    .toFile(path.join(BRAND_DIR, 'medi-logo.png'));
-
-  // 3. Logo fond sombre.
-  const darkData = Buffer.from(alphaData);
-  recolorForDarkBackground(darkData);
-  await sharp(darkData, { raw: { ...size, channels: 4 } })
-    .resize({ width: 900, withoutEnlargement: true })
-    .png({ compressionLevel: 9 })
-    .toFile(path.join(BRAND_DIR, 'medi-logo-blanc.png'));
-
-  // 4. Icône carrée : emblème seul (sans les mots « MeDi »), sur fond bleu nuit.
+  // 2. Icône carrée : emblème seul (sans les mots « MeDi Shop »), sur fond bleu nuit.
   //    La coupure est détectée automatiquement sur la plus grande bande
   //    horizontalement vide de la moitié basse du logo.
   const cut = await findEmblemCut(alphaData, info.width, info.height);
@@ -169,15 +225,16 @@ async function main() {
     .png()
     .toFile(path.join(BRAND_DIR, 'favicon-32.png'));
 
-  // 5. Versions horizontales : emblème à gauche, « MeDi » à droite.
+  // 3. Versions horizontales : emblème à gauche, « MeDi Shop » à droite.
   //    (Le logo fourni est empilé ; l'en-tête du site a besoin d'un format large.)
   const wordmark = await sharp(alphaData, { raw: { ...size, channels: 4 } })
     .extract({ left: 0, top: cut, width: info.width, height: info.height - cut })
     .png()
     .toBuffer();
   const wordmarkTrimmed = await sharp(wordmark).trim({ threshold: 12 }).toBuffer();
-  const wordmarkData = await rgbaOf(wordmarkTrimmed);
-  const wordmarkAlpha = Buffer.from(wordmarkData.data);
+  // Le logo fourni n'écrit que « MeDi » : on ajoute « Shop » à sa droite.
+  const wordmarkShop = await appendShop(wordmarkTrimmed);
+  const WORDMARK_H = wordmarkShop.base.info.height;
 
   const LOCKUP_EMBLEM_H = 200;
   const LOCKUP_WORD_H = 104;
@@ -187,8 +244,10 @@ async function main() {
     .png()
     .toBuffer();
   const emblemLockupMeta = await sharp(emblemForLockup).metadata();
-  const wordLight = await sharp(wordmarkAlpha, { raw: { ...wordmarkData.info, channels: 4 } })
-    .resize({ height: LOCKUP_WORD_H, fit: 'inside' })
+  // Le mot d'origine garde sa hauteur d'avant ; « Shop » et son jambage suivent.
+  const wordScale = LOCKUP_WORD_H / WORDMARK_H;
+  const wordLight = await sharp(wordmarkShop.image)
+    .resize({ height: Math.round(wordmarkShop.height * wordScale), fit: 'inside' })
     .png()
     .toBuffer();
   const wordLightMeta = await sharp(wordLight).metadata();
@@ -202,7 +261,8 @@ async function main() {
       { input: emblemForLockup, top: 0, left: 0 },
       {
         input: wordLight,
-        top: Math.round((lockupHeight - (wordLightMeta.height ?? 0)) / 2),
+        // Haut du mot aligné comme avant : c'est le jambage du « p » qui descend.
+        top: Math.round((lockupHeight - LOCKUP_WORD_H) / 2),
         left: (emblemLockupMeta.width ?? 0) + LOCKUP_GAP,
       },
     ])
@@ -218,7 +278,7 @@ async function main() {
     .toBuffer();
   await writeFile(path.join(BRAND_DIR, 'medi-logo-horizontal-blanc.png'), lockupRight);
 
-  // 6. Image de partage (Open Graph / Twitter) : logo blanc sur bleu nuit.
+  // 4. Image de partage (Open Graph / Twitter) : logo blanc sur bleu nuit.
   const ogLogo = await sharp(lockupRight)
     .resize({ width: 720, fit: 'inside' })
     .png()
@@ -230,11 +290,68 @@ async function main() {
     .png({ compressionLevel: 9 })
     .toFile(path.join(BRAND_DIR, 'medi-og.png'));
 
+  // 5. Versions empilées (documents, e-mails) : emblème au-dessus, « MeDi Shop » dessous.
+  //    Le mot complet est réduit à la largeur de l'emblème pour rester équilibré.
+  const emblemStackMeta = await sharp(emblemTrimmed).metadata();
+  const stackEmblemW = emblemStackMeta.width ?? 0;
+  const stackEmblemH = emblemStackMeta.height ?? 0;
+  const stackWordW = Math.min(stackEmblemW, wordmarkShop.width);
+  const stackWordH = Math.round((wordmarkShop.height * stackWordW) / wordmarkShop.width);
+  const stackWord = await sharp(wordmarkShop.image)
+    .resize({ width: stackWordW, height: stackWordH, fit: 'inside' })
+    .png()
+    .toBuffer();
+  const stackWordMeta = await sharp(stackWord).metadata();
+
+  // Espace vertical entre l'emblème et le mot, repris du logo fourni.
+  const rowHasInk = (y: number) => {
+    for (let x = 0; x < info.width; x += 1) {
+      if (alphaData[(y * info.width + x) * 4 + 3] > 24) return true;
+    }
+    return false;
+  };
+  let gapFrom = cut - 1;
+  while (gapFrom > 0 && !rowHasInk(gapFrom)) gapFrom -= 1;
+  let gapTo = cut;
+  while (gapTo < info.height - 1 && !rowHasInk(gapTo)) gapTo += 1;
+  const stackGap = Math.max(0, gapTo - gapFrom - 1);
+
+  const stackWidth = Math.max(stackEmblemW, stackWordW);
+  const stackHeight = stackEmblemH + stackGap + (stackWordMeta.height ?? stackWordH);
+  const stacked = await sharp({
+    create: { width: stackWidth, height: stackHeight, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0 } },
+  })
+    .composite([
+      { input: emblemTrimmed, top: 0, left: Math.round((stackWidth - stackEmblemW) / 2) },
+      {
+        input: stackWord,
+        top: stackEmblemH + stackGap,
+        left: Math.round((stackWidth - (stackWordMeta.width ?? stackWordW)) / 2),
+      },
+    ])
+    .png()
+    .toBuffer();
+
+  await sharp(stacked)
+    .resize({ width: 900, withoutEnlargement: true })
+    .png({ compressionLevel: 9 })
+    .toFile(path.join(BRAND_DIR, 'medi-logo.png'));
+
+  const stackedData = await rgbaOf(stacked);
+  const stackedDark = Buffer.from(stackedData.data);
+  recolorForDarkBackground(stackedDark);
+  await sharp(stackedDark, { raw: { ...stackedData.info, channels: 4 } })
+    .resize({ width: 900, withoutEnlargement: true })
+    .png({ compressionLevel: 9 })
+    .toFile(path.join(BRAND_DIR, 'medi-logo-blanc.png'));
+
   await writeFile(
     path.join(BRAND_DIR, 'SOURCE.txt'),
     [
       'Fichiers générés par scripts/make-brand-assets.ts à partir de medi-logo-source.png.',
       'Ne pas éditer à la main : relancer le script après remplacement du logo source.',
+      'Le mot « Shop » est ajouté au mot d\'origine depuis scripts/brand/shop-wordmark.svg',
+      '(tracé produit par scripts/make-shop-wordmark.py) : toutes ces images écrivent « MeDi Shop ».',
       '',
       'medi-logo.png                  → logo empilé, fond clair (documents, e-mails)',
       'medi-logo-blanc.png            → logo empilé, fond sombre',

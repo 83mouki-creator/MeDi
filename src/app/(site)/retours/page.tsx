@@ -13,7 +13,7 @@ import { PurchaseNotice } from '@/components/purchase-notice';
 export const metadata: Metadata = {
   title: 'Retours, échanges et garanties',
   description:
-    'Règle MeDi : une fois le produit livré, ni remboursement, ni échange. Ce qui reste possible avant la remise, et comment joindre le service client.',
+    'Règle MeDi Shop : une fois le produit livré, ni remboursement, ni échange. Ce qui reste possible avant la remise, et comment joindre le service client.',
   alternates: { canonical: '/retours' },
 };
 

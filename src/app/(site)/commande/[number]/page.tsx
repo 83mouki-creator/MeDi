@@ -186,7 +186,7 @@ export default async function OrderConfirmationPage({ params, searchParams }: Pr
           <Card className="p-4 text-sm">
             <h2 className="flex items-center gap-2 font-bold"><MapPin className="size-4 text-accent-600" aria-hidden /> {t('Où retirer ?')}</h2>
             <p className="mt-1 text-xs text-navy-600">
-              {t('Boutique MeDi — {city}', { city: settings.city })}
+              {t('Boutique MeDi Shop — {city}', { city: settings.city })}
             </p>
             <p className="text-xs font-semibold text-navy-800" dir="ltr">{location.dms}</p>
             <p className="mt-1 text-xs text-navy-600">
@@ -216,7 +216,7 @@ export default async function OrderConfirmationPage({ params, searchParams }: Pr
             (() => {
               const link = whatsappWithMessage(
                 settings,
-                t('Bonjour MeDi, je souhaite convenir du prix du transport pour ma commande {number} à destination de {city}.', {
+                t('Bonjour MeDi Shop, je souhaite convenir du prix du transport pour ma commande {number} à destination de {city}.', {
                   number: order.number,
                   city: order.city,
                 }),

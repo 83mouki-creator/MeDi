@@ -2,7 +2,7 @@
   "name": "medi",
   "version": "1.0.0",
   "private": true,
-  "description": "MeDi — plateforme e-commerce quincaillerie, industrie, bâtiment et équipement domestique à Daloa (Côte d'Ivoire)",
+  "description": "MeDi Shop — plateforme e-commerce quincaillerie, industrie, bâtiment et équipement domestique à Daloa (Côte d'Ivoire)",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

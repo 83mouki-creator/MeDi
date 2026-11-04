@@ -196,7 +196,7 @@ export function AdminTopBar({
           </button>
 
           <Link href="/admin" className="flex items-baseline gap-2 text-sm font-extrabold tracking-tight">
-            {t('MeDi')} <span className="hidden font-normal text-navy-300 sm:inline">/ {t('Administration')}</span>
+            {t('MeDi Shop')} <span className="hidden font-normal text-navy-300 sm:inline">/ {t('Administration')}</span>
           </Link>
 
           <span className="hidden rounded-full bg-accent-500/15 px-2 py-0.5 text-[11px] font-semibold text-accent-200 md:inline">

@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
     title: category.metaTitle ?? `${category.name} à Daloa`,
     description:
       category.metaDescription ??
-      `Découvrez notre sélection ${category.name.toLowerCase()} chez MeDi, boutique à Daloa. Retrait en boutique, livraison à Daloa, expédition en Côte d'Ivoire.`,
+      `Découvrez notre sélection ${category.name.toLowerCase()} chez MeDi Shop, boutique à Daloa. Retrait en boutique, livraison à Daloa, expédition en Côte d'Ivoire.`,
     alternates: { canonical: `/categorie/${category.slug}` },
   };
 }

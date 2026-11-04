@@ -9,9 +9,9 @@ import { getSiteI18n } from '@/lib/i18n/site-server';
 import { PICKUP_HOLD_HOURS } from '@/lib/store-policy';
 
 export const metadata: Metadata = {
-  title: 'Nous trouver — boutique MeDi à Daloa',
+  title: 'Nous trouver — boutique MeDi Shop à Daloa',
   description:
-    'Adresse exacte de la boutique MeDi à Daloa : 6°53’04.4″N 6°26’50.9″W. Carte, itinéraire Google Maps, horaires et téléphone pour venir retirer votre commande.',
+    'Adresse exacte de la boutique MeDi Shop à Daloa : 6°53’04.4″N 6°26’50.9″W. Carte, itinéraire Google Maps, horaires et téléphone pour venir retirer votre commande.',
   alternates: { canonical: '/nous-trouver' },
 };
 
@@ -23,7 +23,7 @@ export default async function FindUsPage() {
   const point = location.point;
   const whatsapp = whatsappLink(
     settings,
-    'Bonjour MeDi, je voudrais l’emplacement exact de la boutique à Daloa pour venir la visiter.',
+    'Bonjour MeDi Shop, je voudrais l’emplacement exact de la boutique à Daloa pour venir la visiter.',
   );
 
   const structuredData = {
@@ -48,7 +48,7 @@ export default async function FindUsPage() {
 
       <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">{t('Nous trouver')}</h1>
       <p className="mt-2 text-sm text-navy-600">
-        {t('La boutique MeDi se trouve à {city}, {country}. Voici l’adresse exacte : ouvrez-la dans Google Maps et laissez-vous guider.', {
+        {t('La boutique MeDi Shop se trouve à {city}, {country}. Voici l’adresse exacte : ouvrez-la dans Google Maps et laissez-vous guider.', {
           city: location.city,
           country: location.country,
         })}

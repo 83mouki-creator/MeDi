@@ -16,7 +16,7 @@ export default async function RegisterPage() {
   return (
     <div className="container-page flex max-w-xl flex-col justify-center py-10">
       <Card className="p-6">
-        <h1 className="text-xl font-extrabold">{t('Créer un compte MeDi')}</h1>
+        <h1 className="text-xl font-extrabold">{t('Créer un compte MeDi Shop')}</h1>
         <p className="mt-1 text-sm text-navy-600">
           {t('Retrouvez vos commandes, vos adresses et vos références de paiement. La commande sans compte reste possible.')}
         </p>

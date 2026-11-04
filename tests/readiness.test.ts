@@ -52,7 +52,7 @@ function readySnapshot(): ReadinessSnapshot {
       hasCoordinates: true,
       openingHours: 'Lundi – Samedi, 8 h – 18 h',
       waveNumber: '+225 07 00 00 00 00',
-      waveMerchantName: 'MeDi',
+      waveMerchantName: 'MeDi Shop',
       legalNotice: 'RCCM CI-DAL-2024-B-1234 — NCC 1234567 A',
       allowPickup: true,
       allowLocalDelivery: true,

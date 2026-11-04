@@ -10,7 +10,7 @@ import { storeLocation } from '@/lib/store-location';
 export const metadata: Metadata = {
   title: 'Contact et service client',
   description:
-    'Contactez MeDi à Daloa : question sur un produit, disponibilité, suivi de commande, facture ou demande de devis.',
+    'Contactez MeDi Shop à Daloa : question sur un produit, disponibilité, suivi de commande, facture ou demande de devis.',
   alternates: { canonical: '/contact' },
 };
 

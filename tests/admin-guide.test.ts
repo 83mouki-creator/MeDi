@@ -16,7 +16,7 @@ import { translate } from '@/lib/i18n/admin';
 import { ORDER_STATUS_LABELS } from '@/lib/order-status';
 
 /**
- * Le guide « Comment utiliser le site MeDi » vit dans `/admin/guide`.
+ * Le guide « Comment utiliser le site MeDi Shop » vit dans `/admin/guide`.
  *
  * La page passe ses textes à `t()` de façon dynamique : un simple scan du code
  * ne verrait pas les phrases. Ces tests lisent donc directement les données du

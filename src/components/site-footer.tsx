@@ -69,7 +69,7 @@ export async function SiteFooter() {
 
       <div className="container-page grid gap-8 py-10 sm:grid-cols-2 lg:grid-cols-4">
         <div>
-          <Image src="/brand/medi-logo-horizontal-blanc.png" alt="MeDi" width={703} height={200} className="h-12 w-auto" />
+          <Image src="/brand/medi-logo-horizontal-blanc.png" alt="MeDi Shop" width={1069} height={200} className="h-10 w-auto sm:h-12" />
           <p className="mt-4 max-w-xs text-sm leading-relaxed">
             {settings.tagline ??
               t('Quincaillerie, outillage industriel, matériel de construction et équipement de la maison à Daloa.')}
@@ -184,7 +184,7 @@ export async function SiteFooter() {
 
       <div className="border-t border-navy-800">
         <div className="container-page flex flex-col gap-2 py-5 text-xs text-navy-400 sm:flex-row sm:items-center sm:justify-between">
-          <p>© {new Date().getFullYear()} MeDi — Daloa, {t('Côte d’Ivoire')}. {t('Tous droits réservés.')}</p>
+          <p>© {new Date().getFullYear()} MeDi Shop — Daloa, {t('Côte d’Ivoire')}. {t('Tous droits réservés.')}</p>
           <p className="flex flex-wrap gap-x-4 gap-y-1">
             <Link href="/cgv" className="hover:text-white">{t('CGV')}</Link>
             <Link href="/confidentialite" className="hover:text-white">{t('Confidentialité')}</Link>

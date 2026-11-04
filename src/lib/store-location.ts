@@ -98,7 +98,7 @@ export function transportQuoteMessage(params: {
   phone?: string;
 }): string {
   const lines = [
-    `Bonjour MeDi, je souhaite faire livrer une commande hors Daloa (${params.city}).`,
+    `Bonjour MeDi Shop, je souhaite faire livrer une commande hors Daloa (${params.city}).`,
     'Pouvez-vous me donner le prix du transport et le délai ?',
   ];
   if (params.orderNumber) lines.push(`Commande : ${params.orderNumber}`);
@@ -121,6 +121,6 @@ export function transportQuoteMessage(params: {
 /** Message pour demander un délai de retrait ou signaler un empêchement. */
 export function pickupMessage(orderNumber?: string): string {
   return orderNumber
-    ? `Bonjour MeDi, je viens au sujet de ma commande ${orderNumber} à retirer en boutique.`
-    : 'Bonjour MeDi, je souhaite retirer un colis en boutique.';
+    ? `Bonjour MeDi Shop, je viens au sujet de ma commande ${orderNumber} à retirer en boutique.`
+    : 'Bonjour MeDi Shop, je souhaite retirer un colis en boutique.';
 }

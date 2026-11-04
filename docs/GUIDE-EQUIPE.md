@@ -1,4 +1,4 @@
-# Guide de l'équipe — comment utiliser le site MeDi
+# Guide de l'équipe — comment utiliser le site MeDi Shop
 
 Ce guide existe en deux endroits :
 
@@ -14,7 +14,7 @@ j'ouvre le site ce matin ?*
 
 ## 1. Comprendre le site en une minute
 
-Le site MeDi sert à deux choses : montrer les produits aux clients, et dire à
+Le site MeDi Shop sert à deux choses : montrer les produits aux clients, et dire à
 l'équipe exactement ce qu'il faut préparer.
 
 1. **Le client choisit et commande.** Il parcourt le catalogue, met des articles

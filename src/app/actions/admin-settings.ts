@@ -51,7 +51,7 @@ export async function saveSettingsAction(_prev: SettingsState, formData: FormDat
   if (coordinates.status === 'invalid') return { error: `Géolocalisation invalide : ${coordinates.message}` };
 
   const values = {
-    storeName: String(formData.get('storeName') ?? 'MeDi').trim() || 'MeDi',
+    storeName: String(formData.get('storeName') ?? 'MeDi Shop').trim() || 'MeDi Shop',
     tagline: optional(formData.get('tagline')),
     phone,
     whatsapp,

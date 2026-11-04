@@ -15,9 +15,9 @@ import { PICKUP_HOLD_HOURS, OUTSIDE_DALOA_MAX_DAYS, FINAL_SALE_NOTICE_SHORT } fr
 import { DALOA_NEIGHBOURHOOD_COUNT } from '@/lib/daloa';
 
 export const metadata: Metadata = {
-  title: 'MeDi — Quincaillerie, outillage et équipement à Daloa',
+  title: 'MeDi Shop — Quincaillerie, outillage et équipement à Daloa',
   description:
-    'Trouvez l’outillage professionnel, les matériaux de construction et l’équipement de la maison chez MeDi à Daloa. Prix en FCFA, stock réel, retrait en boutique, livraison à Daloa et expédition dans toute la Côte d’Ivoire.',
+    'Trouvez l’outillage professionnel, les matériaux de construction et l’équipement de la maison chez MeDi Shop à Daloa. Prix en FCFA, stock réel, retrait en boutique, livraison à Daloa et expédition dans toute la Côte d’Ivoire.',
   alternates: { canonical: '/' },
 };
 
@@ -122,7 +122,7 @@ export default async function HomePage() {
   const location = storeLocation(settings);
   const whatsappHref = whatsappWithMessage(
     settings,
-    'Bonjour MeDi, je souhaite des informations sur un produit.',
+    'Bonjour MeDi Shop, je souhaite des informations sur un produit.',
   );
 
   return (
@@ -131,7 +131,7 @@ export default async function HomePage() {
       <section className="relative isolate overflow-hidden bg-navy-950 text-white">
         <Image
           src="/brand/fond-quincaillerie.jpg"
-          alt={t('Intérieur de la quincaillerie MeDi à Daloa : outils et matériaux rangés en rayon')}
+          alt={t('Intérieur de la quincaillerie MeDi Shop à Daloa : outils et matériaux rangés en rayon')}
           fill
           priority
           sizes="100vw"
@@ -284,7 +284,7 @@ export default async function HomePage() {
 
       {featured.length > 0 ? (
         <Section
-          title={t('Sélection MeDi')}
+          title={t('Sélection MeDi Shop')}
           subtitle={t('Les références mises en avant par la boutique, disponibles immédiatement.')}
           href="/catalogue"
           products={featured}
@@ -420,7 +420,7 @@ export default async function HomePage() {
           <p className="flex items-start gap-2 text-sm text-navy-800">
             <MapPin className="mt-0.5 size-4 shrink-0 text-accent-600" aria-hidden />
             <span>
-              <strong>{t('Boutique MeDi')}</strong> — {location.addressLine},{' '}
+              <strong>{t('Boutique MeDi Shop')}</strong> — {location.addressLine},{' '}
               <span className="ltr-inline font-mono" dir="ltr">
                 {location.dms}
               </span>

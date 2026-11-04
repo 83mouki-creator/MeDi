@@ -16,7 +16,7 @@ export type RoleOption = { value: string; label: string; description: string; ho
  * Création d'un agent par un administrateur.
  *
  * Il n'y a **pas** de mot de passe ici : l'administrateur saisit l'identité, le
- * téléphone ivoirien et la tâche ; MeDi génère un code à usage unique, l'envoie
+ * téléphone ivoirien et la tâche ; MeDi Shop génère un code à usage unique, l'envoie
  * par WhatsApp et l'affiche une seule fois pour transmission manuelle.
  */
 export function StaffForm({ roles }: { roles: RoleOption[] }) {

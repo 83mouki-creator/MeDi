@@ -1,5 +1,5 @@
 /**
- * Création d'un compte administrateur MeDi.
+ * Création d'un compte administrateur MeDi Shop.
  *
  * Aucun compte administrateur n'est créé par les migrations, et aucun mot de passe
  * par défaut n'existe. Le mot de passe est saisi en interactif (ou fourni par
