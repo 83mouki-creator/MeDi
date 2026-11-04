@@ -63,8 +63,14 @@ export default async function PrivacyPage() {
 
       <LegalSection title="Durées de conservation">
         <ul className="list-disc space-y-1 ps-5">
-          <li>Compte client : tant que le compte est actif, puis suppression sur demande.</li>
-          <li>Commandes et factures : conservées pendant la durée légale applicable à la comptabilité ivoirienne.</li>
+          <li>
+            Compte client : tant que le compte est actif, puis suppression immédiate depuis la page{' '}
+            <Link href="/supprimer-mon-compte" className="font-medium text-accent-700 underline">supprimer mon compte</Link>.
+          </li>
+          <li>
+            Commandes et factures : conservées pendant la durée légale applicable à la comptabilité ivoirienne, même si le compte
+            client est supprimé (la commande n’est alors plus rattachée à un compte).
+          </li>
           <li>Demandes d’aide : le temps nécessaire au traitement, puis archivage limité.</li>
           <li>Journaux de sécurité : durée limitée, proportionnée à la finalité de sécurité.</li>
         </ul>
@@ -84,9 +90,9 @@ export default async function PrivacyPage() {
       <LegalSection title="Vos droits">
         <p>
           Vous pouvez demander l’accès à vos données, leur rectification, leur effacement lorsque la loi le permet, la limitation
-          du traitement, et vous opposer à certains usages. Écrivez à{' '}
-          utilisez la page <Link href="/contact" className="font-medium text-accent-700 underline">contact</Link> ou écrivez-nous
-          sur WhatsApp au numéro affiché en bas de page.
+          du traitement, et vous opposer à certains usages. Utilisez la page{' '}
+          <Link href="/contact" className="font-medium text-accent-700 underline">contact</Link> ou écrivez-nous sur WhatsApp au
+          numéro affiché en bas de page.
         </p>
         <p>
           En cas de difficulté persistante, vous pouvez saisir l’Autorité de régulation des télécommunications de Côte d’Ivoire

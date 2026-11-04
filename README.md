@@ -120,3 +120,7 @@ public/brand/          identité visuelle (logo horizontal, favicon carré)
 5. **Aucune donnée commerciale inventée** : ce qui manque est signalé comme à compléter, jamais simulé.
 6. **Isolation des données** : un client n'accède qu'à ses propres commandes, adresses et
    informations ; le suivi par numéro exige un jeton ou le compte propriétaire.
+7. **Suppression de compte en libre-service** : le client supprime son compte lui-même depuis
+   `/compte/supprimer` (page publique de renvoi : `/supprimer-mon-compte`, à déclarer dans la Play
+   Console). Le compte, le mot de passe, les adresses et les sessions sont effacés ; les commandes
+   passées restent en comptabilité, détachées du compte (`orders.user_id` → `NULL`).

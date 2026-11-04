@@ -181,6 +181,7 @@ adb install -r app-release-signed.apk
    - au moins 2 captures d'écran de téléphone ;
    - description courte (80 caractères) et complète (4 000 caractères) ;
    - politique de confidentialité : `https://medi-daloa.vercel.app/confidentialite` ;
+   - page de suppression de compte : `https://medi-daloa.vercel.app/supprimer-mon-compte` ;
    - **un compte client de démonstration** pour l'équipe de revue (jamais le
      compte propriétaire).
 3. **Créer l'application** : nom `MeDi Shop`, langue `Français (France)`, type
@@ -212,11 +213,41 @@ adb install -r app-release-signed.apk
 
 ---
 
-## 8. Ce qui reste à faire côté site
+## 8. Suppression de compte (obligatoire pour Google Play)
 
-- **Suppression de compte** : Google refuse une application qui permet de créer un
-  compte sans offrir un moyen de le supprimer. Il faut une page (par exemple
-  `/compte/supprimer`) et son lien dans la fiche Play. **Pas encore présente.**
+Google refuse une application qui permet de **créer** un compte sans offrir un
+moyen de le **supprimer** : la suppression doit se faire dans l'application et
+depuis une page web accessible sans installer l'application.
+
+C'est en place :
+
+| Page | Rôle |
+| --- | --- |
+| `/supprimer-mon-compte` | page publique (sans connexion) à déclarer dans la Play Console |
+| `/supprimer-mon-compte/confirmation` | message affiché après la suppression |
+| `/compte/supprimer` | suppression elle-même (connecté, depuis le site ou l'app) |
+
+Ce que fait la suppression : efface le compte, le mot de passe, les adresses
+enregistrées et **toutes les sessions** (l'utilisateur est déconnecté partout).
+Les commandes déjà passées restent dans la comptabilité, détachées du compte
+(`orders.user_id` passe à `NULL`) : elles servent de justificatif de vente et de
+garantie. Chaque suppression écrit une ligne `account.deleted` dans le journal,
+**sans** nom, e-mail ni téléphone.
+
+Dans la Play Console, rubrique **Sécurité des données → Suppression de compte**,
+indiquer :
+
+- URL de la demande de suppression :
+  `https://medi-daloa.vercel.app/supprimer-mon-compte`
+- Données supprimées : nom, e-mail, téléphone, mot de passe, adresses.
+- Données conservées : historique de commandes (obligations comptables et
+  garanties), détaché du compte.
+
+Un compte du personnel ne peut pas s'auto-supprimer : la suppression d'un agent
+se fait dans `/admin/utilisateurs`, par un compte de niveau supérieur.
+
+## 9. Ce qui reste à faire côté site
+
 - **Feature graphic** 1024 × 500 : à dessiner (logo sur fond bleu nuit).
 - **Captures d'écran** : à faire sur un téléphone.
 - **Domaine propre** (recommandé) : `medi-daloa.vercel.app` fonctionne, mais un
@@ -225,7 +256,7 @@ adb install -r app-release-signed.apk
 
 ---
 
-## 9. Après le TWA : fonctions natives (optionnel)
+## 10. Après le TWA : fonctions natives (optionnel)
 
 Passer à **Capacitor** seulement si un besoin natif apparaît :
 
@@ -242,7 +273,82 @@ Pour le reste, la TWA suffit : elle est plus simple, plus légère et gratuite.
 
 ---
 
-## 10. Pièges connus
+## 11. Travailler depuis un téléphone (sans ordinateur)
+
+Deux besoins très différents :
+
+| Besoin | Faisable sur Android ? | Comment |
+| --- | --- | --- |
+| Modifier le site, les fiches produits, les commandes | **oui, intégralement** | navigateur du téléphone → `/admin` |
+| `git`, `npm`, `keytool`, `npm run assetlinks` | **oui** | **Termux** (terminal Linux sous Android) |
+| Fabriquer l'AAB (`bubblewrap build`) | **non** | il faut un ordinateur, ou GitHub Actions |
+
+### 10.1 Administration dans l'application
+
+L'application Android est une *Trusted Web Activity* : elle affiche le même site,
+avec la même session. Se connecter avec un compte `OWNER` ou un rôle du personnel
+ouvre `/admin` dans l'application, sans rien coder de plus.
+
+Différences à connaître en `standalone` (sans barre d'adresse) :
+
+- plus de bouton « retour » du navigateur : le header de l'administration et le
+  bouton retour d'Android suffisent ;
+- l'**impression des bons A4** est plus fiable dans Chrome : ouvrir alors
+  `/admin` depuis Chrome (menu ⋮ → « Ouvrir dans le navigateur ») ;
+- l'écran est petit : l'administration au téléphone sert à **consulter** et à
+  répondre vite ; la saisie lourde (catalogue, import, comptabilité) reste plus
+  confortable sur ordinateur.
+
+Aucun raccourci « Administration » n'est mis dans le manifeste : l'accès se fait
+par la connexion normale, et l'icône de l'application reste celle de la boutique.
+
+### 10.2 Terminal sur Android (Termux)
+
+Installer **Termux** (F-Droid ou Play Store), puis :
+
+```bash
+pkg update && pkg upgrade
+pkg install git nodejs-lts openjdk-17
+git clone https://github.com/83mouki-creator/MeDi.git
+cd MeDi
+npm install
+```
+
+Utile pour : `git pull` / `git push`, `npm run assetlinks`, et **générer le
+keystore** une seule fois :
+
+```bash
+keytool -genkeypair -v -keystore android.keystore -alias medi \
+  -keyalg RSA -keysize 2048 -validity 10000 \
+  -storetype JKS -dname "CN=MeDi Shop, OU=Daloa, O=MeDi Shop, L=Daloa, C=CI"
+keytool -list -v -keystore android.keystore -alias medi | grep SHA256
+```
+
+Le fichier `android.keystore` doit être sauvegardé (cloud, clé USB) : **sans lui,
+impossible de publier une mise à jour** de l'application.
+
+### 10.3 Fabriquer l'AAB sans ordinateur (GitHub Actions)
+
+`bubblewrap` a besoin du SDK Android, de Gradle et de `aapt2` : cela ne tourne
+pas sous Termux. La solution est de faire compiler par GitHub, depuis le
+navigateur du téléphone :
+
+1. pousser le dossier `android/` (créé par `bubblewrap init`) dans le dépôt ;
+2. ajouter le keystore en secret : *Settings → Secrets and variables → Actions*,
+   secret `ANDROID_KEYSTORE_BASE64` = contenu de `android.keystore` encodé en
+   base64 (`base64 -w0 android.keystore`), plus `KEYSTORE_PASSWORD` et
+   `KEY_PASSWORD` ;
+3. lancer un workflow `ubuntu-latest` qui exécute `bubblewrap build` puis dépose
+   `app-release-bundle.aab` et `app-release-signed.apk` en artefacts ;
+4. télécharger l'AAB depuis la page du workflow et le déposer dans la Play
+   Console (gestion des versions → nouveau test fermé).
+
+Tout se pilote alors depuis le navigateur du téléphone : GitHub, Play Console et
+Vercel ont chacun une interface mobile complète.
+
+---
+
+## 12. Pièges connus
 
 1. Empreinte SHA-256 absente ou erronée → barre d'adresse visible.
 2. Empreinte **Play App Signing** oubliée → l'app marche en test, casse en

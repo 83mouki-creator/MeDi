@@ -190,6 +190,7 @@ export async function SiteFooter() {
             <Link href="/confidentialite" className="hover:text-white">{t('Confidentialité')}</Link>
             <Link href="/retours" className="hover:text-white">{t('Retours')}</Link>
             <Link href="/mentions-legales" className="hover:text-white">{t('Mentions légales')}</Link>
+            <Link href="/supprimer-mon-compte" className="hover:text-white">{t('Supprimer mon compte')}</Link>
           </p>
         </div>
       </div>

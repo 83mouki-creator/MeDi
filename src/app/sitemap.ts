@@ -18,6 +18,7 @@ const STATIC_ROUTES: { path: string; priority: number; changeFrequency: Metadata
   { path: '/cgv', priority: 0.3, changeFrequency: 'yearly' },
   { path: '/confidentialite', priority: 0.3, changeFrequency: 'yearly' },
   { path: '/mentions-legales', priority: 0.3, changeFrequency: 'yearly' },
+  { path: '/supprimer-mon-compte', priority: 0.3, changeFrequency: 'yearly' },
 ];
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
