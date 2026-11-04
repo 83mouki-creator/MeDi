@@ -420,7 +420,7 @@ export default async function HomePage() {
           <p className="flex items-start gap-2 text-sm text-navy-800">
             <MapPin className="mt-0.5 size-4 shrink-0 text-accent-600" aria-hidden />
             <span>
-              <strong>{t('Boutique MeDi Shop')}</strong> — {location.addressLine},{' '}
+              <strong>{t('Boutique MeDi Shop')}</strong> — {location.city},{' '}
               <span className="ltr-inline font-mono" dir="ltr">
                 {location.dms}
               </span>
