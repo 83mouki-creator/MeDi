@@ -3,6 +3,7 @@ import './globals.css';
 import { env } from '@/lib/env';
 import { getSiteLocale } from '@/lib/i18n/site-server';
 import { siteDir, siteHtmlLang } from '@/lib/i18n/site';
+import { PwaRegister } from '@/components/pwa-register';
 
 export const metadata: Metadata = {
   metadataBase: new URL(env.appUrl),
@@ -40,6 +41,7 @@ export const metadata: Metadata = {
   icons: {
     icon: [
       { url: '/brand/favicon-32.png', sizes: '32x32', type: 'image/png' },
+      { url: '/brand/medi-icon-192.png', sizes: '192x192', type: 'image/png' },
       { url: '/brand/medi-icon.png', sizes: '512x512', type: 'image/png' },
     ],
     shortcut: [{ url: '/brand/favicon-32.png' }],
@@ -62,7 +64,10 @@ export default async function RootLayout({ children }: { children: React.ReactNo
 
   return (
     <html lang={siteHtmlLang(locale)} dir={siteDir(locale)}>
-      <body className="min-h-dvh bg-white font-sans text-navy-900 antialiased">{children}</body>
+      <body className="min-h-dvh bg-white font-sans text-navy-900 antialiased">
+        {children}
+        <PwaRegister />
+      </body>
     </html>
   );
 }

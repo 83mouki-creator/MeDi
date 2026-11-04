@@ -221,9 +221,33 @@ async function main() {
     .toFile(path.join(BRAND_DIR, 'apple-touch-icon.png'));
 
   await sharp(square)
+    .resize(192, 192, { fit: 'contain', background: { r: 8, g: 23, b: 41, alpha: 1 } })
+    .png({ compressionLevel: 9 })
+    .toFile(path.join(BRAND_DIR, 'medi-icon-192.png'));
+
+  await sharp(square)
     .resize(32, 32, { fit: 'contain', background: { r: 8, g: 23, b: 41, alpha: 1 } })
     .png()
     .toFile(path.join(BRAND_DIR, 'favicon-32.png'));
+
+  // Icône « maskable » (Android) : le dessin tient dans la zone sûre de 72 % du
+  // carré, car le lanceur Android rogne les bords (cercle, goutte, arrondi).
+  const maskableSize = 512;
+  const maskableEmblem = await sharp(emblemWhite)
+    .resize({ width: Math.round(maskableSize * 0.72), height: Math.round(maskableSize * 0.72), fit: 'inside' })
+    .png()
+    .toBuffer();
+  await sharp({
+    create: {
+      width: maskableSize,
+      height: maskableSize,
+      channels: 4,
+      background: { r: 8, g: 23, b: 41, alpha: 1 },
+    },
+  })
+    .composite([{ input: maskableEmblem, gravity: 'center' }])
+    .png({ compressionLevel: 9 })
+    .toFile(path.join(BRAND_DIR, 'medi-icon-maskable-512.png'));
 
   // 3. Versions horizontales : emblème à gauche, « MeDi Shop » à droite.
   //    (Le logo fourni est empilé ; l'en-tête du site a besoin d'un format large.)
@@ -358,6 +382,8 @@ async function main() {
       'medi-logo-horizontal.png       → en-tête et pied de page sur fond clair',
       'medi-logo-horizontal-blanc.png → en-tête et pied de page bleu nuit',
       'medi-icon.png                  → icône carrée 512 px (favicon, réseaux sociaux, PWA)',
+      'medi-icon-192.png              → icône 192 px exigée par le manifeste de l’application Android',
+      'medi-icon-maskable-512.png     → icône « maskable » 512 px (zone sûre 72 %, fond bleu nuit)',
       'apple-touch-icon.png           → icône iOS 180 px',
       'favicon-32.png                 → favicon PNG 32 px',
       'medi-og.png                    → image de partage 1200×630',

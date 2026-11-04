@@ -20,6 +20,22 @@ const nextConfig: NextConfig = {
   async headers() {
     return [
       {
+        // Vérification du domaine par Android : ce fichier autorise l'application
+        // Play Store à ouvrir le site en plein écran, sans barre d'adresse.
+        // Il est produit par `npm run assetlinks` (voir docs/ANDROID.md).
+        source: '/.well-known/assetlinks.json',
+        headers: [{ key: 'Content-Type', value: 'application/json' }],
+      },
+      {
+        // Le service worker doit être revalidé à chaque visite, sinon une ancienne
+        // version reste active pendant des jours sur les téléphones.
+        source: '/sw.js',
+        headers: [
+          { key: 'Cache-Control', value: 'public, max-age=0, must-revalidate' },
+          { key: 'Service-Worker-Allowed', value: '/' },
+        ],
+      },
+      {
         source: '/(.*)',
         headers: [
           { key: 'X-Content-Type-Options', value: 'nosniff' },
