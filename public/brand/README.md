@@ -14,7 +14,9 @@ npm run brand:assets
 | `medi-logo-horizontal-blanc.png` | en-tête et pied de page (fond bleu nuit) |
 | `medi-logo-horizontal.png` | documents et fonds clairs |
 | `medi-logo.png` / `medi-logo-blanc.png` | versions empilées (e-mails, réseaux sociaux) |
-| `medi-icon.png` | icône carrée 512 px (favicon haute résolution, PWA) |
+| `medi-icon.png` | icône carrée 512 px (favicon haute résolution, PWA, fiche Play Store) |
+| `medi-icon-192.png` | icône 192 px exigée par le manifeste de l'application Android |
+| `medi-icon-maskable-512.png` | icône « maskable » 512 px (zone sûre 72 %, lanceur Android) |
 | `favicon-32.png` | favicon 32 px |
 | `apple-touch-icon.png` | icône iOS 180 px |
 | `medi-og.png` | image de partage 1200 × 630 (Open Graph / Twitter) |

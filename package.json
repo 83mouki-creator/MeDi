@@ -22,6 +22,7 @@
     "import:catalog": "tsx --env-file-if-exists=.env.local scripts/import-catalog.ts",
     "reindex:visual": "tsx --env-file-if-exists=.env.local scripts/reindex-visual.ts",
     "brand:assets": "tsx scripts/make-brand-assets.ts",
+    "assetlinks": "tsx scripts/make-assetlinks.ts",
     "admin:create": "tsx --env-file-if-exists=.env.local scripts/create-admin.ts",
     "test": "vitest run",
     "test:watch": "vitest",
