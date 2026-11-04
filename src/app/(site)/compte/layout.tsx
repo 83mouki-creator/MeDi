@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { LogOut, MapPin, Package, User } from 'lucide-react';
-import { getCurrentUser, isStaff } from '@/lib/auth';
+import { getCurrentUser } from '@/lib/auth';
 import { logoutAction } from '@/app/actions/auth';
 import { getSiteI18n } from '@/lib/i18n/site-server';
 
@@ -43,13 +43,6 @@ export default async function AccountLayout({ children }: { children: React.Reac
                   </li>
                 );
               })}
-              {isStaff(user.role) ? (
-                <li>
-                  <Link href="/admin" className="flex items-center gap-2 rounded-lg px-3 py-2.5 text-sm font-medium text-accent-700 hover:bg-accent-50">
-                    {t('Espace administration')}
-                  </Link>
-                </li>
-              ) : null}
               <li className="border-t border-navy-100 pt-1">
                 <form action={logoutAction}>
                   <button type="submit" className="flex w-full items-center gap-2 rounded-lg px-3 py-2.5 text-left text-sm font-medium text-navy-700 hover:bg-navy-50">
