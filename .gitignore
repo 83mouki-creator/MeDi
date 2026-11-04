@@ -30,3 +30,8 @@ next-env.d.ts
 # Photos fournisseur d'origine (marque tierce) — non versionnées
 data/photos-source/
 public/catalogue/_planche-controle.png
+
+# Contrats commerciaux (documents privés, générés localement)
+contrats/*.pdf
+contrats/*.docx
+contrats/__pycache__/

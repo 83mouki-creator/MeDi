@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { Camera, LayoutDashboard, MapPin, Phone, ShoppingCart, Truck, User } from 'lucide-react';
-import { getCurrentUser, isStaff } from '@/lib/auth';
+import { Camera, MapPin, Phone, ShoppingCart, Truck, User } from 'lucide-react';
+import { getCurrentUser } from '@/lib/auth';
 import { readCart } from '@/lib/cart';
 import { getStoreSettings, whatsappLink } from '@/lib/settings';
 import { countActivePromotions, getCategoryTree } from '@/lib/catalog';
@@ -110,24 +110,6 @@ export async function SiteHeader() {
               </span>
             ) : null}
           </Link>
-
-          {/*
-            Bouton d'administration : visible en permanence pour les comptes de la
-            boutique (propriétaire, admin, stock, commandes), jamais pour un visiteur
-            ni pour un client.
-          */}
-          {isStaff(user?.role) ? (
-            <Link
-              href="/admin"
-              aria-label={t('Administration de la boutique')}
-              title={t('Administration de la boutique')}
-              className="flex items-center gap-2 rounded-lg bg-white px-3 py-2 text-sm font-extrabold text-navy-950 shadow-sm ring-1 ring-white/60 hover:bg-accent-50 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-400"
-            >
-              <LayoutDashboard className="size-5 text-accent-600" aria-hidden />
-              <span className="hidden sm:inline">{t('Administration')}</span>
-              <span className="sm:hidden">{t('Admin')}</span>
-            </Link>
-          ) : null}
         </div>
       </div>
 
