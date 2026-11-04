@@ -1,5 +1,7 @@
 Fichiers générés par scripts/make-brand-assets.ts à partir de medi-logo-source.png.
 Ne pas éditer à la main : relancer le script après remplacement du logo source.
+Le mot « Shop » est ajouté au mot d'origine depuis scripts/brand/shop-wordmark.svg
+(tracé produit par scripts/make-shop-wordmark.py) : toutes ces images écrivent « MeDi Shop ».
 
 medi-logo.png                  → logo empilé, fond clair (documents, e-mails)
 medi-logo-blanc.png            → logo empilé, fond sombre

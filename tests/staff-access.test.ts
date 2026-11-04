@@ -93,7 +93,7 @@ describe('mot de passe et messages du personnel', () => {
       roleLabel: 'Caissier',
       task: 'Caisse du matin',
       activationUrl: 'https://medi-daloa.vercel.app/connexion/agent',
-      storeName: 'MeDi Daloa',
+      storeName: 'MeDi Shop Daloa',
     });
     expect(message).toContain('MEDI-7K4P-9QX2-W8MT');
     expect(message).toContain('Caisse du matin');

@@ -114,7 +114,7 @@ export type StaffInvite = {
 
 /** Message envoyé à l'agent : court, sans jargon, code bien visible. */
 export function staffInviteMessage(invite: StaffInvite): string {
-  const store = invite.storeName?.trim() || 'MeDi';
+  const store = invite.storeName?.trim() || 'MeDi Shop';
   const fullName = [invite.firstName, invite.lastName].filter(Boolean).join(' ');
   return [
     `Bonjour ${fullName},`,
@@ -140,7 +140,7 @@ export function staffResetMessage(params: {
   storeName?: string;
   expiresInMinutes?: number;
 }): string {
-  const store = params.storeName?.trim() || 'MeDi';
+  const store = params.storeName?.trim() || 'MeDi Shop';
   const minutes = params.expiresInMinutes ?? 60;
   return [
     `Bonjour ${params.firstName},`,

@@ -20,7 +20,7 @@ export const DELIVERY_FAQ: readonly FaqEntry[] = [
     question: 'Livrez-vous en dehors de Daloa ?',
     answer: 'Oui. Choisissez votre ville au moment de la commande, puis écrivez-nous sur WhatsApp : c’est là que le prix du transport est convenu, selon la ville et le volume du colis. La livraison prend {days} jours maximum. Si votre ville n’apparaît pas dans la liste, écrivez-nous avec la référence du produit : nous vous répondons avant tout règlement.',
     whatsappMessage:
-      'Bonjour MeDi, je souhaite une livraison hors Daloa. Ma ville de destination est : … et les produits qui m’intéressent sont : …',
+      'Bonjour MeDi Shop, je souhaite une livraison hors Daloa. Ma ville de destination est : … et les produits qui m’intéressent sont : …',
   },
   {
     id: 'daloa',
@@ -28,7 +28,7 @@ export const DELIVERY_FAQ: readonly FaqEntry[] = [
     answer:
       'À Daloa, deux possibilités : le retrait gratuit en boutique, ou la livraison dans votre quartier. Vous choisissez votre quartier dans la liste au moment de la commande : les frais de livraison s’affichent aussitôt, avant le paiement. Un colis payé en ligne est gardé {hours} heures maximum en boutique.',
     whatsappMessage:
-      'Bonjour MeDi, je souhaite organiser une livraison à Daloa (ou un retrait en boutique). Mon quartier : …',
+      'Bonjour MeDi Shop, je souhaite organiser une livraison à Daloa (ou un retrait en boutique). Mon quartier : …',
   },
   {
     id: 'prepaiement',
@@ -36,23 +36,23 @@ export const DELIVERY_FAQ: readonly FaqEntry[] = [
     answer:
       'Parce que le transporteur est réglé au départ du colis. La commande ne part qu’après vérification du paiement reçu par la boutique : une capture d’écran ou une déclaration ne valent jamais preuve de paiement. Tant que le paiement n’est pas confirmé, la commande reste « paiement à vérifier » et le colis reste en boutique.',
     whatsappMessage:
-      'Bonjour MeDi, je souhaite expédier une commande hors Daloa et j’ai une question sur le paiement. Ma référence de commande : …',
+      'Bonjour MeDi Shop, je souhaite expédier une commande hors Daloa et j’ai une question sur le paiement. Ma référence de commande : …',
   },
   {
     id: 'delais-suivi',
     question: 'Quel délai prévoir et comment suivre ma commande ?',
     answer: 'Hors Daloa : {days} jours maximum selon la ville. À Daloa : livraison le jour même ou le lendemain, aux heures d’ouverture. Chaque étape est enregistrée sur votre commande : ouvrez la page de suivi avec votre numéro de commande pour voir où en est le colis.',
-    whatsappMessage: 'Bonjour MeDi, je souhaite avoir une point sur ma commande. Numéro : …',
+    whatsappMessage: 'Bonjour MeDi Shop, je souhaite avoir une point sur ma commande. Numéro : …',
   },
   {
     id: 'modification',
     question: 'Puis-je modifier la commande ou changer la ville avant l’expédition ?',
     answer:
       'Oui, tant que la commande n’est pas partie. Écrivez sur WhatsApp avec votre numéro de commande : si le colis est encore en boutique, la boutique ajuste la ville ou le mode de livraison. Une fois le colis remis au transporteur, le changement n’est plus possible.',
-    whatsappMessage: 'Bonjour MeDi, je souhaite modifier ma commande avant expédition. Numéro : … Changement souhaité : …',
+    whatsappMessage: 'Bonjour MeDi Shop, je souhaite modifier ma commande avant expédition. Numéro : … Changement souhaité : …',
   },
 ];
 
 /** Message WhatsApp proposé à la fin de la FAQ livraisons. */
 export const DELIVERY_FAQ_FALLBACK_MESSAGE =
-  'Bonjour MeDi, j’ai une question sur la livraison ou l’expédition d’une commande.';
+  'Bonjour MeDi Shop, j’ai une question sur la livraison ou l’expédition d’une commande.';

@@ -258,7 +258,7 @@ export function CheckoutForm({ items, lines, subtotal, zones, user, store, setti
                 badge={t('Gardé {hours} h maximum', { hours: PICKUP_HOLD_HOURS })}
               />
               <div className="rounded-lg bg-navy-50 p-3 text-sm text-navy-700">
-                <p className="font-medium">{t('Boutique MeDi — {city}', { city: store.city })}</p>
+                <p className="font-medium">{t('Boutique MeDi Shop — {city}', { city: store.city })}</p>
                 <p className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-navy-600">
                   <span className="inline-flex items-center gap-1 font-semibold text-navy-800">
                     <Navigation className="size-3.5 text-accent-600" aria-hidden /> {store.gps}

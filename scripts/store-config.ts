@@ -143,7 +143,7 @@ async function main() {
     whatsapp: WHATSAPP,
     openingHours: 'Lundi – samedi : 7h30 – 18h00 · Dimanche : fermé',
     waveNumber: PHONE_DISPLAY,
-    waveMerchantName: existing?.waveMerchantName ?? 'MeDi',
+    waveMerchantName: existing?.waveMerchantName ?? 'MeDi Shop',
     // Adresse exacte communiquée par le propriétaire (relevé Google Maps).
     addressLine: `${STORE_GPS_DMS} — Daloa`,
     latitude: String(STORE_COORDINATES.latitude),
@@ -153,7 +153,7 @@ async function main() {
   if (!existing) {
     await db.insert(storeSettings).values({
       id: 1,
-      storeName: 'MeDi',
+      storeName: 'MeDi Shop',
       city: 'Daloa',
       country: "Côte d'Ivoire",
       waveMode: 'MANUAL',

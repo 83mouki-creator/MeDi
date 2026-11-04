@@ -2,7 +2,7 @@ import type { Permission } from './auth';
 import type { OrderStatus } from './order-status';
 
 /**
- * Contenu du guide « Comment utiliser le site MeDi » (`/admin/guide`).
+ * Contenu du guide « Comment utiliser le site MeDi Shop » (`/admin/guide`).
  *
  * Les textes sont rangés ici, hors de la page, pour deux raisons :
  *  • les tests vérifient que **chaque phrase** existe bien en arabe (la page,

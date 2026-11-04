@@ -54,7 +54,7 @@ describe('Traduction du back-office', () => {
 
   it('chaque libellé affiché dans l’administration a sa traduction', () => {
     // Les noms propres et références techniques restent volontairement en latin.
-    const intentionallyLatin = new Set(['MeDi', 'MED-0001', 'TDH5TEWTLFE']);
+    const intentionallyLatin = new Set(['MeDi Shop', 'MED-0001', 'TDH5TEWTLFE']);
     const missing = usedKeys()
       .filter((key) => !intentionallyLatin.has(key))
       .filter((key) => /\p{Script=Latin}{2}/u.test(key))

@@ -7,7 +7,7 @@ import { env } from './env';
  *
  *   RESEND_API_KEY   → https://resend.com   (le plus simple : domaine vérifié)
  *   BREVO_API_KEY    → https://brevo.com    (offre gratuite, expéditeurs vérifiés)
- *   EMAIL_FROM       → expéditeur, ex. « MeDi <no-reply@medidaloa.ci> »
+ *   EMAIL_FROM       → expéditeur, ex. « MeDi Shop <no-reply@medidaloa.ci> »
  *
  * Sans clé, `configured` est false : l'application ne prétend pas envoyer d'e-mail
  * et propose la remise du lien par WhatsApp depuis l'écran Utilisateurs.
@@ -73,9 +73,9 @@ export async function sendEmail(payload: EmailPayload): Promise<{ sent: boolean;
   }
 }
 
-/** « MeDi <no-reply@x.ci> » → { name, email } (format attendu par Brevo). */
+/** « MeDi Shop <no-reply@x.ci> » → { name, email } (format attendu par Brevo). */
 function parseSender(from: string): { name: string; email: string } {
   const match = from.match(/^\s*(.*?)\s*<([^>]+)>\s*$/);
-  if (match) return { name: match[1] || 'MeDi', email: match[2]! };
-  return { name: 'MeDi', email: from.trim() };
+  if (match) return { name: match[1] || 'MeDi Shop', email: match[2]! };
+  return { name: 'MeDi Shop', email: from.trim() };
 }

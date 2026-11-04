@@ -67,7 +67,7 @@ describe('Traduction de la vitrine', () => {
     // « Total », « Contact » ou « E-mail » s'écrivent pareil en anglais : pour
     // ces mots, l'identité n'est pas un oubli. L'arabe, lui, ne peut pas être
     // confondu avec le français.
-    const ignored = new Set(['MeDi', 'Wave', 'MED-2026-01000', 'MED-2026-01024', 'TDH5TEWTLFE']);
+    const ignored = new Set(['MeDi Shop', 'Wave', 'MED-2026-01000', 'MED-2026-01024', 'TDH5TEWTLFE']);
     const keys = usedKeys()
       .filter((key) => !ignored.has(key))
       .filter((key) => /[A-Za-zÀ-ÿ]{2}/.test(key));

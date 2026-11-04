@@ -43,7 +43,7 @@ export default async function DeliveryPage() {
   const location = storeLocation(settings);
   const transportLink = whatsappWithMessage(
     settings,
-    'Bonjour MeDi, je souhaite connaître le prix du transport et le délai pour une livraison hors Daloa.',
+    'Bonjour MeDi Shop, je souhaite connaître le prix du transport et le délai pour une livraison hors Daloa.',
   );
 
   // Quartiers rattachés à chaque zone locale : c'est la liste que voit le client.
@@ -57,7 +57,7 @@ export default async function DeliveryPage() {
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqStructuredData) }} />
       <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">{t('Livraison et retrait')}</h1>
       <p className="mt-2 text-sm text-navy-600">
-        {t('MeDi opère depuis {city}. Vous choisissez d’abord où vous voulez être livré : dans un quartier de Daloa, ou ailleurs en Côte d’Ivoire.', {
+        {t('MeDi Shop opère depuis {city}. Vous choisissez d’abord où vous voulez être livré : dans un quartier de Daloa, ou ailleurs en Côte d’Ivoire.', {
           city: settings.city,
         })}
       </p>

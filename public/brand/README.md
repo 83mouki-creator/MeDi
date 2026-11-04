@@ -1,4 +1,4 @@
-# Logo MeDi
+# Logo MeDi Shop
 
 Le logo officiel fourni par le propriétaire est conservé tel quel dans
 `medi-logo-source.png`. Toutes les autres images de marque sont générées à partir
@@ -18,6 +18,22 @@ npm run brand:assets
 | `favicon-32.png` | favicon 32 px |
 | `apple-touch-icon.png` | icône iOS 180 px |
 | `medi-og.png` | image de partage 1200 × 630 (Open Graph / Twitter) |
+
+## Le mot « Shop »
+
+Le logo fourni n'écrit que « MeDi ». Pour écrire **MeDi Shop** partout, le mot
+« Shop » est ajouté à droite du mot d'origine :
+
+- son tracé vectoriel est dans `scripts/brand/shop-wordmark.svg` ;
+- il est produit par `scripts/make-shop-wordmark.py` à partir de la police
+  Poppins Bold (`scripts/brand/poppins-latin-700-normal.woff2`, licence SIL OFL
+  dans `scripts/brand/Poppins-OFL.txt`), la plus proche des capitales du logo ;
+- `scripts/make-brand-assets.ts` le colle à la même hauteur de capitale et à la
+  même ligne de base que « MeDi ».
+
+Pour changer ce mot (couleur, graisse, orthographe) : modifier
+`scripts/make-shop-wordmark.py`, relancer `python3 scripts/make-shop-wordmark.py`
+puis `npm run brand:assets`.
 
 Les anciens fichiers `medi-logo.svg`, `medi-logo-blanc.svg` et `medi-icon.svg`
 (proposition initiale) ne sont plus utilisés par le site.

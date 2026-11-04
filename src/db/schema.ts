@@ -1,5 +1,5 @@
 /**
- * MeDi — schéma relationnel PostgreSQL (Neon).
+ * MeDi Shop — schéma relationnel PostgreSQL (Neon).
  *
  * Conventions :
  *  - montants : numeric(12,2), jamais de flottant (l'application manipule des entiers FCFA)
@@ -566,7 +566,7 @@ export const promotions = pgTable(
 
 export const storeSettings = pgTable('store_settings', {
   id: integer('id').primaryKey().default(1),
-  storeName: text('store_name').notNull().default('MeDi'),
+  storeName: text('store_name').notNull().default('MeDi Shop'),
   tagline: text('tagline'),
   phone: text('phone'),
   whatsapp: text('whatsapp'),

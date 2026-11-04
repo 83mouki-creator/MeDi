@@ -5,7 +5,7 @@ import { RETURNS_FAQ, RETURNS_FAQ_FALLBACK_MESSAGE } from '@/lib/returns-faq';
 import { whatsappLink, type PublicSettings } from '@/lib/settings';
 
 const settings = {
-  storeName: 'MeDi',
+  storeName: 'MeDi Shop',
   tagline: null,
   phone: '+225 07 08 90 48 91',
   whatsapp: '+225 07 08 90 48 91',

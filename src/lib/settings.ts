@@ -47,7 +47,7 @@ export type PublicSettings = {
 
 const FALLBACK: StoreSetting = {
   id: 1,
-  storeName: 'MeDi',
+  storeName: 'MeDi Shop',
   tagline: null,
   phone: null,
   whatsapp: null,
@@ -122,7 +122,7 @@ export const getStoreSettings = cache(async (): Promise<PublicSettings> => {
 });
 
 /** Lien WhatsApp prêt à l'emploi si le numéro officiel est renseigné. */
-export function whatsappLink(settings: PublicSettings, message = 'Bonjour MeDi, je souhaite des informations sur un produit.') {
+export function whatsappLink(settings: PublicSettings, message = 'Bonjour MeDi Shop, je souhaite des informations sur un produit.') {
   if (!settings.whatsapp) return null;
   const number = settings.whatsapp.replace(/[^\d]/g, '');
   if (!number) return null;

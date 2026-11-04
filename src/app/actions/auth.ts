@@ -295,7 +295,7 @@ export async function requestPasswordResetAction(_prev: AuthState, formData: For
       resetUrl: url,
       storeName: settings?.storeName,
     });
-    const result = await sendEmail({ to: user.email, subject: 'MeDi — réinitialisation de votre mot de passe', text });
+    const result = await sendEmail({ to: user.email, subject: 'MeDi Shop — réinitialisation de votre mot de passe', text });
     sent = result.sent;
     if (!result.sent) console.error('[auth] envoi e-mail de réinitialisation', result.error);
   }

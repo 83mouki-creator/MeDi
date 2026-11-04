@@ -73,7 +73,7 @@ export default async function AdminGuidePage() {
           <p className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.16em] text-accent-300">
             <BookOpen className="size-3.5" aria-hidden /> {t('Guide de l’équipe')}
           </p>
-          <h1 className="mt-2 text-2xl font-extrabold tracking-tight sm:text-3xl">{t('Comment utiliser le site MeDi')}</h1>
+          <h1 className="mt-2 text-2xl font-extrabold tracking-tight sm:text-3xl">{t('Comment utiliser le site MeDi Shop')}</h1>
           <p className="mt-1 max-w-2xl text-sm text-navy-200">
             {t('Ce guide tient en cinq minutes. Il explique le chemin d’une commande, ce que vous faites chaque jour, et quoi faire quand quelque chose bloque. Aucun mot compliqué.')}
           </p>
@@ -121,7 +121,7 @@ export default async function AdminGuidePage() {
           <h2 className="text-lg font-extrabold text-navy-950">{t('Comprendre le site en une minute')}</h2>
         </div>
         <p className="mt-2 text-sm text-navy-600">
-          {t('Le site MeDi sert à deux choses : montrer vos produits aux clients, et vous dire exactement ce qu’il faut préparer. Voici le trajet complet, du clic du client jusqu’au colis remis.')}
+          {t('Le site MeDi Shop sert à deux choses : montrer vos produits aux clients, et vous dire exactement ce qu’il faut préparer. Voici le trajet complet, du clic du client jusqu’au colis remis.')}
         </p>
         <ol className="mt-4 grid gap-3 sm:grid-cols-2">
           {GUIDE_INTRO.map((step, index) => (

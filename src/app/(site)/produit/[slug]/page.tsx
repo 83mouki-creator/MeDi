@@ -46,7 +46,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
       : '';
   const description =
     product.shortDescription ??
-    `${product.name}${brandSuffix} disponible chez MeDi à Daloa. ${formatFCFA(pricing.price)}.`;
+    `${product.name}${brandSuffix} disponible chez MeDi Shop à Daloa. ${formatFCFA(pricing.price)}.`;
 
   return {
     title: `${product.name}${brandSuffix}`,
@@ -77,7 +77,7 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
 
   const images = product.images.length > 0 ? product.images : product.imageUrl ? [{ id: 'main', url: product.imageUrl, alt: product.imageAlt, width: product.imageWidth, height: product.imageHeight }] : [];
   const productUrl = `${env.appUrl.replace(/\/$/, '')}/produit/${product.slug}`;
-  const whatsapp = whatsappLink(settings, `Bonjour MeDi, je souhaite des informations sur « ${product.name} » (réf. ${product.sku}).`);
+  const whatsapp = whatsappLink(settings, `Bonjour MeDi Shop, je souhaite des informations sur « ${product.name} » (réf. ${product.sku}).`);
   const location = storeLocation(settings);
 
   const jsonLd = {
@@ -150,7 +150,7 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
               </Link>
             ) : null}
             {product.onPromo ? <Badge tone="accent">{t('Promotion')}</Badge> : null}
-            {product.isFeatured ? <Badge tone="navy">{t('Sélection MeDi')}</Badge> : null}
+            {product.isFeatured ? <Badge tone="navy">{t('Sélection MeDi Shop')}</Badge> : null}
           </div>
 
           <h1 className="mt-2 text-2xl font-extrabold leading-tight tracking-tight sm:text-3xl">{product.name}</h1>

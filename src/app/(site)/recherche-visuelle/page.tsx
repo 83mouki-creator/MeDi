@@ -11,7 +11,7 @@ import { getSiteI18n } from '@/lib/i18n/site-server';
 export const metadata: Metadata = {
   title: 'Rechercher un produit par photo',
   description:
-    'Prenez une photo d’un outil, d’un matériau ou d’un équipement : MeDi retrouve les produits visuellement proches dans son catalogue.',
+    'Prenez une photo d’un outil, d’un matériau ou d’un équipement : MeDi Shop retrouve les produits visuellement proches dans son catalogue.',
   alternates: { canonical: '/recherche-visuelle' },
 };
 
@@ -42,7 +42,7 @@ export default async function VisualSearchPage() {
         <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">{t('Vous ne connaissez pas le nom exact ?')}</h1>
         <p className="mt-2 text-sm text-navy-600">
           {t(
-            'Photographiez le produit : nous le comparons aux photos du catalogue MeDi et proposons les références les plus proches. Le résultat est une aide à l’identification, pas une reconnaissance certaine.',
+            'Photographiez le produit : nous le comparons aux photos du catalogue MeDi Shop et proposons les références les plus proches. Le résultat est une aide à l’identification, pas une reconnaissance certaine.',
           )}
         </p>
       </header>

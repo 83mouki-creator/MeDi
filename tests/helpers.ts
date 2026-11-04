@@ -27,7 +27,7 @@ export async function resetDb() {
   // Réglages de base : paiement à la livraison autorisé sous 300 000 FCFA.
   await db.insert(storeSettings).values({
     id: 1,
-    storeName: 'MeDi Test',
+    storeName: 'MeDi Shop Test',
     city: 'Daloa',
     allowCod: true,
     codMaxAmount: '300000',

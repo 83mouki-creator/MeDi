@@ -43,6 +43,13 @@
       "when": 1793705270623,
       "tag": "0005_stored_images",
       "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1793827534556,
+      "tag": "0006_store_name_medi_shop",
+      "breakpoints": true
     }
   ]
 }

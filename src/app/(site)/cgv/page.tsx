@@ -6,7 +6,7 @@ import { LegalPage, LegalSection } from '@/components/legal-page';
 export const metadata: Metadata = {
   title: 'Conditions générales de vente',
   description:
-    'Conditions de vente MeDi : commande, prix en FCFA, disponibilité, paiement, livraison à Daloa et hors Daloa, retours.',
+    'Conditions de vente MeDi Shop : commande, prix en FCFA, disponibilité, paiement, livraison à Daloa et hors Daloa, retours.',
   alternates: { canonical: '/cgv' },
 };
 
@@ -18,7 +18,7 @@ export default async function TermsPage() {
   return (
     <LegalPage
       title="Conditions générales de vente"
-      intro="Les présentes conditions s’appliquent à toute commande passée sur le site MeDi. Elles décrivent les modalités de commande, de paiement, de livraison et de retour applicables à la boutique."
+      intro="Les présentes conditions s’appliquent à toute commande passée sur le site MeDi Shop. Elles décrivent les modalités de commande, de paiement, de livraison et de retour applicables à la boutique."
     >
       <LegalSection title="1. Vendeur">
         <p>
