@@ -1,7 +1,14 @@
 'use client';
 
+import Link from 'next/link';
 import { useActionState } from 'react';
-import { saveAddressAction, updateProfileAction, resetPasswordAction, type AuthState } from '@/app/actions/auth';
+import {
+  deleteAccountAction,
+  saveAddressAction,
+  updateProfileAction,
+  resetPasswordAction,
+  type AuthState,
+} from '@/app/actions/auth';
 import { Button } from './ui/button';
 import { Field, Input } from './ui/form';
 import { Alert } from './ui/primitives';
@@ -102,6 +109,49 @@ export function ResetPasswordForm({ token }: { token: string }) {
         <Input id="password" name="password" type="password" autoComplete="new-password" required minLength={10} />
       </Field>
       <Button type="submit" className="w-full" loading={pending}>{t('Définir le mot de passe')}</Button>
+    </form>
+  );
+}
+
+/**
+ * Suppression du compte par le client (exigence Google Play pour l'app Android).
+ *
+ * Le formulaire demande de recopier SUPPRIMER et le mot de passe : deux gestes
+ * volontaires pour une action irréversible. En cas de succès, l'action serveur
+ * efface le compte puis redirige vers la page de confirmation.
+ */
+export function DeleteAccountForm({ hasPassword }: { hasPassword: boolean }) {
+  const [state, formAction, pending] = useActionState(deleteAccountAction, initial);
+  const t = useSiteT();
+
+  return (
+    <form action={formAction} className="space-y-3">
+      <Alert tone="danger">
+        {t('Cette action est définitive et immédiate : votre compte ne pourra pas être restauré.')}
+      </Alert>
+      {state.error ? <Alert tone="danger">{state.error}</Alert> : null}
+      <Field
+        label={t('Écrivez SUPPRIMER en majuscules')}
+        htmlFor="confirmation"
+        required
+        error={state.fieldErrors?.confirmation}
+        hint={t('Ce mot confirme que la demande est bien volontaire.')}
+      >
+        <Input id="confirmation" name="confirmation" autoComplete="off" required />
+      </Field>
+      {hasPassword ? (
+        <Field label={t('Votre mot de passe')} htmlFor="delete-password" required error={state.fieldErrors?.password}>
+          <Input id="delete-password" name="password" type="password" autoComplete="current-password" required />
+        </Field>
+      ) : null}
+      <div className="flex flex-wrap items-center gap-3">
+        <Button type="submit" variant="danger" loading={pending}>
+          {t('Supprimer définitivement mon compte')}
+        </Button>
+        <Link href="/compte" className="text-sm font-medium text-navy-700 underline">
+          {t('Annuler et revenir à mon compte')}
+        </Link>
+      </div>
     </form>
   );
 }

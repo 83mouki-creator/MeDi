@@ -210,6 +210,70 @@ export async function changePasswordAction(_prev: AuthState, formData: FormData)
   return { success: 'Mot de passe modifié.' };
 }
 
+/**
+ * Suppression du compte client par la personne elle-même.
+ *
+ * Google Play impose qu'une application qui permet de créer un compte permette
+ * aussi de le supprimer depuis l'application (ou depuis une page web accessible
+ * sans installer l'app) : c'est ce que fait cette action, sans passer par la
+ * boutique. Trois garde-fous : le mot à recopier, le mot de passe, et un rôle
+ * limité aux clients (un agent ne peut pas s'effacer lui-même et laisser la
+ * boutique sans personne).
+ *
+ * Ce qui est effacé : le compte, le mot de passe, les adresses enregistrées et
+ * toutes les sessions ouvertes (suppression en cascade). Ce qui reste : les
+ * commandes déjà passées, détachées du compte (`orders.user_id` passe à NULL),
+ * parce qu'elles servent de justificatif de vente, de garantie et de retour.
+ */
+export async function deleteAccountAction(_prev: AuthState, formData: FormData): Promise<AuthState> {
+  const session = await getCurrentUser();
+  if (!session) return { error: 'Vous devez être connecté.' };
+
+  if (session.role !== 'CUSTOMER') {
+    return {
+      error:
+        'Les comptes du personnel ne se suppriment pas depuis cette page : demandez au propriétaire de la boutique de retirer votre accès dans l’administration.',
+    };
+  }
+
+  // Mot à recopier : un frein simple contre le clic malheureux.
+  const keyword = 'SUPPRIMER';
+  const typed = String(formData.get('confirmation') ?? '').trim().toUpperCase();
+  const password = String(formData.get('password') ?? '');
+
+  if (typed !== keyword) {
+    return { fieldErrors: { confirmation: `Écrivez ${keyword} pour confirmer.` } };
+  }
+
+  const h = await headers();
+  const ip = clientIpFrom(h);
+  const limit = rateLimit(`delete-account:${session.id}`, 5, 3600);
+  if (!limit.allowed) return { error: 'Trop de tentatives. Réessayez dans une heure.' };
+
+  const rows = await db.select().from(users).where(eq(users.id, session.id)).limit(1);
+  const user = rows[0];
+  if (!user) return { error: 'Compte introuvable.' };
+
+  if (user.passwordHash && !(await verifyPassword(password, user.passwordHash))) {
+    return { fieldErrors: { password: 'Mot de passe incorrect.' } };
+  }
+
+  // Les commandes conservées ne sont pas supprimées : on les détache du compte
+  // (la contrainte de clé étrangère met `user_id` à NULL) pour ne pas perdre la
+  // comptabilité de la boutique.
+  await destroySession();
+  await db.delete(users).where(eq(users.id, user.id));
+  await audit(null, {
+    action: 'account.deleted',
+    entity: 'user',
+    entityId: user.id,
+    ip,
+    metadata: { accountId: user.id, role: user.role },
+  });
+
+  redirect('/supprimer-mon-compte/confirmation');
+}
+
 export async function saveAddressAction(_prev: AuthState, formData: FormData): Promise<AuthState> {
   const user = await getCurrentUser();
   if (!user) return { error: 'Vous devez être connecté.' };

@@ -713,6 +713,8 @@ const AR: Record<string, string> = {
   "La personne peut se connecter avec son nouveau mot de passe.": "يمكن للشخص الدخول بكلمة مروره الجديدة.",
   "{qui} a changé son mot de passe": "غيّر {qui} كلمة مروره",
   "{qui} a mis à jour ses coordonnées": "حدّث {qui} بياناته",
+  "Un client a supprimé son compte": "عميل حذف حسابه",
+  "Suppression faite par le client lui-même. Ses commandes déjà passées restent dans la comptabilité de la boutique.": "الحذف قام به العميل بنفسه. طلباته السابقة تبقى في محاسبة المتجر.",
   "Le compte du propriétaire a été créé": "أُنشئ حساب المالك",
   "Un compte a été créé : {agent}": "أُنشئ حساب: {agent}",
   "Un compte a été désactivé : {agent}": "عُطِّل حساب: {agent}",

@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { redirect } from 'next/navigation';
-import { LogOut, MapPin, Package, User } from 'lucide-react';
+import { LogOut, MapPin, Package, Trash2, User } from 'lucide-react';
 import { getCurrentUser } from '@/lib/auth';
 import { logoutAction } from '@/app/actions/auth';
 import { getSiteI18n } from '@/lib/i18n/site-server';
@@ -12,6 +12,7 @@ const LINKS = [
   { href: '/compte/commandes', label: 'Mes commandes', icon: Package },
   { href: '/compte/adresses', label: 'Mes adresses', icon: MapPin },
   { href: '/compte/infos', label: 'Mes informations', icon: User },
+  { href: '/compte/supprimer', label: 'Supprimer mon compte', icon: Trash2 },
 ];
 
 /** Libellés traduits à l'affichage : la clé reste le texte français du tableau. */

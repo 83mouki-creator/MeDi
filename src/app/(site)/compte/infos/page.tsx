@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import Link from 'next/link';
 import { redirect } from 'next/navigation';
 import { getCurrentUser } from '@/lib/auth';
 import { ProfileForm } from '@/components/account-forms';
@@ -28,6 +29,10 @@ export default async function ProfilePage() {
         <p>
           {t('Vos données servent uniquement à traiter vos commandes et à vous contacter. Vous pouvez demander leur suppression en écrivant à la boutique. Consultez la')}{' '}
           <a href="/confidentialite" className="font-medium text-accent-700 underline">{t('politique de confidentialité')}</a>.
+        </p>
+        <p className="mt-2">
+          {t('Vous pouvez supprimer votre compte vous-même, à tout moment :')}{' '}
+          <Link href="/compte/supprimer" className="font-medium text-accent-700 underline">{t('supprimer mon compte')}</Link>.
         </p>
       </Card>
     </div>

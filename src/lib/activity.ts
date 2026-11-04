@@ -89,6 +89,7 @@ export const ACTION_CATEGORIES: Record<string, ActivityCategoryKey> = {
   'auth.password_reset_completed': 'comptes',
   'account.password_changed': 'comptes',
   'account.profile_updated': 'comptes',
+  'account.deleted': 'comptes',
   'admin.owner_created': 'comptes',
   'user.upserted': 'comptes',
   'user.created': 'comptes',
@@ -593,6 +594,16 @@ export function describeActivity(
         category: 'comptes',
         tone: 'info',
         title: { key: '{qui} a mis à jour ses coordonnées', vars: { qui: who } },
+      };
+
+    case 'account.deleted':
+      return {
+        category: 'comptes',
+        tone: 'warning',
+        title: { key: 'Un client a supprimé son compte' },
+        detail: {
+          key: 'Suppression faite par le client lui-même. Ses commandes déjà passées restent dans la comptabilité de la boutique.',
+        },
       };
 
     case 'admin.owner_created':
