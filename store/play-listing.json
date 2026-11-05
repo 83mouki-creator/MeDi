@@ -1,0 +1,15 @@
+{
+  "language": "fr-FR",
+  "appName": "MeDi Shop",
+  "shortDescription": "Outillage, quincaillerie et matériaux à Daloa. Retrait ou livraison.",
+  "fullDescription": "MeDi Shop — la quincaillerie de Daloa, dans votre poche.\n\nOutillage, matériaux de construction, plomberie, électricité, peinture, visserie et équipement de la maison : le catalogue de la boutique est là, avec ses prix en francs CFA.\n\nCE QUE VOUS POUVEZ FAIRE\n• Parcourir les rayons : outillage électroportatif, quincaillerie, plomberie, éclairage, peinture, protection.\n• Rechercher un produit par son nom, sa référence ou son usage.\n• Voir le prix, la disponibilité réelle en stock et les photos avant de vous déplacer.\n• Envoyer la photo d'une pièce à remplacer : la recherche visuelle propose les produits qui y ressemblent.\n• Composer un panier et commander en quelques étapes, avec ou sans compte.\n• Choisir le retrait en boutique ou la livraison.\n• Suivre une commande à tout moment avec son numéro.\n• Retrouver ses commandes et ses adresses dans son compte, et supprimer ce compte soi-même à tout moment.\n\nPAIEMENT\n• Paiement à la livraison, dans la limite affichée au moment de la commande.\n• Paiement par Wave, vérifié par la boutique avant expédition.\n• Pour les commandes hors de Daloa : paiement demandé avant l'envoi, transport réglé avec la boutique sur WhatsApp.\n\nRETRAIT ET LIVRAISON\n• Retrait en boutique sous 48 heures après confirmation de la commande.\n• Livraison à Daloa selon les zones et les tarifs affichés au moment de la commande.\n• Autres villes : jusqu'à 7 jours, frais de transport en supplément.\n• Boutique : Daloa, Côte d'Ivoire — repère GPS 6°53'04.4\"N 6°26'50.9\"W.\n\nUN VRAI MAGASIN DERRIÈRE L'APPLICATION\nChaque commande est préparée et contrôlée par l'équipe de la boutique. Une question sur un produit, une compatibilité, un délai ? Écrivez-nous sur WhatsApp depuis l'application : la réponse vient de Daloa, pas d'un centre d'appel.\n\nTROIS LANGUES\nFrançais, anglais, arabe : changez de langue d'un geste. Le catalogue et les prix restent les mêmes.\n\nVOS DONNÉES\nPas de publicité, pas de revente de données. Le compte sert uniquement à traiter vos commandes et à vous contacter. La politique de confidentialité complète est sur le site.",
+  "releaseNotes": "Première version : catalogue complet, recherche par texte et par photo, panier, commande avec ou sans compte, suivi des commandes, trois langues (français, anglais, arabe).",
+  "category": "Shopping",
+  "contact": {
+    "email": "à compléter — adresse de la boutique (réglages du site)",
+    "phone": "à compléter — numéro WhatsApp de la boutique (réglages du site)",
+    "website": "https://medi-daloa.vercel.app"
+  },
+  "privacyPolicyUrl": "https://medi-daloa.vercel.app/confidentialite",
+  "accountDeletionUrl": "https://medi-daloa.vercel.app/supprimer-mon-compte"
+}
