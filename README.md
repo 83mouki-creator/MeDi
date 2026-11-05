@@ -27,6 +27,7 @@ et recherche visuelle par photo.
 | Données personnelles (Côte d'Ivoire) | [`docs/DONNEES-PERSONNELLES.md`](docs/DONNEES-PERSONNELLES.md) |
 | Tests exécutés | [`docs/TESTS.md`](docs/TESTS.md) |
 | Application Android / Play Store (méthode complète) | [`docs/ANDROID.md`](docs/ANDROID.md) |
+| Textes, visuels et captures pour la fiche Play Store | [`docs/PLAY-STORE.md`](docs/PLAY-STORE.md) |
 | Dossier de la boutique (PDF : présentation, expérience client, étapes restantes) | [`docs/MeDi-dossier-boutique.pdf`](docs/MeDi-dossier-boutique.pdf) — en ligne sur `/dossier/dossier-boutique-medi.pdf`, régénéré par `python3 scripts/make-store-brief.py` |
 
 ## Stack
@@ -84,6 +85,8 @@ et se ferme définitivement une fois le compte créé. Retirer ensuite `ADMIN_SE
 | `npm run reindex:visual` | calcule les empreintes visuelles des photos |
 | `npm run test:setup` | prépare la base `medi_test` |
 | `npm run test` | exécute la suite Vitest |
+| `npm run brand:assets` | régénère logos et icônes depuis `medi-logo-source.png` |
+| `npm run play:assets` | régénère la bannière Play Store 1024 × 500 |
 
 ## Arborescence
 

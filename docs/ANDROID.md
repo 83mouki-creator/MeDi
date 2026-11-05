@@ -248,11 +248,20 @@ se fait dans `/admin/utilisateurs`, par un compte de niveau supérieur.
 
 ## 9. Ce qui reste à faire côté site
 
-- **Feature graphic** 1024 × 500 : à dessiner (logo sur fond bleu nuit).
-- **Captures d'écran** : à faire sur un téléphone.
+- ~~**Feature graphic** 1024 × 500~~ : **prête**, `public/brand/play-feature-graphic.png`
+  (régénérable avec `npm run play:assets`).
+- ~~**Textes de la fiche**~~ : prêts dans `store/play-listing.json` (nom,
+  description courte, description complète, nouveautés), vérifiés par un test.
+- **Captures d'écran** : à produire (méthode détaillée dans `docs/PLAY-STORE.md`,
+  section 3) et à ranger dans `store/screenshots/`.
+- **Coordonnées de contact** : `contact.email` et `contact.phone` de
+  `store/play-listing.json` portent la mention « à compléter ».
 - **Domaine propre** (recommandé) : `medi-daloa.vercel.app` fonctionne, mais un
   domaine à la boutique (`medishop.ci`, `medishop-daloa.com`…) rend l'application
   durable même si l'hébergement change.
+
+> Tout le dépôt Play (textes, visuels, captures, secrets) est décrit pas à pas
+> dans **`docs/PLAY-STORE.md`**.
 
 ---
 
@@ -333,15 +342,21 @@ impossible de publier une mise à jour** de l'application.
 pas sous Termux. La solution est de faire compiler par GitHub, depuis le
 navigateur du téléphone :
 
-1. pousser le dossier `android/` (créé par `bubblewrap init`) dans le dépôt ;
+1. le manifeste est déjà versionné : `android/twa-manifest.json` (package
+   `ci.medishop.app`, nom, icônes, couleurs, raccourcis) ;
 2. ajouter le keystore en secret : *Settings → Secrets and variables → Actions*,
    secret `ANDROID_KEYSTORE_BASE64` = contenu de `android.keystore` encodé en
    base64 (`base64 -w0 android.keystore`), plus `KEYSTORE_PASSWORD` et
    `KEY_PASSWORD` ;
-3. lancer un workflow `ubuntu-latest` qui exécute `bubblewrap build` puis dépose
+3. lancer le workflow **`.github/workflows/android-aab.yml`** (onglet *Actions* →
+   « Application Android (AAB) » → *Run workflow*) : il installe JDK 17 et le SDK
+   Android, exécute `bubblewrap update` puis `bubblewrap build`, et dépose
    `app-release-bundle.aab` et `app-release-signed.apk` en artefacts ;
 4. télécharger l'AAB depuis la page du workflow et le déposer dans la Play
    Console (gestion des versions → nouveau test fermé).
+
+Le détail (secrets, versions, dépannage) est dans `docs/PLAY-STORE.md`,
+section 4.
 
 Tout se pilote alors depuis le navigateur du téléphone : GitHub, Play Console et
 Vercel ont chacun une interface mobile complète.

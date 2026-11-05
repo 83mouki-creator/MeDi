@@ -27,7 +27,8 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "test:setup": "tsx --env-file-if-exists=.env.local scripts/test-db-setup.ts",
-    "db:reset": "tsx --env-file-if-exists=.env.local scripts/reset-db.ts"
+    "db:reset": "tsx --env-file-if-exists=.env.local scripts/reset-db.ts",
+    "play:assets": "tsx scripts/make-play-assets.ts"
   },
   "dependencies": {
     "clsx": "2.1.1",

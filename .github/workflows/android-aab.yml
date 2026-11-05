@@ -1,0 +1,166 @@
+# Fabrique l'application Android de MeDi Shop (fichier .aab pour le Play Store)
+# sans avoir besoin d'un ordinateur : tout se lance depuis le navigateur du
+# téléphone (GitHub → Actions → « Application Android (AAB) » → Run workflow).
+#
+# L'application est une Trusted Web Activity : c'est le site
+# https://medi-daloa.vercel.app affiché en plein écran, sans barre d'adresse.
+# Bubblewrap a besoin du SDK Android et de Gradle : c'est la machine GitHub qui
+# les installe, pas vous.
+#
+# Secrets à créer une seule fois (Settings → Secrets and variables → Actions) :
+#   ANDROID_KEYSTORE_BASE64  contenu de android.keystore encodé en base64
+#   KEYSTORE_PASSWORD        mot de passe du fichier .keystore
+#   KEY_PASSWORD             mot de passe de la clé « medi » (souvent identique)
+#
+# Voir docs/PLAY-STORE.md pour la marche à suivre complète.
+
+name: Application Android (AAB)
+
+on:
+  workflow_dispatch:
+    inputs:
+      version_name:
+        description: 'Version affichée, ex. 1.0.1 (vide = valeur du manifeste)'
+        required: false
+        type: string
+      version_code:
+        description: 'Numéro interne, entier croissant, ex. 2 (vide = valeur du manifeste)'
+        required: false
+        type: string
+  push:
+    tags:
+      - 'android-v*'
+
+permissions:
+  contents: read
+
+concurrency:
+  group: android-aab-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  aab:
+    name: Compiler l'AAB signé
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+
+    steps:
+      - name: Récupérer le dépôt
+        uses: actions/checkout@v4
+
+      - name: Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: JDK 17 (exigé par Gradle et le SDK Android)
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - name: SDK Android
+        uses: android-actions/setup-android@v3
+
+      - name: Outils du SDK (build-tools, plateforme, licences)
+        run: |
+          set -euo pipefail
+          yes | sdkmanager --licenses > /dev/null || true
+          sdkmanager "platform-tools" > /dev/null
+          # Bubblewrap 1.27 attend les build-tools 36.1.0 ; si la version n'est pas
+          # publiée au moment du run, il les installe lui-même (message ci-dessous).
+          sdkmanager "build-tools;36.1.0" "platforms;android-36" > /dev/null \
+            || echo "::warning::build-tools 36.1.0 indisponibles ici : Bubblewrap installera la version requise"
+          # Bubblewrap cherche « sdkmanager » dans $ANDROID_HOME/bin : on l'y expose.
+          mkdir -p "$ANDROID_HOME/bin"
+          ln -sf "$ANDROID_HOME/cmdline-tools/latest/bin/sdkmanager" "$ANDROID_HOME/bin/sdkmanager"
+          echo "ANDROID_HOME=$ANDROID_HOME"
+          echo "JAVA_HOME=$JAVA_HOME"
+
+      - name: Installer Bubblewrap (version figée)
+        run: npm install --global @bubblewrap/cli@1.27.0
+
+      - name: Configurer Bubblewrap (aucune question posée)
+        run: |
+          mkdir -p "$HOME/.bubblewrap"
+          printf '{"jdkPath":"%s","androidSdkPath":"%s"}\n' "$JAVA_HOME" "$ANDROID_HOME" \
+            > "$HOME/.bubblewrap/config.json"
+          cat "$HOME/.bubblewrap/config.json"
+
+      - name: Restaurer la clé de signature
+        env:
+          KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
+        run: |
+          set -euo pipefail
+          if [ -z "${KEYSTORE_BASE64}" ]; then
+            echo "::error::Secret ANDROID_KEYSTORE_BASE64 manquant. Voir docs/PLAY-STORE.md, étape « Secrets »."
+            exit 1
+          fi
+          printf '%s' "$KEYSTORE_BASE64" | base64 --decode > android.keystore
+          test -s android.keystore
+          echo "Clé de signature restaurée ($(wc -c < android.keystore) octets)."
+
+      - name: Ajuster la version si demandé
+        env:
+          VERSION_NAME: ${{ github.event.inputs.version_name }}
+          VERSION_CODE: ${{ github.event.inputs.version_code }}
+        run: |
+          set -euo pipefail
+          MANIFEST=android/twa-manifest.json
+          if [ -n "${VERSION_CODE}" ]; then
+            jq --arg vc "${VERSION_CODE}" '.appVersionCode = ($vc | tonumber)' "$MANIFEST" > /tmp/m.json
+            mv /tmp/m.json "$MANIFEST"
+          fi
+          if [ -n "${VERSION_NAME}" ]; then
+            jq --arg vn "${VERSION_NAME}" '.appVersionName = $vn | .appVersion = $vn' "$MANIFEST" > /tmp/m.json
+            mv /tmp/m.json "$MANIFEST"
+          fi
+          jq '{packageId, name, appVersionName, appVersionCode, startUrl}' "$MANIFEST"
+
+      - name: Diagnostic de l'environnement
+        continue-on-error: true
+        run: bubblewrap doctor
+
+      - name: Générer le projet Android
+        run: |
+          bubblewrap update --skipVersionUpgrade \
+            --directory ./android \
+            --manifest ./android/twa-manifest.json
+
+      - name: Construire et signer l'AAB
+        env:
+          BUBBLEWRAP_KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          BUBBLEWRAP_KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: |
+          set -euo pipefail
+          bubblewrap build --skipPwaValidation \
+            --directory ./android \
+            --manifest ./android/twa-manifest.json \
+            --signingKeyPath ./android.keystore \
+            --signingKeyAlias medi
+          ls -lh android/app-release-bundle.aab android/app-release-signed.apk
+
+      - name: Publier les fichiers à télécharger
+        uses: actions/upload-artifact@v4
+        with:
+          name: medi-shop-android-${{ github.run_number }}
+          path: |
+            android/app-release-bundle.aab
+            android/app-release-signed.apk
+          if-no-files-found: error
+          retention-days: 30
+
+      - name: Résumé
+        run: |
+          {
+            echo "### Application Android compilée"
+            echo ""
+            echo "| Fichier | Usage |"
+            echo "| --- | --- |"
+            echo "| \`app-release-bundle.aab\` | à déposer dans la Play Console (test fermé puis production) |"
+            echo "| \`app-release-signed.apk\` | à installer directement sur un téléphone de test |"
+            echo ""
+            echo "Téléchargement : onglet **Artifacts** de cette page, en bas."
+            echo ""
+            echo "Version : \`$(jq -r '.appVersionName' android/twa-manifest.json)\` (code \`$(jq -r '.appVersionCode' android/twa-manifest.json)\`)"
+          } >> "$GITHUB_STEP_SUMMARY"

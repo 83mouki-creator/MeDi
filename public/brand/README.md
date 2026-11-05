@@ -42,3 +42,13 @@ Les anciens fichiers `medi-logo.svg`, `medi-logo-blanc.svg` et `medi-icon.svg`
 
 Pour remplacer le logo : écraser `medi-logo-source.png` puis relancer
 `npm run brand:assets`. Aucune modification de code n'est nécessaire.
+
+## Bannière Play Store
+
+`play-feature-graphic.png` (1024 × 500, sans transparence) est l'image de la
+fiche Google Play. Elle n'est **pas** produite par `brand:assets` : elle a son
+propre script, qui repart du logo blanc et applique le bleu nuit et le jaune.
+
+```bash
+npm run play:assets      # après un changement de logo : brand:assets puis play:assets
+```
