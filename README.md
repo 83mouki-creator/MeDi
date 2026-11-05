@@ -28,6 +28,7 @@ et recherche visuelle par photo.
 | Tests exécutés | [`docs/TESTS.md`](docs/TESTS.md) |
 | Application Android / Play Store (méthode complète) | [`docs/ANDROID.md`](docs/ANDROID.md) |
 | Textes, visuels et captures pour la fiche Play Store | [`docs/PLAY-STORE.md`](docs/PLAY-STORE.md) |
+| Inscription des clients (procédure et dépannage) | [`docs/INSCRIPTION.md`](docs/INSCRIPTION.md) |
 | Dossier de la boutique (PDF : présentation, expérience client, étapes restantes) | [`docs/MeDi-dossier-boutique.pdf`](docs/MeDi-dossier-boutique.pdf) — en ligne sur `/dossier/dossier-boutique-medi.pdf`, régénéré par `python3 scripts/make-store-brief.py` |
 
 ## Stack
