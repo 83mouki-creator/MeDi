@@ -1,6 +1,7 @@
 import Link from 'next/link';
 import Image from 'next/image';
 import { Clock, Mail, MapPin, MessageCircle, Navigation, Phone, ShieldCheck, Truck, Undo2 } from 'lucide-react';
+import { getCurrentUser } from '@/lib/auth';
 import { getStoreSettings, whatsappLink } from '@/lib/settings';
 import { getCategoryTree } from '@/lib/catalog';
 import { getSiteI18n } from '@/lib/i18n/site-server';
@@ -8,10 +9,11 @@ import { storeLocation } from '@/lib/store-location';
 import { PICKUP_HOLD_HOURS, OUTSIDE_DALOA_MAX_DAYS, FINAL_SALE_NOTICE_SHORT } from '@/lib/store-policy';
 
 export async function SiteFooter() {
-  const [settings, tree, { t }] = await Promise.all([
+  const [settings, tree, { t }, user] = await Promise.all([
     getStoreSettings(),
     getCategoryTree().catch(() => ({ roots: [], childrenOf: () => [], all: [] })),
     getSiteI18n(),
+    getCurrentUser(),
   ]);
   const whatsapp = whatsappLink(settings);
   const location = storeLocation(settings);
@@ -191,6 +193,11 @@ export async function SiteFooter() {
             <Link href="/retours" className="hover:text-white">{t('Retours')}</Link>
             <Link href="/mentions-legales" className="hover:text-white">{t('Mentions légales')}</Link>
             <Link href="/supprimer-mon-compte" className="hover:text-white">{t('Supprimer mon compte')}</Link>
+            {user ? null : (
+              <Link href="/inscription" className="font-semibold text-accent-300 hover:text-accent-200">
+                {t('Créer un compte')}
+              </Link>
+            )}
           </p>
         </div>
       </div>

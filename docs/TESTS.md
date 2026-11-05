@@ -1,6 +1,6 @@
 # Tests exécutés
 
-Dernière exécution : **2026-11-05** — `npm run test` → **245 tests, 26 fichiers, 245 réussis, 0 échec**
+Dernière exécution : **2026-11-05** — `npm run test` → **256 tests, 27 fichiers, 256 réussis, 0 échec**
 (`npx tsc --noEmit` : aucune erreur ; `npm run build` : compilation réussie).
 
 Base utilisée : `medi_test` (PostgreSQL local, UTF-8), préparée par `npm run test:setup`.
