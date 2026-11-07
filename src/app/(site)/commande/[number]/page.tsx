@@ -18,6 +18,8 @@ import { OrderTimeline } from '@/components/order-timeline';
 import { getSiteI18n } from '@/lib/i18n/site-server';
 import { storeLocation, whatsappWithMessage } from '@/lib/store-location';
 import { PurchaseNotice } from '@/components/purchase-notice';
+import { EmailReceiptForm } from '@/components/email-receipt-form';
+import { emailStatus } from '@/lib/email';
 import { PICKUP_HOLD_HOURS, OUTSIDE_DALOA_MAX_DAYS } from '@/lib/store-policy';
 
 export const metadata: Metadata = { title: 'Confirmation de commande', robots: { index: false, follow: false } };
@@ -58,6 +60,7 @@ export default async function OrderConfirmationPage({ params, searchParams }: Pr
   const settings = await getStoreSettings();
   const location = storeLocation(settings);
   const totals = orderTotals(order);
+  const mail = emailStatus();
   const wave = waveStatus();
   const payment = details.payments[0];
   const returnTo = `/commande/${order.number}?t=${encodeURIComponent(order.accessToken)}`;
@@ -210,6 +213,9 @@ export default async function OrderConfirmationPage({ params, searchParams }: Pr
             >
               <Receipt className="size-4" aria-hidden /> {t('Page de suivi')} <ArrowRight className="size-3.5 rtl:rotate-180" aria-hidden />
             </Link>
+            {mail.configured ? (
+              <EmailReceiptForm number={order.number} token={order.accessToken} email={order.email} />
+            ) : null}
           </div>
 
           {order.deliveryMethod === 'CARRIER' ? (

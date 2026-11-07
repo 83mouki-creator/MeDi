@@ -29,8 +29,12 @@ immédiatement, et il ne donne **jamais** accès à l'administration.
 
 4. Appuyer sur **« Créer mon compte »**.
 
-Le client est **connecté aussitôt** et arrive sur son espace (`/compte`). Aucun
-e-mail n'est envoyé : rien à confirmer, rien à attendre.
+Le client est **connecté aussitôt** et arrive sur son espace (`/compte`). Aucune
+confirmation n'est demandée : le compte est utilisable immédiatement.
+
+Un **e-mail de bienvenue** part en plus (une fois Brevo configuré, voir
+[`docs/EMAIL.md`](EMAIL.md)) : il ne sert qu'à rassurer, il n'y a rien à cliquer
+pour activer le compte.
 
 ### Ce qu'il trouve ensuite dans son compte
 
@@ -52,8 +56,8 @@ Page **https://medi-daloa.vercel.app/mot-de-passe-oublie**.
 
 | Situation | Ce qui se passe |
 | --- | --- |
-| Service d'e-mail configuré (`RESEND_API_KEY` ou `BREVO_API_KEY` + `EMAIL_FROM`) | le lien de réinitialisation part tout seul par e-mail |
-| Aucun service d'e-mail configuré (cas actuel) | la demande est enregistrée et le message invite le client à contacter la boutique |
+| Service d'e-mail configuré (`BREVO_API_KEY` + `EMAIL_FROM`, voir [`docs/EMAIL.md`](EMAIL.md)) | le lien de réinitialisation part tout seul par e-mail |
+| Aucun service d'e-mail configuré | la demande est enregistrée et le message invite le client à contacter la boutique |
 
 **Côté boutique**, pour envoyer le lien à la main :
 `/admin/utilisateurs` → section **« Envoi des liens et des codes »** → générer le

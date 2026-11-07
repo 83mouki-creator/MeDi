@@ -1,6 +1,6 @@
 # Tests exécutés
 
-Dernière exécution : **2026-11-05** — `npm run test` → **256 tests, 27 fichiers, 256 réussis, 0 échec**
+Dernière exécution : **2026-11-07** — `npm run test` → **280 tests, 28 fichiers, 280 réussis, 0 échec**
 (`npx tsc --noEmit` : aucune erreur ; `npm run build` : compilation réussie).
 
 Base utilisée : `medi_test` (PostgreSQL local, UTF-8), préparée par `npm run test:setup`.
@@ -38,6 +38,12 @@ Les tests vident leurs tables avant chaque cas : ils ne touchent jamais les donn
 | Expiration automatique des réservations | `orders-flow.test.ts` (+ route `/api/cron/expire-reservations`) | ✔ |
 | Rôles et permissions côté serveur | `authz.test.ts` (matrice 8 permissions × 5 rôles) | ✔ |
 | Isolation des commandes entre clients | `orders-flow.test.ts`, `authz.test.ts` | ✔ |
+| E-mails de bienvenue, de commande, de bon et de réinitialisation | `email.test.ts` (24 cas : contenu, montants, règles de la boutique, absence de valeur inventée, e-mail reconstruit depuis la base) | ✔ |
+| Échappement HTML : un nom de produit piégé ne peut rien injecter | `email.test.ts` (`<script>` → `&lt;script&gt;`) | ✔ |
+| Requête envoyée à Brevo / Resend (expéditeur, HTML, réponse) | `email.test.ts` (corps `sender`, `htmlContent`, `replyTo`, priorité Brevo) | ✔ |
+| Panne du fournisseur : aucune commande annulée, aucune levée d'exception | `email.test.ts` (`Brevo HTTP 400` remonté sans lever) ; envoi différé (`email-queue.test` dans `email.test.ts`) | ✔ |
+| Aucun envoi vers les adresses techniques du personnel | `email.test.ts` (`@agents.medi.local`) | ✔ |
+| Le bon peut être renvoyé par e-mail (jeton ou compte) | `email.test.ts` (branchement page + action + limite de débit) | ✔ |
 | Mots de passe : scrypt, sel, jamais en clair | `authz.test.ts` | ✔ |
 | Téléversement d'image : type réel, taille, normalisation WebP, empreinte | `uploads-visual.test.ts` | ✔ |
 | Recherche visuelle : descripteurs, classement réel par similarité, aucun résultat « certain » sans modèle calibré | `uploads-visual.test.ts` | ✔ |
