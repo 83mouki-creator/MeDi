@@ -21,8 +21,11 @@ import { audit } from '@/lib/audit';
 import { roleHome } from '@/lib/roles';
 import { newId, slugify } from '@/lib/utils';
 import { createHash, randomBytes } from 'node:crypto';
-import { normalizeIvorianPhone, staffResetMessage } from '@/lib/staff-access';
+import { normalizeIvorianPhone } from '@/lib/staff-access';
 import { sendEmail, emailStatus } from '@/lib/email';
+import { queueEmail } from '@/lib/email-queue';
+import { passwordResetEmail, welcomeEmail } from '@/lib/email-templates';
+import { storeEmailInfo } from '@/lib/email-store';
 import { getStoreSettings } from '@/lib/settings';
 import { env } from '@/lib/env';
 
@@ -130,6 +133,19 @@ export async function registerAction(_prev: AuthState, formData: FormData): Prom
 
   await authenticate(parsed.data.email, parsed.data.password);
   await audit(null, { action: 'auth.register', entity: 'user', entityId: id, ip });
+
+  // E-mail de bienvenue : envoyé après la réponse (jamais bloquant). Sans
+  // fournisseur configuré, `queueEmail` ne fait rien — le compte reste créé.
+  if (emailStatus().configured) {
+    const settings = await getStoreSettings().catch(() => null);
+    if (settings) {
+      queueEmail({
+        to: parsed.data.email,
+        ...welcomeEmail({ firstName: parsed.data.firstName, email: parsed.data.email, store: storeEmailInfo(settings) }),
+      });
+    }
+  }
+
   redirect('/compte');
 }
 
@@ -352,14 +368,15 @@ export async function requestPasswordResetAction(_prev: AuthState, formData: For
 
   let sent = false;
   if (emailStatus().configured) {
-    const settings = await getStoreSettings().catch(() => null);
+    const settings = await getStoreSettings();
     const url = `${env.appUrl.replace(/\/$/, '')}/reinitialiser-mot-de-passe?token=${encodeURIComponent(token)}`;
-    const text = staffResetMessage({
+    const message = passwordResetEmail({
       firstName: user.firstName || user.email,
       resetUrl: url,
-      storeName: settings?.storeName,
+      expiresInMinutes: 60,
+      store: storeEmailInfo(settings),
     });
-    const result = await sendEmail({ to: user.email, subject: 'MeDi Shop — réinitialisation de votre mot de passe', text });
+    const result = await sendEmail({ to: user.email, ...message });
     sent = result.sent;
     if (!result.sent) console.error('[auth] envoi e-mail de réinitialisation', result.error);
   }

@@ -95,13 +95,15 @@ export const env = {
     },
   },
 
-  /** E-mails transactionnels (réinitialisation de mot de passe). */
+  /** E-mails transactionnels (bienvenue, commande, bon, réinitialisation). */
   email: {
-    resendApiKey: optional('RESEND_API_KEY'),
     brevoApiKey: optional('BREVO_API_KEY'),
+    resendApiKey: optional('RESEND_API_KEY'),
     from: optional('EMAIL_FROM'),
+    /** Adresse de réponse affichée dans la boîte du client (optionnelle). */
+    replyTo: optional('EMAIL_REPLY_TO'),
     get configured() {
-      return Boolean((optional('RESEND_API_KEY') || optional('BREVO_API_KEY')) && optional('EMAIL_FROM'));
+      return Boolean((optional('BREVO_API_KEY') || optional('RESEND_API_KEY')) && optional('EMAIL_FROM'));
     },
   },
 

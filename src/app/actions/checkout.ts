@@ -8,6 +8,9 @@ import { getCartSummary } from '@/lib/cart';
 import { getCurrentUser, clientIpFrom } from '@/lib/auth';
 import { rateLimit } from '@/lib/rate-limit';
 import { startWaveCheckout } from '@/lib/wave-checkout';
+import { emailStatus, sendEmail } from '@/lib/email';
+import { inBackground, shouldQueueEmail } from '@/lib/email-queue';
+import { buildOrderEmail } from '@/lib/order-mail';
 
 export type CheckoutState = {
   error?: string;
@@ -77,6 +80,20 @@ export async function placeOrderAction(_prev: CheckoutState, formData: FormData)
     });
 
     const target = `/commande/${result.order.number}?t=${encodeURIComponent(result.order.accessToken)}`;
+
+    // Accusé de réception par e-mail : préparé et envoyé après la réponse.
+    // Le client voit sa confirmation tout de suite ; si Brevo est en panne,
+    // la commande existe quand même et l'écran de suivi reste la référence.
+    if (emailStatus().configured && shouldQueueEmail(result.order.email)) {
+      const orderId = result.order.id;
+      const to = result.order.email!;
+      inBackground(async () => {
+        const built = await buildOrderEmail(orderId, 'created');
+        if (!built) return;
+        const sent = await sendEmail({ to, ...built.message });
+        if (!sent.sent) console.error('[checkout] e-mail de commande', sent.error);
+      });
+    }
 
     // Paiement Wave automatique si configuré : redirection vers la page Wave.
     if (result.paymentMethod === 'WAVE') {
