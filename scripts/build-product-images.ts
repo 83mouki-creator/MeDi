@@ -188,6 +188,28 @@ async function build(product: ManifestProduct) {
 }
 
 /**
+ * Une vignette réécrite au même chemin garderait la même URL, donc la même clé
+ * dans le cache d'images de Next (indexé sur l'URL) : les visiteurs continueraient
+ * de voir l'ancienne version. On suffixe l'URL d'une empreinte du contenu.
+ */
+function versionedUrl(url: string, checksum: string) {
+  return `${url.split('?')[0]}?v=${checksum.slice(0, 8)}`;
+}
+
+/** Empreinte grossière d'une image, pour comparer deux bandeaux sans les lire en entier. */
+async function fingerprint(image: Buffer) {
+  return sharp(image).resize(160, 30, { fit: 'fill' }).greyscale().raw().toBuffer();
+}
+
+function meanDifference(a: Buffer, b: Buffer) {
+  const size = Math.min(a.length, b.length);
+  if (size === 0) return 255;
+  let total = 0;
+  for (let i = 0; i < size; i++) total += Math.abs(a[i]! - b[i]!);
+  return total / size;
+}
+
+/**
  * Recompose les vignettes déjà publiées : la zone produit est conservée telle
  * quelle, seul le bandeau est redessiné avec la marque et le libellé actuels.
  * Utile quand le catalogue photo a été fabriqué avant un changement de marque et
@@ -200,6 +222,7 @@ async function relabel() {
     { url: string; checksum: string; width: number; height: number }
   >;
   let done = 0;
+  let already = 0;
   const skipped: string[] = [];
   for (const product of catalogue.produits) {
     const entry = index[product.sku];
@@ -207,7 +230,8 @@ async function relabel() {
       skipped.push(product.sku);
       continue;
     }
-    const file = path.join('public', entry.url.replace(/^\//, ''));
+    // L'URL peut porter un suffixe de version : le fichier est sur le disque sans.
+    const file = path.join('public', entry.url.replace(/^\//, '').split('?')[0]);
     const tile = await readFile(file);
     const { data, info } = await sharp(tile).removeAlpha().raw().toBuffer({ resolveWithObject: true });
     const px = (x: number, y: number) => {
@@ -215,8 +239,26 @@ async function relabel() {
       return [data[i] ?? 0, data[i + 1] ?? 0, data[i + 2] ?? 0] as const;
     };
     const top = bannerTop(px, info.width, info.height);
-    const area = await sharp(tile).extract({ left: 0, top: 0, width: info.width, height: top }).toBuffer();
     const banner = await sharp(bannerSvg({ sku: product.sku, label: product.name })).png().toBuffer();
+
+    // Vignette déjà au bon bandeau : on n'y touche pas. Sans ce contrôle, chaque
+    // passage réencoderait le WebP (perte de qualité à chaque génération) et
+    // changerait l'empreinte, donc l'URL, sans raison.
+    // Le liseré orange compte quelques pixels au-dessus du bleu : on tolère
+    // une petite marge avant de conclure que le bandeau est déjà le bon.
+    if (Math.abs(top - (info.height - BANNER_H)) <= 12) {
+      const bannerStart = Math.min(top, info.height - BANNER_H);
+      const current = await sharp(tile)
+        .extract({ left: 0, top: bannerStart, width: info.width, height: info.height - bannerStart })
+        .toBuffer();
+      const [a, b] = await Promise.all([fingerprint(current), fingerprint(banner)]);
+      if (meanDifference(a, b) < 3) {
+        already += 1;
+        continue;
+      }
+    }
+
+    const area = await sharp(tile).extract({ left: 0, top: 0, width: info.width, height: top }).toBuffer();
     const composed = await sharp({ create: { width: CANVAS, height: CANVAS, channels: 3, background: '#ffffff' } })
       .composite([
         { input: area, top: 0, left: 0 },
@@ -228,10 +270,13 @@ async function relabel() {
     entry.checksum = createHash('sha256').update(composed).digest('hex');
     entry.width = CANVAS;
     entry.height = CANVAS;
+    entry.url = versionedUrl(entry.url, entry.checksum);
     done += 1;
   }
   await writeFile(IMAGES_INDEX, `${JSON.stringify(index, null, 2)}\n`);
-  console.log(`${done} vignette(s) recomposée(s) dans ${OUT_DIR}`);
+  console.log(
+    `${done} vignette(s) recomposée(s) dans ${OUT_DIR}` + (already ? `, ${already} déjà à jour` : ''),
+  );
   if (skipped.length) console.log(`Sans visuel (ignorées) : ${skipped.join(', ')}`);
 }
 

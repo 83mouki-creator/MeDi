@@ -6,6 +6,15 @@ const nextConfig: NextConfig = {
   // Les images produits sont servies en WebP optimisé depuis notre stockage.
   images: {
     formats: ['image/webp'],
+    // Les vignettes du catalogue portent un suffixe de version (`?v=<empreinte>`) :
+    // sans lui, une photo remplacée au même chemin garderait la même clé dans le
+    // cache d'images et les visiteurs verraient l'ancienne. Next exige que ces
+    // requêtes soient déclarées ici.
+    localPatterns: [
+      { pathname: '/catalogue/**' },
+      { pathname: '/uploads/**' },
+      { pathname: '/brand/**' },
+    ],
     remotePatterns: [
       { protocol: 'https', hostname: 'res.cloudinary.com' },
       { protocol: 'https', hostname: 'images.unsplash.com' },
