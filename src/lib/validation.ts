@@ -47,8 +47,9 @@ export const cartSchema = z.object({
  * Tunnel de commande.
  *
  * Volontairement court : plus d'adresse à saisir, plus de transporteur à
- * choisir, plus de note. À Daloa le client donne son quartier ; hors Daloa il
- * choisit sa ville et le prix du transport se discute sur WhatsApp.
+ * choisir, plus de note — et plus de retrait en magasin. À Daloa le client
+ * donne son quartier, les frais en découlent ; hors Daloa il choisit sa ville
+ * et le prix du transport se discute sur WhatsApp.
  */
 export const checkoutSchema = z
   .object({
@@ -56,11 +57,11 @@ export const checkoutSchema = z
     lastName: z.string().trim().min(2, 'Nom requis').max(60),
     phone: phoneSchema,
     email: z.union([emailSchema, z.literal('')]).optional(),
-    deliveryMethod: z.enum(['PICKUP', 'LOCAL_DELIVERY', 'CARRIER']),
+    deliveryMethod: z.enum(['LOCAL_DELIVERY', 'CARRIER']),
     zoneId: z.string().trim().max(80).optional(),
     city: z.string().trim().max(80).optional(),
     neighbourhood: z.string().trim().max(80).optional(),
-    paymentMethod: z.enum(['WAVE', 'CASH_ON_DELIVERY', 'CASH_IN_STORE']),
+    paymentMethod: z.enum(['WAVE', 'CASH_ON_DELIVERY']),
     items: z.array(cartItemSchema).min(1, 'Votre panier est vide').max(60),
   })
   .superRefine((data, ctx) => {
@@ -106,6 +107,13 @@ export const adminProductSchema = z.object({
   brandId: z.string().optional().nullable(),
   supplierId: z.string().optional().nullable(),
   warranty: z.string().trim().max(120).optional(),
+  /**
+   * Prix d'achat (prix de revient). Facultatif : un produit sans prix d'achat
+   * n'entre pas dans le calcul du bénéfice, il est signalé comme « à compléter ».
+   */
+  purchasePrice: z
+    .union([z.literal(''), z.null(), z.undefined(), z.coerce.number().int('Montant entier en FCFA').min(0).max(100_000_000)])
+    .optional(),
   keywords: z.string().trim().max(500).optional(),
   attributes: z.array(z.object({ name: z.string().trim().min(1).max(80), value: z.string().trim().min(1).max(200) })).max(40).optional(),
 });

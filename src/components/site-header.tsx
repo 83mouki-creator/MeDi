@@ -1,15 +1,15 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { Camera, MapPin, Phone, ShoppingCart, Truck, User } from 'lucide-react';
+import { Camera, Phone, ShoppingCart, Truck, User } from 'lucide-react';
 import { getCurrentUser } from '@/lib/auth';
 import { readCart } from '@/lib/cart';
 import { getStoreSettings, whatsappLink } from '@/lib/settings';
 import { countActivePromotions, getCategoryTree } from '@/lib/catalog';
 import { getSiteI18n } from '@/lib/i18n/site-server';
 import { SearchBar } from './search-bar';
-import { SiteLocaleSelector } from './site-locale-selector';
 import { PromoBanner } from './promo-banner';
 import { SiteCategoryMenu } from './site-category-menu';
+import { BRAND, BRAND_LOGO_SIZE, STORE_TAGLINE_SHORT } from '@/lib/brand';
 
 const FALLBACK_CATEGORIES = [
   { slug: 'outillage-industriel', name: 'Outillage industriel' },
@@ -34,9 +34,7 @@ export async function SiteHeader() {
   const roots = tree.roots.length > 0 ? tree.roots : FALLBACK_CATEGORIES.map((c, i) => ({ ...c, id: c.slug, productCount: 0, position: i, parentId: null, imageUrl: null }));
   const whatsapp = whatsappLink(
     settings,
-    settings.whatsapp
-      ? 'Bonjour MeDi Shop, je souhaite des informations sur un produit.'
-      : undefined,
+    `Bonjour ${settings.storeName}, je souhaite des informations sur un produit.`,
   );
 
   return (
@@ -45,8 +43,8 @@ export async function SiteHeader() {
       <div className="hidden bg-navy-900 text-[12px] text-navy-100 md:block">
         <div className="container-page flex h-9 items-center justify-between gap-4">
           <p className="flex items-center gap-2">
-            <MapPin className="size-3.5 shrink-0 text-accent-400" aria-hidden />
-            {t('Retrait en boutique à {city} · Livraison à Daloa et expédition dans toute la Côte d’Ivoire', { city: settings.city })}
+            <Truck className="size-3.5 shrink-0 text-accent-400" aria-hidden />
+            {t('Livraison à domicile à {city} et partout en Côte d’Ivoire', { city: settings.city })}
           </p>
           <div className="flex items-center gap-4">
             {settings.phone ? (
@@ -60,15 +58,24 @@ export async function SiteHeader() {
             <Link href="/suivi" className="hover:text-white">
               {t('Suivre ma commande')}
             </Link>
-            <SiteLocaleSelector tone="dark" />
           </div>
         </div>
       </div>
 
       {/* Barre principale */}
       <div className="container-page flex flex-wrap items-center gap-3 py-3 lg:gap-6">
-        <Link href="/" className="flex shrink-0 items-center" aria-label={t('MeDi Shop — accueil')}>
-          <Image src="/brand/medi-logo-horizontal-blanc.png" alt="MeDi Shop" width={1069} height={200} priority className="h-7 w-auto sm:h-10 lg:h-12" />
+        <Link href="/" className="flex shrink-0 flex-col" aria-label={t('{store} — accueil', { store: settings.storeName })}>
+          <Image
+            src={BRAND.logoHorizontalWhite}
+            alt={settings.storeName}
+            width={BRAND_LOGO_SIZE.width}
+            height={BRAND_LOGO_SIZE.height}
+            priority
+            className="h-8 w-auto sm:h-10 lg:h-11"
+          />
+          <span className="mt-0.5 hidden text-[10px] font-medium leading-none text-navy-300 sm:block">
+            {settings.tagline ?? STORE_TAGLINE_SHORT}
+          </span>
         </Link>
 
         <div className="order-3 w-full lg:order-2 lg:flex-1">
@@ -76,8 +83,6 @@ export async function SiteHeader() {
         </div>
 
         <div className="order-2 ms-auto flex items-center gap-1 lg:order-3 lg:gap-2">
-          <SiteLocaleSelector tone="dark" className="md:hidden" />
-
           <Link
             href="/recherche-visuelle"
             className="flex items-center gap-1.5 rounded-lg px-2.5 py-2 text-sm font-medium text-navy-100 hover:bg-navy-800 hover:text-white lg:hidden"
@@ -144,8 +149,8 @@ export async function SiteHeader() {
           </ul>
 
           <div className="ms-auto flex shrink-0 items-center gap-3">
-            <Link href="/nous-trouver" className="hidden py-2.5 text-[13px] font-semibold text-accent-300 hover:text-accent-200 lg:block">
-              {t('Nous trouver')}
+            <Link href="/livraison" className="hidden py-2.5 text-[13px] font-semibold text-accent-300 hover:text-accent-200 lg:block">
+              {t('Livraison')}
             </Link>
             {whatsapp ? (
               <a

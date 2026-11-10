@@ -1,7 +1,7 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { readFileSync } from 'node:fs';
 import { escapeHtml, orderEmail, passwordResetEmail, welcomeEmail, type OrderEmailData } from '@/lib/email-templates';
-import { FINAL_SALE_NOTICE, OUTSIDE_DALOA_MAX_DAYS, PICKUP_HOLD_HOURS } from '@/lib/store-policy';
+import { FINAL_SALE_NOTICE, OUTSIDE_DALOA_MAX_DAYS } from '@/lib/store-policy';
 import { formatFCFA } from '@/lib/utils';
 import { createOrder } from '@/lib/orders';
 import { buildOrderEmail } from '@/lib/order-mail';
@@ -40,7 +40,7 @@ function orderFixture(overrides: Partial<OrderEmailData> = {}): OrderEmailData {
     customerName: 'Awa Koné',
     phone: '0701020304',
     city: 'Daloa',
-    deliveryMethod: 'Retrait en boutique (Daloa)',
+    deliveryMethod: 'Livraison à domicile (Daloa)',
     paymentMethod: 'Wave (paiement mobile)',
     status: 'En attente de paiement',
     paymentStatus: 'Non payé',
@@ -111,8 +111,10 @@ describe('modèles d’e-mails', () => {
 
   it('commande : les règles de la boutique sont rappelées', () => {
     const mail = orderEmail(orderFixture());
-    expect(mail.text).toContain(`${PICKUP_HOLD_HOURS} h`);
+    expect(mail.text).toContain('Livraison à domicile à Daloa');
     expect(mail.text).toContain(`${OUTSIDE_DALOA_MAX_DAYS} jours`);
+    // Le retrait en magasin n'est plus annoncé aux clients.
+    expect(mail.text).not.toMatch(/retrait en boutique/i);
     expect(mail.text).toContain(FINAL_SALE_NOTICE);
     expect(mail.html).toContain('ni l’argent n’est rendu');
   });
@@ -354,8 +356,9 @@ describe('e-mail construit depuis la base', () => {
     const { order } = await createOrder({
       input: checkoutInput({
         items: [{ productId: product.id, quantity: 3 }],
-        deliveryMethod: 'PICKUP',
-        paymentMethod: 'CASH_IN_STORE',
+        deliveryMethod: 'LOCAL_DELIVERY',
+        neighbourhood: 'Commerce',
+        paymentMethod: 'WAVE',
       }) as unknown as CheckoutInput,
     });
 
@@ -375,6 +378,9 @@ describe('e-mail construit depuis la base', () => {
     const { order } = await createOrder({
       input: checkoutInput({
         items: [{ productId: product.id, quantity: 2 }],
+        deliveryMethod: 'LOCAL_DELIVERY',
+        neighbourhood: 'Commerce',
+        paymentMethod: 'WAVE',
         customerNote: 'Livrer avant midi',
       }) as unknown as CheckoutInput,
     });

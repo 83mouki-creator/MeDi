@@ -4,9 +4,16 @@ import { parsePage, sanitizeSearch, toFcfa } from './utils';
 
 /**
  * Indicateurs de l'administration.
- * Définition comptable explicite : le chiffre d'affaires correspond au total des
- * commandes dont le paiement a été effectivement confirmé (payment_status = PAID),
- * hors commandes annulées ou remboursées. Les frais de livraison sont inclus.
+ *
+ * Définitions comptables explicites, pour que le propriétaire sache toujours ce
+ * qu'il lit :
+ *
+ * - **Chiffre d'affaires** : total encaissé des commandes `PAID`, hors annulées
+ *   et remboursées. Les frais de livraison sont inclus (c'est l'argent reçu).
+ * - **Bénéfice net** : Σ((prix de vente unitaire − prix d'achat) × quantité) sur
+ *   ces mêmes commandes, frais de livraison **exclus** (ils ne sont pas une
+ *   marge). Les lignes dont le prix d'achat est inconnu sont comptées à part et
+ *   jamais comptées comme du bénéfice.
  */
 export async function getDashboardMetrics() {
   const [revenue, statusCounts, paymentCounts, stockAlerts, topProducts, recentOrders, pendingVerifications] =
@@ -15,7 +22,8 @@ export async function getDashboardMetrics() {
         SELECT
           coalesce(sum(total), 0)::text AS revenue,
           count(*)::int AS paid_orders,
-          coalesce(sum(total) FILTER (WHERE created_at >= date_trunc('month', now())), 0)::text AS revenue_month
+          coalesce(sum(total) FILTER (WHERE created_at >= date_trunc('month', now())), 0)::text AS revenue_month,
+          coalesce(sum(total - shipping_fee) FILTER (WHERE created_at >= date_trunc('month', now())), 0)::text AS revenue_net_month
         FROM orders
         WHERE payment_status = 'PAID' AND status NOT IN ('CANCELLED', 'REFUNDED')
       `),
@@ -45,6 +53,26 @@ export async function getDashboardMetrics() {
       db.execute(sql`SELECT count(*)::int AS count FROM payments WHERE status IN ('AWAITING_VERIFICATION', 'PENDING')`),
     ]);
 
+  // Bénéfice net : calculé sur l'historique figé de la ligne de commande, donc
+  // insensible à un changement de tarif fournisseur après la vente.
+  const profit = await db.execute(sql`
+    SELECT
+      coalesce(sum((oi.unit_price - oi.purchase_price_snapshot) * oi.quantity), 0)::text AS profit_total,
+      coalesce(sum((oi.unit_price - oi.purchase_price_snapshot) * oi.quantity)
+        FILTER (WHERE o.created_at >= date_trunc('month', now())), 0)::text AS profit_month,
+      coalesce(sum(oi.quantity) FILTER (WHERE oi.purchase_price_snapshot IS NULL), 0)::int AS units_without_cost,
+      count(DISTINCT oi.product_id) FILTER (WHERE oi.purchase_price_snapshot IS NULL)::int AS products_without_cost
+    FROM order_items oi
+    JOIN orders o ON o.id = oi.order_id
+    WHERE o.payment_status = 'PAID' AND o.status NOT IN ('CANCELLED', 'REFUNDED')
+  `);
+  const profitRow = (profit.rows as Record<string, unknown>[])[0] ?? {};
+  const missingCosts = await db.execute(sql`
+    SELECT count(*)::int AS count
+    FROM products
+    WHERE is_active = true AND is_archived = false AND purchase_price IS NULL
+  `);
+
   const revenueRow = (revenue.rows as Record<string, unknown>[])[0] ?? {};
   const counts = (statusCounts.rows as { status: string; count: number }[]).reduce<Record<string, number>>((acc, row) => {
     acc[row.status] = row.count;
@@ -69,6 +97,12 @@ export async function getDashboardMetrics() {
   return {
     revenue: toFcfa(revenueRow.revenue as string),
     revenueMonth: toFcfa(revenueRow.revenue_month as string),
+    revenueNetMonth: toFcfa(revenueRow.revenue_net_month as string),
+    profitTotal: toFcfa(profitRow.profit_total as string),
+    profitMonth: toFcfa(profitRow.profit_month as string),
+    /** Ventes dont le prix d'achat manquait : exclues du bénéfice. */
+    unitsWithoutCost: Number(profitRow.units_without_cost ?? 0),
+    productsWithoutCost: Number((missingCosts.rows as { count: number }[])[0]?.count ?? 0),
     paidOrders: Number(revenueRow.paid_orders ?? 0),
     counts,
     payCounts,
@@ -219,6 +253,70 @@ export async function salesByDay(days = 14) {
     day: String(row.day),
     revenue: toFcfa(row.revenue as string),
     orders: Number(row.orders),
+  }));
+}
+
+/**
+ * Rentabilité par produit sur les ventes réellement payées.
+ *
+ * - `unitsPaid` et `revenue` viennent du prix de vente figé sur la ligne.
+ * - `profit` est la marge nette : (prix de vente − prix d'achat) × quantité.
+ * - `marginRate` est exprimé en pourcentage du chiffre d'affaires produit.
+ *
+ * Un produit sans prix d'achat apparaît avec `missingCost: true` et un bénéfice
+ * `null` : on ne prétend jamais connaître sa marge.
+ */
+export async function productProfitability(limit = 15) {
+  const rows = await db.execute(sql`
+    SELECT
+      p.id,
+      p.name,
+      p.sku,
+      p.slug,
+      p.price::text AS price,
+      coalesce(sum(oi.quantity), 0)::int AS units,
+      coalesce(sum(oi.line_total), 0)::text AS revenue,
+      sum((oi.unit_price - oi.purchase_price_snapshot) * oi.quantity)::text AS profit
+    FROM order_items oi
+    JOIN orders o ON o.id = oi.order_id
+    JOIN products p ON p.id = oi.product_id
+    WHERE o.payment_status = 'PAID' AND o.status NOT IN ('CANCELLED','REFUNDED')
+    GROUP BY p.id, p.name, p.sku, p.slug, p.price
+    ORDER BY coalesce(sum((oi.unit_price - oi.purchase_price_snapshot) * oi.quantity), 0) DESC, units DESC
+    LIMIT ${limit}
+  `);
+  return (rows.rows as Record<string, unknown>[]).map((row) => {
+    const revenue = toFcfa(row.revenue as string);
+    const profit = row.profit === null ? null : toFcfa(row.profit as string);
+    return {
+      id: String(row.id),
+      name: String(row.name),
+      sku: String(row.sku),
+      slug: String(row.slug),
+      price: toFcfa(row.price as string),
+      units: Number(row.units),
+      revenue,
+      profit,
+      missingCost: profit === null,
+      marginRate: profit !== null && revenue > 0 ? Math.round((profit / revenue) * 100) : null,
+    };
+  });
+}
+
+/** Produits publiés dont le prix d'achat n'est pas encore renseigné. */
+export async function productsMissingPurchasePrice(limit = 10) {
+  const rows = await db.execute(sql`
+    SELECT id, name, sku, price::text AS price
+    FROM products
+    WHERE is_active = true AND is_archived = false AND purchase_price IS NULL
+    ORDER BY updated_at DESC
+    LIMIT ${limit}
+  `);
+  return (rows.rows as Record<string, unknown>[]).map((row) => ({
+    id: String(row.id),
+    name: String(row.name),
+    sku: String(row.sku),
+    price: toFcfa(row.price as string),
   }));
 }
 

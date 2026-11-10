@@ -401,7 +401,7 @@ export async function issuePasswordResetLinkAction(_prev: StaffState, formData: 
   let emailDelivered = false;
   let emailError: string | undefined;
   if (emailStatus().configured && !target.email.endsWith(`@${INTERNAL_MAIL_DOMAIN}`)) {
-    const result = await sendEmail({ to: target.email, subject: 'MeDi Shop — réinitialisation de votre mot de passe', text: message });
+    const result = await sendEmail({ to: target.email, subject: 'Perokado — réinitialisation de votre mot de passe', text: message });
     emailDelivered = result.sent;
     emailError = result.error;
   }

@@ -67,7 +67,7 @@ export default async function SettingsPage() {
         <div className="mt-3 rounded-lg border border-navy-100 bg-navy-50/60 p-3 text-xs text-navy-700">
           <p className="font-semibold text-navy-900">{t('Activer l’envoi automatique des e-mails')}</p>
           <p className="mt-1">
-            {t('Ajoutez dans les variables d’environnement (Vercel) RESEND_API_KEY ou BREVO_API_KEY, puis EMAIL_FROM avec une adresse de votre domaine vérifié (ex. MeDi Shop <no-reply@medidaloa.ci>). Le lien de réinitialisation part alors automatiquement ; sans cela, il reste remis par WhatsApp depuis l’écran Utilisateurs.')}
+            {t('Ajoutez dans les variables d’environnement (Vercel) RESEND_API_KEY ou BREVO_API_KEY, puis EMAIL_FROM avec une adresse de votre domaine vérifié (ex. Perokado <no-reply@perokado.ci>). Le lien de réinitialisation part alors automatiquement ; sans cela, il reste remis par WhatsApp depuis l’écran Utilisateurs.')}
           </p>
           <p className="mt-2 font-semibold text-navy-900">{t('Activer l’envoi direct WhatsApp')}</p>
           <p className="mt-1">

@@ -1,5 +1,5 @@
 /*
- * Service worker de MeDi Shop.
+ * Service worker de Perokado.
  *
  * Rôle volontairement limité : le site vient du serveur à chaque visite (prix,
  * stock et commandes ne doivent jamais être servis depuis un cache périmé). Le
@@ -17,7 +17,7 @@ const OFFLINE_URL = '/offline';
 const FALLBACK_HTML =
   '<!doctype html><html lang="fr"><meta charset="utf-8">' +
   '<meta name="viewport" content="width=device-width,initial-scale=1">' +
-  '<title>Pas de connexion | MeDi Shop</title>' +
+  '<title>Pas de connexion | Perokado</title>' +
   '<body style="margin:0;min-height:100vh;display:grid;place-items:center;font-family:system-ui;background:#0b2545;color:#fff;text-align:center;padding:24px">' +
   '<div><h1 style="font-size:20px;margin:0 0 8px">Pas de connexion</h1>' +
   '<p style="margin:0 0 16px;opacity:.8">Vérifiez votre connexion internet, puis réessayez.</p>' +

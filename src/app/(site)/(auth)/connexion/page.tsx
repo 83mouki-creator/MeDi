@@ -30,7 +30,7 @@ export default async function LoginPage({ searchParams }: { searchParams: Promis
           <LoginForm redirectTo={redirectTo} />
         </div>
         <div className="mt-5 rounded-xl border border-navy-200 bg-navy-50/60 p-3">
-          <p className="text-sm font-semibold text-navy-900">{t('Vous êtes agent MeDi Shop ?')}</p>
+          <p className="text-sm font-semibold text-navy-900">{t('Vous êtes agent Perokado ?')}</p>
           <p className="mt-0.5 text-xs text-navy-600">
             {t('Votre accès a été créé par un administrateur. Munissez-vous du code reçu par WhatsApp.')}
           </p>

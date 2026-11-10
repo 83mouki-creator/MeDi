@@ -15,8 +15,8 @@ describe('manifeste de l’application (PWA / Android)', () => {
   const data = manifest();
 
   it('porte le nom de la boutique et s’ouvre en plein écran', () => {
-    expect(data.name).toContain('MeDi Shop');
-    expect(data.short_name).toBe('MeDi Shop');
+    expect(data.name).toContain('Perokado');
+    expect(data.short_name).toBe('Perokado');
     expect(data.display).toBe('standalone');
     expect(data.start_url).toBe('/');
     expect(data.scope).toBe('/');

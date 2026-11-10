@@ -11,7 +11,7 @@ import { getSiteI18n } from '@/lib/i18n/site-server';
 
 export const metadata: Metadata = {
   title: 'Suivre ma commande',
-  description: 'Consultez l’état de votre commande MeDi Shop avec votre numéro de commande et le numéro de téléphone utilisé.',
+  description: 'Consultez l’état de votre commande Perokado avec votre numéro de commande et le numéro de téléphone utilisé.',
 };
 
 /**

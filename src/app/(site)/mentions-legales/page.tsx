@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { getStoreSettings } from '@/lib/settings';
-import { formatStoreAddress, storeLocation } from '@/lib/store-location';
+
 import { LegalPage, LegalSection } from '@/components/legal-page';
 
 export const metadata: Metadata = {
   title: 'Mentions légales',
-  description: 'Éditeur du site MeDi Shop, hébergement et informations légales.',
+  description: 'Éditeur du site Perokado, hébergement et informations légales.',
   alternates: { canonical: '/mentions-legales' },
 };
 
@@ -14,16 +14,16 @@ export const dynamic = 'force-dynamic';
 
 export default async function LegalNoticePage() {
   const settings = await getStoreSettings();
-  const location = storeLocation(settings);
 
   return (
     <LegalPage
       title="Mentions légales"
-      intro="Informations relatives à l’éditeur du site MeDi Shop et à son hébergement."
+      intro="Informations relatives à l’éditeur du site Perokado et à son hébergement."
     >
       <LegalSection title="Éditeur du site">
         <p>
-          Dénomination commerciale : <strong>{settings.storeName}</strong>, {formatStoreAddress(location)}.
+          Dénomination commerciale : <strong>{settings.storeName}</strong>
+          {settings.city ? ` — ${settings.city}, ${settings.country}` : ''}.
         </p>
         <p>
           Éditeur et responsable de la publication : la direction de {settings.storeName}.
@@ -65,7 +65,7 @@ export default async function LegalNoticePage() {
 
       <LegalSection title="Propriété intellectuelle">
         <p>
-          La marque, le logo, les textes et les photographies produits du site MeDi Shop sont la propriété de la boutique ; toute
+          La marque, le logo, les textes et les photographies produits du site Perokado sont la propriété de la boutique ; toute
           reproduction sans autorisation est interdite.
         </p>
         <p>

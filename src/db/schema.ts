@@ -1,5 +1,5 @@
 /**
- * MeDi Shop — schéma relationnel PostgreSQL (Neon).
+ * Perokado — schéma relationnel PostgreSQL (Neon).
  *
  * Conventions :
  *  - montants : numeric(12,2), jamais de flottant (l'application manipule des entiers FCFA)
@@ -290,6 +290,14 @@ export const products = pgTable(
     shortDescription: text('short_description'),
     description: text('description'),
     price: numeric('price', { precision: 12, scale: 2 }).notNull(),
+    /**
+     * Prix d'achat (prix de revient payé au fournisseur).
+     *
+     * Sert uniquement à l'administration : le bénéfice net affiché sur le
+     * tableau de bord est calculé en direct (`prix de vente − prix d'achat`
+     * × quantité). Il n'est **jamais** exposé à la boutique publique.
+     */
+    purchasePrice: numeric('purchase_price', { precision: 12, scale: 2 }),
     promoPrice: numeric('promo_price', { precision: 12, scale: 2 }),
     promoStartsAt: timestamp('promo_starts_at', { withTimezone: true }),
     promoEndsAt: timestamp('promo_ends_at', { withTimezone: true }),
@@ -467,6 +475,14 @@ export const orderItems = pgTable(
     nameSnapshot: text('name_snapshot').notNull(),
     imageSnapshot: text('image_snapshot'),
     unitPrice: numeric('unit_price', { precision: 12, scale: 2 }).notNull(),
+    /**
+     * Prix d'achat figé à la commande (`products.purchase_price` à cet instant).
+     *
+     * Permet de calculer un bénéfice net historique exact même si le tarif
+     * fournisseur change ensuite. `null` = prix d'achat inconnu : la ligne est
+     * exclue du bénéfice plutôt que comptée comme une marge de 100 %.
+     */
+    purchasePriceSnapshot: numeric('purchase_price_snapshot', { precision: 12, scale: 2 }),
     quantity: integer('quantity').notNull(),
     lineTotal: numeric('line_total', { precision: 12, scale: 2 }).notNull(),
   },
@@ -566,7 +582,7 @@ export const promotions = pgTable(
 
 export const storeSettings = pgTable('store_settings', {
   id: integer('id').primaryKey().default(1),
-  storeName: text('store_name').notNull().default('MeDi Shop'),
+  storeName: text('store_name').notNull().default('Perokado'),
   tagline: text('tagline'),
   phone: text('phone'),
   whatsapp: text('whatsapp'),
@@ -577,6 +593,12 @@ export const storeSettings = pgTable('store_settings', {
   openingHours: text('opening_hours'),
   waveNumber: text('wave_number'),
   waveMerchantName: text('wave_merchant_name'),
+  /**
+   * Compte marchand de l'agrégateur de paiement (PSP) : numéro communiqué au
+   * client pour un encaissement mobile money / carte vérifié par la boutique.
+   */
+  pspMerchantNumber: text('psp_merchant_number'),
+  pspMerchantLabel: text('psp_merchant_label'),
   waveMode: text('wave_mode').notNull().default('MANUAL'),
   allowCod: boolean('allow_cod').notNull().default(false),
   codMaxAmount: numeric('cod_max_amount', { precision: 12, scale: 2 }).notNull().default('0'),
@@ -585,9 +607,13 @@ export const storeSettings = pgTable('store_settings', {
   lowStockThreshold: integer('low_stock_threshold').notNull().default(5),
   reservationMinutes: integer('reservation_minutes').notNull().default(120),
   freeDeliveryAbove: numeric('free_delivery_above', { precision: 12, scale: 2 }),
-  // Géolocalisation de la boutique : renseignée par le propriétaire dans
-  // /admin/parametres. Tant que les deux valeurs sont vides, aucune carte ni
-  // coordonnée n'est affichée (rien n'est deviné ni approximé).
+  /**
+   * Colonnes historiques de géolocalisation, conservées uniquement pour ne pas
+   * perdre les données déjà saisies. **Elles ne sont plus lues ni affichées** :
+   * la boutique a retiré la carte et la page « Nous trouver » de son parcours.
+   * Aucune migration destructive n'est faite tant que la remise à zéro n'est pas
+   * décidée par le propriétaire.
+   */
   latitude: numeric('latitude', { precision: 9, scale: 6 }),
   longitude: numeric('longitude', { precision: 9, scale: 6 }),
   facebookUrl: text('facebook_url'),
@@ -596,6 +622,85 @@ export const storeSettings = pgTable('store_settings', {
   returnPolicy: text('return_policy'),
   updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
 });
+
+// ───────────────────────────── Stickers promotionnels ─────────────────────────────
+
+/**
+ * Un « sticker » est une vignette affichée sur la photo d'un produit : garantie,
+ * réduction, livraison offerte, dernière pièce…
+ *
+ * Le propriétaire crée jusqu'à deux stickers par produit, ou applique le même
+ * sticker à tout ou partie du catalogue depuis l'administration. L'affichage est
+ * borné par une fenêtre de dates : passé `endsAt`, le sticker disparaît tout
+ * seul, sans intervention.
+ *
+ * `position` vaut 0 ou 1 : au plus deux stickers par produit (choix du
+ * propriétaire), le premier en haut à gauche, le second en haut à droite.
+ */
+export const stickerToneEnum = pgEnum('sticker_tone', [
+  'GOLD',
+  'GREEN',
+  'RED',
+  'NAVY',
+  'WHITE',
+]);
+
+export const stickerIconEnum = pgEnum('sticker_icon', [
+  'none',
+  'shield',
+  'percent',
+  'tag',
+  'truck',
+  'clock',
+  'star',
+  'gift',
+]);
+
+export const stickers = pgTable(
+  'stickers',
+  {
+    id: text('id').primaryKey(),
+    /** Texte affiché sur la vignette, 40 caractères maximum (2 lignes). */
+    label: text('label').notNull(),
+    /** Texte secondaire plus petit (facultatif), ex. « 12 mois ». */
+    detail: text('detail'),
+    tone: stickerToneEnum('tone').notNull().default('GOLD'),
+    icon: stickerIconEnum('icon').notNull().default('none'),
+    /** Fenêtre d'affichage. Vide = le sticker ne s'arrête jamais. */
+    startsAt: timestamp('starts_at', { withTimezone: true }),
+    endsAt: timestamp('ends_at', { withTimezone: true }),
+    isActive: boolean('is_active').notNull().default(true),
+    createdByUserId: text('created_by_user_id').references(() => users.id, { onDelete: 'set null' }),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [index('stickers_active_idx').on(t.isActive, t.startsAt, t.endsAt)],
+);
+
+/** Affectation d'un sticker à un produit, à une des deux positions. */
+export const productStickers = pgTable(
+  'product_stickers',
+  {
+    productId: text('product_id')
+      .notNull()
+      .references(() => products.id, { onDelete: 'cascade' }),
+    stickerId: text('sticker_id')
+      .notNull()
+      .references(() => stickers.id, { onDelete: 'cascade' }),
+    /** Position 0 = en haut à gauche, 1 = en haut à droite. */
+    position: integer('position').notNull().default(0),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    primaryKey({ columns: [t.productId, t.stickerId] }),
+    index('product_stickers_sticker_idx').on(t.stickerId),
+  ],
+);
+
+export type Sticker = typeof stickers.$inferSelect;
+export type ProductSticker = typeof productStickers.$inferSelect;
+export type StickerTone = (typeof stickerToneEnum.enumValues)[number];
+export type StickerIcon = (typeof stickerIconEnum.enumValues)[number];
 
 // ───────────────────────────── Caisse (ouverture / fermeture) ─────────────────────────────
 

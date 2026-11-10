@@ -11,7 +11,6 @@ import {
   ClipboardList,
   CreditCard,
   Download,
-  Languages,
   LayoutDashboard,
   LogOut,
   Menu,
@@ -21,18 +20,19 @@ import {
   ShieldCheck,
   ShoppingBag,
   Store,
+  Sticker,
   Tags,
   Truck,
   Users,
   Wallet,
   X,
 } from 'lucide-react';
+import Image from 'next/image';
 import { logoutAction } from '@/app/actions/auth';
-import { setAdminLocaleAction } from '@/app/actions/admin-locale';
 import { useAdminI18n } from '@/components/admin/admin-i18n';
 import { cn } from '@/lib/utils';
 import { drawerGeometry } from '@/lib/drawer';
-import type { AdminLocale } from '@/lib/i18n/admin';
+import { BRAND_LOGO_SIZE, BRAND, STORE_NAME } from '@/lib/brand';
 
 export type AdminNavItem = {
   href: string;
@@ -55,6 +55,7 @@ export type AdminNavItem = {
     | 'cash'
     | 'notes'
     | 'guide'
+    | 'stickers'
     | 'ready';
   badge?: 'payments' | 'messages';
   /** Petite phrase qui explique le menu en mots simples. */
@@ -76,36 +77,12 @@ const ICONS = {
   audit: ShieldCheck,
   stats: BarChart3,
   promos: Tags,
+  stickers: Sticker,
   cash: Wallet,
   notes: Truck,
   guide: BookOpen,
   ready: BadgeCheck,
 } as const;
-
-/** Bascule FR / AR, mémorisée par cookie et propre au back-office. */
-function LocaleSwitcher({ locale }: { locale: AdminLocale }) {
-  const { t } = useAdminI18n();
-  const pathname = usePathname();
-  const target: AdminLocale = locale === 'ar' ? 'fr' : 'ar';
-
-  return (
-    <form action={setAdminLocaleAction} className="shrink-0">
-      <input type="hidden" name="locale" value={target} />
-      <input type="hidden" name="next" value={pathname} />
-      <button
-        type="submit"
-        lang={target}
-        dir={target === 'ar' ? 'rtl' : 'ltr'}
-        title={t('Changer de langue')}
-        aria-label={`${t('Changer de langue')} — ${target === 'ar' ? 'العربية' : 'Français'}`}
-        className="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-2 font-semibold text-navy-100 hover:bg-white/10 hover:text-white focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-400"
-      >
-        <Languages className="size-4" aria-hidden />
-        <span className="text-xs">{target === 'ar' ? 'العربية' : 'Français'}</span>
-      </button>
-    </form>
-  );
-}
 
 /**
  * Barre supérieure de l'administration.
@@ -114,8 +91,8 @@ function LocaleSwitcher({ locale }: { locale: AdminLocale }) {
  * coulissant s'ouvre par-dessus la page. Aucun onglet n'est affiché en
  * permanence, sur mobile comme sur ordinateur.
  *
- * En arabe, la mise en page passe en RTL : le panneau s'ouvre depuis la droite
- * et les icônes directionnelles sont inversées.
+ * L'interface est en français uniquement : pas de sélecteur de langue, pas
+ * d'affichage de droite à gauche.
  */
 export function AdminTopBar({
   items,
@@ -124,8 +101,6 @@ export function AdminTopBar({
   email,
   pendingPayments,
   newMessages,
-  locale,
-  dir,
 }: {
   items: AdminNavItem[];
   role: string;
@@ -134,8 +109,6 @@ export function AdminTopBar({
   email: string;
   pendingPayments: number;
   newMessages: number;
-  locale: AdminLocale;
-  dir: 'ltr' | 'rtl';
 }) {
   const { t } = useAdminI18n();
   const [open, setOpen] = useState(false);
@@ -171,7 +144,7 @@ export function AdminTopBar({
   const isActive = (href: string) => (href === '/admin' ? pathname === '/admin' : pathname.startsWith(href));
 
   // Ancrage et glissade en coordonnées physiques : voir `lib/drawer`.
-  const geometry = drawerGeometry(dir);
+  const geometry = drawerGeometry('ltr' as const);
 
   return (
     <>
@@ -195,8 +168,16 @@ export function AdminTopBar({
             ) : null}
           </button>
 
-          <Link href="/admin" className="flex items-baseline gap-2 text-sm font-extrabold tracking-tight">
-            {t('MeDi Shop')} <span className="hidden font-normal text-navy-300 sm:inline">/ {t('Administration')}</span>
+          <Link href="/admin" className="flex items-center gap-2 text-sm font-extrabold tracking-tight">
+            <Image
+              src={BRAND.logoHorizontalWhite}
+              alt={STORE_NAME}
+              width={BRAND_LOGO_SIZE.width}
+              height={BRAND_LOGO_SIZE.height}
+              className="h-7 w-auto"
+              priority
+            />
+            <span className="hidden font-normal text-navy-300 sm:inline">/ {t('Administration')}</span>
           </Link>
 
           <span className="hidden rounded-full bg-accent-500/15 px-2 py-0.5 text-[11px] font-semibold text-accent-200 md:inline">
@@ -209,7 +190,6 @@ export function AdminTopBar({
           ) : null}
 
           <div className="ms-auto flex items-center gap-1 text-xs sm:gap-2">
-            <LocaleSwitcher locale={locale} />
             <Link
               href="/admin/guide"
               title={t('Comment utiliser le site')}
@@ -232,7 +212,7 @@ export function AdminTopBar({
                 aria-label={t('Déconnexion')}
                 className="inline-flex items-center gap-1.5 rounded-lg px-2.5 py-2 font-semibold text-navy-100 hover:bg-white/10 hover:text-white"
               >
-                <LogOut className="size-4 rtl:-scale-x-100" aria-hidden />{' '}
+                <LogOut className="size-4" aria-hidden />{' '}
                 <span className="hidden lg:inline">{t('Déconnexion')}</span>
               </button>
             </form>

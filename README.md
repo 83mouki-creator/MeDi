@@ -1,4 +1,4 @@
-# MeDi Shop — plateforme e-commerce (Daloa, Côte d'Ivoire)
+# Perokado — plateforme e-commerce (Daloa, Côte d'Ivoire)
 
 Application de vente en ligne pour une quincaillerie / fournisseur de matériel industriel et de
 bâtiment à Daloa. Interface entièrement en français, montants en **FCFA**, catalogue réel relié à

@@ -14,6 +14,7 @@ import {
   PackageX,
   PlusCircle,
   Sparkles,
+  TrendingUp,
   Truck,
   UserPlus,
   BookOpen,
@@ -43,7 +44,7 @@ const TONES = {
 export default async function AdminDashboard() {
   // Tout le personnel entre par ici ; les cartes affichées dépendent de sa fonction.
   await requirePagePermission('orders.read');
-  const { t, locale } = await getAdminI18n();
+  const { t } = await getAdminI18n();
   const [metrics, user, settings, messages, readiness] = await Promise.all([
     getDashboardMetrics().catch(() => null),
     getCurrentUser(),
@@ -67,7 +68,7 @@ export default async function AdminDashboard() {
   }
 
   // Date du jour écrite dans la langue de l'administration.
-  const today = new Intl.DateTimeFormat(locale === 'ar' ? 'ar-CI' : 'fr-CI', {
+  const today = new Intl.DateTimeFormat('fr-CI', {
     weekday: 'long',
     day: 'numeric',
     month: 'long',
@@ -85,6 +86,21 @@ export default async function AdminDashboard() {
       icon: Banknote,
       href: '/admin/statistiques',
       tone: 'money' as const,
+      permission: 'stats.read' as const,
+    },
+    {
+      label: 'Bénéfice net',
+      value: formatFCFA(metrics.profitTotal),
+      hint:
+        metrics.productsWithoutCost > 0
+          ? t('{count} produit(s) sans prix d’achat : leur vente n’est pas comptée', {
+              count: metrics.productsWithoutCost,
+            })
+          : t('Ce mois-ci : {month}', { month: formatFCFA(metrics.profitMonth) }),
+      icon: TrendingUp,
+      href: '/admin/statistiques',
+      tone: metrics.profitTotal > 0 ? ('money' as const) : ('navy' as const),
+      alert: metrics.productsWithoutCost > 0,
       permission: 'stats.read' as const,
     },
     {
@@ -186,7 +202,7 @@ export default async function AdminDashboard() {
               className="inline-flex items-center gap-2 rounded-lg px-3 py-2 text-sm font-semibold text-navy-200 hover:bg-white/10 hover:text-white"
             >
               {t('Voir la boutique')}
-              <ArrowRight className="size-4 rtl:-scale-x-100" aria-hidden />
+              <ArrowRight className="size-4" aria-hidden />
             </Link>
           </div>
         </div>
@@ -228,7 +244,7 @@ export default async function AdminDashboard() {
             className="inline-flex items-center gap-2 rounded-lg bg-navy-900 px-3 py-2 text-sm font-semibold text-white hover:bg-navy-800"
           >
             {t('Vérifier')}
-            <ArrowRight className="size-4 rtl:-scale-x-100" aria-hidden />
+            <ArrowRight className="size-4" aria-hidden />
           </Link>
         </div>
       ) : null}
@@ -406,7 +422,7 @@ export default async function AdminDashboard() {
                     </Badge>
                     <span className="text-xs text-navy-500">{formatDateTime(order.createdAt)}</span>
                     <span className="font-semibold">{formatFCFA(order.total)}</span>
-                    <ArrowRight className="size-4 text-navy-300 rtl:-scale-x-100" aria-hidden />
+                    <ArrowRight className="size-4 text-navy-300" aria-hidden />
                   </div>
                 </Link>
               </li>
@@ -437,15 +453,15 @@ export default async function AdminDashboard() {
       <div className="grid gap-3 sm:grid-cols-3">
         <Link href="/admin/produits/nouveau" className="flex items-center justify-between rounded-xl border border-navy-100 bg-white p-4 text-sm font-semibold hover:border-accent-300">
           <span className="flex items-center gap-2"><PlusCircle className="size-4 text-accent-600" aria-hidden /> {t('Ajouter un produit')}</span>
-          <ArrowRight className="size-4 text-navy-300 rtl:-scale-x-100" aria-hidden />
+          <ArrowRight className="size-4 text-navy-300" aria-hidden />
         </Link>
         <Link href="/admin/import" className="flex items-center justify-between rounded-xl border border-navy-100 bg-white p-4 text-sm font-semibold hover:border-accent-300">
           <span className="flex items-center gap-2"><ClipboardList className="size-4 text-accent-600" aria-hidden /> {t('Importer photos / CSV')}</span>
-          <ArrowRight className="size-4 text-navy-300 rtl:-scale-x-100" aria-hidden />
+          <ArrowRight className="size-4 text-navy-300" aria-hidden />
         </Link>
         <Link href="/admin/parametres" className="flex items-center justify-between rounded-xl border border-navy-100 bg-white p-4 text-sm font-semibold hover:border-accent-300">
           <span className="flex items-center gap-2"><ClipboardList className="size-4 text-accent-600" aria-hidden /> {t('Compléter la boutique')}</span>
-          <ArrowRight className="size-4 text-navy-300 rtl:-scale-x-100" aria-hidden />
+          <ArrowRight className="size-4 text-navy-300" aria-hidden />
         </Link>
       </div>
     </div>

@@ -5,7 +5,7 @@ import { RETURNS_FAQ, RETURNS_FAQ_FALLBACK_MESSAGE } from '@/lib/returns-faq';
 import { whatsappLink, type PublicSettings } from '@/lib/settings';
 
 const settings = {
-  storeName: 'MeDi Shop',
+  storeName: 'Perokado',
   tagline: null,
   phone: '+225 07 08 90 48 91',
   whatsapp: '+225 07 08 90 48 91',
@@ -88,13 +88,17 @@ describe('FAQ — routage WhatsApp et données structurées', () => {
     }
   });
 
-  it('retombe sur le formulaire de contact quand le WhatsApp n’est pas configuré', () => {
+  it('retombe sur le numéro officiel de la boutique quand rien n’est saisi en base', () => {
+    // Le WhatsApp de Perokado est une constante de marque : même si les réglages
+    // sont vides (installation neuve), le client a toujours un canal de contact.
     const withoutWhatsapp = { ...settings, whatsapp: null } as PublicSettings;
     for (const block of BLOCKS) {
       for (const entry of block.entries) {
-        expect(faqHref(withoutWhatsapp, entry)).toBeNull();
+        const href = faqHref(withoutWhatsapp, entry);
+        expect(href).toBeTruthy();
+        expect(href).toContain('wa.me/2250544014182');
       }
-      expect(whatsappLink(withoutWhatsapp, block.fallback)).toBeNull();
+      expect(whatsappLink(withoutWhatsapp, block.fallback)).toContain('wa.me/2250544014182');
     }
   });
 });

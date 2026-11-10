@@ -7,6 +7,7 @@ import { cn, formatFCFA, toFcfa, truncate } from '@/lib/utils';
 import { computeAvailability } from '@/lib/pricing';
 import type { ProductCard as ProductCardType } from '@/lib/catalog';
 import { Badge } from './ui/primitives';
+import { ProductStickerOverlay } from './product-sticker';
 import { useSiteI18n } from './site-i18n';
 
 /** Vignette produit — mobile-first, image optimisée, prix toujours visible. */
@@ -55,6 +56,9 @@ export function ProductCardView({ product, className }: { product: ProductCardTy
             <span className="rounded-md bg-amber-500 px-1.5 py-0.5 text-[11px] font-semibold text-white">{t('Stock faible')}</span>
           ) : null}
         </div>
+
+        {/* Stickers choisis par la boutique : garantie, réduction… */}
+        <ProductStickerOverlay stickers={product.stickers ?? []} compact />
       </div>
 
       <div className="flex flex-1 flex-col gap-1 p-3">

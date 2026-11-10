@@ -1,5 +1,5 @@
 import { formatFCFA } from './utils';
-import { FINAL_SALE_NOTICE, OUTSIDE_DALOA_MAX_DAYS, PICKUP_HOLD_HOURS } from './store-policy';
+import { FINAL_SALE_NOTICE, OUTSIDE_DALOA_MAX_DAYS } from './store-policy';
 
 /**
  * Modèles d'e-mails transactionnels.
@@ -307,13 +307,13 @@ export function orderEmail(data: OrderEmailData): EmailMessage {
     '',
     totalsText,
     '',
-    `Retrait / livraison : ${data.deliveryMethod}`,
+    `Mode de livraison : ${data.deliveryMethod}`,
     `Paiement choisi : ${data.paymentMethod}`,
     `Téléphone : ${data.phone} · Ville : ${data.city}`,
     '',
     `Suivre la commande : ${data.link}`,
     '',
-    `Retrait en boutique sous ${PICKUP_HOLD_HOURS} h. Hors Daloa : ${OUTSIDE_DALOA_MAX_DAYS} jours maximum selon la ville, transport à convenir sur WhatsApp.`,
+    `Livraison à domicile à Daloa. Hors Daloa : ${OUTSIDE_DALOA_MAX_DAYS} jours maximum selon la ville, transport à convenir sur WhatsApp.`,
     FINAL_SALE_NOTICE,
     '',
     ...footerLines(store),
@@ -355,7 +355,7 @@ export function orderEmail(data: OrderEmailData): EmailMessage {
       paragraph(hello),
       paragraph(
         created
-          ? 'Nous avons bien reçu votre commande. La boutique vous contacte au numéro indiqué pour la confirmation, le retrait ou la livraison.'
+          ? 'Nous avons bien reçu votre commande. La boutique vous contacte au numéro indiqué pour confirmer la livraison à domicile.'
           : 'Voici le justificatif de votre commande. Il reprend les articles, les montants et l’état du paiement.',
       ),
       `<table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="margin:8px 0 0;border-collapse:collapse;">
@@ -371,7 +371,7 @@ export function orderEmail(data: OrderEmailData): EmailMessage {
        <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="border-collapse:collapse;margin-top:10px;">${totalsRows}</table>`,
       button(data.link, created ? 'Suivre ma commande' : 'Ouvrir le bon'),
       noticeBox(
-        `Retrait en boutique sous ${PICKUP_HOLD_HOURS} h. Hors Daloa : ${OUTSIDE_DALOA_MAX_DAYS} jours maximum selon la ville, transport à convenir sur WhatsApp.`,
+        `Livraison à domicile à Daloa. Hors Daloa : ${OUTSIDE_DALOA_MAX_DAYS} jours maximum selon la ville, transport à convenir sur WhatsApp.`,
       ),
       noticeBox(FINAL_SALE_NOTICE),
     ].join(''),

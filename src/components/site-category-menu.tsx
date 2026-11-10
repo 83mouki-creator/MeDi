@@ -97,11 +97,11 @@ export function SiteCategoryMenu({ categories }: { categories: SiteCategoryMenuE
             </li>
             <li>
               <Link
-                href="/nous-trouver"
+                href="/livraison"
                 onClick={() => setOpen(false)}
                 className="block rounded-lg px-3 py-2.5 text-sm font-semibold text-navy-800 hover:bg-navy-50"
               >
-                {t('Nous trouver')}
+                {t('Livraison et frais')}
               </Link>
             </li>
           </ul>

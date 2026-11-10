@@ -23,9 +23,10 @@ export function SettingsForm({
     openingHours: string | null;
     waveNumber: string | null;
     waveMerchantName: string | null;
+    pspMerchantNumber: string | null;
+    pspMerchantLabel: string | null;
     allowCod: boolean;
     codMaxAmount: number;
-    allowPickup: boolean;
     allowLocalDelivery: boolean;
     lowStockThreshold: number;
     reservationMinutes: number;
@@ -34,8 +35,6 @@ export function SettingsForm({
     instagramUrl: string | null;
     legalNotice: string | null;
     returnPolicy: string | null;
-    latitudeInput: string | null;
-    longitudeInput: string | null;
   };
 }) {
   const { t } = useAdminI18n();
@@ -79,33 +78,10 @@ export function SettingsForm({
         </div>
       </Card>
 
-      <Card className="space-y-3 p-4">
-        <h2 className="text-sm font-bold">{t('Géolocalisation de la boutique')}</h2>
-        <p className="text-xs text-navy-500">
-          {t('Coordonnées exactes du magasin, relevées sur place (application Plans, GPS du téléphone…). Elles alimentent la carte « Nous trouver » et les données structurées pour les moteurs de recherche. Tant que les deux champs sont vides, le site n’affiche aucune carte et annonce simplement que la position est en attente : rien n’est estimé.')}
-        </p>
-        <div className="grid gap-3 sm:grid-cols-2">
-          <Field label={t('Latitude')} htmlFor="latitude" hint="Entre -90 et 90, ex. 6.877520">
-            <Input
-              id="latitude"
-              name="latitude"
-              inputMode="decimal"
-              defaultValue={settings.latitudeInput ?? ''}
-              placeholder="6.877520"
-            />
-          </Field>
-          <Field label={t('Longitude')} htmlFor="longitude" hint="Entre -180 et 180, ex. -6.450220">
-            <Input
-              id="longitude"
-              name="longitude"
-              inputMode="decimal"
-              defaultValue={settings.longitudeInput ?? ''}
-              placeholder="-6.450220"
-            />
-          </Field>
-        </div>
-        <p className="text-xs text-navy-500">
-          {t('Les deux champs vont ensemble : une coordonnée seule est refusée à l’enregistrement. Laissez les deux vides pour désactiver l’affichage de la carte.')}
+      <Card className="space-y-2 border-emerald-200 bg-emerald-50 p-4">
+        <h2 className="text-sm font-bold text-emerald-900">{t('Livraison à domicile uniquement')}</h2>
+        <p className="text-xs text-emerald-800">
+          {t('Le retrait en magasin et la carte « Nous trouver » ont été retirés du site : le client est livré chez lui. Aucune adresse ni coordonnée GPS n’est donc demandée ni publiée.')}
         </p>
       </Card>
 
@@ -117,6 +93,27 @@ export function SettingsForm({
           </Field>
           <Field label={t('Nom du compte Wave')} htmlFor="waveMerchantName">
             <Input id="waveMerchantName" name="waveMerchantName" defaultValue={settings.waveMerchantName ?? ''} />
+          </Field>
+          <Field
+            label={t('Numéro de compte marchand (PSP / Wave Business)')}
+            htmlFor="pspMerchantNumber"
+            hint={t('Utilisé pour les encaissements passés par le prestataire de paiement. Par défaut : le WhatsApp de la boutique.')}
+          >
+            <Input
+              id="pspMerchantNumber"
+              name="pspMerchantNumber"
+              type="tel"
+              defaultValue={settings.pspMerchantNumber ?? ''}
+              placeholder="+225 05 44 01 41 82"
+            />
+          </Field>
+          <Field label={t('Libellé du compte marchand')} htmlFor="pspMerchantLabel">
+            <Input
+              id="pspMerchantLabel"
+              name="pspMerchantLabel"
+              defaultValue={settings.pspMerchantLabel ?? ''}
+              maxLength={120}
+            />
           </Field>
           <Field label={t('Plafond paiement à la livraison (FCFA)')} htmlFor="codMaxAmount" hint="0 ou case décochée = paiement à la livraison désactivé.">
             <Input id="codMaxAmount" name="codMaxAmount" type="number" min={0} step={500} defaultValue={settings.codMaxAmount} />
@@ -130,15 +127,11 @@ export function SettingsForm({
           {t('Autoriser le paiement à la livraison (zone locale uniquement)')}
         </label>
         <label className="flex items-center gap-2 text-sm">
-          <input type="checkbox" name="allowPickup" defaultChecked={settings.allowPickup} className="size-4 accent-accent-500" />
-          {t('Autoriser le retrait en boutique')}
-        </label>
-        <label className="flex items-center gap-2 text-sm">
           <input type="checkbox" name="allowLocalDelivery" defaultChecked={settings.allowLocalDelivery} className="size-4 accent-accent-500" />
           {t('Autoriser la livraison à domicile à Daloa')}
         </label>
         <p className="text-xs text-navy-500">
-          {t('Hors de Daloa, le prépaiement Wave reste obligatoire indépendamment de ces options.')}
+          {t('Hors de Daloa, le prépaiement Wave reste obligatoire indépendamment de ces options. Le paiement à la livraison n’est proposé que dans un quartier de Daloa, en dessous du plafond ci-dessus.')}
         </p>
       </Card>
 

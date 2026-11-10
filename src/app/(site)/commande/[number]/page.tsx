@@ -16,11 +16,11 @@ import { PaymentInstructions } from '@/components/payment-instructions';
 import { WavePayButton } from '@/components/wave-pay-button';
 import { OrderTimeline } from '@/components/order-timeline';
 import { getSiteI18n } from '@/lib/i18n/site-server';
-import { storeLocation, whatsappWithMessage } from '@/lib/store-location';
+import { whatsappWithMessage } from '@/lib/store-location';
 import { PurchaseNotice } from '@/components/purchase-notice';
 import { EmailReceiptForm } from '@/components/email-receipt-form';
 import { emailStatus } from '@/lib/email';
-import { PICKUP_HOLD_HOURS, OUTSIDE_DALOA_MAX_DAYS } from '@/lib/store-policy';
+import { OUTSIDE_DALOA_MAX_DAYS } from '@/lib/store-policy';
 
 export const metadata: Metadata = { title: 'Confirmation de commande', robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
@@ -58,7 +58,6 @@ export default async function OrderConfirmationPage({ params, searchParams }: Pr
   const details = await getOrderDetails(order.id);
   if (!details) notFound();
   const settings = await getStoreSettings();
-  const location = storeLocation(settings);
   const totals = orderTotals(order);
   const mail = emailStatus();
   const wave = waveStatus();
@@ -187,21 +186,20 @@ export default async function OrderConfirmationPage({ params, searchParams }: Pr
           </Card>
 
           <Card className="p-4 text-sm">
-            <h2 className="flex items-center gap-2 font-bold"><MapPin className="size-4 text-accent-600" aria-hidden /> {t('Où retirer ?')}</h2>
-            <p className="mt-1 text-xs text-navy-600">
-              {t('Boutique MeDi Shop — {city}', { city: settings.city })}
-            </p>
-            <p className="text-xs font-semibold text-navy-800" dir="ltr">{location.dms}</p>
+            <h2 className="flex items-center gap-2 font-bold"><Truck className="size-4 text-accent-600" aria-hidden /> {t('Livraison')}</h2>
             <p className="mt-1 text-xs text-navy-600">
               {order.deliveryMethod === 'CARRIER'
-                ? t('Livraison hors Daloa : {days} jours maximum, transport à convenir sur WhatsApp.', { days: OUTSIDE_DALOA_MAX_DAYS })
-                : t('Retrait ou livraison sous {hours} h maximum.', { hours: PICKUP_HOLD_HOURS })}
+                ? t('Livraison à {city} : {days} jours maximum, transport à convenir sur WhatsApp.', {
+                    city: order.city,
+                    days: OUTSIDE_DALOA_MAX_DAYS,
+                  })
+                : t('Livraison à domicile à {city}.', { city: order.city })}
             </p>
             {settings.openingHours ? <p className="text-xs text-navy-600">{settings.openingHours}</p> : null}
-            <a href={location.mapsUrl} target="_blank" rel="noopener noreferrer" className="mt-1 inline-block text-xs font-semibold text-accent-700 underline">
-              {t('Voir sur Google Maps')}
-            </a>
             {settings.phone ? <p className="mt-1 text-xs text-navy-600">{settings.phone}</p> : null}
+            <Link href="/livraison" className="mt-1 inline-block text-xs font-semibold text-accent-700 underline">
+              {t('Zones et frais de livraison')}
+            </Link>
           </Card>
 
           <div className="rounded-xl border border-navy-100 bg-white p-4">
@@ -211,7 +209,7 @@ export default async function OrderConfirmationPage({ params, searchParams }: Pr
               href={`/suivi/${order.number}?t=${encodeURIComponent(order.accessToken)}`}
               className="mt-2 inline-flex items-center gap-1 text-sm font-semibold text-accent-700 hover:underline"
             >
-              <Receipt className="size-4" aria-hidden /> {t('Page de suivi')} <ArrowRight className="size-3.5 rtl:rotate-180" aria-hidden />
+              <Receipt className="size-4" aria-hidden /> {t('Page de suivi')} <ArrowRight className="size-3.5" aria-hidden />
             </Link>
             {mail.configured ? (
               <EmailReceiptForm number={order.number} token={order.accessToken} email={order.email} />
@@ -222,7 +220,7 @@ export default async function OrderConfirmationPage({ params, searchParams }: Pr
             (() => {
               const link = whatsappWithMessage(
                 settings,
-                t('Bonjour MeDi Shop, je souhaite convenir du prix du transport pour ma commande {number} à destination de {city}.', {
+                t('Bonjour Perokado, je souhaite convenir du prix du transport pour ma commande {number} à destination de {city}.', {
                   number: order.number,
                   city: order.city,
                 }),

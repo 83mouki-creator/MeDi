@@ -5,9 +5,11 @@ import type { CheckoutInput } from '@/lib/validation';
 import { resetDb, createProduct, createUser, productState, checkoutInput } from './helpers';
 
 let zones: Awaited<ReturnType<typeof resetDb>>;
+let localZoneId: string;
 
 beforeEach(async () => {
   zones = await resetDb();
+  localZoneId = zones.localZone.id;
 });
 
 describe('panier : recalcul serveur', () => {
@@ -63,8 +65,9 @@ describe('commande : contrôle du stock', () => {
     const product = await createProduct({ name: 'Perceuse 700 W', price: '35000', stock: 2 });
     const input = checkoutInput({
       items: [{ productId: product.id, quantity: 3 }],
-      deliveryMethod: 'PICKUP',
-      paymentMethod: 'CASH_IN_STORE',
+      deliveryMethod: 'LOCAL_DELIVERY',
+      zoneId: localZoneId,
+      paymentMethod: 'WAVE',
     }) as unknown as CheckoutInput;
 
     await expect(createOrder({ input })).rejects.toMatchObject({ code: 'STOCK' });
@@ -75,8 +78,9 @@ describe('commande : contrôle du stock', () => {
     const outOfStock = await createProduct({ name: 'Groupe électrogène', price: '250000', stock: 0 });
     const input = checkoutInput({
       items: [{ productId: outOfStock.id, quantity: 1 }],
-      deliveryMethod: 'PICKUP',
-      paymentMethod: 'CASH_IN_STORE',
+      deliveryMethod: 'LOCAL_DELIVERY',
+      zoneId: localZoneId,
+      paymentMethod: 'WAVE',
     }) as unknown as CheckoutInput;
 
     await expect(createOrder({ input })).rejects.toMatchObject({ code: 'STOCK' });
@@ -85,8 +89,9 @@ describe('commande : contrôle du stock', () => {
     const result = await createOrder({
       input: checkoutInput({
         items: [{ productId: preorder.id, quantity: 1 }],
-        deliveryMethod: 'PICKUP',
-        paymentMethod: 'CASH_IN_STORE',
+        deliveryMethod: 'LOCAL_DELIVERY',
+        zoneId: localZoneId,
+        paymentMethod: 'WAVE',
       }) as unknown as CheckoutInput,
     });
     expect(result.order.number).toMatch(/^MED-\d{4}-\d{5}$/);
@@ -98,8 +103,9 @@ describe('commande : contrôle du stock', () => {
     const makeInput = () =>
       checkoutInput({
         items: [{ productId: product.id, quantity: 1 }],
-        deliveryMethod: 'PICKUP',
-        paymentMethod: 'CASH_IN_STORE',
+        deliveryMethod: 'LOCAL_DELIVERY',
+        zoneId: localZoneId,
+        paymentMethod: 'WAVE',
         phone: '0701020304',
       }) as unknown as CheckoutInput;
 
@@ -123,8 +129,9 @@ describe('commande : contrôle du stock', () => {
       createOrder({
         input: checkoutInput({
           items: [{ productId: product.id, quantity: qty }],
-          deliveryMethod: 'PICKUP',
-          paymentMethod: 'CASH_IN_STORE',
+          deliveryMethod: 'LOCAL_DELIVERY',
+          zoneId: localZoneId,
+          paymentMethod: 'WAVE',
         }) as unknown as CheckoutInput,
       });
 
@@ -139,8 +146,9 @@ describe('commande : contrôle du stock', () => {
     const result = await createOrder({
       input: checkoutInput({
         items: [{ productId: product.id, quantity: 1 }],
-        deliveryMethod: 'PICKUP',
-        paymentMethod: 'CASH_IN_STORE',
+        deliveryMethod: 'LOCAL_DELIVERY',
+        zoneId: localZoneId,
+        paymentMethod: 'WAVE',
       }) as unknown as CheckoutInput,
       userId: user.id,
     });

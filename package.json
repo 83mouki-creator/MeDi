@@ -1,8 +1,8 @@
 {
-  "name": "medi",
+  "name": "perokado",
   "version": "1.0.0",
   "private": true,
-  "description": "MeDi Shop — plateforme e-commerce quincaillerie, industrie, bâtiment et équipement domestique à Daloa (Côte d'Ivoire)",
+  "description": "Perokado — plateforme e-commerce quincaillerie, industrie, bâtiment et équipement domestique à Daloa (Côte d'Ivoire)",
   "scripts": {
     "dev": "next dev",
     "build": "next build",

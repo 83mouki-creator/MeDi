@@ -1,4 +1,4 @@
-# Logo MeDi Shop
+# Logo Perokado
 
 Le logo officiel fourni par le propriétaire est conservé tel quel dans
 `medi-logo-source.png`. Toutes les autres images de marque sont générées à partir
@@ -23,7 +23,7 @@ npm run brand:assets
 
 ## Le mot « Shop »
 
-Le logo fourni n'écrit que « MeDi ». Pour écrire **MeDi Shop** partout, le mot
+Le logo fourni n'écrit que « MeDi ». Pour écrire **Perokado** partout, le mot
 « Shop » est ajouté à droite du mot d'origine :
 
 - son tracé vectoriel est dans `scripts/brand/shop-wordmark.svg` ;

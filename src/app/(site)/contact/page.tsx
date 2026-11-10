@@ -1,16 +1,15 @@
 import type { Metadata } from 'next';
-import { MapPin, MessageCircle, Phone, Clock, Mail, TriangleAlert } from 'lucide-react';
+import { MessageCircle, Phone, Clock, Mail, TriangleAlert, Truck } from 'lucide-react';
 import { getCurrentUser } from '@/lib/auth';
 import { getStoreSettings } from '@/lib/settings';
 import { ContactForm } from '@/components/contact-form';
 import { Card } from '@/components/ui/primitives';
 import { getSiteI18n } from '@/lib/i18n/site-server';
-import { storeLocation } from '@/lib/store-location';
 
 export const metadata: Metadata = {
   title: 'Contact et service client',
   description:
-    'Contactez MeDi Shop à Daloa : question sur un produit, disponibilité, suivi de commande, facture ou demande de devis.',
+    'Contactez Perokado à Daloa : question sur un produit, disponibilité, suivi de commande, facture ou demande de devis.',
   alternates: { canonical: '/contact' },
 };
 
@@ -20,7 +19,6 @@ export default async function ContactPage() {
   const [settings, user] = await Promise.all([getStoreSettings(), getCurrentUser().catch(() => null)]);
 
   const { t } = await getSiteI18n();
-  const location = storeLocation(settings);
   const whatsappHref = settings.whatsapp
     ? `https://wa.me/${settings.whatsapp.replace(/[^0-9]/g, '')}`
     : null;
@@ -70,17 +68,6 @@ export default async function ContactPage() {
               </li>
             ) : null}
             <li className="flex gap-2">
-              <MapPin className="mt-0.5 size-4 shrink-0 text-accent-600" aria-hidden />
-              <span>
-                <span className="block text-xs text-navy-500">{t('Adresse')}</span>
-                <span className="block font-mono font-semibold text-navy-900" dir="ltr">{location.dms}</span>
-                <span className="block text-xs text-navy-600">{location.city}, {location.country}</span>
-                <a href={location.mapsUrl} target="_blank" rel="noopener noreferrer" className="text-xs font-semibold text-accent-700 underline">
-                  {t('Ouvrir dans Google Maps')}
-                </a>
-              </span>
-            </li>
-            <li className="flex gap-2">
               <Clock className="mt-0.5 size-4 shrink-0 text-accent-600" aria-hidden />
               <span>
                 <span className="block text-xs text-navy-500">{t('Horaires')}</span>
@@ -105,13 +92,13 @@ export default async function ContactPage() {
 
         <Card className="p-4 text-sm">
           <h2 className="mb-2 flex items-center gap-2 text-sm font-bold">
-            <MapPin className="size-4 text-accent-600" aria-hidden /> {t('Nous trouver')}
+            <Truck className="size-4 text-accent-600" aria-hidden /> {t('Livraison')}
           </h2>
           <p className="text-navy-600">
-            {t('Carte, coordonnées GPS et itinéraire vers la boutique à {city}.', { city: location.city })}
+            {t('Nous livrons à domicile à {city} et partout en Côte d’Ivoire.', { city: settings.city })}
           </p>
-          <a href="/nous-trouver" className="mt-2 inline-block font-semibold text-accent-700 underline">
-            {t('Ouvrir la page « Nous trouver »')}
+          <a href="/livraison" className="mt-2 inline-block font-semibold text-accent-700 underline">
+            {t('Voir les zones et les frais de livraison')}
           </a>
         </Card>
 

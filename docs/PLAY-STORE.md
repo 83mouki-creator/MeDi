@@ -1,4 +1,4 @@
-# MeDi Shop sur le Play Store — textes, visuels et fabrication de l'application
+# Perokado sur le Play Store — textes, visuels et fabrication de l'application
 
 Ce document rassemble tout ce qu'il faut pour déposer l'application Android :
 les **textes** prêts à copier, les **visuels** (dont la bannière 1024 × 500),
@@ -14,12 +14,12 @@ Pour la partie technique (Bubblewrap, Digital Asset Links, publication), voir
 
 | | Adresse |
 | --- | --- |
-| Boutique | https://medi-daloa.vercel.app |
-| Administration | https://medi-daloa.vercel.app/admin |
-| Politique de confidentialité | https://medi-daloa.vercel.app/confidentialite |
-| Suppression de compte (obligatoire sur Play) | https://medi-daloa.vercel.app/supprimer-mon-compte |
+| Boutique | https://perokado.vercel.app |
+| Administration | https://perokado.vercel.app/admin |
+| Politique de confidentialité | https://perokado.vercel.app/confidentialite |
+| Suppression de compte (obligatoire sur Play) | https://perokado.vercel.app/supprimer-mon-compte |
 
-Package Android : `ci.medishop.app` · Nom affiché : **MeDi Shop**
+Package Android : `ci.perokado.app` · Nom affiché : **Perokado**
 
 ---
 
@@ -32,48 +32,48 @@ ci-dessous tels quels.
 ### Nom de l'application (30 caractères max)
 
 ```
-MeDi Shop
+Perokado
 ```
 
 ### Description courte (80 caractères max)
 
 ```
-Outillage, quincaillerie et matériaux à Daloa. Retrait ou livraison.
+Tout ce que vous cherchez au même endroit : outillage, quincaillerie, maison.
 ```
 
 ### Description complète (4 000 caractères max)
 
 ```text
-MeDi Shop — la quincaillerie de Daloa, dans votre poche.
+Perokado — tout ce que vous cherchez au même endroit, livré chez vous.
 
 Outillage, matériaux de construction, plomberie, électricité, peinture, visserie et équipement de la maison : le catalogue de la boutique est là, avec ses prix en francs CFA.
 
 CE QUE VOUS POUVEZ FAIRE
 • Parcourir les rayons : outillage électroportatif, quincaillerie, plomberie, éclairage, peinture, protection.
 • Rechercher un produit par son nom, sa référence ou son usage.
-• Voir le prix, la disponibilité réelle en stock et les photos avant de vous déplacer.
+• Voir le prix, la disponibilité réelle en stock et les photos avant de commander.
+• Repérer d'un coup d'œil les vignettes de garantie et les réductions sur les photos produits.
 • Envoyer la photo d'une pièce à remplacer : la recherche visuelle propose les produits qui y ressemblent.
 • Composer un panier et commander en quelques étapes, avec ou sans compte.
-• Choisir le retrait en boutique ou la livraison.
+• Choisir la livraison à domicile : un quartier de Daloa, ou une autre ville de Côte d'Ivoire.
 • Suivre une commande à tout moment avec son numéro.
-• Retrouver ses commandes et ses adresses dans son compte, et supprimer ce compte soi-même à tout moment.
+• Retrouver ses commandes dans son compte, et supprimer ce compte soi-même à tout moment.
 
 PAIEMENT
-• Paiement à la livraison, dans la limite affichée au moment de la commande.
-• Paiement par Wave, vérifié par la boutique avant expédition.
-• Pour les commandes hors de Daloa : paiement demandé avant l'envoi, transport réglé avec la boutique sur WhatsApp.
+• Wave, vérifié par la boutique avant préparation du colis.
+• Paiement à la livraison dans un quartier de Daloa, dans la limite affichée au moment de la commande.
+• Pour les autres villes : paiement demandé avant l'envoi, transport réglé avec la boutique sur WhatsApp.
 
-RETRAIT ET LIVRAISON
-• Retrait en boutique sous 48 heures après confirmation de la commande.
-• Livraison à Daloa selon les zones et les tarifs affichés au moment de la commande.
-• Autres villes : jusqu'à 7 jours, frais de transport en supplément.
-• Boutique : Daloa, Côte d'Ivoire — repère GPS 6°53'04.4"N 6°26'50.9"W.
+LIVRAISON
+• Livraison à domicile à Daloa selon les zones et les tarifs affichés avant paiement.
+• Autres villes de Côte d'Ivoire : 7 jours maximum, transport convenu sur WhatsApp.
+• Aucun frais caché : le montant des articles s'affiche avant la validation.
 
 UN VRAI MAGASIN DERRIÈRE L'APPLICATION
-Chaque commande est préparée et contrôlée par l'équipe de la boutique. Une question sur un produit, une compatibilité, un délai ? Écrivez-nous sur WhatsApp depuis l'application : la réponse vient de Daloa, pas d'un centre d'appel.
+Chaque commande est préparée et contrôlée par l'équipe de la boutique. Une question sur un produit, une compatibilité, un délai ? Écrivez-nous sur WhatsApp depuis l'application : la réponse vient de la boutique, pas d'un centre d'appel.
 
-TROIS LANGUES
-Français, anglais, arabe : changez de langue d'un geste. Le catalogue et les prix restent les mêmes.
+UNE SEULE LANGUE, LA BONNE
+L'application est entièrement en français, sans réglage à faire : les textes, les prix et les unités sont ceux du magasin.
 
 VOS DONNÉES
 Pas de publicité, pas de revente de données. Le compte sert uniquement à traiter vos commandes et à vous contacter. La politique de confidentialité complète est sur le site.
@@ -82,7 +82,7 @@ Pas de publicité, pas de revente de données. Le compte sert uniquement à trai
 ### Nouveautés de cette version (500 caractères max)
 
 ```
-Première version : catalogue complet, recherche par texte et par photo, panier, commande avec ou sans compte, suivi des commandes, trois langues (français, anglais, arabe).
+Nouvelle identité Perokado, livraison à domicile uniquement, vignettes de garantie et de réduction sur les produits, interface entièrement en français.
 ```
 
 ### Champs de contact
@@ -98,7 +98,7 @@ boutique avant le dépôt (Play exige une adresse e-mail de contact publique).
 
 | Visuel | Format | État | Fichier |
 | --- | --- | --- | --- |
-| Icône de l'application | PNG 512 × 512, sans transparence | **prêt** | `public/brand/medi-icon.png` |
+| Icône de l'application | PNG 512 × 512, sans transparence | **prêt** | `public/brand/perokado-icon.png` |
 | Bannière (feature graphic) | PNG 1024 × 500, sans transparence | **prêt** | `public/brand/play-feature-graphic.png` |
 | Captures d'écran téléphone | 2 minimum, 8 maximum | **à faire** | `store/screenshots/` |
 | Bannière de la page « Test fermé » | facultatif | non requis | — |
@@ -142,7 +142,7 @@ image sobre, le nom de l'application est déjà affiché par la fiche).
 
 ### Méthode A — avec un téléphone Android (la plus vraie)
 
-1. Ouvrir **https://medi-daloa.vercel.app** dans Chrome.
+1. Ouvrir **https://perokado.vercel.app** dans Chrome.
 2. Se mettre en **français** (langue par défaut) et en mode clair.
 3. Descendre la barre d'état si besoin, puis capturer avec **Power + Volume bas**
    (sur la plupart des téléphones).
@@ -155,7 +155,7 @@ image sobre, le nom de l'application est déjà affiché par la fiche).
 
 ### Méthode B — avec un ordinateur, sans téléphone (recommandée)
 
-1. Ouvrir https://medi-daloa.vercel.app dans **Chrome** (ou Edge).
+1. Ouvrir https://perokado.vercel.app dans **Chrome** (ou Edge).
 2. `F12` → icône **appareil** (Ctrl + Maj + M) pour passer en mode mobile.
 3. En haut, choisir **iPhone 12 Pro** ou « Responsive », largeur **1080**,
    hauteur **2400**, zoom **100 %**.
@@ -242,7 +242,7 @@ Depuis un ordinateur (PowerShell) :
 3. **AAB** — workflow GitHub Actions, artefact téléchargé.
 4. **Fiche Play** — nom, descriptions (section 1), icône, bannière, captures.
 5. **Sécurité des données** — déclarer les données collectées et l'URL de
-   suppression `https://medi-daloa.vercel.app/supprimer-mon-compte`.
+   suppression `https://perokado.vercel.app/supprimer-mon-compte`.
 6. **Compte client de démonstration** — créé sur `/inscription`, identifiants
    notés dans la fiche pour les testeurs Google.
 7. **Test fermé** — 12 testeurs, 14 jours consécutifs.

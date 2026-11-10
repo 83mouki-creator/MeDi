@@ -48,21 +48,36 @@ async function orderForCarrier(paymentMethod: 'WAVE' | 'CASH_ON_DELIVERY' = 'WAV
 }
 
 describe('livraison et moyens de paiement', () => {
-  it('retrait en boutique : frais nuls et paiement en espèces autorisé', async () => {
+  it('livraison locale avec Wave : frais de la zone ajoutés et prépaiement Wave demandé', async () => {
     const product = await createProduct({ price: '10000', stock: 5 });
     const result = await createOrder({
       input: input({
         items: [{ productId: product.id, quantity: 1 }],
-        deliveryMethod: 'PICKUP',
-        zoneId: zones.pickupZone.id,
-        paymentMethod: 'CASH_IN_STORE',
+        deliveryMethod: 'LOCAL_DELIVERY',
+        zoneId: zones.localZone.id,
+        neighbourhood: 'Commerce',
+        paymentMethod: 'WAVE',
       }),
     });
 
-    expect(Number(result.order.shippingFee)).toBe(0);
-    expect(Number(result.order.total)).toBe(10000);
-    expect(result.order.status).toBe('PENDING_CONFIRMATION');
-    expect(result.prepaymentRequired).toBe(false);
+    expect(Number(result.order.shippingFee)).toBe(2000);
+    expect(Number(result.order.total)).toBe(12000);
+    // Wave : la commande attend le paiement, elle n'est pas encore confirmée.
+    expect(result.order.status).toBe('AWAITING_PAYMENT');
+    expect(result.order.paymentMethod).toBe('WAVE');
+  });
+
+  it('refuse le retrait en magasin : ce mode de livraison n’existe plus', async () => {
+    const product = await createProduct({ price: '10000', stock: 5 });
+    await expect(
+      createOrder({
+        input: input({
+          items: [{ productId: product.id, quantity: 1 }],
+          deliveryMethod: 'PICKUP',
+          paymentMethod: 'CASH_ON_DELIVERY',
+        }),
+      }),
+    ).rejects.toMatchObject({ code: 'ZONE' });
   });
 
   it('livraison locale : frais de la zone appliqués et paiement à la livraison autorisé sous le plafond', async () => {
@@ -72,7 +87,7 @@ describe('livraison et moyens de paiement', () => {
         items: [{ productId: product.id, quantity: 1 }],
         deliveryMethod: 'LOCAL_DELIVERY',
         zoneId: zones.localZone.id,
-        addressLine: 'Quartier Commerce, près du marché',
+        neighbourhood: 'Commerce',
         paymentMethod: 'CASH_ON_DELIVERY',
       }),
     });
@@ -90,7 +105,7 @@ describe('livraison et moyens de paiement', () => {
           items: [{ productId: product.id, quantity: 1 }],
           deliveryMethod: 'LOCAL_DELIVERY',
           zoneId: zones.localZone.id,
-          addressLine: 'Quartier Commerce, près du marché',
+          neighbourhood: 'Commerce',
           paymentMethod: 'CASH_ON_DELIVERY',
         }),
       }),
@@ -153,7 +168,9 @@ describe('paiement : référence client puis vérification administrateur', () =
     const created = await createOrder({
       input: input({
         items: [{ productId: product.id, quantity: 1 }],
-        deliveryMethod: 'PICKUP',
+        deliveryMethod: 'LOCAL_DELIVERY',
+        zoneId: zones.localZone.id,
+        neighbourhood: 'Commerce',
         paymentMethod: 'WAVE',
       }),
       userId: owner.id,
@@ -253,8 +270,10 @@ describe('expédition : jamais avant paiement', () => {
     const { order } = await createOrder({
       input: input({
         items: [{ productId: product.id, quantity: 1 }],
-        deliveryMethod: 'PICKUP',
-        paymentMethod: 'CASH_IN_STORE',
+        deliveryMethod: 'LOCAL_DELIVERY',
+        zoneId: zones.localZone.id,
+        neighbourhood: 'Commerce',
+        paymentMethod: 'WAVE',
       }),
     });
     const admin = adminActor(await createUser({ role: 'ADMIN' }));
@@ -299,8 +318,10 @@ describe('isolation des commandes entre clients', () => {
     const { order } = await createOrder({
       input: input({
         items: [{ productId: product.id, quantity: 1 }],
-        deliveryMethod: 'PICKUP',
-        paymentMethod: 'CASH_IN_STORE',
+        deliveryMethod: 'LOCAL_DELIVERY',
+        zoneId: zones.localZone.id,
+        neighbourhood: 'Commerce',
+        paymentMethod: 'WAVE',
       }),
       userId: owner.id,
     });

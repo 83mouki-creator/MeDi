@@ -1,5 +1,5 @@
 /**
- * Données de démonstration MeDi Shop — CLIQUEMENT IDENTIFIÉES COMME DÉMO.
+ * Données de démonstration Perokado — CLIQUEMENT IDENTIFIÉES COMME DÉMO.
  *
  * Ce script ne crée AUCUNE information commerciale réelle : numéros de téléphone,
  * adresse et horaires restent vides (le propriétaire doit les saisir dans
@@ -100,7 +100,7 @@ const BRANDS = [
   { slug: 'karcher', name: 'Kärcher', description: 'Nettoyage haute pression.' },
   { slug: 'ingco', name: 'Ingco', description: 'Outillage et quincaillerie.' },
   { slug: 'dangote', name: 'Dangote', description: 'Ciment.' },
-  { slug: 'medi-pro', name: 'MeDi Shop Pro', description: 'Sélection de la boutique MeDi Shop.' },
+  { slug: 'perokado-selection', name: 'Sélection Perokado', description: 'Sélection de la boutique Perokado.' },
 ];
 
 const SUPPLIERS = [
@@ -117,7 +117,7 @@ const PRODUCTS: SeedProduct[] = [
   { name: 'Scie circulaire 1400 W 185 mm', category: 'outillage-electroportatif', brand: 'bosch', price: 98000, stock: 4, short: 'Scie circulaire professionnelle, lame 185 mm.', description: 'Scie circulaire pour bois et panneaux, guide parallèle, aspiration des copeaux, capot de protection.', keywords: ['scie', 'circulaire', 'bois'], attributes: { Puissance: '1400 W', Lame: '185 mm', 'Profondeur de coupe': '65 mm' } },
   { name: 'Marteau piqueur 1500 W', category: 'outillage-electroportatif', brand: 'ingco', price: 145000, stock: 3, short: 'Marteau piqueur SDS-Max pour démolition.', description: 'Marteau piqueur puissant pour la démolition du béton et des dalles. Poignée antivibration, embouts SDS-Max.', keywords: ['marteau piqueur', 'demolition', 'beton'], attributes: { Puissance: '1500 W', 'Énergie de frappe': '25 J', Mandrin: 'SDS-Max' } },
   { name: 'Jeu de tournevis 12 pièces isolés', category: 'outillage-a-main', brand: 'ingco', price: 9500, stock: 25, short: 'Tournevis isolés 1000 V, 12 pièces.', description: 'Jeu de tournevis plats et cruciformes isolés pour travaux électriques, poignées ergonomiques antidérapantes.', keywords: ['tournevis', 'electricite', 'outillage main'], attributes: { Pièces: '12', Isolation: '1000 V' } },
-  { name: 'Clé à molette 12 pouces', category: 'outillage-a-main', brand: 'medi-pro', price: 6500, stock: 30, short: 'Clé à molette acier forgé, ouverture 34 mm.', description: 'Clé à molette en acier forgé, mâchoires trempées, finition chromée.', keywords: ['cle', 'molette', 'mecanique'], attributes: { Taille: '12"', Ouverture: '34 mm' } },
+  { name: 'Clé à molette 12 pouces', category: 'outillage-a-main', brand: 'perokado-selection', price: 6500, stock: 30, short: 'Clé à molette acier forgé, ouverture 34 mm.', description: 'Clé à molette en acier forgé, mâchoires trempées, finition chromée.', keywords: ['cle', 'molette', 'mecanique'], attributes: { Taille: '12"', Ouverture: '34 mm' } },
   { name: 'Coffret douilles 1/2" 24 pièces', category: 'outillage-a-main', brand: 'ingco', price: 24500, stock: 9, short: 'Coffret de douilles et cliquet 1/2".', description: 'Coffret complet avec cliquet réversible, rallonges et douilles de 10 à 32 mm, en mallette métallique.', keywords: ['douille', 'cliquet', 'coffret'], attributes: { Pièces: '24', Entraînement: '1/2"' } },
 
   // Construction
@@ -143,7 +143,7 @@ const PRODUCTS: SeedProduct[] = [
   { name: 'Flexible de douche inox 1,5 m', category: 'plomberie', price: 3200, stock: 50, short: 'Flexible tressé inox pour douche.', description: 'Flexible de douche tressé inox, longueur 1,5 m, raccords 1/2".', keywords: ['flexible', 'douche', 'inox'], attributes: { Longueur: '1,5 m' } },
 
   // Équipements techniques
-  { name: 'Motopompe thermique 2"', category: 'motopompes', brand: 'medi-pro', price: 165000, stock: 5, short: 'Pompe à eau thermique 6,5 CV, refoulement 2".', description: 'Motopompe thermique essence pour irrigation et chantier, débit 30 m³/h, hauteur 30 m.', keywords: ['pompe', 'motopompe', 'irrigation', 'eau'], attributes: { Puissance: '6,5 CV', Refoulement: '2"', 'Débit': '30 m³/h' } },
+  { name: 'Motopompe thermique 2"', category: 'motopompes', brand: 'perokado-selection', price: 165000, stock: 5, short: 'Pompe à eau thermique 6,5 CV, refoulement 2".', description: 'Motopompe thermique essence pour irrigation et chantier, débit 30 m³/h, hauteur 30 m.', keywords: ['pompe', 'motopompe', 'irrigation', 'eau'], attributes: { Puissance: '6,5 CV', Refoulement: '2"', 'Débit': '30 m³/h' } },
   { name: 'Surpresseur 800 W', category: 'motopompes', price: 89000, stock: 7, short: 'Surpresseur automatique 800 W pour maison.', description: 'Surpresseur électrique avec réservoir 24 L, pressostat automatique, idéal pour améliorer la pression domestique.', keywords: ['surpresseur', 'pompe', 'pression'], attributes: { Puissance: '800 W', Réservoir: '24 L' } },
   { name: 'Groupe électrogène 3,5 kVA', category: 'equipements-techniques', price: 385000, stock: 3, short: 'Groupe électrogène essence 3,5 kVA, démarrage manuel.', description: 'Groupe électrogène monophasé 3,5 kVA, réservoir 15 L, protection contre les surcharges. Idéal boutique et maison.', keywords: ['groupe electrogene', 'courant', 'electricite'], attributes: { Puissance: '3,5 kVA', Carburant: 'Essence', Réservoir: '15 L' }, featured: true },
   { name: 'Nettoyeur haute pression 130 bar', category: 'equipements-techniques', brand: 'karcher', price: 185000, promo: 169000, stock: 4, short: 'Nettoyeur haute pression 130 bar, 1800 W.', description: 'Nettoyeur haute pression pour véhicules et façades, lance réglable, tuyau 7 m.', keywords: ['karcher', 'nettoyeur', 'haute pression'], attributes: { Pression: '130 bar', Puissance: '1800 W' } },
@@ -194,7 +194,7 @@ async function ensurePlaceholderImage(params: { name: string; sku: string; index
     <text x="450" y="560" font-family="Helvetica, Arial, sans-serif" font-size="22"
       fill="${palette.text}" opacity="0.75" text-anchor="middle">Photo de démonstration — à remplacer</text>
     <text x="450" y="830" font-family="Helvetica, Arial, sans-serif" font-size="30" font-weight="800"
-      fill="${palette.text}" opacity="0.9" text-anchor="middle">MeDi Shop</text>
+      fill="${palette.text}" opacity="0.9" text-anchor="middle">Perokado</text>
   </svg>`;
 
   const buffer = await sharp(Buffer.from(svg))
@@ -219,12 +219,12 @@ function escapeXml(input: string) {
 }
 
 async function main() {
-  console.log('→ Données de démonstration MeDi Shop');
+  console.log('→ Données de démonstration Perokado');
 
   // Réglages boutique (aucune donnée commerciale inventée)
   await db
     .insert(storeSettings)
-    .values({ id: 1, storeName: 'MeDi Shop', tagline: null, city: 'Daloa', country: "Côte d'Ivoire", waveMode: 'MANUAL', allowCod: false, allowPickup: true, allowLocalDelivery: true, lowStockThreshold: 5, reservationMinutes: 120 })
+    .values({ id: 1, storeName: 'Perokado', tagline: null, city: 'Daloa', country: "Côte d'Ivoire", waveMode: 'MANUAL', allowCod: false, allowPickup: false, allowLocalDelivery: true, lowStockThreshold: 5, reservationMinutes: 120 })
     .onConflictDoNothing();
 
   // Catégories
@@ -370,8 +370,8 @@ async function main() {
   if (process.env.SEED_DEMO === '1') {
     const demoPassword = process.env.SEED_DEMO_PASSWORD ?? 'DemoMedi2026!';
     const accounts = [
-      { email: 'proprietaire@medi.demo', role: 'OWNER' as const, firstName: 'Propriétaire', lastName: 'MeDi Shop (démo)' },
-      { email: 'admin@medi.demo', role: 'ADMIN' as const, firstName: 'Admin', lastName: 'MeDi Shop (démo)' },
+      { email: 'proprietaire@perokado.demo', role: 'OWNER' as const, firstName: 'Propriétaire', lastName: 'Perokado (démo)' },
+      { email: 'admin@perokado.demo', role: 'ADMIN' as const, firstName: 'Admin', lastName: 'Perokado (démo)' },
       { email: 'stock@medi.demo', role: 'STOCK_MANAGER' as const, firstName: 'Gestion', lastName: 'Stock (démo)' },
       { email: 'commandes@medi.demo', role: 'ORDER_MANAGER' as const, firstName: 'Gestion', lastName: 'Commandes (démo)' },
       { email: 'client@medi.demo', role: 'CUSTOMER' as const, firstName: 'Client', lastName: 'Démonstration' },

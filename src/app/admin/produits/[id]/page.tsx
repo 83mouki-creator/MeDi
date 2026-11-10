@@ -14,6 +14,8 @@ import { Badge, Card } from '@/components/ui/primitives';
 import { Button } from '@/components/ui/button';
 import { formatDateTime, formatFCFA } from '@/lib/utils';
 import { computePricing, computeAvailability } from '@/lib/pricing';
+import { allStickersOfProduct, listStickers } from '@/lib/stickers';
+import { ProductStickerSlots } from '@/components/admin/product-sticker-slots';
 
 export const dynamic = 'force-dynamic';
 
@@ -32,13 +34,16 @@ export default async function EditProductPage({
   const product = rows[0];
   if (!product) notFound();
 
-  const [images, attributes, categoryRows, brandRows, supplierRows, movements] = await Promise.all([
+  const [images, attributes, categoryRows, brandRows, supplierRows, movements, stickerLibrary, productStickers] = await Promise.all([
     db.select().from(productImages).where(eq(productImages.productId, id)).orderBy(asc(productImages.position)),
     db.select().from(productAttributes).where(eq(productAttributes.productId, id)).orderBy(asc(productAttributes.position)),
     db.select({ id: categories.id, name: categories.name }).from(categories).orderBy(asc(categories.position)),
     db.select({ id: brands.id, name: brands.name }).from(brands).orderBy(asc(brands.name)),
     db.select({ id: suppliers.id, name: suppliers.name }).from(suppliers).orderBy(asc(suppliers.name)),
     db.select().from(inventoryMovements).where(eq(inventoryMovements.productId, id)).orderBy(desc(inventoryMovements.createdAt)).limit(15),
+    // Bibliothèque de stickers + ceux du produit : les deux emplacements de la fiche.
+    listStickers(true).catch(() => []),
+    allStickersOfProduct(id).catch(() => []),
   ]);
 
   const pricing = computePricing(product);
@@ -84,6 +89,7 @@ export default async function EditProductPage({
               shortDescription: product.shortDescription,
               description: product.description,
               price: product.price,
+              purchasePrice: product.purchasePrice,
               promoPrice: product.promoPrice,
               promoStartsAt: product.promoStartsAt ? product.promoStartsAt.toISOString().slice(0, 16) : null,
               promoEndsAt: product.promoEndsAt ? product.promoEndsAt.toISOString().slice(0, 16) : null,
@@ -161,6 +167,22 @@ export default async function EditProductPage({
                 {t('Les images sont redimensionnées (1600 px max), converties en WebP et dédupliquées par empreinte.')}
               </p>
             </form>
+          </Card>
+
+          <Card className="p-4">
+            <h2 className="mb-2 text-sm font-bold">{t('Stickers sur la photo')}</h2>
+            <ProductStickerSlots
+              productId={product.id}
+              stickers={stickerLibrary}
+              assigned={productStickers.map((entry) => ({
+                stickerId: entry.stickerId,
+                label: entry.label,
+                detail: entry.detail,
+                tone: entry.tone,
+                icon: entry.icon,
+                position: entry.position,
+              }))}
+            />
           </Card>
 
           <Card className="p-4">

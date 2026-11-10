@@ -6,12 +6,11 @@ import {
   CalendarClock,
   CheckCircle2,
   ChevronRight,
-  MapPin,
+  Clock,
   MessageCircle,
   Package,
   ShieldCheck,
   Sparkles,
-  Store,
   Truck,
 } from 'lucide-react';
 import { getProductBySlug, getRelatedProducts } from '@/lib/catalog';
@@ -27,8 +26,9 @@ import { TrackProductView } from '@/components/track-view';
 import { ButtonLink } from '@/components/ui/button';
 import { PurchaseNotice } from '@/components/purchase-notice';
 import { getSiteI18n } from '@/lib/i18n/site-server';
-import { storeLocation } from '@/lib/store-location';
-import { OUTSIDE_DALOA_MAX_DAYS, PICKUP_HOLD_HOURS } from '@/lib/store-policy';
+import { OUTSIDE_DALOA_MAX_DAYS } from '@/lib/store-policy';
+import { ProductStickerList, ProductStickerOverlay } from '@/components/product-sticker';
+import { STORE_NAME } from '@/lib/brand';
 import { sweepExpiredReservations } from '@/lib/reservations';
 
 type Params = { slug: string };
@@ -46,7 +46,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
       : '';
   const description =
     product.shortDescription ??
-    `${product.name}${brandSuffix} disponible chez MeDi Shop à Daloa. ${formatFCFA(pricing.price)}.`;
+    `${product.name}${brandSuffix} disponible chez ${STORE_NAME}. ${formatFCFA(pricing.price)}.`;
 
   return {
     title: `${product.name}${brandSuffix}`,
@@ -77,8 +77,11 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
 
   const images = product.images.length > 0 ? product.images : product.imageUrl ? [{ id: 'main', url: product.imageUrl, alt: product.imageAlt, width: product.imageWidth, height: product.imageHeight }] : [];
   const productUrl = `${env.appUrl.replace(/\/$/, '')}/produit/${product.slug}`;
-  const whatsapp = whatsappLink(settings, `Bonjour MeDi Shop, je souhaite des informations sur « ${product.name} » (réf. ${product.sku}).`);
-  const location = storeLocation(settings);
+  const whatsapp = whatsappLink(
+    settings,
+    `Bonjour ${settings.storeName}, je souhaite des informations sur « ${product.name} » (réf. ${product.sku}).`,
+  );
+  const visibleStickers = product.stickers ?? [];
 
   const jsonLd = {
     '@context': 'https://schema.org',
@@ -107,36 +110,40 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
 
       <nav aria-label={t('Fil d’Ariane')} className="mb-4 flex flex-wrap items-center gap-1 text-xs text-navy-500">
         <Link href="/" className="hover:text-accent-700">{t('Accueil')}</Link>
-        <ChevronRight className="size-3 rtl:rotate-180" aria-hidden />
+        <ChevronRight className="size-3" aria-hidden />
         <Link href="/catalogue" className="hover:text-accent-700">{t('Catalogue')}</Link>
         {product.categorySlug ? (
           <>
-            <ChevronRight className="size-3 rtl:rotate-180" aria-hidden />
+            <ChevronRight className="size-3" aria-hidden />
             <Link href={`/categorie/${product.categorySlug}`} className="hover:text-accent-700">{product.categoryName}</Link>
           </>
         ) : null}
-        <ChevronRight className="size-3 rtl:rotate-180" aria-hidden />
+        <ChevronRight className="size-3" aria-hidden />
         <span className="line-clamp-1 font-medium text-navy-800">{product.name}</span>
       </nav>
 
       <div className="grid gap-8 lg:grid-cols-[minmax(0,520px)_1fr]">
         <div className="lg:sticky lg:top-40 lg:self-start">
-          <ProductGallery
-            images={images.map((i) => ({ id: i.id, url: i.url, alt: i.alt, width: i.width, height: i.height }))}
-            name={product.name}
-            discountPercent={pricing.discountPercent}
-          />
+          <div className="relative">
+            <ProductGallery
+              images={images.map((i) => ({ id: i.id, url: i.url, alt: i.alt, width: i.width, height: i.height }))}
+              name={product.name}
+              discountPercent={pricing.discountPercent}
+            />
+            {/* Garantie, réduction… : les deux vignettes choisies par la boutique. */}
+            <ProductStickerOverlay stickers={visibleStickers} className="inset-x-3 bottom-3" />
+          </div>
           <div className="mt-3 grid grid-cols-3 gap-2 text-center text-[11px] font-semibold text-navy-700">
             <div className="rounded-lg border border-navy-100 bg-white px-2 py-3">
               <ShieldCheck className="mx-auto mb-1 size-4 text-accent-600" aria-hidden />
               {t('Stock vérifié')}
             </div>
             <div className="rounded-lg border border-navy-100 bg-white px-2 py-3">
-              <Store className="mx-auto mb-1 size-4 text-accent-600" aria-hidden />
-              {t('Retrait à Daloa')}
+              <Truck className="mx-auto mb-1 size-4 text-accent-600" aria-hidden />
+              {t('Livraison à domicile')}
             </div>
             <div className="rounded-lg border border-navy-100 bg-white px-2 py-3">
-              <Truck className="mx-auto mb-1 size-4 text-accent-600" aria-hidden />
+              <Clock className="mx-auto mb-1 size-4 text-accent-600" aria-hidden />
               {t('Livraison 7 j max')}
             </div>
           </div>
@@ -150,7 +157,7 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
               </Link>
             ) : null}
             {product.onPromo ? <Badge tone="accent">{t('Promotion')}</Badge> : null}
-            {product.isFeatured ? <Badge tone="navy">{t('Sélection MeDi Shop')}</Badge> : null}
+            {product.isFeatured ? <Badge tone="navy">{t('Sélection {store}', { store: settings.storeName })}</Badge> : null}
           </div>
 
           <h1 className="mt-2 text-2xl font-extrabold leading-tight tracking-tight sm:text-3xl">{product.name}</h1>
@@ -159,6 +166,12 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
             {product.categoryName ? <> · {product.categoryName}</> : null}
             {product.supplierName ? <> · {t('Fournisseur')} : {product.supplierName}</> : null}
           </p>
+
+          {visibleStickers.length > 0 ? (
+            <div className="mt-3">
+              <ProductStickerList stickers={visibleStickers} />
+            </div>
+          ) : null}
 
           {product.shortDescription ? <p className="mt-3 text-sm leading-relaxed text-navy-700">{product.shortDescription}</p> : null}
 
@@ -192,8 +205,8 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
                   : availability.state === 'PREORDER'
                     ? t('Disponible en précommande')
                     : availability.state === 'LOW_STOCK'
-                      ? t('Plus que {count} en stock — retrait à Daloa ou livraison', { count: availability.available })
-                      : t('En stock — retrait à Daloa ou livraison')}
+                      ? t('Plus que {count} en stock — livraison à domicile', { count: availability.available })
+                      : t('En stock — livraison à domicile')}
               </p>
 
               <div className="mt-4">
@@ -211,44 +224,25 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
             </div>
           </div>
 
-          {/* Retrait / livraison / horaires */}
-          <div className="mt-4 grid gap-3 sm:grid-cols-2">
-            <Card className="border-accent-200 bg-accent-50/40 p-4">
-              <p className="flex items-center gap-2 text-sm font-semibold text-navy-900">
-                <Store className="size-4 text-accent-600" aria-hidden /> {t('Retrait en boutique')}
+          {/* Livraison : le seul mode proposé par la boutique */}
+          <Card className="mt-4 border-accent-200 bg-accent-50/40 p-4">
+            <p className="flex items-center gap-2 text-sm font-semibold text-navy-900">
+              <Truck className="size-4 text-accent-600" aria-hidden /> {t('Livraison à domicile')}
+            </p>
+            <p className="mt-1 text-xs leading-relaxed text-navy-700">
+              {t('À Daloa : vous choisissez votre quartier, les frais s’affichent avant la validation. Hors Daloa : {days} jours maximum, transport à convenir sur WhatsApp.', {
+                days: OUTSIDE_DALOA_MAX_DAYS,
+              })}
+            </p>
+            {settings.openingHours ? (
+              <p className="mt-1 flex items-center gap-1.5 text-xs text-navy-600">
+                <Clock className="size-3.5 shrink-0" aria-hidden /> {settings.openingHours}
               </p>
-              <p className="mt-1 text-xs leading-relaxed text-navy-700">
-                {t('Colis gardé {hours} h maximum après confirmation.', { hours: PICKUP_HOLD_HOURS })}
-              </p>
-              <p className="mt-1 text-xs font-semibold text-navy-900" dir="ltr">
-                {location.dms}
-              </p>
-              <p className="mt-1 text-xs text-navy-600">
-                {settings.openingHours ?? t('Horaires communiqués par téléphone')}
-              </p>
-              <a
-                href={location.mapsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="mt-1 inline-block text-xs font-semibold text-accent-700 hover:underline"
-              >
-                {t('Voir sur Google Maps')}
-              </a>
-            </Card>
-            <Card className="p-4">
-              <p className="flex items-center gap-2 text-sm font-semibold text-navy-900">
-                <Truck className="size-4 text-accent-600" aria-hidden /> {t('Livraison')}
-              </p>
-              <p className="mt-1 text-xs leading-relaxed text-navy-700">
-                {t('À Daloa : votre quartier, frais affichés à la commande. Hors Daloa : {days} jours maximum, transport à convenir sur WhatsApp.', {
-                  days: OUTSIDE_DALOA_MAX_DAYS,
-                })}
-              </p>
-              <Link href="/livraison" className="mt-1 inline-block text-xs font-semibold text-accent-700 hover:underline">
-                {t('En savoir plus')}
-              </Link>
-            </Card>
-          </div>
+            ) : null}
+            <Link href="/livraison" className="mt-1 inline-block text-xs font-semibold text-accent-700 hover:underline">
+              {t('Voir les zones et les frais de livraison')}
+            </Link>
+          </Card>
 
           <PurchaseNotice className="mt-3" phone={settings.phone} />
 
@@ -303,18 +297,12 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
 
       <section className="mt-6 rounded-xl border border-navy-100 bg-white p-4">
         <h2 className="mb-2 flex items-center gap-2 text-sm font-bold text-navy-900">
-          <CalendarClock className="size-4 text-accent-600" aria-hidden /> {t('Jours et heures de retrait et de livraison')}
+          <CalendarClock className="size-4 text-accent-600" aria-hidden /> {t('Jours et heures de livraison')}
         </h2>
         <ul className="grid gap-2 text-sm text-navy-700 sm:grid-cols-2">
           <li className="flex gap-2">
             <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-emerald-600" aria-hidden />
-            {t('Retrait en boutique à Daloa, gratuit, du lundi au samedi ({hours}).', {
-              hours: settings.openingHours ?? t('horaires à confirmer'),
-            })}
-          </li>
-          <li className="flex gap-2">
-            <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-emerald-600" aria-hidden />
-            {t('Livraison dans votre quartier de Daloa : frais affichés avant validation de la commande.')}
+            {t('Livraison dans votre commune ou votre quartier : frais affichés avant validation de la commande.')}
           </li>
           <li className="flex gap-2">
             <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-emerald-600" aria-hidden />
@@ -324,11 +312,11 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
             <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-emerald-600" aria-hidden />
             {t('Le stock affiché est mis à jour en temps réel au moment de la réservation.')}
           </li>
+          <li className="flex gap-2">
+            <CheckCircle2 className="mt-0.5 size-4 shrink-0 text-emerald-600" aria-hidden />
+            {t('Une question avant de commander ? Écrivez-nous sur WhatsApp, nous répondons aux heures d’ouverture.')}
+          </li>
         </ul>
-        <p className="mt-2 flex items-center gap-2 text-xs text-navy-600">
-          <MapPin className="size-4 text-accent-600" aria-hidden />
-          {location.addressLine}
-        </p>
       </section>
 
       {related.length > 0 ? (
@@ -343,8 +331,8 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
       <div className="mt-8 flex flex-wrap gap-3">
         <ButtonLink href="/catalogue" variant="outline">{t('Retour au catalogue')}</ButtonLink>
         <ButtonLink href="/suivi" variant="ghost">{t('Suivre une commande')}</ButtonLink>
-        <Link href="/nous-trouver" className="inline-flex items-center gap-1 self-center text-sm font-semibold text-accent-700 hover:underline">
-          {t('Nous trouver')} <ArrowRight className="size-3.5 rtl:rotate-180" aria-hidden />
+        <Link href="/livraison" className="inline-flex items-center gap-1 self-center text-sm font-semibold text-accent-700 hover:underline">
+          {t('Livraison et frais')} <ArrowRight className="size-3.5" aria-hidden />
         </Link>
       </div>
     </div>

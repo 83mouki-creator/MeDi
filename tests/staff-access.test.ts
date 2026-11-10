@@ -118,7 +118,6 @@ describe('catalogue des rôles', () => {
       const definition = roleDefinition(key);
       expect(definition, key).toBeTruthy();
       expect(definition!.label.length).toBeGreaterThan(2);
-      expect(definition!.labelAr.length).toBeGreaterThan(2);
       expect(definition!.home.startsWith('/admin')).toBe(true);
     }
   });

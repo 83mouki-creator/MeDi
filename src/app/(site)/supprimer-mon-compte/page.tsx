@@ -6,7 +6,7 @@ import { LegalPage, LegalSection } from '@/components/legal-page';
 export const metadata: Metadata = {
   title: 'Supprimer mon compte',
   description:
-    'Comment supprimer votre compte client MeDi Shop : depuis le site ou l’application Android, en quelques secondes, et ce que deviennent vos commandes.',
+    'Comment supprimer votre compte client Perokado : depuis le site ou l’application Android, en quelques secondes, et ce que deviennent vos commandes.',
   alternates: { canonical: '/supprimer-mon-compte' },
 };
 
@@ -26,7 +26,7 @@ export default async function DeleteAccountInfoPage() {
   return (
     <LegalPage
       title="Supprimer mon compte"
-      intro="Vous pouvez supprimer votre compte client MeDi Shop vous-même, à tout moment, sans écrire à personne et sans frais. La suppression est immédiate."
+      intro="Vous pouvez supprimer votre compte client Perokado vous-même, à tout moment, sans écrire à personne et sans frais. La suppression est immédiate."
     >
       <LegalSection title="Depuis le site ou l’application Android">
         <ol className="list-decimal space-y-1 ps-5">
@@ -47,7 +47,7 @@ export default async function DeleteAccountInfoPage() {
           <li>Recopiez le mot SUPPRIMER, saisissez votre mot de passe, puis validez.</li>
         </ol>
         <p>
-          L’application Android de MeDi Shop affiche le même site : le chemin est identique, dans l’application comme dans un
+          L’application Android de Perokado affiche le même site : le chemin est identique, dans l’application comme dans un
           navigateur.
         </p>
       </LegalSection>

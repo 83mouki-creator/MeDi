@@ -104,6 +104,14 @@ const HEADER_ALIASES: Record<string, string> = {
   prix_promo: 'promoPrice',
   'prix promo': 'promoPrice',
   promo: 'promoPrice',
+  prix_achat: 'purchasePrice',
+  'prix achat': 'purchasePrice',
+  'prix d’achat': 'purchasePrice',
+  "prix d'achat": 'purchasePrice',
+  achat: 'purchasePrice',
+  cout: 'purchasePrice',
+  'coût': 'purchasePrice',
+  cost: 'purchasePrice',
   mots_cles: 'keywords',
   'mots-clés': 'keywords',
   keywords: 'keywords',
@@ -176,6 +184,14 @@ export async function importCatalogCsv(csvText: string, options: { dryRun?: bool
       continue;
     }
 
+    // Prix d'achat : facultatif. Absent ⇒ NULL (bénéfice non calculé pour ce
+    // produit), jamais 0, sinon la marge affichée serait fausse.
+    const purchasePrice = toInt(get('purchasePrice'));
+    if (purchasePrice !== null && purchasePrice < 0) {
+      reject('Prix d’achat invalide (entier FCFA positif attendu)');
+      continue;
+    }
+
     const categoryName = get('category');
     const brandName = get('brand');
     let categoryId: string | null = null;
@@ -228,6 +244,9 @@ export async function importCatalogCsv(csvText: string, options: { dryRun?: bool
             shortDescription: get('shortDescription') || null,
             description: get('description') || null,
             price: String(price),
+            // Un prix d'achat fourni remplace l'ancien ; un champ vide le laisse
+            // intact pour ne pas effacer une donnée déjà saisie dans l'admin.
+            ...(purchasePrice !== null ? { purchasePrice: String(purchasePrice) } : {}),
             promoPrice: promoPrice !== null ? String(promoPrice) : null,
             stock,
             lowStockThreshold: toInt(get('lowStockThreshold')),
@@ -248,6 +267,7 @@ export async function importCatalogCsv(csvText: string, options: { dryRun?: bool
           shortDescription: get('shortDescription') || null,
           description: get('description') || null,
           price: String(price),
+          purchasePrice: purchasePrice !== null ? String(purchasePrice) : null,
           promoPrice: promoPrice !== null ? String(promoPrice) : null,
           stock,
           lowStockThreshold: toInt(get('lowStockThreshold')),

@@ -6,7 +6,7 @@ import { LegalPage, LegalSection } from '@/components/legal-page';
 export const metadata: Metadata = {
   title: 'Politique de confidentialité',
   description:
-    'Données personnelles collectées par MeDi Shop, finalités, durées de conservation et droits des personnes en Côte d’Ivoire.',
+    'Données personnelles collectées par Perokado, finalités, durées de conservation et droits des personnes en Côte d’Ivoire.',
   alternates: { canonical: '/confidentialite' },
 };
 
@@ -18,7 +18,7 @@ export default async function PrivacyPage() {
   return (
     <LegalPage
       title="Politique de confidentialité"
-      intro="Cette page explique quelles données personnelles sont traitées lorsque vous utilisez le site MeDi Shop, pourquoi elles le sont, combien de temps elles sont conservées et comment exercer vos droits."
+      intro="Cette page explique quelles données personnelles sont traitées lorsque vous utilisez le site Perokado, pourquoi elles le sont, combien de temps elles sont conservées et comment exercer vos droits."
     >
       <LegalSection title="Responsable du traitement">
         <p>

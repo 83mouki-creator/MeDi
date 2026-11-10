@@ -3,7 +3,7 @@ import { eq } from 'drizzle-orm';
 import { db } from '../db';
 import { storeSettings, type StoreSetting } from '../db/schema';
 import { env } from './env';
-import { parseCoordinates, type GeoPoint } from './geo';
+import { STORE_NAME, STORE_TAGLINE, STORE_WHATSAPP, STORE_WHATSAPP_DIGITS } from './brand';
 
 /**
  * Réglages de la boutique. Les informations commerciales (téléphone, adresse,
@@ -23,6 +23,9 @@ export type PublicSettings = {
   waveNumber: string | null;
   waveMerchantName: string | null;
   waveMode: string;
+  /** Compte marchand de l'agrégateur de paiement (mobile money / carte). */
+  pspMerchantNumber: string | null;
+  pspMerchantLabel: string | null;
   allowCod: boolean;
   codMaxAmount: number;
   allowPickup: boolean;
@@ -34,11 +37,6 @@ export type PublicSettings = {
   instagramUrl: string | null;
   legalNotice: string | null;
   returnPolicy: string | null;
-  /** Coordonnées exactes de la boutique — `null` tant qu'elles ne sont pas fournies. */
-  geo: GeoPoint | null;
-  /** Valeur brute saisie dans l'admin, pour réafficher le formulaire tel quel. */
-  latitudeInput: string | null;
-  longitudeInput: string | null;
   // booléens de configuration (pas des données commerciales)
   waveAutoConfigured: boolean;
   storageConfigured: boolean;
@@ -47,21 +45,24 @@ export type PublicSettings = {
 
 const FALLBACK: StoreSetting = {
   id: 1,
-  storeName: 'MeDi Shop',
-  tagline: null,
-  phone: null,
-  whatsapp: null,
+  storeName: STORE_NAME,
+  tagline: STORE_TAGLINE,
+  phone: STORE_WHATSAPP,
+  whatsapp: STORE_WHATSAPP,
   email: null,
   addressLine: null,
   city: 'Daloa',
   country: "Côte d'Ivoire",
   openingHours: null,
-  waveNumber: null,
-  waveMerchantName: null,
+  waveNumber: STORE_WHATSAPP,
+  waveMerchantName: STORE_NAME,
   waveMode: 'MANUAL',
+  pspMerchantNumber: STORE_WHATSAPP,
+  pspMerchantLabel: 'Wave / compte marchand',
   allowCod: false,
   codMaxAmount: '0',
-  allowPickup: true,
+  /** Le retrait en magasin n'existe plus dans le parcours de vente. */
+  allowPickup: false,
   allowLocalDelivery: true,
   lowStockThreshold: 5,
   reservationMinutes: 120,
@@ -87,23 +88,28 @@ export const getStoreSettings = cache(async (): Promise<PublicSettings> => {
   }
 
   const s = row ?? FALLBACK;
-  const coordinates = parseCoordinates({ latitude: s.latitude, longitude: s.longitude });
   return {
-    storeName: s.storeName,
-    tagline: s.tagline,
-    phone: s.phone,
-    whatsapp: s.whatsapp,
+    storeName: s.storeName || STORE_NAME,
+    // Le slogan fait partie de l'identité : s'il n'est pas saisi, on affiche
+    // celui de la marque plutôt qu'un vide.
+    tagline: s.tagline?.trim() || STORE_TAGLINE,
+    phone: s.phone?.trim() || STORE_WHATSAPP,
+    whatsapp: s.whatsapp?.trim() || STORE_WHATSAPP_DIGITS,
     email: s.email,
     addressLine: s.addressLine,
     city: s.city,
     country: s.country,
     openingHours: s.openingHours,
-    waveNumber: s.waveNumber ?? env.wave.merchantNumber ?? null,
+    waveNumber: s.waveNumber ?? env.wave.merchantNumber ?? env.psp.merchantNumber ?? null,
     waveMerchantName: s.waveMerchantName ?? null,
     waveMode: env.wave.mode === 'AUTO' && env.wave.enabled ? 'AUTO' : s.waveMode,
+    pspMerchantNumber: s.pspMerchantNumber ?? env.psp.merchantNumber ?? null,
+    pspMerchantLabel: s.pspMerchantLabel ?? env.psp.merchantLabel ?? null,
     allowCod: s.allowCod,
     codMaxAmount: Number(s.codMaxAmount ?? 0),
-    allowPickup: s.allowPickup,
+    // Le retrait en magasin est retiré du parcours : quel que soit l'ancien
+    // réglage en base, il reste désactivé.
+    allowPickup: false,
     allowLocalDelivery: s.allowLocalDelivery,
     lowStockThreshold: s.lowStockThreshold,
     reservationMinutes: s.reservationMinutes,
@@ -112,19 +118,25 @@ export const getStoreSettings = cache(async (): Promise<PublicSettings> => {
     instagramUrl: s.instagramUrl,
     legalNotice: s.legalNotice,
     returnPolicy: s.returnPolicy,
-    geo: coordinates.status === 'ok' ? coordinates.point : null,
-    latitudeInput: s.latitude,
-    longitudeInput: s.longitude,
     waveAutoConfigured: env.wave.mode === 'AUTO' && env.wave.enabled,
     storageConfigured: env.storage.configured,
     visionProvider: env.vision.provider,
   };
 });
 
-/** Lien WhatsApp prêt à l'emploi si le numéro officiel est renseigné. */
-export function whatsappLink(settings: PublicSettings, message = 'Bonjour MeDi Shop, je souhaite des informations sur un produit.') {
-  if (!settings.whatsapp) return null;
-  const number = settings.whatsapp.replace(/[^\d]/g, '');
+/**
+ * Lien WhatsApp prêt à l'emploi.
+ *
+ * Le numéro vient de /admin/parametres ; à défaut, celui de la marque
+ * (`+225 05 44 01 41 82`) est utilisé, pour que le bouton d'aide fonctionne dès
+ * la première installation.
+ */
+export function whatsappLink(
+  settings: Pick<PublicSettings, 'whatsapp'>,
+  message = `Bonjour ${STORE_NAME}, je souhaite des informations sur un produit.`,
+) {
+  const raw = settings.whatsapp?.trim() || STORE_WHATSAPP_DIGITS;
+  const number = raw.replace(/[^\d]/g, '');
   if (!number) return null;
   return `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
 }

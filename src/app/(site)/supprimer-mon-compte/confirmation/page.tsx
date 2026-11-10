@@ -17,7 +17,7 @@ export default function AccountDeletedPage() {
   return (
     <LegalPage
       title="Votre compte a été supprimé"
-      intro="Votre compte client MeDi Shop n’existe plus et vous êtes déconnecté de tous vos appareils."
+      intro="Votre compte client Perokado n’existe plus et vous êtes déconnecté de tous vos appareils."
     >
       <LegalSection title="Ce qui vient d’être effacé">
         <ul className="list-disc space-y-1 ps-5">

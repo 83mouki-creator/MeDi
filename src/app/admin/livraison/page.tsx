@@ -38,7 +38,7 @@ export default async function DeliveryPage({ searchParams }: { searchParams: Pro
                 <p className="text-sm font-semibold">{zone.name}</p>
                 <p className="text-xs text-navy-500">
                   {zone.city} · {zone.isLocal ? 'zone locale Daloa' : 'hors Daloa (prépaiement obligatoire)'}
-                  {zone.isPickup ? ' · retrait' : ''} · frais {formatFCFA(toFcfa(zone.fee))}
+                  {zone.isLocal ? ` · ${t('Daloa')}` : ` · ${t('hors Daloa')}`} · {t('frais')} {formatFCFA(toFcfa(zone.fee))}
                   {zone.freeAbove ? ` · gratuit dès ${formatFCFA(toFcfa(zone.freeAbove))}` : ''}
                   {zone.estimatedDelay ? ` · ${zone.estimatedDelay}` : ''}
                 </p>
@@ -78,7 +78,6 @@ export default async function DeliveryPage({ searchParams }: { searchParams: Pro
                 </Field>
                 <div className="flex flex-col gap-1 text-xs sm:col-span-2">
                   <label className="flex items-center gap-2"><input type="checkbox" name="isLocal" defaultChecked={zone.isLocal} className="size-4 accent-accent-500" /> {t('Zone locale Daloa')}</label>
-                  <label className="flex items-center gap-2"><input type="checkbox" name="isPickup" defaultChecked={zone.isPickup} className="size-4 accent-accent-500" /> {t('Retrait en boutique')}</label>
                   <label className="flex items-center gap-2"><input type="checkbox" name="isActive" defaultChecked={zone.isActive} className="size-4 accent-accent-500" /> {t('Active')}</label>
                 </div>
                 <div className="sm:col-span-2 lg:col-span-4">
@@ -115,7 +114,6 @@ export default async function DeliveryPage({ searchParams }: { searchParams: Pro
           </Field>
           <div className="flex flex-col gap-1 text-xs sm:col-span-2">
             <label className="flex items-center gap-2"><input type="checkbox" name="isLocal" className="size-4 accent-accent-500" /> {t('Zone locale Daloa')}</label>
-            <label className="flex items-center gap-2"><input type="checkbox" name="isPickup" className="size-4 accent-accent-500" /> {t('Retrait en boutique')}</label>
             <label className="flex items-center gap-2"><input type="checkbox" name="isActive" defaultChecked className="size-4 accent-accent-500" /> {t('Active')}</label>
           </div>
           <div className="sm:col-span-2 lg:col-span-4">

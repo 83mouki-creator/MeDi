@@ -162,7 +162,7 @@ export function AddToCart({
 export function ShareButtons({ name, url, price }: { name: string; url: string; price: number }) {
   const { t } = useSiteI18n();
   const [copied, setCopied] = useState(false);
-  const message = `${name} — ${formatFCFA(price)} sur MeDi Shop Daloa : ${url}`;
+  const message = `${name} — ${formatFCFA(price)} sur Perokado Daloa : ${url}`;
 
   async function copy() {
     try {

@@ -38,20 +38,28 @@ describe('fiche Play Store — textes', () => {
     expect(listing.releaseNotes.length, 'nouveautés (500 max)').toBeLessThanOrEqual(500);
   });
 
-  it('écrit toujours « MeDi Shop », jamais « MeDi » seul', () => {
+  it('porte l’enseigne Perokado, jamais l’ancien nom', () => {
     for (const texte of [listing.appName, listing.shortDescription, listing.fullDescription, listing.releaseNotes]) {
-      expect(texte).not.toMatch(/\bMeDi\b(?!\s+Shop)/);
+      expect(texte).not.toMatch(/MeDi/i);
     }
-    expect(listing.appName).toBe('MeDi Shop');
+    expect(listing.appName).toBe('Perokado');
+  });
+
+  it('ne promet ni retrait en magasin ni multilingue : le parcours a changé', () => {
+    for (const texte of [listing.shortDescription, listing.fullDescription, listing.releaseNotes]) {
+      expect(texte).not.toMatch(/retrait en boutique|Retrait en boutique/i);
+      expect(texte).not.toMatch(/arabe|anglais/i);
+      expect(texte).not.toMatch(/GPS/);
+    }
   });
 
   it('parle français et donne les bonnes adresses', () => {
     expect(listing.language).toBe('fr-FR');
     expect(listing.category).toBe('Shopping');
-    expect(listing.privacyPolicyUrl).toBe('https://medi-daloa.vercel.app/confidentialite');
+    expect(listing.privacyPolicyUrl).toBe('https://perokado.vercel.app/confidentialite');
     // Adresse exigée par Google pour la suppression de compte.
-    expect(listing.accountDeletionUrl).toBe('https://medi-daloa.vercel.app/supprimer-mon-compte');
-    expect(listing.contact.website).toBe('https://medi-daloa.vercel.app');
+    expect(listing.accountDeletionUrl).toBe('https://perokado.vercel.app/supprimer-mon-compte');
+    expect(listing.contact.website).toBe('https://perokado.vercel.app');
   });
 
   it('ne publie aucune donnée inventée pour les contacts', () => {
@@ -73,43 +81,44 @@ describe('fiche Play Store — textes', () => {
 
 describe('manifeste Bubblewrap (Android)', () => {
   it('décrit le bon site, le bon nom et le bon package', () => {
-    expect(twa.packageId).toBe('ci.medishop.app');
-    expect(twa.host).toBe('medi-daloa.vercel.app');
-    expect(twa.name).toBe('MeDi Shop');
-    expect(twa.launcherName).toBe('MeDi Shop');
-    expect(twa.webManifestUrl).toBe('https://medi-daloa.vercel.app/manifest.webmanifest');
+    expect(twa.packageId).toBe('ci.perokado.app');
+    expect(twa.host).toBe('perokado.vercel.app');
+    expect(twa.name).toBe('Perokado');
+    expect(twa.launcherName).toBe('Perokado');
+    expect(twa.webManifestUrl).toBe('https://perokado.vercel.app/manifest.webmanifest');
     expect(twa.startUrl).toBe('/');
   });
 
   it('s’ouvre en plein écran, en portrait, aux couleurs de la boutique', () => {
     expect(twa.display).toBe('standalone');
     expect(twa.orientation).toBe('portrait');
+    // Bleu nuit de la charte Perokado.
     for (const cle of ['themeColor', 'themeColorDark', 'navigationColor', 'backgroundColor']) {
-      expect(twa[cle], cle).toBe('#0B2545');
+      expect(twa[cle], cle).toBe('#0E2340');
     }
   });
 
   it('utilise les icônes réellement publiées sur le site', () => {
-    expect(twa.iconUrl).toBe('https://medi-daloa.vercel.app/brand/medi-icon.png');
-    expect(twa.maskableIconUrl).toBe('https://medi-daloa.vercel.app/brand/medi-icon-maskable-512.png');
-    expect(existsSync('public/brand/medi-icon.png')).toBe(true);
-    expect(existsSync('public/brand/medi-icon-maskable-512.png')).toBe(true);
+    expect(twa.iconUrl).toBe('https://perokado.vercel.app/brand/perokado-icon.png');
+    expect(twa.maskableIconUrl).toBe('https://perokado.vercel.app/brand/perokado-icon-maskable-512.png');
+    expect(existsSync('public/brand/perokado-icon.png')).toBe(true);
+    expect(existsSync('public/brand/perokado-icon-maskable-512.png')).toBe(true);
   });
 
   it('garde trois raccourcis vers des adresses absolues', () => {
     const shortcuts = twa.shortcuts as { name: string; url: string }[];
     expect(shortcuts).toHaveLength(3);
     for (const raccourci of shortcuts) {
-      expect(raccourci.url.startsWith('https://medi-daloa.vercel.app/')).toBe(true);
+      expect(raccourci.url.startsWith('https://perokado.vercel.app/')).toBe(true);
     }
   });
 
-  it('prévoit une version croissante et la clé de signature « medi »', () => {
+  it('prévoit une version croissante et la clé de signature « perokado »', () => {
     expect(Number.isInteger(twa.appVersionCode)).toBe(true);
     expect(twa.appVersionCode as number).toBeGreaterThanOrEqual(1);
     expect(typeof twa.appVersionName).toBe('string');
     const signature = twa.signingKey as { path: string; alias: string };
-    expect(signature.alias).toBe('medi');
+    expect(signature.alias).toBe('perokado');
     // La clé elle-même n'est jamais versionnée : seuls les secrets GitHub la portent.
     expect(existsSync('android.keystore')).toBe(false);
   });
@@ -127,10 +136,10 @@ describe('visuels Play Store', () => {
   });
 
   it('fournit une icône 512 × 512', async () => {
-    const info = await sharp('public/brand/medi-icon.png').metadata();
+    const info = await sharp('public/brand/perokado-icon.png').metadata();
     expect(info.width).toBe(512);
     expect(info.height).toBe(512);
-    expect(statSync('public/brand/medi-icon.png').size).toBeLessThan(1024 * 1024);
+    expect(statSync('public/brand/perokado-icon.png').size).toBeLessThan(1024 * 1024);
   });
 });
 

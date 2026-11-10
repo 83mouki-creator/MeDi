@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import { and, asc, desc, eq, gt, isNotNull, isNull, sql } from 'drizzle-orm';
 import Image from 'next/image';
-import { ArrowRight, BadgeCheck, CalendarClock, MapPin, ShieldCheck, Store, Truck } from 'lucide-react';
+import { ArrowRight, BadgeCheck, CalendarClock, MessageCircle, ShieldCheck, Truck } from 'lucide-react';
 import Link from 'next/link';
 import { db } from '@/db';
 import { brands, categories, products } from '@/db/schema';
@@ -9,15 +9,17 @@ import { ProductCardView } from '@/components/product-card';
 import { listBestSellerProductIds, type ProductCard } from '@/lib/catalog';
 import { categoryIcon } from '@/components/category-icon';
 import { getStoreSettings } from '@/lib/settings';
+import { formatFCFA } from '@/lib/utils';
 import { getSiteI18n } from '@/lib/i18n/site-server';
-import { storeLocation, whatsappWithMessage } from '@/lib/store-location';
-import { PICKUP_HOLD_HOURS, OUTSIDE_DALOA_MAX_DAYS, FINAL_SALE_NOTICE_SHORT } from '@/lib/store-policy';
+import { whatsappWithMessage } from '@/lib/store-location';
+import { OUTSIDE_DALOA_MAX_DAYS, FINAL_SALE_NOTICE_SHORT } from '@/lib/store-policy';
 import { DALOA_NEIGHBOURHOOD_COUNT } from '@/lib/daloa';
+import { STORE_TAGLINE } from '@/lib/brand';
 
 export const metadata: Metadata = {
-  title: 'MeDi Shop — Quincaillerie, outillage et équipement à Daloa',
+  title: 'Perokado — Tout ce que vous cherchez au même endroit',
   description:
-    'Trouvez l’outillage professionnel, les matériaux de construction et l’équipement de la maison chez MeDi Shop à Daloa. Prix en FCFA, stock réel, retrait en boutique, livraison à Daloa et expédition dans toute la Côte d’Ivoire.',
+    'Tout ce que vous cherchez au même endroit : outillage professionnel, matériaux de construction et équipement de la maison, livrés à domicile à Daloa et partout en Côte d’Ivoire. Prix en FCFA, stock réel.',
   alternates: { canonical: '/' },
 };
 
@@ -119,10 +121,9 @@ export default async function HomePage() {
       .catch(() => []),
   ]);
 
-  const location = storeLocation(settings);
   const whatsappHref = whatsappWithMessage(
     settings,
-    'Bonjour MeDi Shop, je souhaite des informations sur un produit.',
+    'Bonjour Perokado, je souhaite des informations sur un produit.',
   );
 
   return (
@@ -131,14 +132,14 @@ export default async function HomePage() {
       <section className="relative isolate overflow-hidden bg-navy-950 text-white">
         <Image
           src="/brand/fond-quincaillerie.jpg"
-          alt={t('Intérieur de la quincaillerie MeDi Shop à Daloa : outils et matériaux rangés en rayon')}
+          alt={t('Intérieur de la quincaillerie Perokado à Daloa : outils et matériaux rangés en rayon')}
           fill
           priority
           sizes="100vw"
           className="absolute inset-0 -z-20 object-cover object-center"
         />
         <div
-          className="absolute inset-0 -z-10 bg-gradient-to-b from-navy-950/90 via-navy-950/80 to-navy-950/95 rtl:bg-gradient-to-t"
+          className="absolute inset-0 -z-10 bg-gradient-to-b from-navy-950/90 via-navy-950/80 to-navy-950/95"
           aria-hidden
         />
         <div className="container-page grid gap-6 py-10 sm:py-14 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
@@ -147,17 +148,17 @@ export default async function HomePage() {
               <BadgeCheck className="size-3.5" aria-hidden /> {t('Daloa · Côte d’Ivoire')}
             </p>
             <h1 className="mt-3 text-3xl font-extrabold leading-tight tracking-tight sm:text-4xl lg:text-5xl">
-              {t('L’outillage et le matériel qu’il vous faut,')} <span className="text-accent-400">{t('au juste prix')}</span>.
+              {t('Tout ce que vous cherchez')} <span className="text-accent-400">{t('au même endroit')}</span>.
             </h1>
             <p className="mt-3 max-w-xl text-sm leading-relaxed text-navy-100 sm:text-base">
-              {t('Outils professionnels, matériaux de construction, quincaillerie et équipement de la maison. Stock réel, prix en FCFA, retrait en boutique à Daloa ou livraison.')}
+              {t('Outillage professionnel, matériaux de construction, quincaillerie et équipement de la maison. Stock réel, prix en FCFA, livraison à domicile à Daloa et partout en Côte d’Ivoire.')}
             </p>
             <div className="mt-5 flex flex-wrap gap-2">
               <Link
                 href="/catalogue"
                 className="inline-flex items-center gap-2 rounded-lg bg-accent-500 px-5 py-3 text-sm font-bold text-navy-950 hover:bg-accent-400"
               >
-                {t('Voir le catalogue')} <ArrowRight className="size-4 rtl:rotate-180" aria-hidden />
+                {t('Voir le catalogue')} <ArrowRight className="size-4" aria-hidden />
               </Link>
               <Link
                 href="/recherche-visuelle"
@@ -176,48 +177,31 @@ export default async function HomePage() {
                 <dd className="text-lg font-bold">{data.categoryCount}</dd>
               </div>
               <div>
-                <dt className="text-navy-200">{t('Retrait')}</dt>
-                <dd className="text-lg font-bold">{settings.allowPickup ? t('Gratuit') : t('Sur demande')}</dd>
+                <dt className="text-navy-200">{t('Livraison')}</dt>
+                <dd className="text-lg font-bold">{settings.freeDeliveryAbove ? t('Offerte dès {amount}', { amount: formatFCFA(settings.freeDeliveryAbove) }) : t('À domicile')}</dd>
               </div>
             </dl>
           </div>
 
           <div className="grid gap-2 sm:grid-cols-2">
             <div className="rounded-xl bg-white/10 p-4 backdrop-blur sm:col-span-2">
-              <p className="text-xs font-semibold uppercase tracking-wide text-accent-300">{t('Adresse exacte de la boutique')}</p>
-              <p className="mt-1 text-sm font-bold text-white" dir="ltr">
-                {location.dms}
+              <p className="text-xs font-semibold uppercase tracking-wide text-accent-300">{t('Notre promesse')}</p>
+              <p className="mt-1 text-sm font-bold text-white">{settings.tagline ?? STORE_TAGLINE}</p>
+              <p className="mt-2 flex items-center gap-1.5 text-xs text-navy-100">
+                <Truck className="size-3.5 shrink-0 text-accent-300" aria-hidden />
+                {t('Livraison à domicile à {city} et partout en Côte d’Ivoire.', { city: settings.city })}
               </p>
-              <p className="mt-1 text-xs text-navy-100">
-                {location.city}, {location.country}
-              </p>
-              <div className="mt-2 flex flex-wrap gap-x-3 gap-y-1 text-xs">
-                <a
-                  href={location.mapsUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-bold text-accent-300 underline decoration-accent-500 underline-offset-2 hover:text-accent-200"
-                >
-                  {t('Ouvrir dans Google Maps')}
-                </a>
-                <a
-                  href={location.directionsUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="font-bold text-accent-300 underline decoration-accent-500 underline-offset-2 hover:text-accent-200"
-                >
-                  {t('Itinéraire')}
-                </a>
-              </div>
             </div>
             <div className="rounded-xl bg-white/10 p-4 backdrop-blur">
-              <Store className="size-5 text-accent-300" aria-hidden />
-              <p className="mt-2 text-sm font-semibold">{t('Retrait boutique')}</p>
-              <p className="mt-1 text-xs text-navy-100">{t('Colis gardé {hours} h maximum.', { hours: PICKUP_HOLD_HOURS })}</p>
+              <CalendarClock className="size-5 text-accent-300" aria-hidden />
+              <p className="mt-2 text-sm font-semibold">{t('À Daloa')}</p>
+              <p className="mt-1 text-xs text-navy-100">
+                {t('Livraison dans votre quartier, {count} quartiers desservis.', { count: DALOA_NEIGHBOURHOOD_COUNT })}
+              </p>
             </div>
             <div className="rounded-xl bg-white/10 p-4 backdrop-blur">
               <Truck className="size-5 text-accent-300" aria-hidden />
-              <p className="mt-2 text-sm font-semibold">{t('Hors Daloa')}</p>
+              <p className="mt-2 text-sm font-semibold">{t('Partout en Côte d’Ivoire')}</p>
               <p className="mt-1 text-xs text-navy-100">
                 {t('{days} jours maximum selon la ville. Transport à convenir sur WhatsApp.', { days: OUTSIDE_DALOA_MAX_DAYS })}
               </p>
@@ -284,7 +268,7 @@ export default async function HomePage() {
 
       {featured.length > 0 ? (
         <Section
-          title={t('Sélection MeDi Shop')}
+          title={t('Sélection Perokado')}
           subtitle={t('Les références mises en avant par la boutique, disponibles immédiatement.')}
           href="/catalogue"
           products={featured}
@@ -330,23 +314,16 @@ export default async function HomePage() {
         <div className="grid gap-4 lg:grid-cols-2">
           <div className="rounded-xl border border-navy-100 bg-white p-5">
             <h2 className="flex items-center gap-2 text-lg font-bold">
-              <Store className="size-5 text-accent-600" aria-hidden /> {t('À Daloa')}
+              <CalendarClock className="size-5 text-accent-600" aria-hidden /> {t('Livraison à Daloa')}
             </h2>
             <p className="mt-2 text-sm text-navy-600">
-              {t('Retrait gratuit en boutique (colis gardé {hours} h maximum) ou livraison dans votre quartier : {count} quartiers de Daloa sont proposés à la commande.', {
-                hours: PICKUP_HOLD_HOURS,
+              {t('Vous choisissez votre quartier à la commande : {count} quartiers de Daloa sont desservis, et les frais s’affichent avant le paiement.', {
                 count: DALOA_NEIGHBOURHOOD_COUNT,
               })}
             </p>
             <div className="mt-3 flex flex-wrap items-center gap-x-4 gap-y-1">
               <Link href="/livraison" className="inline-flex items-center gap-1 text-sm font-semibold text-accent-700 hover:underline">
-                {t('Voir les quartiers et les frais')} <ArrowRight className="size-3.5 rtl:rotate-180" aria-hidden />
-              </Link>
-              <Link
-                href="/nous-trouver"
-                className="inline-flex items-center gap-1 text-sm font-semibold text-accent-700 hover:underline"
-              >
-                {t('Plan et itinéraire')} <ArrowRight className="size-3.5 rtl:rotate-180" aria-hidden />
+                {t('Voir les quartiers et les frais')} <ArrowRight className="size-3.5" aria-hidden />
               </Link>
             </div>
           </div>
@@ -367,14 +344,14 @@ export default async function HomePage() {
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-1 text-sm font-semibold text-emerald-700 hover:underline"
                 >
-                  {t('Demander le prix du transport sur WhatsApp')} <ArrowRight className="size-3.5 rtl:rotate-180" aria-hidden />
+                  {t('Demander le prix du transport sur WhatsApp')} <ArrowRight className="size-3.5" aria-hidden />
                 </a>
               ) : null}
               <Link
                 href="/livraison#faq-livraison"
                 className="inline-flex items-center gap-1 text-sm font-semibold text-accent-700 hover:underline"
               >
-                {t('FAQ livraisons')} <ArrowRight className="size-3.5 rtl:rotate-180" aria-hidden />
+                {t('FAQ livraisons')} <ArrowRight className="size-3.5" aria-hidden />
               </Link>
             </div>
           </div>
@@ -416,20 +393,24 @@ export default async function HomePage() {
           </Link>
         </div>
 
-        <div className="mt-4 rounded-xl border border-navy-100 bg-white p-4">
+        <div className="mt-4 flex flex-col gap-2 rounded-xl border border-navy-100 bg-white p-4 sm:flex-row sm:items-center sm:justify-between">
           <p className="flex items-start gap-2 text-sm text-navy-800">
-            <MapPin className="mt-0.5 size-4 shrink-0 text-accent-600" aria-hidden />
+            <MessageCircle className="mt-0.5 size-4 shrink-0 text-emerald-600" aria-hidden />
             <span>
-              <strong>{t('Boutique MeDi Shop')}</strong> — {location.city},{' '}
-              <span className="ltr-inline font-mono" dir="ltr">
-                {location.dms}
-              </span>
-              .{' '}
-              <a href={location.mapsUrl} target="_blank" rel="noopener noreferrer" className="font-bold text-accent-700 underline">
-                {t('Voir sur Google Maps')}
-              </a>
+              <strong>{t('Une question avant de commander ?')}</strong>{' '}
+              {t('Écrivez-nous sur WhatsApp : nous répondons pendant les heures d’ouverture.')}
             </span>
           </p>
+          {whatsappHref ? (
+            <a
+              href={whatsappHref}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex shrink-0 items-center justify-center gap-2 rounded-lg bg-emerald-600 px-4 py-2.5 text-sm font-bold text-white hover:bg-emerald-700"
+            >
+              <MessageCircle className="size-4" aria-hidden /> {t('Écrire sur WhatsApp')}
+            </a>
+          ) : null}
         </div>
       </section>
     </>

@@ -51,3 +51,4 @@ android/*.aab
 android/*.apk
 *.keystore
 *.jks
+__pycache__/

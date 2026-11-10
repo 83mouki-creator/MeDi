@@ -5,12 +5,14 @@
  *   npm run config:store -- --force # réapplique toutes les valeurs ci-dessous
  *
  * Ces valeurs ont été COMMUNIQUÉES PAR LE PROPRIÉTAIRE de la boutique :
+ *   • enseigne      : Perokado
+ *   • slogan        : « Tout ce que vous cherchez au même endroit.. »
  *   • horaires      : lundi – samedi 7h30 – 18h00, dimanche fermé
- *   • WhatsApp      : +225 07 08 90 48 91
- *   • numéro Wave   : le numéro WhatsApp ci-dessus (solution provisoire)
- *   • adresse exacte : 6°53'04.4"N 6°26'50.9"W (relevé Google Maps)
- *   • retrait       : 48 h maximum après confirmation
+ *   • WhatsApp      : +225 05 44 01 41 82 (aussi compte marchand Wave / PSP)
  *   • hors Daloa    : 7 jours maximum selon la ville, transport convenu sur WhatsApp
+ *
+ * Le retrait en magasin et la géolocalisation ont été RETIRÉS du parcours : la
+ * boutique livre à domicile, et ne publie plus d'adresse ni de carte.
  *
  * Le barème de livraison a été ARRÊTÉ PAR LE PRESTATAIRE à la demande du
  * propriétaire ; il est entièrement modifiable dans /admin/livraison. Aucun
@@ -24,12 +26,12 @@ import { eq } from 'drizzle-orm';
 import { db, pool } from '../src/db';
 import { deliveryZones, storeSettings } from '../src/db/schema';
 import { neighbourhoodsForBand } from '../src/lib/daloa';
-import { STORE_COORDINATES, STORE_GPS_DMS } from '../src/lib/store-location';
+import { STORE_NAME, STORE_TAGLINE, STORE_WHATSAPP, STORE_WHATSAPP_DIGITS } from '../src/lib/brand';
 
 const FORCE = process.argv.includes('--force');
 
-const PHONE_DISPLAY = '+225 07 08 90 48 91';
-const WHATSAPP = '+2250708904891'; // format international, sans espaces (liens wa.me)
+const PHONE_DISPLAY = STORE_WHATSAPP;
+const WHATSAPP = `+${STORE_WHATSAPP_DIGITS}`; // format international, sans espaces (liens wa.me)
 
 type ZoneSeed = {
   id: string;
@@ -46,21 +48,11 @@ type ZoneSeed = {
 
 /**
  * Barème de livraison.
- * Daloa : retrait gratuit, livraison à domicile 1 000 FCFA, périphérie 2 000 FCFA.
+ * Daloa : livraison à domicile 1 000 FCFA (centre), 2 000 FCFA (périphérie).
  * Hors Daloa : le site n'ajoute AUCUN frais de transport — le prix se convient sur
  * WhatsApp, et les articles se règlent avant l'expédition (7 jours maximum).
  */
 const ZONES: ZoneSeed[] = [
-  {
-    id: 'zone_medi_pickup',
-    name: 'Retrait en boutique — Daloa',
-    city: 'Daloa',
-    isLocal: true,
-    isPickup: true,
-    fee: 0,
-    delay: 'Retrait sous 48 h maximum, pendant les heures d’ouverture',
-    order: 0,
-  },
   {
     id: 'zone_medi_daloa_centre',
     name: 'Daloa — livraison à domicile (centre)',
@@ -143,22 +135,21 @@ async function main() {
     whatsapp: WHATSAPP,
     openingHours: 'Lundi – samedi : 7h30 – 18h00 · Dimanche : fermé',
     waveNumber: PHONE_DISPLAY,
-    waveMerchantName: existing?.waveMerchantName ?? 'MeDi Shop',
-    // Adresse exacte communiquée par le propriétaire (relevé Google Maps).
-    addressLine: `${STORE_GPS_DMS} — Daloa`,
-    latitude: String(STORE_COORDINATES.latitude),
-    longitude: String(STORE_COORDINATES.longitude),
+    waveMerchantName: existing?.waveMerchantName ?? STORE_NAME,
+    pspMerchantNumber: PHONE_DISPLAY,
+    pspMerchantLabel: `${STORE_NAME} — compte marchand`,
+    tagline: STORE_TAGLINE,
   };
 
   if (!existing) {
     await db.insert(storeSettings).values({
       id: 1,
-      storeName: 'MeDi Shop',
+      storeName: STORE_NAME,
       city: 'Daloa',
       country: "Côte d'Ivoire",
       waveMode: 'MANUAL',
       allowCod: false,
-      allowPickup: true,
+      allowPickup: false,
       allowLocalDelivery: true,
       lowStockThreshold: 5,
       reservationMinutes: 120,
@@ -232,6 +223,7 @@ async function main() {
   // car des commandes passées peuvent y faire référence. Liste explicite pour ne
   // jamais toucher aux zones créées plus tard par le propriétaire.
   const LEGACY_ZONE_IDS = [
+    'zone_medi_pickup',
     'zone_pickup_daloa',
     'zone_daloa_domicile',
     'zone_daloa_centre',
@@ -252,7 +244,7 @@ async function main() {
 
   console.log(`   zones de livraison : ${created} créée(s), ${updated} mise(s) à jour, ${ZONES.length} au total`);
   if (deactivated > 0) console.log(`   anciennes zones de démonstration désactivées : ${deactivated}`);
-  console.log(`   adresse exacte de la boutique : ${STORE_GPS_DMS} (${STORE_COORDINATES.latitude}, ${STORE_COORDINATES.longitude})`);
+  console.log(`   enseigne : ${STORE_NAME} — ${STORE_TAGLINE}`);
   await pool.end();
 }
 

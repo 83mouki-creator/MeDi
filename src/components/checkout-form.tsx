@@ -2,16 +2,7 @@
 
 import { useActionState, useMemo, useState } from 'react';
 import Link from 'next/link';
-import {
-  CalendarClock,
-  Loader2,
-  MapPin,
-  MessageCircle,
-  Navigation,
-  Store,
-  Truck,
-  Wallet,
-} from 'lucide-react';
+import { CalendarClock, Loader2, MapPin, MessageCircle, Truck, Wallet } from 'lucide-react';
 import { placeOrderAction, type CheckoutState } from '@/app/actions/checkout';
 import { Button } from './ui/button';
 import { Alert } from './ui/primitives';
@@ -20,7 +11,7 @@ import { cn, formatFCFA } from '@/lib/utils';
 import { useSiteI18n } from './site-i18n';
 import { PurchaseNotice } from './purchase-notice';
 import { DALOA_NEIGHBOURHOODS, pickLocalZone } from '@/lib/daloa';
-import { PICKUP_HOLD_HOURS, OUTSIDE_DALOA_MAX_DAYS } from '@/lib/store-policy';
+import { OUTSIDE_DALOA_MAX_DAYS } from '@/lib/store-policy';
 import { transportQuoteMessage, whatsappWithMessage } from '@/lib/store-location';
 
 export type ZoneOption = {
@@ -42,15 +33,12 @@ type Props = {
   zones: ZoneOption[];
   user: { firstName: string | null; lastName: string | null; phone: string | null; email: string } | null;
   store: {
+    name: string;
     city: string;
-    addressLine: string;
-    gps: string;
-    mapsUrl: string;
-    directionsUrl: string;
     openingHours: string | null;
     whatsapp: string | null;
   };
-  settings: { allowCod: boolean; codMaxAmount: number; allowPickup: boolean; allowLocalDelivery: boolean; city: string };
+  settings: { allowCod: boolean; codMaxAmount: number; allowLocalDelivery: boolean; city: string };
 };
 
 const initialState: CheckoutState = {};
@@ -60,12 +48,12 @@ const NEIGHBOURHOODS_SORTED = [...DALOA_NEIGHBOURHOODS].sort((a, b) => a.name.lo
 export function CheckoutForm({ items, lines, subtotal, zones, user, store, settings }: Props) {
   const { t } = useSiteI18n();
   const [state, formAction, pending] = useActionState(placeOrderAction, initialState);
-  const [deliveryMethod, setDeliveryMethod] = useState<'PICKUP' | 'LOCAL_DELIVERY' | 'CARRIER'>(
-    settings.allowPickup ? 'PICKUP' : 'LOCAL_DELIVERY',
-  );
+  // La boutique ne propose plus le retrait : la livraison locale est le mode par
+  // défaut, et la livraison hors ville reste le second choix.
+  const [deliveryMethod, setDeliveryMethod] = useState<'LOCAL_DELIVERY' | 'CARRIER'>('LOCAL_DELIVERY');
   const [zoneId, setZoneId] = useState<string>('');
   const [neighbourhood, setNeighbourhood] = useState<string>('');
-  const [paymentMethod, setPaymentMethod] = useState<'WAVE' | 'CASH_ON_DELIVERY' | 'CASH_IN_STORE'>('WAVE');
+  const [paymentMethod, setPaymentMethod] = useState<'WAVE' | 'CASH_ON_DELIVERY'>('WAVE');
 
   const localZones = useMemo(
     () =>
@@ -91,7 +79,6 @@ export function CheckoutForm({ items, lines, subtotal, zones, user, store, setti
   const carrierZone = carrierZones.find((zone) => zone.id === zoneId) ?? null;
 
   const shippingFee = useMemo(() => {
-    if (deliveryMethod === 'PICKUP') return 0;
     if (deliveryMethod === 'CARRIER') return null; // à convenir sur WhatsApp
     if (!localZone) return null;
     if (localZone.fee === 0) return 0;
@@ -102,7 +89,7 @@ export function CheckoutForm({ items, lines, subtotal, zones, user, store, setti
   const isLocal = deliveryMethod !== 'CARRIER';
 
   const paymentOptions = useMemo(() => {
-    const options: { value: 'WAVE' | 'CASH_ON_DELIVERY' | 'CASH_IN_STORE'; label: string; description: string; icon: typeof Wallet }[] = [
+    const options: { value: 'WAVE' | 'CASH_ON_DELIVERY'; label: string; description: string; icon: typeof Wallet }[] = [
       {
         value: 'WAVE',
         label: t('Wave'),
@@ -110,15 +97,7 @@ export function CheckoutForm({ items, lines, subtotal, zones, user, store, setti
         icon: Wallet,
       },
     ];
-    if (isLocal && deliveryMethod === 'PICKUP') {
-      options.push({
-        value: 'CASH_IN_STORE',
-        label: t('Paiement en boutique'),
-        description: t('Vous payez au retrait, à la boutique de {city}.', { city: store.city }),
-        icon: Store,
-      });
-    }
-    if (isLocal && deliveryMethod !== 'PICKUP' && settings.allowCod && settings.codMaxAmount > 0 && total <= settings.codMaxAmount) {
+    if (isLocal && settings.allowCod && settings.codMaxAmount > 0 && total <= settings.codMaxAmount) {
       options.push({
         value: 'CASH_ON_DELIVERY',
         label: t('Paiement à la livraison'),
@@ -127,7 +106,7 @@ export function CheckoutForm({ items, lines, subtotal, zones, user, store, setti
       });
     }
     return options;
-  }, [isLocal, deliveryMethod, settings.allowCod, settings.codMaxAmount, total, t, store.city]);
+  }, [isLocal, settings.allowCod, settings.codMaxAmount, total, t]);
 
   const effectivePayment = paymentOptions.some((o) => o.value === paymentMethod) ? paymentMethod : 'WAVE';
   const err = (key: string) => state.fieldErrors?.[key];
@@ -207,19 +186,7 @@ export function CheckoutForm({ items, lines, subtotal, zones, user, store, setti
             {t('Livraison')}
           </h2>
 
-          <div className="grid gap-2 sm:grid-cols-3">
-            {settings.allowPickup ? (
-              <MethodButton
-                active={deliveryMethod === 'PICKUP'}
-                onClick={() => {
-                  setDeliveryMethod('PICKUP');
-                  setZoneId('');
-                }}
-                icon={<Store className="size-4" aria-hidden />}
-                title={t('Retrait boutique')}
-                subtitle={t('Gratuit · sous {hours} h', { hours: PICKUP_HOLD_HOURS })}
-              />
-            ) : null}
+          <div className="grid gap-2 sm:grid-cols-2">
             {settings.allowLocalDelivery ? (
               <MethodButton
                 active={deliveryMethod === 'LOCAL_DELIVERY'}
@@ -228,7 +195,7 @@ export function CheckoutForm({ items, lines, subtotal, zones, user, store, setti
                   setZoneId('');
                 }}
                 icon={<Truck className="size-4" aria-hidden />}
-                title={t('Livraison à Daloa')}
+                title={t('Livraison dans la ville')}
                 subtitle={t('Vous choisissez votre quartier')}
               />
             ) : null}
@@ -243,36 +210,6 @@ export function CheckoutForm({ items, lines, subtotal, zones, user, store, setti
               subtitle={t('7 jours max · transport sur WhatsApp')}
             />
           </div>
-
-          {/* Retrait en boutique */}
-          {deliveryMethod === 'PICKUP' ? (
-            <div className="mt-4 space-y-3">
-              <ScheduleCard
-                icon={<Store className="size-4" aria-hidden />}
-                title={t('Retrait en boutique')}
-                detail={
-                  store.openingHours
-                    ? t('Aux heures d’ouverture : {hours}', { hours: store.openingHours })
-                    : t('Aux heures d’ouverture de la boutique (à confirmer par téléphone)')
-                }
-                badge={t('Gardé {hours} h maximum', { hours: PICKUP_HOLD_HOURS })}
-              />
-              <div className="rounded-lg bg-navy-50 p-3 text-sm text-navy-700">
-                <p className="font-medium">{t('Boutique MeDi Shop — {city}', { city: store.city })}</p>
-                <p className="mt-1 flex flex-wrap items-center gap-x-2 gap-y-1 text-xs text-navy-600">
-                  <span className="inline-flex items-center gap-1 font-semibold text-navy-800">
-                    <Navigation className="size-3.5 text-accent-600" aria-hidden /> {store.gps}
-                  </span>
-                  <a href={store.mapsUrl} target="_blank" rel="noopener noreferrer" className="font-semibold text-accent-700 underline">
-                    {t('Voir sur Google Maps')}
-                  </a>
-                  <a href={store.directionsUrl} target="_blank" rel="noopener noreferrer" className="font-semibold text-accent-700 underline">
-                    {t('Itinéraire')}
-                  </a>
-                </p>
-              </div>
-            </div>
-          ) : null}
 
           {/* Livraison à Daloa : le quartier remplace l'adresse */}
           {deliveryMethod === 'LOCAL_DELIVERY' ? (

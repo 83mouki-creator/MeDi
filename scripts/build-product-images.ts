@@ -1,11 +1,11 @@
 /**
- * Fabrication des photos catalogue MeDi Shop à partir des clichés du fournisseur.
+ * Fabrication des photos catalogue Perokado à partir des clichés du fournisseur.
  *
  * Chaque photo source (SODIS-MAD CI / EMTROP / Midea) comporte :
  *   – une bande d'en-tête (logo du distributeur) en haut ;
  *   – un bloc de texte imprimé (référence, désignation, marque) en bas.
  * On retire les deux, puis on compose une vignette carrée 1000 × 1000 avec un
- * bandeau bas aux couleurs MeDi Shop portant le nom de la boutique et la référence.
+ * bandeau bas aux couleurs Perokado portant le nom de la boutique et la référence.
  *
  *   npx tsx scripts/build-product-images.ts            # toutes les fiches
  *   npx tsx scripts/build-product-images.ts --only=EGWP10022
@@ -115,7 +115,7 @@ function bannerSvg(params: { sku: string; label: string }) {
   <rect width="${CANVAS}" height="${BANNER_H}" fill="url(#g)"/>
   <rect width="${CANVAS}" height="6" fill="${ORANGE}"/>
   <text x="52" y="80" font-family="DejaVu Sans, Liberation Sans, Helvetica, Arial, sans-serif"
-        font-size="56" font-weight="bold" fill="#ffffff" letter-spacing="1">MeDi Shop</text>
+        font-size="56" font-weight="bold" fill="#ffffff" letter-spacing="1">Perokado</text>
   <circle cx="206" cy="60" r="7" fill="${ORANGE}"/>
   <text x="${CANVAS - 52}" y="78" text-anchor="end" font-family="DejaVu Sans, Liberation Sans, Helvetica, Arial, sans-serif"
         font-size="${skuSize}" font-weight="bold" fill="${ORANGE}" letter-spacing="1">${sku}</text>

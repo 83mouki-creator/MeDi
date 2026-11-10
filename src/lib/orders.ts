@@ -18,7 +18,6 @@ import { newId, parsePage, sanitizeSearch, toFcfa } from './utils';
 import { computeAvailability, computePricing } from './pricing';
 import {
   findLocalZoneForNeighbourhood,
-  findPickupZone,
   listZones,
   quoteDelivery,
   type DeliveryMethod,
@@ -102,6 +101,8 @@ export async function createOrder(params: {
       slug: products.slug,
       name: products.name,
       price: products.price,
+      // Prix d'achat : figé sur la ligne de commande pour un bénéfice exact.
+      purchasePrice: products.purchasePrice,
       promoPrice: products.promoPrice,
       promoStartsAt: products.promoStartsAt,
       promoEndsAt: products.promoEndsAt,
@@ -127,6 +128,8 @@ export async function createOrder(params: {
     sku: string;
     name: string;
     unitPrice: number;
+    /** Prix d'achat au moment de la commande (`null` = inconnu). */
+    purchasePrice: number | null;
     quantity: number;
     available: number;
     allowPreorder: boolean;
@@ -158,6 +161,7 @@ export async function createOrder(params: {
       sku: product.sku,
       name: product.name,
       unitPrice: pricing.price,
+      purchasePrice: product.purchasePrice === null ? null : Number(product.purchasePrice),
       quantity: item.quantity,
       available: availability.available,
       allowPreorder: product.allowPreorder,
@@ -172,10 +176,9 @@ export async function createOrder(params: {
   // La zone n'est plus choisie « à la main » pour Daloa : elle découle du
   // quartier indiqué par le client, donc du tarif configuré par la boutique.
   // Hors Daloa, la ville choisie dans la liste détermine la zone.
+  // La boutique livre uniquement : il n'y a plus de retrait en magasin.
   let resolvedZoneId: string | null = input.zoneId || null;
-  if (input.deliveryMethod === 'PICKUP') {
-    resolvedZoneId = (await findPickupZone())?.id ?? null;
-  } else if (input.deliveryMethod === 'LOCAL_DELIVERY') {
+  if (input.deliveryMethod === 'LOCAL_DELIVERY') {
     if (input.neighbourhood) {
       const localZone = await findLocalZoneForNeighbourhood(input.neighbourhood);
       if (!localZone) {
@@ -206,7 +209,7 @@ export async function createOrder(params: {
   });
 
   if (quote.errors.length > 0) {
-    throw new OrderError(quote.errors[0]!, input.deliveryMethod === 'PICKUP' ? 'DELIVERY_METHOD' : 'ZONE', {
+    throw new OrderError(quote.errors[0]!, 'ZONE', {
       errors: quote.errors,
     });
   }
@@ -301,6 +304,7 @@ export async function createOrder(params: {
         nameSnapshot: line.name,
         imageSnapshot: null,
         unitPrice: String(line.unitPrice),
+        purchasePriceSnapshot: line.purchasePrice === null ? null : String(line.purchasePrice),
         quantity: line.quantity,
         lineTotal: String(line.unitPrice * line.quantity),
       });

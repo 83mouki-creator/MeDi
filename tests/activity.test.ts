@@ -110,27 +110,29 @@ describe('progression d’une commande', () => {
   });
 });
 
-describe('traductions du journal', () => {
-  it('chaque phrase du journal existe en arabe', () => {
-    // Les clés de catégorie (`key: 'commandes'`) ne sont pas des phrases, et
-    // `{mouvement}{motif}` ne contient que des variables : rien à traduire.
-    const variableOnly = new Set(['{mouvement}{motif}']);
-    const missing = templateKeys()
-      .filter((key) => !/^[a-z]+$/.test(key))
-      .filter((key) => !variableOnly.has(key))
-      .filter((key) => translate('ar', key) === key);
-    expect(missing, `Phrases sans traduction : ${missing.join(' | ')}`).toEqual([]);
-  });
-
-  it('les catégories du filtre sont traduites aussi', () => {
-    for (const category of ACTIVITY_CATEGORIES) {
-      expect(translate('ar', category.label), category.label).not.toBe(category.label);
+describe('journal en français', () => {
+  it('les phrases du journal sont écrites en français, sans trou', () => {
+    // Les clés de catégorie (`key: 'commandes'`) ne sont pas des phrases.
+    const phrases = templateKeys().filter((key) => !/^[a-z]+$/.test(key));
+    expect(phrases.length).toBeGreaterThan(20);
+    for (const phrase of phrases) {
+      // `translate('fr', …)` rend le texte source : il doit rester une phrase.
+      expect(translate('fr', phrase).length, phrase).toBeGreaterThan(5);
+      expect(phrase, phrase).not.toMatch(/[\u0600-\u06FF]/);
     }
   });
 
-  it('les valeurs de statut insérées dans les phrases sont traduites', () => {
+  it('les catégories du filtre sont écrites en français', () => {
+    for (const category of ACTIVITY_CATEGORIES) {
+      expect(category.label, category.label).not.toMatch(/[\u0600-\u06FF]/);
+      expect(category.label.length, category.label).toBeGreaterThan(2);
+    }
+  });
+
+  it('les valeurs de statut insérées dans les phrases sont en français', () => {
     for (const label of ['Paiement confirmé', 'En préparation', 'Livrée', 'Annulée', 'nouveau message', 'message traité', 'autorisé', 'désactivé']) {
-      expect(translate('ar', label), label).not.toBe(label);
+      expect(translate('fr', label), label).toBe(label);
+      expect(label, label).not.toMatch(/[\u0600-\u06FF]/);
     }
   });
 });

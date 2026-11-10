@@ -1,5 +1,5 @@
 /**
- * Création d'un compte administrateur MeDi Shop.
+ * Création d'un compte administrateur Perokado.
  *
  * Aucun compte administrateur n'est créé par les migrations, et aucun mot de passe
  * par défaut n'existe. Le mot de passe est saisi en interactif (ou fourni par
@@ -8,8 +8,8 @@
  *   npm run admin:create
  *   npm run admin:create -- --email=owner@exemple.ci --role=OWNER --name="Direction"
  *
- * Variables acceptées : MEDI_ADMIN_EMAIL, MEDI_ADMIN_PASSWORD, MEDI_ADMIN_ROLE,
- * MEDI_ADMIN_NAME (sinon questions interactives).
+ * Variables acceptées : PEROKADO_ADMIN_EMAIL, PEROKADO_ADMIN_PASSWORD, PEROKADO_ADMIN_ROLE,
+ * PEROKADO_ADMIN_NAME (sinon questions interactives).
  */
 import { createInterface } from 'node:readline/promises';
 import { randomBytes, scryptSync } from 'node:crypto';
@@ -51,25 +51,25 @@ function passwordProblems(password: string): string[] {
 }
 
 async function main() {
-  const interactive = stdin.isTTY && !process.env.MEDI_ADMIN_PASSWORD && !arg('password');
+  const interactive = stdin.isTTY && !process.env.PEROKADO_ADMIN_PASSWORD && !arg('password');
   const rl = interactive ? createInterface({ input: stdin, output: stdout }) : null;
 
   try {
-    const email = (arg('email') ?? process.env.MEDI_ADMIN_EMAIL ?? (await rl?.question('Adresse e-mail : ')) ?? '')
+    const email = (arg('email') ?? process.env.PEROKADO_ADMIN_EMAIL ?? (await rl?.question('Adresse e-mail : ')) ?? '')
       .trim()
       .toLowerCase();
     if (!/^[^@\s]+@[^@\s]+\.[a-z]{2,}$/i.test(email)) {
       throw new Error('Adresse e-mail invalide.');
     }
 
-    const roleInput = (arg('role') ?? process.env.MEDI_ADMIN_ROLE ?? (await rl?.question(`Rôle (${ROLES.join('/')}) [OWNER] : `)) ?? 'OWNER')
+    const roleInput = (arg('role') ?? process.env.PEROKADO_ADMIN_ROLE ?? (await rl?.question(`Rôle (${ROLES.join('/')}) [OWNER] : `)) ?? 'OWNER')
       .trim()
       .toUpperCase();
     const role = (ROLES.includes(roleInput as Role) ? roleInput : 'OWNER') as Role;
 
-    const name = (arg('name') ?? process.env.MEDI_ADMIN_NAME ?? (await rl?.question('Nom affiché (optionnel) : ')) ?? '').trim();
+    const name = (arg('name') ?? process.env.PEROKADO_ADMIN_NAME ?? (await rl?.question('Nom affiché (optionnel) : ')) ?? '').trim();
 
-    let password = arg('password') ?? process.env.MEDI_ADMIN_PASSWORD ?? '';
+    let password = arg('password') ?? process.env.PEROKADO_ADMIN_PASSWORD ?? '';
     if (!password && rl) {
       password = await rl.question('Mot de passe (12+ caractères, non affiché) : ');
       const confirm = await rl.question('Confirmer le mot de passe : ');

@@ -7,8 +7,8 @@ import { db } from '@/db';
 import { deliveryZones, storeSettings } from '@/db/schema';
 import { requirePermission } from '@/lib/auth';
 import { audit } from '@/lib/audit';
-import { parseCoordinates } from '@/lib/geo';
 import { newId } from '@/lib/utils';
+import { STORE_NAME, STORE_TAGLINE } from '@/lib/brand';
 
 export type SettingsState = { error?: string; success?: string };
 
@@ -17,7 +17,13 @@ function optional(value: FormDataEntryValue | null) {
   return text.length > 0 ? text : null;
 }
 
-/** Réglages de la boutique : coordonnées, horaires, Wave, paiement à la livraison. */
+/**
+ * Réglages de la boutique : identité, coordonnées, horaires, encaissement.
+ *
+ * La géolocalisation et le retrait en magasin ont été retirés du parcours : les
+ * champs correspondants ne sont plus enregistrés, et les colonnes historiques
+ * sont remises à NULL pour ne laisser aucune donnée trompeuse en base.
+ */
 export async function saveSettingsAction(_prev: SettingsState, formData: FormData): Promise<SettingsState> {
   let actor;
   try {
@@ -30,29 +36,24 @@ export async function saveSettingsAction(_prev: SettingsState, formData: FormDat
   const whatsapp = optional(formData.get('whatsapp'));
   const email = optional(formData.get('email'));
   const waveNumber = optional(formData.get('waveNumber'));
+  const pspMerchantNumber = optional(formData.get('pspMerchantNumber'));
   const codMax = Number(formData.get('codMaxAmount') ?? 0);
   const lowStock = Number(formData.get('lowStockThreshold') ?? 5);
   const reservation = Number(formData.get('reservationMinutes') ?? 120);
 
   if (phone && !/^\+?[\d\s().-]{8,20}$/.test(phone)) return { error: 'Numéro de téléphone invalide.' };
   if (whatsapp && !/^\+?[\d\s().-]{8,20}$/.test(whatsapp)) return { error: 'Numéro WhatsApp invalide.' };
+  if (pspMerchantNumber && !/^\+?[\d\s().-]{8,20}$/.test(pspMerchantNumber)) {
+    return { error: 'Numéro de compte marchand invalide.' };
+  }
   if (email && !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) return { error: 'Adresse e-mail invalide.' };
   if (!Number.isFinite(codMax) || codMax < 0) return { error: 'Plafond de paiement à la livraison invalide.' };
   if (!Number.isFinite(lowStock) || lowStock < 0) return { error: 'Seuil de stock faible invalide.' };
   if (!Number.isFinite(reservation) || reservation < 15) return { error: 'Durée de réservation minimale : 15 minutes.' };
 
-  // Géolocalisation : soit les deux coordonnées sont fournies et valides, soit
-  // les deux restent vides. Une seule valeur est refusée (jamais de position
-  // approximative publiée sur le site).
-  const coordinates = parseCoordinates({ latitude: optional(formData.get('latitude')), longitude: optional(formData.get('longitude')) });
-  if (coordinates.status === 'incomplete') {
-    return { error: 'Géolocalisation incomplète : renseignez la latitude ET la longitude, ou laissez les deux champs vides.' };
-  }
-  if (coordinates.status === 'invalid') return { error: `Géolocalisation invalide : ${coordinates.message}` };
-
   const values = {
-    storeName: String(formData.get('storeName') ?? 'MeDi Shop').trim() || 'MeDi Shop',
-    tagline: optional(formData.get('tagline')),
+    storeName: String(formData.get('storeName') ?? STORE_NAME).trim() || STORE_NAME,
+    tagline: optional(formData.get('tagline')) ?? STORE_TAGLINE,
     phone,
     whatsapp,
     email,
@@ -61,9 +62,12 @@ export async function saveSettingsAction(_prev: SettingsState, formData: FormDat
     openingHours: optional(formData.get('openingHours')),
     waveNumber,
     waveMerchantName: optional(formData.get('waveMerchantName')),
+    pspMerchantNumber,
+    pspMerchantLabel: optional(formData.get('pspMerchantLabel')),
     allowCod: formData.get('allowCod') === 'on',
     codMaxAmount: String(Math.max(0, Math.round(codMax))),
-    allowPickup: formData.get('allowPickup') === 'on',
+    // Le retrait en magasin n'existe plus : le réglage reste désactivé.
+    allowPickup: false,
     allowLocalDelivery: formData.get('allowLocalDelivery') === 'on',
     lowStockThreshold: Math.round(lowStock),
     reservationMinutes: Math.round(reservation),
@@ -72,8 +76,9 @@ export async function saveSettingsAction(_prev: SettingsState, formData: FormDat
     instagramUrl: optional(formData.get('instagramUrl')),
     legalNotice: optional(formData.get('legalNotice')),
     returnPolicy: optional(formData.get('returnPolicy')),
-    latitude: coordinates.status === 'ok' ? coordinates.point.latitude.toFixed(6) : null,
-    longitude: coordinates.status === 'ok' ? coordinates.point.longitude.toFixed(6) : null,
+    // Colonnes historiques : effacées, la boutique ne publie plus de position.
+    latitude: null,
+    longitude: null,
     updatedAt: new Date(),
   };
 
@@ -82,14 +87,13 @@ export async function saveSettingsAction(_prev: SettingsState, formData: FormDat
     action: 'settings.updated',
     entity: 'store_settings',
     entityId: '1',
-    metadata: { allowCod: values.allowCod, geoConfigured: values.latitude !== null },
+    metadata: { allowCod: values.allowCod, pspConfigured: Boolean(values.pspMerchantNumber) },
   });
 
   revalidatePath('/');
   revalidatePath('/admin/parametres');
   revalidatePath('/livraison');
   revalidatePath('/contact');
-  revalidatePath('/nous-trouver');
   return { success: 'Réglages enregistrés.' };
 }
 
@@ -110,7 +114,9 @@ export async function saveZoneAction(formData: FormData) {
     name,
     city,
     isLocal: formData.get('isLocal') === 'on',
-    isPickup: formData.get('isPickup') === 'on',
+    // Le retrait en magasin n'existe plus dans le parcours : une zone ne peut
+    // donc plus être marquée « retrait », même par un ancien formulaire.
+    isPickup: false,
     fee: String(Math.round(fee)),
     freeAbove: freeAbove === null ? null : String(Math.round(freeAbove)),
     estimatedDelay: optional(formData.get('estimatedDelay')),

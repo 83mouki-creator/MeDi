@@ -89,7 +89,6 @@ export async function getReadinessReport(): Promise<{ report: ReadinessReport; s
   }
 
   let localZonesWithTariff = 0;
-  let pickupZones = 0;
   let nationalZones = 0;
 
   if (database) {
@@ -100,7 +99,6 @@ export async function getReadinessReport(): Promise<{ report: ReadinessReport; s
         .where(eq(deliveryZones.isActive, true));
 
       localZonesWithTariff = zones.filter((z) => z.isLocal && !z.isPickup && Number(z.fee) >= 0).length;
-      pickupZones = zones.filter((z) => z.isPickup).length;
       nationalZones = zones.filter((z) => !z.isLocal && !z.isPickup).length;
     } catch (error) {
       console.error('[readiness] zones de livraison illisibles', error);
@@ -114,12 +112,12 @@ export async function getReadinessReport(): Promise<{ report: ReadinessReport; s
       whatsapp: settings?.whatsapp ?? env.wave.merchantNumber ?? null,
       email: settings?.email ?? null,
       addressLine: settings?.addressLine ?? null,
-      hasCoordinates: Boolean(settings?.latitude && settings?.longitude),
+
       openingHours: settings?.openingHours ?? null,
       waveNumber: settings?.waveNumber ?? env.wave.merchantNumber ?? null,
       waveMerchantName: settings?.waveMerchantName ?? null,
       legalNotice: settings?.legalNotice ?? null,
-      allowPickup: settings?.allowPickup ?? true,
+
       allowLocalDelivery: settings?.allowLocalDelivery ?? true,
       allowCod: settings?.allowCod ?? false,
       tagline: settings?.tagline ?? null,
@@ -132,7 +130,7 @@ export async function getReadinessReport(): Promise<{ report: ReadinessReport; s
       categories: categoryCount,
       activePromotions,
     },
-    delivery: { localZonesWithTariff, pickupZones, nationalZones },
+    delivery: { localZonesWithTariff, nationalZones },
     staff: { managerAccounts, activeStaff },
     infrastructure: {
       database,
