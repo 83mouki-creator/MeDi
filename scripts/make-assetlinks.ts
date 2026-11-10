@@ -12,12 +12,12 @@
  *      lui, la barre d'adresse réapparaît en production.
  *
  * Le nom de paquet peut être changé avec `ANDROID_PACKAGE_NAME` (par défaut
- * `ci.medishop.app`, celui donné à `bubblewrap init`).
+ * `ci.perokado.app`, celui donné à `bubblewrap init`).
  */
 import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
-const PACKAGE_NAME = process.env.ANDROID_PACKAGE_NAME?.trim() || 'ci.medishop.app';
+const PACKAGE_NAME = process.env.ANDROID_PACKAGE_NAME?.trim() || 'ci.perokado.app';
 const OUTPUT = path.join(process.cwd(), 'public', '.well-known', 'assetlinks.json');
 
 /** Nettoie une empreinte : majuscules, deux-points tous les deux caractères. */
@@ -81,9 +81,9 @@ async function main() {
   for (const fingerprint of fingerprints) console.log(`  empreinte   : ${fingerprint}`);
   console.log('');
   console.log('Vérification après déploiement :');
-  console.log('  npx @bubblewrap/cli validate --url https://medi-daloa.vercel.app');
+  console.log('  npx @bubblewrap/cli validate --url https://perokado.vercel.app');
   console.log(
-    '  https://digitalassetlinks.googleapis.com/v1/statements:list?source.web.site=https://medi-daloa.vercel.app&relation=delegate_permission/common.handle_all_urls',
+    '  https://digitalassetlinks.googleapis.com/v1/statements:list?source.web.site=https://perokado.vercel.app&relation=delegate_permission/common.handle_all_urls',
   );
 }
 

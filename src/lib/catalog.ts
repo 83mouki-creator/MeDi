@@ -1,6 +1,7 @@
 import { sql, type SQL } from 'drizzle-orm';
 import { db } from '../db';
 import { normalizeText } from './utils';
+import { stickersForProduct, stickersForProducts, type StickerView } from './stickers';
 
 /** Produit tel qu'affiché dans une grille ou un carrousel. */
 export type ProductCard = {
@@ -28,7 +29,26 @@ export type ProductCard = {
   categoryName: string | null;
   categorySlug: string | null;
   createdAt: string;
+  /** Vignettes « garantie », « -20 % »… (0 à 2, jamais plus). */
+  stickers?: StickerView[];
 };
+
+/**
+ * Ajoute les stickers visibles à une liste de vignettes produit.
+ * Une seule requête, quel que soit le nombre de produits.
+ */
+async function withStickers(cards: ProductCard[]): Promise<ProductCard[]> {
+  if (cards.length === 0) return cards;
+  try {
+    const map = await stickersForProducts(cards.map((card) => card.id));
+    if (map.size === 0) return cards;
+    return cards.map((card) => ({ ...card, stickers: map.get(card.id) ?? [] }));
+  } catch (error) {
+    // Un souci sur les stickers ne doit jamais empêcher d'afficher le catalogue.
+    console.error('[catalog] stickers indisponibles', error);
+    return cards;
+  }
+}
 
 export type CatalogFilters = {
   q?: string;
@@ -149,7 +169,7 @@ export async function listProducts(filters: CatalogFilters = {}): Promise<{ item
   const total = rows[0] ? Number(rows[0].total_count) : 0;
 
   return {
-    items: rows.map(mapCard),
+    items: await withStickers(rows.map(mapCard)),
     total,
     page,
     perPage,
@@ -178,7 +198,7 @@ export async function getProductBySlug(slug: string) {
   if (!row) return null;
 
   const card = mapCard(row);
-  const [images, attributes] = await Promise.all([
+  const [images, attributes, visibleStickers] = await Promise.all([
     db.execute(sql`
       SELECT id, url, alt, width, height, position FROM product_images
       WHERE product_id = ${card.id} ORDER BY position ASC, created_at ASC
@@ -187,10 +207,12 @@ export async function getProductBySlug(slug: string) {
       SELECT id, name, value FROM product_attributes
       WHERE product_id = ${card.id} ORDER BY position ASC, name ASC
     `),
+    stickersForProduct(card.id).catch(() => []),
   ]);
 
   return {
     ...card,
+    stickers: visibleStickers,
     description: (row.description as string | null) ?? null,
     warranty: (row.warranty as string | null) ?? null,
     keywords: (row.keywords as string[] | null) ?? [],
@@ -233,7 +255,7 @@ export async function getRelatedProducts(product: { id: string; categoryId?: str
     ORDER BY affinity DESC, p.sold_count DESC, p.created_at DESC
     LIMIT ${limit}
   `);
-  return (rows.rows as Record<string, unknown>[]).map(mapCard);
+  return withStickers((rows.rows as Record<string, unknown>[]).map(mapCard));
 }
 
 export async function getProductsByIds(ids: string[]) {
@@ -246,7 +268,7 @@ export async function getProductsByIds(ids: string[]) {
     ${MAIN_IMAGE_JOIN}
     WHERE p.id IN (${sql.join(ids.map((id) => sql`${id}`), sql`, `)})
   `);
-  return (rows.rows as Record<string, unknown>[]).map(mapCard);
+  return withStickers((rows.rows as Record<string, unknown>[]).map(mapCard));
 }
 
 export async function listFeatured(limit = 8) {
@@ -258,7 +280,7 @@ export async function listFeatured(limit = 8) {
     WHERE p.is_active = true AND p.is_archived = false AND p.is_featured = true
     ORDER BY p.sold_count DESC, p.created_at DESC LIMIT ${limit}
   `);
-  return (rows.rows as Record<string, unknown>[]).map(mapCard);
+  return withStickers((rows.rows as Record<string, unknown>[]).map(mapCard));
 }
 
 export async function listBestSellers(limit = 8) {
@@ -270,7 +292,7 @@ export async function listBestSellers(limit = 8) {
     WHERE p.is_active = true AND p.is_archived = false AND (p.stock - p.reserved) > 0
     ORDER BY p.sold_count DESC, p.created_at DESC LIMIT ${limit}
   `);
-  return (rows.rows as Record<string, unknown>[]).map(mapCard);
+  return withStickers((rows.rows as Record<string, unknown>[]).map(mapCard));
 }
 
 export async function listNewArrivals(limit = 8) {
@@ -282,7 +304,7 @@ export async function listNewArrivals(limit = 8) {
     WHERE p.is_active = true AND p.is_archived = false
     ORDER BY p.created_at DESC LIMIT ${limit}
   `);
-  return (rows.rows as Record<string, unknown>[]).map(mapCard);
+  return withStickers((rows.rows as Record<string, unknown>[]).map(mapCard));
 }
 
 export async function listPromotions(limit = 8) {
@@ -294,7 +316,7 @@ export async function listPromotions(limit = 8) {
     WHERE p.is_active = true AND p.is_archived = false AND ${PROMO_ACTIVE}
     ORDER BY ((p.price - p.promo_price) / NULLIF(p.price,0)) DESC LIMIT ${limit}
   `);
-  return (rows.rows as Record<string, unknown>[]).map(mapCard);
+  return withStickers((rows.rows as Record<string, unknown>[]).map(mapCard));
 }
 
 /** Identifiants des produits réellement en promotion (fenêtre de dates respectée). */

@@ -38,12 +38,10 @@ export type ReadinessSnapshot = {
     whatsapp: string | null;
     email: string | null;
     addressLine: string | null;
-    hasCoordinates: boolean;
     openingHours: string | null;
     waveNumber: string | null;
     waveMerchantName: string | null;
     legalNotice: string | null;
-    allowPickup: boolean;
     allowLocalDelivery: boolean;
     allowCod: boolean;
     tagline: string | null;
@@ -58,7 +56,6 @@ export type ReadinessSnapshot = {
   };
   delivery: {
     localZonesWithTariff: number;
-    pickupZones: number;
     nationalZones: number;
   };
   staff: {
@@ -111,13 +108,12 @@ export function computeReadiness(snapshot: ReadinessSnapshot): ReadinessReport {
       href: '/admin/parametres',
     },
     {
-      id: 'adresse',
-      label: 'Adresse exacte de la boutique',
-      detail:
-        settings.addressLine && settings.hasCoordinates
-          ? 'Adresse et coordonnées GPS publiées (format degrés/minutes/secondes).'
-          : 'Ajoutez l’adresse et les coordonnées GPS : sans elles, la page « Nous trouver » et l’itinéraire restent incomplets.',
-      status: settings.addressLine && settings.hasCoordinates ? 'ready' : 'todo',
+      id: 'whatsapp',
+      label: 'WhatsApp de la boutique',
+      detail: settings.whatsapp
+        ? 'Numéro WhatsApp publié : c’est le canal utilisé pour le transport et le suivi.'
+        : 'Ajoutez le numéro WhatsApp : sans lui, les clients ne peuvent pas convenir du transport hors Daloa.',
+      status: settings.whatsapp ? 'ready' : 'blocking',
       owner: 'boutique',
       href: '/admin/parametres',
     },
@@ -126,7 +122,7 @@ export function computeReadiness(snapshot: ReadinessSnapshot): ReadinessReport {
       label: 'Horaires d’ouverture',
       detail: settings.openingHours
         ? 'Horaires affichés aux clients.'
-        : 'Précisez les jours et heures d’ouverture : ils servent aussi au retrait et à la livraison.',
+        : 'Précisez les jours et heures d’ouverture : ils servent aussi à la livraison.',
       status: settings.openingHours ? 'ready' : 'todo',
       owner: 'boutique',
       href: '/admin/parametres',
@@ -219,19 +215,6 @@ export function computeReadiness(snapshot: ReadinessSnapshot): ReadinessReport {
           : 'Aucune zone de livraison locale avec un tarif : les clients de Daloa ne peuvent pas choisir leur quartier.',
       vars: { count: delivery.localZonesWithTariff },
       status: delivery.localZonesWithTariff > 0 ? 'ready' : 'blocking',
-      owner: 'boutique',
-      href: '/admin/livraison',
-    },
-    {
-      id: 'retrait',
-      label: 'Retrait en boutique',
-      detail:
-        settings.allowPickup && delivery.pickupZones > 0
-          ? 'Le retrait gratuit est proposé et sa zone existe.'
-          : settings.allowPickup
-            ? 'Le retrait est activé mais aucune zone « retrait » n’existe : le choix sera refusé à la commande.'
-            : 'Le retrait est désactivé dans les réglages.',
-      status: settings.allowPickup && delivery.pickupZones > 0 ? 'ready' : settings.allowPickup ? 'blocking' : 'todo',
       owner: 'boutique',
       href: '/admin/livraison',
     },

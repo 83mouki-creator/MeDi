@@ -5,9 +5,10 @@ import { countContactMessages, expiringPaymentsCount } from '@/lib/admin';
 import { getAdminI18n } from '@/lib/i18n/admin-server';
 import { AdminTopBar, type AdminNavItem } from '@/components/admin/admin-top-bar';
 import { AdminI18nProvider } from '@/components/admin/admin-i18n';
+import { BRAND, STORE_NAME } from '@/lib/brand';
 
 export const metadata: Metadata = {
-  title: 'Administration MeDi Shop',
+  title: `Administration ${STORE_NAME}`,
   robots: { index: false, follow: false },
 };
 
@@ -16,7 +17,7 @@ export const dynamic = 'force-dynamic';
 /** Libellé bilingue : la clé française sert de référence au dictionnaire. */
 const NAV: (AdminNavItem & { permission?: Permission })[] = [
   { href: '/admin', label: 'Accueil', hint: 'Ce qui se passe aujourd’hui', icon: 'dashboard' },
-  { href: '/admin/guide', label: 'Guide du site', hint: 'Comment utiliser MeDi Shop, pas à pas', icon: 'guide' },
+  { href: '/admin/guide', label: 'Guide du site', hint: 'Comment utiliser la boutique, pas à pas', icon: 'guide' },
   { href: '/admin/pret-a-vendre', label: 'Prêt à vendre', hint: 'Ce qui manque pour vendre', icon: 'ready', permission: 'settings.write' },
   { href: '/admin/commandes', label: 'Commandes', hint: 'Qui a commandé quoi', icon: 'orders', permission: 'orders.read' },
   { href: '/admin/messages', label: 'Messages des clients', hint: 'Questions et demandes', icon: 'messages', permission: 'messages.handle', badge: 'messages' },
@@ -24,6 +25,7 @@ const NAV: (AdminNavItem & { permission?: Permission })[] = [
   { href: '/admin/produits', label: 'Produits', hint: 'Fiches, prix et photos', icon: 'products', permission: 'products.read' },
   { href: '/admin/stock', label: 'Stock', hint: 'Combien il en reste', icon: 'stock', permission: 'products.read' },
   { href: '/admin/promotions', label: 'Promotions', hint: 'Baisser les prix pour un temps', icon: 'promos', permission: 'products.write' },
+  { href: '/admin/stickers', label: 'Stickers', hint: 'Garantie, réduction sur les produits', icon: 'stickers', permission: 'products.write' },
   { href: '/admin/caisse', label: 'Caisse', hint: 'Ouvrir et fermer la journée', icon: 'cash', permission: 'payments.read' },
   { href: '/admin/bons', label: 'Bons de livraison', hint: 'Papiers à donner au livreur', icon: 'notes', permission: 'delivery.manage' },
   { href: '/admin/categories', label: 'Rayons et marques', hint: 'Ranger les produits', icon: 'categories', permission: 'products.write' },
@@ -40,7 +42,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   if (!user) redirect('/connexion?redirectTo=/admin');
   if (!isStaff(user.role)) redirect('/compte');
 
-  const [{ locale, dir, t }, pendingPayments, messages] = await Promise.all([
+  const [{ t }, pendingPayments, messages] = await Promise.all([
     getAdminI18n(),
     expiringPaymentsCount().catch(() => 0),
     countContactMessages().catch(() => ({ newCount: 0, open: 0, total: 0 })),
@@ -51,15 +53,16 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   );
 
   return (
-    <AdminI18nProvider locale={locale}>
-      <div lang={locale} dir={dir} className="relative min-h-dvh bg-slate-100">
+    <AdminI18nProvider>
+      <div lang="fr" dir="ltr" className="relative min-h-dvh bg-slate-100">
         {/*
-          Logo MeDi Shop en filigrane : il habille l'espace de gestion sans gêner la
-          lecture (4 % d'opacité, jamais cliquable, jamais imprimé).
+          Emblème Perokado en filigrane : il habille l'espace de gestion sans gêner la
+          lecture (4,5 % d'opacité, jamais cliquable, jamais imprimé).
         */}
         <div
           aria-hidden
-          className="pointer-events-none fixed inset-0 z-0 bg-[url('/brand/medi-icon.svg')] bg-center bg-no-repeat bg-[length:min(72vw,540px)] opacity-[0.045] print:hidden"
+          className="pointer-events-none fixed inset-0 z-0 bg-center bg-no-repeat opacity-[0.045] print:hidden"
+          style={{ backgroundImage: `url('${BRAND.emblem}')`, backgroundSize: 'min(72vw, 540px)' }}
         />
         <div className="relative z-10">
         <AdminTopBar
@@ -69,8 +72,6 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           email={user.email}
           pendingPayments={pendingPayments}
           newMessages={messages.newCount}
-          locale={locale}
-          dir={dir}
         />
         <main className="container-page py-5">{children}</main>
         </div>

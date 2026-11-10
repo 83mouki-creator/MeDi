@@ -27,11 +27,12 @@ export async function resetDb() {
   // Réglages de base : paiement à la livraison autorisé sous 300 000 FCFA.
   await db.insert(storeSettings).values({
     id: 1,
-    storeName: 'MeDi Shop Test',
+    storeName: 'Perokado Test',
     city: 'Daloa',
     allowCod: true,
     codMaxAmount: '300000',
-    allowPickup: true,
+    // Le retrait en magasin n'existe plus : la colonne reste à false.
+    allowPickup: false,
     allowLocalDelivery: true,
     lowStockThreshold: 5,
     reservationMinutes: 120,
@@ -39,7 +40,6 @@ export async function resetDb() {
   });
 
   return {
-    pickupZone: await createZone({ name: 'Retrait boutique (test)', city: 'Daloa', isLocal: true, isPickup: true, fee: '0' }),
     localZone: await createZone({ name: 'Daloa centre (test)', city: 'Daloa', isLocal: true, isPickup: false, fee: '2000' }),
     localFreeZone: await createZone({
       name: 'Daloa gratuit (test)',
@@ -228,20 +228,26 @@ export async function scalar<T = number>(query: ReturnType<typeof sql>): Promise
   return (result.rows[0] as Record<string, T>)[Object.keys(result.rows[0] as object)[0]!]!;
 }
 
+/**
+ * Commande de test : livraison à domicile à Daloa et paiement Wave par défaut.
+ *
+ * Le retrait en magasin et le paiement en espèces au comptoir ont été retirés du
+ * parcours ; les tests qui ont besoin d'un autre mode le précisent en surcharge.
+ */
 export function checkoutInput(overrides: Partial<Record<string, unknown>> = {}) {
   return {
     firstName: 'Awa',
     lastName: 'Koné',
     phone: '0701020304',
     email: 'awa@example.ci',
-    deliveryMethod: 'PICKUP' as const,
+    deliveryMethod: 'LOCAL_DELIVERY' as const,
     zoneId: '',
     city: 'Daloa',
     commune: '',
     addressLine: '',
     landmark: '',
     carrier: '',
-    paymentMethod: 'CASH_IN_STORE' as const,
+    paymentMethod: 'WAVE' as const,
     customerNote: '',
     items: [],
     ...overrides,

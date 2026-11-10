@@ -16,7 +16,7 @@ export default function OfflinePage() {
     <main className="mx-auto flex min-h-dvh max-w-md flex-col items-center justify-center gap-4 px-6 text-center">
       <h1 className="text-xl font-extrabold tracking-tight">Pas de connexion</h1>
       <p className="text-sm leading-relaxed text-navy-600">
-        Vérifiez votre connexion internet, puis réessayez. Le catalogue MeDi Shop s’affiche dès que
+        Vérifiez votre connexion internet, puis réessayez. Le catalogue Perokado s’affiche dès que
         le réseau revient.
       </p>
       <Link

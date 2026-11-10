@@ -8,7 +8,6 @@ import { getStoreSettings } from '@/lib/settings';
 import { getCurrentUser } from '@/lib/auth';
 import { CheckoutForm } from '@/components/checkout-form';
 import { toFcfa } from '@/lib/utils';
-import { storeLocation } from '@/lib/store-location';
 import { getSiteI18n } from '@/lib/i18n/site-server';
 
 export const metadata: Metadata = { title: 'Commande', robots: { index: false, follow: false } };
@@ -24,7 +23,6 @@ export default async function CheckoutPage() {
 
   if (cart.isEmpty) redirect('/panier');
 
-  const location = storeLocation(settings);
   const { t } = await getSiteI18n();
 
   return (
@@ -50,11 +48,8 @@ export default async function CheckoutPage() {
           neighbourhoods: zone.neighbourhoods ?? [],
         }))}
         store={{
-          city: location.city,
-          addressLine: location.addressLine,
-          gps: location.dms,
-          mapsUrl: location.mapsUrl,
-          directionsUrl: location.directionsUrl,
+          name: settings.storeName,
+          city: settings.city,
           openingHours: settings.openingHours,
           whatsapp: settings.whatsapp ?? settings.phone,
         }}
@@ -62,7 +57,6 @@ export default async function CheckoutPage() {
         settings={{
           allowCod: settings.allowCod,
           codMaxAmount: settings.codMaxAmount,
-          allowPickup: settings.allowPickup,
           allowLocalDelivery: settings.allowLocalDelivery,
           city: settings.city,
         }}

@@ -2,7 +2,7 @@
 """Trace le mot « Shop » qui complète le logotype « MeDi ».
 
 Le logo fourni par le propriétaire ne contient que le mot « MeDi ». Pour écrire
-« MeDi Shop » sur le site, `scripts/make-brand-assets.ts` colle ce tracé vectoriel
+« Perokado » sur le site, `scripts/make-brand-assets.ts` colle ce tracé vectoriel
 à droite du mot d'origine : même hauteur de capitale, même graisse, même couleur
 que les lettres existantes. Le tracé est fourni en contours (et non en texte SVG)
 pour que la génération des images ne dépende d'aucune police installée sur la

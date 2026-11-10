@@ -48,7 +48,7 @@ export default async function PaymentPage() {
               {settings.waveNumber ? (
                 <p className="mt-2 text-sm">
                   {t('Numéro marchand Wave :')}{' '}
-                  <strong className="ltr-inline">{settings.waveNumber}</strong>
+                  <strong>{settings.waveNumber}</strong>
                   {settings.waveMerchantName ? ` — ${settings.waveMerchantName}` : ''}
                 </p>
               ) : (
@@ -75,7 +75,7 @@ export default async function PaymentPage() {
                     <strong>{formatFCFA(settings.codMaxAmount)}</strong> {t('par commande.')}
                   </p>
                   <p className="mt-1 text-sm text-navy-600">
-                    {t('Le paiement se fait au livreur, à la remise du colis. Le retrait en boutique n’est pas concerné.')}
+                    {t('Le paiement se fait au livreur, à la remise du colis, dans votre quartier de Daloa.')}
                   </p>
                 </>
               ) : (

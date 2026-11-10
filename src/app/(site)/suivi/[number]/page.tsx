@@ -42,7 +42,7 @@ export default async function TrackOrderPage({
   return (
     <div className="container-page max-w-3xl py-8">
       <Link href="/suivi" className="mb-4 inline-flex items-center gap-1 text-sm font-medium text-navy-600 hover:text-accent-700">
-        <ArrowLeft className="size-4 rtl:rotate-180" aria-hidden /> {t('Autre commande')}
+        <ArrowLeft className="size-4" aria-hidden /> {t('Autre commande')}
       </Link>
 
       <div className="flex flex-wrap items-start justify-between gap-3">

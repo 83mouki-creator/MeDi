@@ -3,7 +3,6 @@ import { readFileSync } from 'node:fs';
 import { computeReadiness, type ReadinessSnapshot } from '@/lib/readiness';
 import { resolveStorageMode } from '@/lib/storage';
 import { shouldSweep, sweepIntervalMs } from '@/lib/reservations';
-import { formatStoreAddress } from '@/lib/store-location';
 import { translate } from '@/lib/i18n/admin';
 import { storedImages } from '@/db/schema';
 import { db } from '@/db';
@@ -16,18 +15,16 @@ function emptySnapshot(): ReadinessSnapshot {
       whatsapp: null,
       email: null,
       addressLine: null,
-      hasCoordinates: false,
       openingHours: null,
       waveNumber: null,
       waveMerchantName: null,
       legalNotice: null,
-      allowPickup: true,
       allowLocalDelivery: true,
       allowCod: false,
       tagline: null,
     },
     catalog: { activeProducts: 0, inStockProducts: 0, withPhoto: 0, zeroPrice: 0, categories: 0, activePromotions: 0 },
-    delivery: { localZonesWithTariff: 0, pickupZones: 0, nationalZones: 0 },
+    delivery: { localZonesWithTariff: 0, nationalZones: 0 },
     staff: { managerAccounts: 1, activeStaff: 0 },
     infrastructure: {
       database: true,
@@ -49,18 +46,16 @@ function readySnapshot(): ReadinessSnapshot {
       whatsapp: '+225 07 00 00 00 00',
       email: 'boutique@example.ci',
       addressLine: 'Daloa, quartier Tazibouo',
-      hasCoordinates: true,
       openingHours: 'Lundi – Samedi, 8 h – 18 h',
       waveNumber: '+225 07 00 00 00 00',
-      waveMerchantName: 'MeDi Shop',
+      waveMerchantName: 'Perokado',
       legalNotice: 'RCCM CI-DAL-2024-B-1234 — NCC 1234567 A',
-      allowPickup: true,
       allowLocalDelivery: true,
       allowCod: false,
       tagline: 'Quincaillerie à Daloa',
     },
     catalog: { activeProducts: 146, inStockProducts: 120, withPhoto: 146, zeroPrice: 0, categories: 8, activePromotions: 1 },
-    delivery: { localZonesWithTariff: 8, pickupZones: 1, nationalZones: 3 },
+    delivery: { localZonesWithTariff: 8, nationalZones: 3 },
     staff: { managerAccounts: 1, activeStaff: 2 },
     infrastructure: {
       database: true,
@@ -122,7 +117,6 @@ describe('Diagnostic « prêt à vendre »', () => {
     expect(catalogue?.detail).toContain('{count}');
     expect(catalogue?.vars).toEqual({ count: 146, available: 120 });
     expect(translate('fr', catalogue!.detail, catalogue!.vars)).toBe('146 produit(s) publié(s), 120 disponible(s) tout de suite.');
-    expect(translate('ar', catalogue!.detail, catalogue!.vars)).not.toContain('{');
   });
 
   it('fournit toujours un lien vers l’écran de correction quand la boutique doit agir', () => {
@@ -131,16 +125,19 @@ describe('Diagnostic « prêt à vendre »', () => {
     expect(boutiqueChecks.every((check) => Boolean(check.href))).toBe(true);
   });
 
-  it('chaque libellé et chaque explication existent en arabe', () => {
-    const labels = new Set<string>();
-    for (const snapshot of [emptySnapshot(), readySnapshot()]) {
-      for (const check of computeReadiness(snapshot).checks) {
-        labels.add(check.label);
-        labels.add(check.detail);
-      }
+  it('n’affiche aucune coordonnée GPS et parle bien de livraison', () => {
+    const report = computeReadiness(readySnapshot());
+    const labels = report.checks.flatMap((check) => [check.label, check.detail]).join(' | ');
+    // Le parcours ne passe plus par une adresse : ces contrôles ont disparu.
+    expect(report.checks.some((check) => check.id === 'adresse')).toBe(false);
+    expect(report.checks.some((check) => check.id === 'retrait')).toBe(false);
+    expect(labels).not.toMatch(/GPS|coordonnées|Nous trouver|retrait en boutique/i);
+    // Chaque texte reste du français lisible, jamais un code.
+    for (const check of report.checks) {
+      expect(check.label.length, check.label).toBeGreaterThan(2);
+      expect(check.label).not.toMatch(/[\u0600-\u06FF]/);
+      expect(translate('fr', check.detail, check.vars)).not.toContain('{');
     }
-    const missing = [...labels].filter((text) => /\p{Script=Latin}{2}/u.test(text) && translate('ar', text) === text);
-    expect(missing, `Textes sans traduction arabe : ${missing.join(' | ')}`).toEqual([]);
   });
 });
 
@@ -187,25 +184,15 @@ describe('Libération automatique des réservations', () => {
   });
 });
 
-describe('Adresse affichée', () => {
-  it('ne répète pas la ville déjà écrite dans l’adresse', () => {
-    expect(
-      formatStoreAddress({
-        addressLine: `6°53'04.4"N 6°26'50.9"W — Daloa`,
-        city: 'Daloa',
-        country: "Côte d'Ivoire",
-      }),
-    ).toBe(`6°53'04.4"N 6°26'50.9"W — Daloa, Côte d'Ivoire`);
-  });
-
-  it('ajoute la ville quand elle manque', () => {
-    expect(formatStoreAddress({ addressLine: 'Rue du commerce', city: 'Daloa', country: "Côte d'Ivoire" })).toBe(
-      "Rue du commerce, Daloa, Côte d'Ivoire",
-    );
-  });
-
-  it('reste lisible quand l’adresse n’est pas renseignée', () => {
-    expect(formatStoreAddress({ addressLine: '', city: 'Daloa', country: "Côte d'Ivoire" })).toBe("Daloa, Côte d'Ivoire");
+describe('Migrateur de prix d’achat', () => {
+  it('la colonne figée du prix d’achat est dans le schéma et dans le journal', () => {
+    const schema = readFileSync('src/db/schema.ts', 'utf8');
+    expect(schema).toContain('purchasePriceSnapshot');
+    const journal = JSON.parse(readFileSync('drizzle/meta/_journal.json', 'utf8')) as { entries: { tag: string }[] };
+    expect(journal.entries.some((entry) => entry.tag === '0009_order_item_purchase_price')).toBe(true);
+    const migration = readFileSync('drizzle/0009_order_item_purchase_price.sql', 'utf8');
+    expect(migration).toContain('purchase_price_snapshot');
+    expect(migration).toContain('UPDATE "order_items"');
   });
 });
 

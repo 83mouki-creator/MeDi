@@ -66,7 +66,9 @@ describe('Géométrie des panneaux coulissants', () => {
 
   it('le panneau de l’administration suit la géométrie calculée', () => {
     const source = readFileSync('src/components/admin/admin-top-bar.tsx', 'utf8');
-    expect(source).toContain('drawerGeometry(dir)');
+    // L'administration n'a plus qu'un sens de lecture : la géométrie est fixée
+    // explicitement à « ltr », jamais déduite d'une locale.
+    expect(source).toContain("drawerGeometry('ltr'");
     expect(source).toContain('data-side={geometry.side}');
     expect(source).toContain('data-open={open}');
     // Aucune translation dépendante du sens de lecture ne doit subsister.

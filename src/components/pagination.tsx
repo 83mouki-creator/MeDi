@@ -46,7 +46,7 @@ export function Pagination({
         )}
         aria-label={labels?.previous ?? t('Page précédente')}
       >
-        <ChevronLeft className="size-4 rtl:rotate-180" aria-hidden />
+        <ChevronLeft className="size-4" aria-hidden />
       </Link>
 
       {pages.map((p, index) =>
@@ -80,7 +80,7 @@ export function Pagination({
         )}
         aria-label={labels?.next ?? t('Page suivante')}
       >
-        <ChevronRight className="size-4 rtl:rotate-180" aria-hidden />
+        <ChevronRight className="size-4" aria-hidden />
       </Link>
     </nav>
   );

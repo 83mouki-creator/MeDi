@@ -152,13 +152,16 @@ export function ImportHelp() {
   return (
     <Card className="p-4 text-xs leading-relaxed text-navy-600">
       <h2 className="mb-1 text-sm font-bold text-navy-900">{t('Format CSV attendu')}</h2>
-      <pre className="mt-2 overflow-x-auto rounded bg-navy-950 p-3 text-[11px] text-navy-100">{`sku,nom,prix,stock,categorie,marque,description_courte,prix_promo,mots_cles
-MED-0100,Perceuse à percussion 850 W,78500,12,Outillage industriel,Bosch,Perceuse 850 W,69900,perceuse|chantier
-MED-0101,Ciment CPJ 35 50 kg,5200,400,Matériaux de base,Dangote,Sac de 50 kg,,ciment|beton`}</pre>
+      <pre className="mt-2 overflow-x-auto rounded bg-navy-950 p-3 text-[11px] text-navy-100">{`sku,nom,prix,prix_achat,stock,categorie,marque,description_courte,prix_promo,mots_cles
+PER-0100,Perceuse à percussion 850 W,78500,54000,12,Outillage industriel,Bosch,Perceuse 850 W,69900,perceuse|chantier
+PER-0101,Ciment CPJ 35 50 kg,5200,4300,400,Matériaux de base,Dangote,Sac de 50 kg,,ciment|beton`}</pre>
       <ul className="mt-2 list-disc space-y-1 pl-4">
         <li>{t('Encodage UTF-8, séparateur virgule ou point-virgule, guillemets acceptés.')}</li>
         <li>{t('Un SKU existant est mis à jour ; un SKU nouveau crée la fiche.')}</li>
-        <li>{t('Les lignes sans prix positif ou sans stock valide sont rejetées et listées.')}</li>
+        <li>{t('Les lignes sans prix de vente positif ou sans stock valide sont rejetées et listées.')}</li>
+        <li>
+          {t('La colonne prix_achat (prix d’achat) alimente le bénéfice net du tableau de bord. Laissez-la vide si vous ne la connaissez pas : elle sera simplement exclue du calcul, et jamais comptée comme zéro. Si le SKU existe déjà et que la colonne est vide, l’ancien prix d’achat est conservé.')}
+        </li>
         <li>{t('Les catégories et marques inconnues sont créées automatiquement.')}</li>
       </ul>
     </Card>

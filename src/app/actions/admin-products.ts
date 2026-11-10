@@ -48,6 +48,7 @@ export async function saveProductAction(_prev: AdminState, formData: FormData): 
     brandId: String(formData.get('brandId') ?? '') || null,
     supplierId: String(formData.get('supplierId') ?? '') || null,
     warranty: String(formData.get('warranty') ?? ''),
+    purchasePrice: formData.get('purchasePrice') ? formData.get('purchasePrice') : null,
     keywords: String(formData.get('keywords') ?? ''),
     attributes: [],
   });
@@ -90,6 +91,12 @@ export async function saveProductAction(_prev: AdminState, formData: FormData): 
     shortDescription: data.shortDescription || null,
     description: data.description || null,
     price: String(data.price),
+    // Prix d'achat : vide ⇒ NULL. On ne stocke jamais 0, qui laisserait croire à
+    // une marge de 100 % ; NULL est explicitement « marge inconnue ».
+    purchasePrice:
+      data.purchasePrice === '' || data.purchasePrice === null || data.purchasePrice === undefined
+        ? null
+        : String(data.purchasePrice),
     promoPrice: data.promoPrice && data.promoPrice > 0 ? String(data.promoPrice) : null,
     promoStartsAt: data.promoStartsAt ? new Date(data.promoStartsAt) : null,
     promoEndsAt: data.promoEndsAt ? new Date(data.promoEndsAt) : null,

@@ -41,11 +41,11 @@ Fichiers concernés : `src/lib/email.ts` (fournisseur), `src/lib/email-templates
 ### Structure recommandée
 
 ```
-medishopdaloa.com              ← domaine racine (le seul à acheter)
-├── www.medishopdaloa.com      ← site public (alias Vercel)
-├── contact@medishopdaloa.com  ← boîte principale : les réponses arrivent ici
-├── commandes@medishopdaloa.com← alias (même boîte)
-├── no-reply@medishopdaloa.com ← expéditeur des e-mails automatiques
+perokado.com              ← domaine racine (le seul à acheter)
+├── www.perokado.com      ← site public (alias Vercel)
+├── contact@perokado.com  ← boîte principale : les réponses arrivent ici
+├── commandes@perokado.com← alias (même boîte)
+├── no-reply@perokado.com ← expéditeur des e-mails automatiques
 └── _dmarc / brevo / DKIM…     ← enregistrements techniques (§3)
 ```
 
@@ -57,13 +57,13 @@ signer les messages automatiques, ce qui évite de ternir la réputation de
 
 | Domaine | Avantages | À savoir |
 | --- | --- | --- |
-| `medishopdaloa.com` | marque + ville, se retient au téléphone | le plus long à taper |
+| `perokado.com` | marque + ville, se retient au téléphone | le plus long à taper |
 | `medishop-ci.com` | indique la Côte d'Ivoire | le tiret s'oublie à l'oral |
 | `medishops.com` | très court | peut prêter à confusion (« shop's ») |
 | `medishop.com` | idéal… | très probablement déjà pris, et cher |
 
-**Recommandation : `medishopdaloa.com`.** Le nom exact de la boutique est
-« MeDi Shop », la ville est le cœur du commerce : le domaine dit les deux.
+**Recommandation : `perokado.com`.** Le nom exact de la boutique est
+« Perokado », la ville est le cœur du commerce : le domaine dit les deux.
 
 Où l'acheter : n'importe quel registrar sérieux (Namecheap, Porkbun, OVH,
 Gandi…). Ce qui compte : **accès au DNS** (zone « DNS » ou « Zone editor ») et
@@ -77,12 +77,12 @@ hébergement » dont le DNS n'est pas modifiable.
 ### Une fois le domaine acheté
 
 1. **Vercel** → projet `medi-daloa` → *Settings → Domains* → ajouter
-   `medishopdaloa.com` et `www.medishopdaloa.com`, puis suivre les instructions
+   `perokado.com` et `www.perokado.com`, puis suivre les instructions
    (enregistrement `A` pour la racine, `CNAME` pour `www`).
 2. **Vercel** → *Settings → Environment Variables* : `APP_URL` =
-   `https://medishopdaloa.com` (les liens des e-mails et le retour Wave en
+   `https://perokado.com` (les liens des e-mails et le retour Wave en
    dépendent), puis **Redéployer**.
-3. L'ancienne adresse `medi-daloa.vercel.app` continue de fonctionner : rien ne
+3. L'ancienne adresse `perokado.vercel.app` continue de fonctionner : rien ne
    casse pendant la transition.
 
 ---
@@ -95,14 +95,14 @@ Brevo signe les messages avec **trois enregistrements DNS** : le *Brevo code*
 ### 3.1 Créer le compte
 
 1. https://www.brevo.com → *Sign up free* (300 e-mails/jour, sans carte).
-2. Renseigner l'entreprise : **MeDi Shop**, Daloa, Côte d'Ivoire.
+2. Renseigner l'entreprise : **Perokado**, Daloa, Côte d'Ivoire.
 3. Brevo peut demander une validation du compte avant le premier envoi : c'est
    normal, la validation prend en général quelques heures.
 
 ### 3.2 Déclarer le domaine
 
 *Settings* (menu du compte) → **Senders, Domains, IPs → Domains** →
-**Add a domain** → saisir `medishopdaloa.com` (sans `www`, sans `@`).
+**Add a domain** → saisir `perokado.com` (sans `www`, sans `@`).
 
 Brevo propose alors deux chemins :
 
@@ -117,7 +117,7 @@ Brevo propose alors deux chemins :
 | **Brevo code** | `TXT` | `@` (ou `brevo-code`) | `brevo-code:…` | écran Brevo, bouton *Copy* |
 | **DKIM 1** | `CNAME` | `brevo1._domainkey` | `b1.medishopdaloa-com.dkim.brevo.com` | idem |
 | **DKIM 2** | `CNAME` | `brevo2._domainkey` | `b2.medishopdaloa-com.dkim.brevo.com` | idem |
-| **DMARC** | `TXT` | `_dmarc` | `v=DMARC1; p=none; rua=mailto:dmarc@medishopdaloa.com` | proposé par Brevo |
+| **DMARC** | `TXT` | `_dmarc` | `v=DMARC1; p=none; rua=mailto:dmarc@perokado.com` | proposé par Brevo |
 
 > **Ne recopie pas les valeurs ci-dessus telles quelles** : Brevo génère des
 > valeurs propres à ton compte. Ce tableau donne la *forme* ; les chaînes
@@ -128,9 +128,9 @@ Brevo propose alors deux chemins :
 Détails qui évitent 90 % des échecs :
 
 - Chez la plupart des registrars, le nom d'hôte se saisit **sans** le domaine :
-  `brevo1._domainkey` (et non `brevo1._domainkey.medishopdaloa.com`). Si ton
+  `brevo1._domainkey` (et non `brevo1._domainkey.perokado.com`). Si ton
   registrar ajoute le domaine automatiquement, mettre le nom complet crée
-  `…medishopdaloa.com.medishopdaloa.com` — l'authentification échouera.
+  `…perokado.com.perokado.com` — l'authentification échouera.
 - La valeur d'un `CNAME` **ne se termine pas par un point** chez certains
   registrars, et **doit** en avoir un chez d'autres. Si la vérification échoue,
   teste l'autre forme.
@@ -151,15 +151,15 @@ vert. En cas d'échec, Brevo indique l'enregistrement fautif : corriger, attendr
 Contrôle indépendant, dans un terminal (ou sur https://mxtoolbox.com) :
 
 ```bash
-dig +short TXT  _dmarc.medishopdaloa.com
-dig +short CNAME brevo1._domainkey.medishopdaloa.com
-dig +short TXT  medishopdaloa.com | grep -i brevo
+dig +short TXT  _dmarc.perokado.com
+dig +short CNAME brevo1._domainkey.perokado.com
+dig +short TXT  perokado.com | grep -i brevo
 ```
 
 ### 3.5 Déclarer l'expéditeur
 
 Toujours dans **Senders, Domains, IPs → Senders** : ajouter
-`no-reply@medishopdaloa.com` (nom affiché : **MeDi Shop**). Brevo envoie un
+`no-reply@perokado.com` (nom affiché : **Perokado**). Brevo envoie un
 e-mail de confirmation à cette adresse : cliquer sur le lien.
 
 > Une adresse d'expéditeur doit appartenir au domaine authentifié. Un
@@ -200,9 +200,9 @@ Projet `medi-daloa` → *Settings → Environment Variables*, pour **Production*
 | Nom | Valeur | Obligatoire |
 | --- | --- | --- |
 | `BREVO_API_KEY` | `xkeysib-…` | oui |
-| `EMAIL_FROM` | `MeDi Shop <no-reply@medishopdaloa.com>` | oui |
-| `EMAIL_REPLY_TO` | `contact@medishopdaloa.com` | recommandé |
-| `APP_URL` | `https://medishopdaloa.com` | oui (si le domaine change) |
+| `EMAIL_FROM` | `Perokado <no-reply@perokado.com>` | oui |
+| `EMAIL_REPLY_TO` | `contact@perokado.com` | recommandé |
+| `APP_URL` | `https://perokado.com` | oui (si le domaine change) |
 
 Puis **Deployments → ⋯ → Redeploy** : les variables ne sont lues qu'au
 démarrage d'un déploiement.
@@ -239,7 +239,7 @@ en masse, garder `p=none` en DMARC.
 | `Brevo HTTP 403` | compte Brevo pas encore validé pour l'envoi | terminer la validation |
 | Rien ne part, aucune erreur | `BREVO_API_KEY` ou `EMAIL_FROM` absent → `configured: false` | ajouter les deux, redéployer |
 | Messages en spam | domaine neuf, DMARC absent, ou expéditeur hors domaine | vérifier DKIM dans Brevo, puis « Afficher l'original » dans Gmail |
-| Liens vers `localhost:3000` | `APP_URL` non défini en production | mettre `https://medishopdaloa.com` |
+| Liens vers `localhost:3000` | `APP_URL` non défini en production | mettre `https://perokado.com` |
 | Le bouton « Recevoir le bon » n'apparaît pas | service non configuré au moment du rendu | vérifier `/admin/parametres`, redéployer |
 
 Les erreurs d'envoi sont écrites dans les **logs Vercel** avec le préfixe

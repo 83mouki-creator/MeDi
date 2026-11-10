@@ -1,9 +1,9 @@
-# Fabrique l'application Android de MeDi Shop (fichier .aab pour le Play Store)
+# Fabrique l'application Android de Perokado (fichier .aab pour le Play Store)
 # sans avoir besoin d'un ordinateur : tout se lance depuis le navigateur du
 # téléphone (GitHub → Actions → « Application Android (AAB) » → Run workflow).
 #
 # L'application est une Trusted Web Activity : c'est le site
-# https://medi-daloa.vercel.app affiché en plein écran, sans barre d'adresse.
+# https://perokado.vercel.app affiché en plein écran, sans barre d'adresse.
 # Bubblewrap a besoin du SDK Android et de Gradle : c'est la machine GitHub qui
 # les installe, pas vous.
 #

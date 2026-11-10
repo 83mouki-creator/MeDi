@@ -3,12 +3,11 @@ import { notFound, redirect } from 'next/navigation';
 import { getCurrentUser, isStaff, can } from '@/lib/auth';
 import { getDeliveryNote } from '@/lib/delivery-notes';
 import { getStoreSettings } from '@/lib/settings';
-import { storeLocation } from '@/lib/store-location';
 import { formatFCFA, toFcfa } from '@/lib/utils';
 import { FINAL_SALE_NOTICE } from '@/lib/store-policy';
 import { PrintButton } from '@/components/print-button';
 
-export const metadata: Metadata = { title: 'Bon de livraison — MeDi Shop', robots: { index: false, follow: false } };
+export const metadata: Metadata = { title: 'Bon de livraison — Perokado', robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
 
 const PAYMENT_LABELS: Record<string, string> = {
@@ -42,7 +41,6 @@ export default async function DeliveryNotePage({ params }: { params: Promise<{ i
   const [note, settings] = await Promise.all([getDeliveryNote(id), getStoreSettings()]);
   if (!note) notFound();
 
-  const location = storeLocation(settings);
   const { order, items } = note;
   const articles = items.reduce((sum, item) => sum + toFcfa(item.lineTotal), 0);
 
@@ -54,8 +52,8 @@ export default async function DeliveryNotePage({ params }: { params: Promise<{ i
         </div>
 
         <header className="border-b border-dashed border-navy-300 pb-2 text-center">
-          <p className="text-base font-extrabold tracking-tight">MeDi Shop</p>
-          <p className="text-[11px]">{location.city} — {settings.country}</p>
+          <p className="text-base font-extrabold tracking-tight">Perokado</p>
+          <p className="text-[11px]">{settings.city} — {settings.country}</p>
           <p className="mt-1 font-bold uppercase tracking-wide">Bon de livraison</p>
           <p className="font-mono text-[12px]">{order.number}</p>
         </header>
@@ -126,8 +124,8 @@ export default async function DeliveryNotePage({ params }: { params: Promise<{ i
         </p>
 
         <section className="mt-3 text-[10px]">
-          <p className="font-semibold">Boutique (adresse exacte) :</p>
-          <p>{location.dms}</p>
+          <p className="font-semibold">Boutique : {settings.storeName}</p>
+          {settings.city ? <p>{settings.city} — {settings.country}</p> : null}
           {(settings.whatsapp ?? settings.phone) ? <p>WhatsApp : {settings.whatsapp ?? settings.phone}</p> : null}
         </section>
 
@@ -136,7 +134,7 @@ export default async function DeliveryNotePage({ params }: { params: Promise<{ i
           <span className="border-t border-navy-400 pt-1">Signature client</span>
         </div>
 
-        <p className="mt-3 text-center text-[9px] text-navy-500">Merci de votre confiance — MeDi Shop</p>
+        <p className="mt-3 text-center text-[9px] text-navy-500">Merci de votre confiance — Perokado</p>
       </div>
     </div>
   );

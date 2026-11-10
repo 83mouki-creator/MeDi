@@ -47,7 +47,7 @@ export default async function AccountLayout({ children }: { children: React.Reac
               <li className="border-t border-navy-100 pt-1">
                 <form action={logoutAction}>
                   <button type="submit" className="flex w-full items-center gap-2 rounded-lg px-3 py-2.5 text-left text-sm font-medium text-navy-700 hover:bg-navy-50">
-                    <LogOut className="size-4 text-navy-400 rtl:rotate-180" aria-hidden />
+                    <LogOut className="size-4 text-navy-400" aria-hidden />
                     {t('Se déconnecter')}
                   </button>
                 </form>

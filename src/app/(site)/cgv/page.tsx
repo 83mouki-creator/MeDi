@@ -6,7 +6,7 @@ import { LegalPage, LegalSection } from '@/components/legal-page';
 export const metadata: Metadata = {
   title: 'Conditions générales de vente',
   description:
-    'Conditions de vente MeDi Shop : commande, prix en FCFA, disponibilité, paiement, livraison à Daloa et hors Daloa, retours.',
+    'Conditions de vente Perokado : commande, prix en FCFA, disponibilité, paiement, livraison à Daloa et hors Daloa, retours.',
   alternates: { canonical: '/cgv' },
 };
 
@@ -18,7 +18,7 @@ export default async function TermsPage() {
   return (
     <LegalPage
       title="Conditions générales de vente"
-      intro="Les présentes conditions s’appliquent à toute commande passée sur le site MeDi Shop. Elles décrivent les modalités de commande, de paiement, de livraison et de retour applicables à la boutique."
+      intro="Les présentes conditions s’appliquent à toute commande passée sur le site Perokado. Elles décrivent les modalités de commande, de paiement, de livraison et de retour applicables à la boutique."
     >
       <LegalSection title="1. Vendeur">
         <p>
@@ -78,11 +78,15 @@ export default async function TermsPage() {
         </p>
       </LegalSection>
 
-      <LegalSection title="6. Livraison et retrait">
+      <LegalSection title="6. Livraison à domicile">
         <p>
-          À Daloa, la commande peut être retirée en boutique ou livrée à domicile selon la zone choisie. Hors Daloa, l’expédition
-          est confiée à un transporteur ; le numéro de suivi est communiqué lorsqu’il est disponible. Les délais annoncés sont
-          indicatifs.
+          Les commandes sont livrées à domicile. À Daloa, la livraison se fait dans le quartier choisi à la commande, aux heures
+          d’ouverture de la boutique ; les frais dépendent du quartier et sont affichés avant le paiement. Hors Daloa,
+          l’expédition est confiée à un transporteur ; le prix du transport est convenu sur WhatsApp et le numéro de suivi est
+          communiqué lorsqu’il est disponible. Les délais annoncés sont indicatifs.
+        </p>
+        <p>
+          Le retrait en magasin n’est plus proposé : la boutique ne conserve pas de colis sur place.
         </p>
         <p>
           Voir la page <Link href="/livraison" className="font-medium text-accent-700 underline">livraison</Link> pour la grille

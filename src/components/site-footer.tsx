@@ -1,12 +1,12 @@
 import Link from 'next/link';
 import Image from 'next/image';
-import { Clock, Mail, MapPin, MessageCircle, Navigation, Phone, ShieldCheck, Truck, Undo2 } from 'lucide-react';
+import { Clock, Mail, MessageCircle, Phone, ShieldCheck, Truck, Undo2 } from 'lucide-react';
 import { getCurrentUser } from '@/lib/auth';
 import { getStoreSettings, whatsappLink } from '@/lib/settings';
 import { getCategoryTree } from '@/lib/catalog';
 import { getSiteI18n } from '@/lib/i18n/site-server';
-import { storeLocation } from '@/lib/store-location';
-import { PICKUP_HOLD_HOURS, OUTSIDE_DALOA_MAX_DAYS, FINAL_SALE_NOTICE_SHORT } from '@/lib/store-policy';
+import { OUTSIDE_DALOA_MAX_DAYS, FINAL_SALE_NOTICE_SHORT } from '@/lib/store-policy';
+import { BRAND, BRAND_LOGO_SIZE, STORE_TAGLINE } from '@/lib/brand';
 
 export async function SiteFooter() {
   const [settings, tree, { t }, user] = await Promise.all([
@@ -16,7 +16,6 @@ export async function SiteFooter() {
     getCurrentUser(),
   ]);
   const whatsapp = whatsappLink(settings);
-  const location = storeLocation(settings);
 
   return (
     <footer className="mt-16 bg-navy-950 text-navy-200">
@@ -26,10 +25,9 @@ export async function SiteFooter() {
           <div className="flex items-start gap-3">
             <Truck className="mt-0.5 size-5 shrink-0 text-accent-400" aria-hidden />
             <div>
-              <p className="text-sm font-semibold text-white">{t('Retrait à Daloa et livraison')}</p>
+              <p className="text-sm font-semibold text-white">{t('Livraison à domicile')}</p>
               <p className="text-xs text-navy-300">
-                {t('Retrait en boutique sous {hours} h. Livraison à Daloa, ou hors Daloa en {days} jours maximum.', {
-                  hours: PICKUP_HOLD_HOURS,
+                {t('Livraison à Daloa, ou partout en Côte d’Ivoire en {days} jours maximum.', {
                   days: OUTSIDE_DALOA_MAX_DAYS,
                 })}
               </p>
@@ -50,20 +48,12 @@ export async function SiteFooter() {
             </div>
           </div>
           <div className="flex items-start gap-3">
-            <Navigation className="mt-0.5 size-5 shrink-0 text-accent-400" aria-hidden />
+            <Clock className="mt-0.5 size-5 shrink-0 text-accent-400" aria-hidden />
             <div>
-              <p className="text-sm font-semibold text-white">{t('Adresse exacte')}</p>
-              <p className="text-xs text-navy-300" dir="ltr">
-                {location.dms}
+              <p className="text-sm font-semibold text-white">{t('Horaires')}</p>
+              <p className="text-xs text-navy-300">
+                {settings.openingHours ?? t('Écrivez-nous sur WhatsApp : nous répondons pendant les heures d’ouverture.')}
               </p>
-              <a
-                href={location.mapsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-xs font-semibold text-accent-300 underline decoration-accent-500 underline-offset-2 hover:text-accent-200"
-              >
-                {t('Ouvrir dans Google Maps')}
-              </a>
             </div>
           </div>
         </div>
@@ -71,26 +61,30 @@ export async function SiteFooter() {
 
       <div className="container-page grid gap-8 py-10 sm:grid-cols-2 lg:grid-cols-4">
         <div>
-          <Image src="/brand/medi-logo-horizontal-blanc.png" alt="MeDi Shop" width={1069} height={200} className="h-10 w-auto sm:h-12" />
-          <p className="mt-4 max-w-xs text-sm leading-relaxed">
-            {settings.tagline ??
-              t('Quincaillerie, outillage industriel, matériel de construction et équipement de la maison à Daloa.')}
+          <Image
+            src={BRAND.logoHorizontalWhite}
+            alt={settings.storeName}
+            width={BRAND_LOGO_SIZE.width}
+            height={BRAND_LOGO_SIZE.height}
+            className="h-10 w-auto sm:h-12"
+          />
+          <p className="mt-3 max-w-xs text-sm font-semibold text-accent-300">
+            {settings.tagline ?? STORE_TAGLINE}
+          </p>
+          <p className="mt-2 max-w-xs text-sm leading-relaxed">
+            {t('Outillage, matériaux de construction et équipement de la maison, livrés à domicile.')}
           </p>
           <address className="mt-4 space-y-2 not-italic text-sm">
-            <p className="flex items-start gap-2">
-              <MapPin className="mt-0.5 size-4 shrink-0 text-accent-400" aria-hidden />
+            <p className="flex items-center gap-2">
+              <MessageCircle className="size-4 shrink-0 text-emerald-400" aria-hidden />
               <a
-                href={location.mapsUrl}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-white"
+                href={whatsapp ?? '/contact'}
+                target={whatsapp ? '_blank' : undefined}
+                rel={whatsapp ? 'noopener noreferrer' : undefined}
+                className="font-semibold text-white hover:text-emerald-200"
+                dir="ltr"
               >
-                <span className="block font-semibold text-white" dir="ltr">
-                  {location.dms}
-                </span>
-                <span className="text-xs text-navy-300">
-                  {location.city}, {location.country}
-                </span>
+                {settings.whatsapp ?? settings.phone}
               </a>
             </p>
             {settings.phone ? (
@@ -139,10 +133,9 @@ export async function SiteFooter() {
         <nav aria-label={t('Informations')}>
           <h2 className="text-sm font-semibold text-white">{t('Informations')}</h2>
           <ul className="mt-3 space-y-2 text-sm">
-            <li><Link href="/nous-trouver" className="hover:text-white">{t('Nous trouver')}</Link></li>
-            <li><Link href="/livraison" className="hover:text-white">{t('Livraison et retrait')}</Link></li>
+            <li><Link href="/livraison" className="hover:text-white">{t('Livraison et frais')}</Link></li>
             <li><Link href="/livraison#faq-livraison" className="hover:text-white">{t('FAQ livraisons')}</Link></li>
-            <li><Link href="/paiement" className="hover:text-white">{t('Paiement Wave')}</Link></li>
+            <li><Link href="/paiement" className="hover:text-white">{t('Paiement')}</Link></li>
             <li><Link href="/suivi" className="hover:text-white">{t('Suivre ma commande')}</Link></li>
             <li><Link href="/retours" className="hover:text-white">{t('Retours et remboursements')}</Link></li>
             <li><Link href="/cgv" className="hover:text-white">{t('Conditions générales de vente')}</Link></li>
@@ -186,7 +179,10 @@ export async function SiteFooter() {
 
       <div className="border-t border-navy-800">
         <div className="container-page flex flex-col gap-2 py-5 text-xs text-navy-400 sm:flex-row sm:items-center sm:justify-between">
-          <p>© {new Date().getFullYear()} MeDi Shop — Daloa, {t('Côte d’Ivoire')}. {t('Tous droits réservés.')}</p>
+          <p>
+            © {new Date().getFullYear()} {settings.storeName} — {settings.city}, {t('Côte d’Ivoire')}.{' '}
+            {t('Tous droits réservés.')}
+          </p>
           <p className="flex flex-wrap gap-x-4 gap-y-1">
             <Link href="/cgv" className="hover:text-white">{t('CGV')}</Link>
             <Link href="/confidentialite" className="hover:text-white">{t('Confidentialité')}</Link>

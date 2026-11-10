@@ -2,7 +2,7 @@ import type { Permission } from './auth';
 import type { OrderStatus } from './order-status';
 
 /**
- * Contenu du guide « Comment utiliser le site MeDi Shop » (`/admin/guide`).
+ * Contenu du guide « Comment utiliser le site Perokado » (`/admin/guide`).
  *
  * Les textes sont rangés ici, hors de la page, pour deux raisons :
  *  • les tests vérifient que **chaque phrase** existe bien en arabe (la page,
@@ -90,7 +90,7 @@ export const GUIDE_INTRO: GuideStep[] = [
   },
   {
     title: 'Le client reçoit',
-    text: 'Retrait gratuit en boutique sous 48 h, livraison dans un quartier de Daloa, ou expédition hors Daloa en 7 jours maximum.',
+    text: 'Livraison à domicile dans un quartier de Daloa, ou expédition hors Daloa en 7 jours maximum. Le retrait en magasin n’est plus proposé.',
   },
 ];
 
@@ -218,7 +218,7 @@ export const GUIDE_PROBLEMS: { q: string; a: string }[] = [
   },
   {
     q: 'Le client ne vient pas chercher son colis.',
-    a: 'Appelez-le. Le colis payé en ligne reste {hours} h en boutique au maximum, puis les articles retournent en stock.',
+    a: 'Appelez-le avant que le colis ne parte. Une fois la commande remise au livreur ou au transporteur, elle ne peut plus être modifiée ; le stock reste réservé tant que la commande n’est pas annulée.',
   },
   {
     q: 'Le produit est arrivé abîmé.',

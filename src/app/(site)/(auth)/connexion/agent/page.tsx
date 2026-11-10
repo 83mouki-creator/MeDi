@@ -29,7 +29,7 @@ export default async function AgentAccessPage() {
       <Card className="p-6">
         <h1 className="text-xl font-extrabold">Activer mon accès agent</h1>
         <p className="mt-1 text-sm text-navy-600">
-          Votre compte a été créé par un administrateur MeDi Shop. Saisissez le code d’accès reçu par WhatsApp, vos nom et
+          Votre compte a été créé par un administrateur Perokado. Saisissez le code d’accès reçu par WhatsApp, vos nom et
           prénom, puis votre numéro de téléphone pour choisir votre mot de passe.
         </p>
         <div className="mt-5">

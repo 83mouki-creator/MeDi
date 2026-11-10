@@ -86,7 +86,7 @@ def recolor_svg(path: Path) -> None:
 
 
 def main() -> None:
-    print("→ Identité visuelle MeDi Shop : orange → jaune doré")
+    print("→ Identité visuelle Perokado : orange → jaune doré")
     for name in PNG_FILES:
         path = BRAND / name
         if path.exists():

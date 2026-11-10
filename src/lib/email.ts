@@ -7,8 +7,8 @@ import { env } from './env';
  *
  *   BREVO_API_KEY    → https://brevo.com    (300 e-mails/jour gratuits, domaine vérifié)
  *   RESEND_API_KEY   → https://resend.com   (alternative, mêmes fonctions)
- *   EMAIL_FROM       → expéditeur, ex. « MeDi Shop <no-reply@medishopdaloa.com> »
- *   EMAIL_REPLY_TO   → option : adresse de réponse, ex. « contact@medishopdaloa.com »
+ *   EMAIL_FROM       → expéditeur, ex. « Perokado <no-reply@perokado.com> »
+ *   EMAIL_REPLY_TO   → option : adresse de réponse, ex. « contact@perokado.com »
  *
  * Brevo est prioritaire s'il est configuré ; les deux clés peuvent cohabiter,
  * ce qui permet de basculer d'un fournisseur à l'autre en une variable.
@@ -97,11 +97,11 @@ export async function sendEmail(payload: EmailPayload): Promise<{ sent: boolean;
   }
 }
 
-/** « MeDi Shop <no-reply@x.com> » → { name, email } (format attendu par Brevo). */
+/** « Perokado <no-reply@x.com> » → { name, email } (format attendu par Brevo). */
 export function parseSender(from: string): { name: string; email: string } {
   const match = from.match(/^\s*(.*?)\s*<([^>]+)>\s*$/);
-  if (match) return { name: match[1] || 'MeDi Shop', email: match[2]! };
-  return { name: 'MeDi Shop', email: from.trim() };
+  if (match) return { name: match[1] || 'Perokado', email: match[2]! };
+  return { name: 'Perokado', email: from.trim() };
 }
 
 /** Adresse plausible ? Évite d'appeler le fournisseur pour une saisie incomplète. */

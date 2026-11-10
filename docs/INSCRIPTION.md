@@ -1,4 +1,4 @@
-# Ouvrir un compte client sur MeDi Shop
+# Ouvrir un compte client sur Perokado
 
 **L'inscription est ouverte.** N'importe qui peut créer un compte client en une
 trentaine de secondes, sans intervention de la boutique : il n'y a ni validation
@@ -11,11 +11,11 @@ immédiatement, et il ne donne **jamais** accès à l'administration.
 
 ### Étape par étape
 
-1. Ouvrir **https://medi-daloa.vercel.app** (site ou application Android : c'est
+1. Ouvrir **https://perokado.vercel.app** (site ou application Android : c'est
    le même chemin).
 2. En haut à droite, appuyer sur **« Compte / Connexion »**, puis sur
    **« Créer un compte »**. Le lien figure aussi en bas de chaque page, dans le
-   pied de page. Adresse directe : **https://medi-daloa.vercel.app/inscription**
+   pied de page. Adresse directe : **https://perokado.vercel.app/inscription**
 3. Remplir le formulaire :
 
    | Champ | Ce qu'il faut saisir |
@@ -52,7 +52,7 @@ téléphone** saisi à l'inscription (format `0701020304` ou `+225 07 01 02 03 0
 
 ## 2. Mot de passe oublié
 
-Page **https://medi-daloa.vercel.app/mot-de-passe-oublie**.
+Page **https://perokado.vercel.app/mot-de-passe-oublie**.
 
 | Situation | Ce qui se passe |
 | --- | --- |

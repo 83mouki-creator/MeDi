@@ -1,15 +1,19 @@
-Fichiers générés par scripts/make-brand-assets.ts à partir de medi-logo-source.png.
-Ne pas éditer à la main : relancer le script après remplacement du logo source.
-Le mot « Shop » est ajouté au mot d'origine depuis scripts/brand/shop-wordmark.svg
-(tracé produit par scripts/make-shop-wordmark.py) : toutes ces images écrivent « MeDi Shop ».
+Fichiers générés — ne pas éditer à la main.
 
-medi-logo.png                  → logo empilé, fond clair (documents, e-mails)
-medi-logo-blanc.png            → logo empilé, fond sombre
-medi-logo-horizontal.png       → en-tête et pied de page sur fond clair
-medi-logo-horizontal-blanc.png → en-tête et pied de page bleu nuit
-medi-icon.png                  → icône carrée 512 px (favicon, réseaux sociaux, PWA)
-medi-icon-192.png              → icône 192 px exigée par le manifeste de l’application Android
-medi-icon-maskable-512.png     → icône « maskable » 512 px (zone sûre 72 %, fond bleu nuit)
-apple-touch-icon.png           → icône iOS 180 px
-favicon-32.png                 → favicon PNG 32 px
-medi-og.png                    → image de partage 1200×630
+  1. python3 scripts/make-brand-vectors.py   (tracés vectoriels)
+  2. npm run brand:assets                   (toutes les images dérivées)
+
+perokado-logo-horizontal-blanc.png  → en-tête et pied de page (fond bleu nuit)
+perokado-logo-horizontal.png        → documents et fonds clairs
+perokado-logo.png                   → logo empilé, fond clair
+perokado-logo-blanc.png             → logo empilé, fond sombre
+perokado-icon.png                   → icône carrée 512 px
+perokado-icon-192.png               → icône 192 px (manifeste Android)
+perokado-icon-maskable-512.png      → icône « maskable » 512 px
+apple-touch-icon.png                → icône iOS 180 px
+favicon-32.png                      → favicon 32 px
+perokado-og.png                     → image de partage 1200 × 630
+play-feature-graphic.png            → bannière Play Store 1024 × 500
+
+Slogan : « Tout ce que vous cherchez au même endroit. »
+Police des tracés : Poppins Bold, SIL OFL 1.1 (scripts/brand/Poppins-OFL.txt).

@@ -27,6 +27,7 @@ export function ProductForm({
     shortDescription: string | null;
     description: string | null;
     price: string;
+    purchasePrice: string | null;
     promoPrice: string | null;
     promoStartsAt: string | null;
     promoEndsAt: string | null;
@@ -49,6 +50,19 @@ export function ProductForm({
   const { t } = useAdminI18n();
   const [state, formAction, pending] = useActionState(saveProductAction, initial);
   const [rows, setRows] = useState(attributes.length > 0 ? attributes : [{ name: '', value: '' }]);
+
+  // Aperçu de la marge : recalculé à la frappe, pour que le propriétaire voie
+  // tout de suite ce que le produit lui rapporte réellement.
+  const [price, setPrice] = useState(product?.price ?? '');
+  const [purchasePrice, setPurchasePrice] = useState(product?.purchasePrice ?? '');
+  const priceNumber = Number(price);
+  const purchaseNumber = Number(purchasePrice);
+  const margin =
+    price !== '' && purchasePrice !== '' && Number.isFinite(priceNumber) && Number.isFinite(purchaseNumber)
+      ? priceNumber - purchaseNumber
+      : null;
+  const marginRate =
+    margin !== null && priceNumber > 0 ? Math.round((margin / priceNumber) * 100) : null;
 
   return (
     <form action={formAction} className="space-y-4" encType="multipart/form-data">
@@ -110,8 +124,34 @@ export function ProductForm({
       <Card className="space-y-3 p-4">
         <h2 className="text-sm font-bold">{t('Prix et stock')}</h2>
         <div className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
-          <Field label={t('Prix (FCFA)')} htmlFor="price" required error={state.fieldErrors?.price}>
-            <Input id="price" name="price" type="number" min={1} step={1} defaultValue={product?.price ?? ''} required />
+          <Field label={t('Prix de vente (FCFA)')} htmlFor="price" required error={state.fieldErrors?.price}>
+            <Input
+              id="price"
+              name="price"
+              type="number"
+              min={1}
+              step={1}
+              value={price}
+              onChange={(event) => setPrice(event.target.value)}
+              required
+            />
+          </Field>
+          <Field
+            label={t('Prix d’achat (FCFA)')}
+            htmlFor="purchasePrice"
+            error={state.fieldErrors?.purchasePrice}
+            hint={t('Ce que le produit vous coûte. Il n’est jamais affiché au client : il sert au bénéfice net.')}
+          >
+            <Input
+              id="purchasePrice"
+              name="purchasePrice"
+              type="number"
+              min={0}
+              step={1}
+              value={purchasePrice}
+              onChange={(event) => setPurchasePrice(event.target.value)}
+              placeholder="0"
+            />
           </Field>
           <Field label={t('Prix promo (FCFA)')} htmlFor="promoPrice" error={state.fieldErrors?.promoPrice}>
             <Input id="promoPrice" name="promoPrice" type="number" min={0} step={1} defaultValue={product?.promoPrice ?? ''} />
@@ -128,6 +168,31 @@ export function ProductForm({
           <Field label={t('Me prévenir quand il en reste')} htmlFor="lowStockThreshold">
             <Input id="lowStockThreshold" name="lowStockThreshold" type="number" min={0} step={1} defaultValue={product?.lowStockThreshold ?? ''} placeholder="5" />
           </Field>
+        </div>
+        <div
+          className={`rounded-lg border p-3 text-sm ${
+            margin === null
+              ? 'border-navy-200 bg-navy-50 text-navy-600'
+              : margin < 0
+                ? 'border-rose-200 bg-rose-50 text-rose-800'
+                : 'border-emerald-200 bg-emerald-50 text-emerald-800'
+          }`}
+          aria-live="polite"
+        >
+          {margin === null ? (
+            <span>
+              {t('Renseignez le prix d’achat pour voir le bénéfice net de ce produit. Tant qu’il est vide, la vente n’est pas comptée dans le bénéfice du tableau de bord.')}
+            </span>
+          ) : (
+            <span>
+              {t('Bénéfice net par unité vendue :')}{' '}
+              <strong>
+                {new Intl.NumberFormat('fr-FR').format(margin)} FCFA
+                {marginRate !== null ? ` (${marginRate} %)` : ''}
+              </strong>
+              {margin < 0 ? ` — ${t('vous vendez à perte, vérifiez le prix de vente.')}` : ''}
+            </span>
+          )}
         </div>
         <div className="flex flex-wrap gap-4 text-sm">
           <label className="flex items-center gap-2">

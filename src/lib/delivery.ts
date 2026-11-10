@@ -5,8 +5,12 @@ import { toFcfa } from './utils';
 import type { PublicSettings } from './settings';
 import { pickLocalZone } from './daloa';
 
-export type DeliveryMethod = 'PICKUP' | 'LOCAL_DELIVERY' | 'CARRIER';
-export type PaymentMethod = 'WAVE' | 'CASH_ON_DELIVERY' | 'CASH_IN_STORE';
+/**
+ * La boutique ne propose plus le retrait en magasin : il ne reste que la
+ * livraison (locale, tarif par quartier) et l'expédition hors ville.
+ */
+export type DeliveryMethod = 'LOCAL_DELIVERY' | 'CARRIER';
+export type PaymentMethod = 'WAVE' | 'CASH_ON_DELIVERY';
 
 export type DeliveryQuote = {
   zone: DeliveryZone | null;
@@ -58,20 +62,6 @@ export async function quoteDelivery(params: {
     }
   }
 
-  if (method === 'PICKUP') {
-    if (!settings.allowPickup) errors.push("Le retrait en boutique n'est pas disponible actuellement.");
-    return {
-      zone,
-      method,
-      isLocal: true,
-      fee: 0,
-      prepaymentRequired: false,
-      transportToNegotiate: false,
-      availableMethods: buildPaymentMethods({ isLocal: true, method, total: subtotal, settings }),
-      errors,
-    };
-  }
-
   if (!zone) {
     errors.push('Sélectionnez une destination de livraison.');
     return {
@@ -95,7 +85,7 @@ export async function quoteDelivery(params: {
     errors.push("La livraison à domicile n'est pas disponible actuellement.");
   }
   if (method === 'CARRIER' && isLocal) {
-    errors.push('Pour Daloa, choisissez le retrait en boutique ou la livraison à domicile.');
+    errors.push('Pour cette ville, choisissez la livraison à domicile.');
   }
 
   // Hors Daloa : le montant du transport est négocié sur WhatsApp, donc le site
@@ -143,33 +133,34 @@ export function buildPaymentMethods(params: {
   total: number;
   settings: PublicSettings;
 }): PaymentMethod[] {
-  const { isLocal, method, total, settings } = params;
+  const { isLocal, total, settings } = params;
+  // Le paiement mobile (Wave ou compte marchand PSP) est toujours possible.
   const methods: PaymentMethod[] = ['WAVE'];
 
-  if (!isLocal) {
-    // Hors Daloa : uniquement le prépaiement.
-    return methods;
-  }
+  // Hors Daloa : uniquement le prépaiement (aucun encaissement à la remise).
+  if (!isLocal) return methods;
 
-  if (settings.allowCod && settings.codMaxAmount > 0 && total <= settings.codMaxAmount && method !== 'PICKUP') {
+  if (settings.allowCod && settings.codMaxAmount > 0 && total <= settings.codMaxAmount) {
     methods.push('CASH_ON_DELIVERY');
-  }
-  if (method === 'PICKUP') {
-    methods.push('CASH_IN_STORE');
   }
   return methods;
 }
 
-export const deliveryMethodLabels: Record<DeliveryMethod, string> = {
-  PICKUP: 'Retrait en boutique (Daloa)',
+/**
+ * Libellés lisibles. Les clés historiques (`PICKUP`, `CASH_IN_STORE`) restent
+ * présentes : des commandes passées avant la suppression du retrait en magasin
+ * les portent encore, et la fiche commande doit rester lisible.
+ */
+export const deliveryMethodLabels: Record<string, string> = {
   LOCAL_DELIVERY: 'Livraison à domicile (Daloa)',
   CARRIER: 'Livraison hors Daloa (transport à convenir sur WhatsApp)',
+  PICKUP: 'Retrait en boutique (archivé)',
 };
 
-export const paymentMethodLabels: Record<PaymentMethod, string> = {
-  WAVE: 'Wave (paiement mobile)',
+export const paymentMethodLabels: Record<string, string> = {
+  WAVE: 'Paiement mobile (Wave / compte marchand)',
   CASH_ON_DELIVERY: 'Paiement à la livraison',
-  CASH_IN_STORE: 'Paiement en boutique au retrait',
+  CASH_IN_STORE: 'Espèces en boutique (archivé)',
 };
 
 export function isMethodAvailable(
@@ -199,12 +190,6 @@ export async function findLocalZoneForNeighbourhood(neighbourhood: string): Prom
   }));
   const chosen = pickLocalZone(candidates, neighbourhood);
   return chosen ? zones.find((zone) => zone.id === chosen.id) ?? null : null;
-}
-
-/** Zone de retrait en boutique (gratuite). */
-export async function findPickupZone(): Promise<DeliveryZone | null> {
-  const zones = await listZones(true);
-  return zones.find((zone) => zone.isPickup) ?? null;
 }
 
 export async function findZoneByCity(city: string) {

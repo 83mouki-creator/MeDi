@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
 import { asc, eq } from 'drizzle-orm';
-import { CalendarClock, Info, MessageCircle, Navigation, PackageCheck, Store, TriangleAlert, Truck } from 'lucide-react';
+import { CalendarClock, Info, MessageCircle, PackageCheck, TriangleAlert, Truck } from 'lucide-react';
 import { db } from '@/db';
 import { deliveryZones } from '@/db/schema';
 import { getStoreSettings } from '@/lib/settings';
@@ -12,15 +12,15 @@ import { faqJsonLd } from '@/lib/faq';
 import { DELIVERY_FAQ, DELIVERY_FAQ_FALLBACK_MESSAGE } from '@/lib/delivery-faq';
 import { RETURNS_FAQ, RETURNS_FAQ_FALLBACK_MESSAGE } from '@/lib/returns-faq';
 import { getSiteI18n } from '@/lib/i18n/site-server';
-import { storeLocation, whatsappWithMessage } from '@/lib/store-location';
-import { OUTSIDE_DALOA_MAX_DAYS, PICKUP_HOLD_HOURS, FINAL_SALE_NOTICE, STORE_POLICY_VARS } from '@/lib/store-policy';
+import { whatsappWithMessage } from '@/lib/store-location';
+import { OUTSIDE_DALOA_MAX_DAYS, FINAL_SALE_NOTICE, STORE_POLICY_VARS } from '@/lib/store-policy';
 import { DALOA_NEIGHBOURHOODS, bandFromZoneName, neighbourhoodsForBand } from '@/lib/daloa';
 import { PurchaseNotice } from '@/components/purchase-notice';
 
 export const metadata: Metadata = {
   title: 'Livraison à Daloa et dans toute la Côte d’Ivoire',
   description:
-    'Retrait en boutique à Daloa sous 48 h, livraison dans votre quartier de Daloa, ou livraison hors Daloa en 7 jours maximum avec transport à convenir sur WhatsApp.',
+    'Livraison à domicile dans votre quartier de Daloa, ou partout en Côte d’Ivoire en 7 jours maximum avec transport à convenir sur WhatsApp.',
   alternates: { canonical: '/livraison' },
 };
 
@@ -38,12 +38,10 @@ export default async function DeliveryPage() {
 
   const local = zones.filter((zone) => zone.isLocal && !zone.isPickup);
   const national = zones.filter((zone) => !zone.isLocal && !zone.isPickup);
-  const pickupZone = zones.find((zone) => zone.isPickup) ?? null;
   const faqStructuredData = faqJsonLd(DELIVERY_FAQ, settings, (text) => t(text, STORE_POLICY_VARS));
-  const location = storeLocation(settings);
   const transportLink = whatsappWithMessage(
     settings,
-    'Bonjour MeDi Shop, je souhaite connaître le prix du transport et le délai pour une livraison hors Daloa.',
+    'Bonjour Perokado, je souhaite connaître le prix du transport et le délai pour une livraison hors Daloa.',
   );
 
   // Quartiers rattachés à chaque zone locale : c'est la liste que voit le client.
@@ -55,28 +53,18 @@ export default async function DeliveryPage() {
   return (
     <div className="container-page max-w-4xl py-8">
       <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(faqStructuredData) }} />
-      <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">{t('Livraison et retrait')}</h1>
+      <h1 className="text-2xl font-extrabold tracking-tight sm:text-3xl">{t('Livraison et frais')}</h1>
       <p className="mt-2 text-sm text-navy-600">
-        {t('MeDi Shop opère depuis {city}. Vous choisissez d’abord où vous voulez être livré : dans un quartier de Daloa, ou ailleurs en Côte d’Ivoire.', {
+        {t('{store} livre à domicile depuis {city}. Vous choisissez d’abord où vous voulez être livré : dans un quartier de Daloa, ou ailleurs en Côte d’Ivoire.', {
+          store: settings.storeName,
           city: settings.city,
         })}
       </p>
 
-      <div className="mt-5 grid gap-3 sm:grid-cols-3">
-        <Card className="p-4">
-          <Store className="size-5 text-accent-600" aria-hidden />
-          <h2 className="mt-2 font-bold">{t('Retrait en boutique')}</h2>
-          <p className="mt-1 text-sm text-navy-600">
-            {settings.allowPickup
-              ? t('Gratuit. Votre colis est gardé {hours} h maximum après confirmation de la commande, pendant les heures d’ouverture.', {
-                  hours: PICKUP_HOLD_HOURS,
-                })
-              : t('Temporairement désactivé par la boutique.')}
-          </p>
-        </Card>
+      <div className="mt-5 grid gap-3 sm:grid-cols-2">
         <Card className="p-4">
           <Truck className="size-5 text-accent-600" aria-hidden />
-          <h2 className="mt-2 font-bold">{t('Livraison à Daloa')}</h2>
+          <h2 className="mt-2 font-bold">{t('Livraison à domicile à Daloa')}</h2>
           <p className="mt-1 text-sm text-navy-600">
             {settings.allowLocalDelivery
               ? t('Vous choisissez votre quartier à la commande. Le prix de la livraison dépend du quartier et s’affiche avant paiement.')
@@ -162,25 +150,20 @@ export default async function DeliveryPage() {
 
       <section className="mt-8" aria-labelledby="horaires">
         <h2 id="horaires" className="flex items-center gap-2 text-lg font-bold">
-          <CalendarClock className="size-5 text-accent-600" aria-hidden /> {t('Jours et heures de retrait et de livraison')}
+          <CalendarClock className="size-5 text-accent-600" aria-hidden /> {t('Jours et heures de livraison')}
         </h2>
         <ul className="mt-2 space-y-1.5 text-sm text-navy-700">
           <li>
-            <strong>{t('Retrait en boutique')}</strong> : {settings.openingHours ?? t('horaires communiqués par téléphone')} ·{' '}
-            {t('colis gardé {hours} h maximum.', { hours: PICKUP_HOLD_HOURS })}
-          </li>
-          <li>
-            <strong>{t('Livraison à Daloa')}</strong> : {t('du lundi au samedi, aux heures d’ouverture de la boutique.')}
+            <strong>{t('Livraison à Daloa')}</strong> :{' '}
+            {settings.openingHours
+              ? t('du lundi au samedi, aux heures d’ouverture : {hours}.', { hours: settings.openingHours })
+              : t('du lundi au samedi, aux heures d’ouverture de la boutique.')}
           </li>
           <li>
             <strong>{t('Hors Daloa')}</strong> : {t('expédition sous {days} jours maximum selon la ville.', { days: OUTSIDE_DALOA_MAX_DAYS })}
           </li>
           <li>
-            <strong>{t('Adresse exacte de la boutique')}</strong> :{' '}
-            <span className="font-mono" dir="ltr">{location.dms}</span> ·{' '}
-            <a href={location.mapsUrl} target="_blank" rel="noopener noreferrer" className="font-semibold text-accent-700 underline">
-              {t('Ouvrir dans Google Maps')}
-            </a>
+            <strong>{t('Une question ?')}</strong> : {t('écrivez-nous sur WhatsApp, nous répondons pendant les heures d’ouverture.')}
           </li>
         </ul>
       </section>
@@ -220,9 +203,6 @@ export default async function DeliveryPage() {
       </div>
 
       <div className="mt-6 flex flex-wrap gap-3 text-sm">
-        <Link href="/nous-trouver" className="inline-flex items-center gap-1.5 font-semibold text-accent-700 hover:underline">
-          <Navigation className="size-4" aria-hidden /> {t('Nous trouver')}
-        </Link>
         <Link href="/retours" className="inline-flex items-center gap-1.5 font-semibold text-accent-700 hover:underline">
           <TriangleAlert className="size-4" aria-hidden /> {t('Conditions de retour')}
         </Link>

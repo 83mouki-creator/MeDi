@@ -32,7 +32,7 @@ sensible, pas seulement dans l'interface. Les actions d'administration sont jour
 npm run admin:create -- --email=direction@exemple.ci --role=OWNER --name="Direction"
 ```
 
-Le mot de passe est demandé en interactif (ou via `MEDI_ADMIN_PASSWORD` pour un pipeline). Règles :
+Le mot de passe est demandé en interactif (ou via `PEROKADO_ADMIN_PASSWORD` pour un pipeline). Règles :
 12 caractères minimum, majuscule, minuscule, chiffre, caractère spécial. Un compte existant est mis à
 jour (rôle, mot de passe, réactivation) et l'opération est journalisée.
 
@@ -47,53 +47,44 @@ npm run config:store -- --force # réapplique les valeurs du dépôt (écrase le
 
 Ensuite, tout se modifie dans l'interface :
 
-- `/admin/parametres` : téléphone, WhatsApp, horaires, adresse, numéro Wave, paiement à la livraison,
-  **géolocalisation (latitude / longitude)**.
+- `/admin/parametres` : téléphone, WhatsApp, horaires, compte Wave et compte marchand, paiement à la
+  livraison et son plafond.
 - `/admin/livraison` : zones, frais, seuil de gratuité, délais. Le tunnel de commande lit uniquement
   ces lignes — aucun tarif n'est codé en dur.
 
-### Géolocalisation de la boutique
+### Livraison uniquement : ni retrait, ni carte
 
-Deux champs dans `/admin/parametres → Géolocalisation de la boutique` : latitude et longitude en
-degrés décimaux, six décimales (ex. `6.877520` / `-6.450220`, virgule acceptée). Relevé à faire sur
-place (application Plans, GPS du téléphone) — aucune coordonnée n'est estimée par l'application.
+Le parcours ne propose plus le **retrait en magasin** et la boutique ne publie plus d'adresse
+géographique : le client est livré chez lui, et n'a donc pas besoin de se rendre sur place.
 
-- Les deux valeurs vont ensemble : une seule coordonnée est refusée à l'enregistrement, et les bornes
-  sont contrôlées (latitude −90 → 90, longitude −180 → 180).
-- Tant que la paire est vide, `/nous-trouver` n'affiche **aucune carte** : la page annonce que la
-  position est en attente et propose le WhatsApp de la boutique.
-- Dès que la paire est enregistrée : carte OpenStreetMap (sans clé d'API), boutons « Itinéraire »
-  et « Ouvrir dans Maps », coordonnées affichées, et bloc `geo` dans les données structurées
-  (`Store`) de la page.
-- La page est liée depuis le pied de page, la page contact et l'accueil ; elle est référencée dans
-  `sitemap.xml`.
+- Les pages « Nous trouver » et la carte ont été retirées du site ; aucun lien ne subsiste.
+- Les champs latitude / longitude ne sont plus affichés ni enregistrés dans `/admin/parametres`.
+  Les colonnes restent en base (aucune migration destructive) mais sont vidées à chaque
+  enregistrement des paramètres.
+- Le réglage `allow_pickup` est forcé à `false` par le code : même une ancienne valeur en base ne
+  peut plus réactiver un choix de retrait au moment de la commande.
+- Ce que le client voit à la place : la page `/livraison` (quartiers de Daloa, frais, villes
+  desservies) et le WhatsApp de la boutique pour convenir du transport.
+
 
 Le logo officiel est décliné automatiquement (`npm run brand:assets`) vers `public/brand/` :
 en-tête et pied de page (fond bleu nuit), favicon, icône iOS, image de partage.
 
-## Langue de l'interface (français / arabe)
+## Langue de l'interface : français uniquement
 
-Le back-office existe en **français et en arabe**. Le bouton « العربية / Français » de la barre
-supérieure bascule toute l'administration ; le choix est mémorisé dans un cookie
-(`medi_admin_locale`), donc conservé d'une session à l'autre.
+Le site public **et** l'administration sont **entièrement en français**. Il n'y a plus de sélecteur
+de langue, plus de cookie de langue et plus aucun texte arabe : l'affichage est toujours de gauche à
+droite, pour tout le monde.
 
-Ce qui change en arabe :
+Ce que cela implique concrètement :
 
-- l'interface passe en **RTL** : le panneau de navigation s'ouvre depuis la droite, les libellés et
-  les tableaux sont alignés à droite, les flèches de pagination et l'icône de déconnexion sont
-  inversées ;
-- tous les libellés d'écran, boutons, colonnes, messages d'aide et textes d'erreur sont traduits
-  (arabe standard, registre professionnel) ;
-- les **données restent dans leur langue de saisie** : noms de produits, catégories, marques et
-  fournisseurs ne sont jamais traduits automatiquement. Les villes sont translittérées à l'affichage
-  (دالوا، أبيدجان…) mais les valeurs enregistrées restent inchangées.
-
-Ce qui ne change pas : **la boutique publique reste entièrement en français**, quel que soit le
-choix fait dans l'administration. Le cookie n'est lu que par les pages `/admin`.
-
-Pour ajouter ou corriger une traduction : `src/lib/i18n/admin.ts`. Le texte français sert de clé ;
-une clé absente s'affiche en français plutôt que de casser l'écran, et le test
-`tests/i18n-admin.test.ts` signale toute chaîne d'administration encore non traduite.
+- les libellés d'écran, boutons, colonnes, messages d'aide et textes d'erreur sont écrits en
+  français directement dans les pages ;
+- `src/lib/i18n/admin.ts` et `src/lib/i18n/site.ts` ne contiennent plus de dictionnaire : ils
+  exposent une fonction `t()` qui ne fait qu'interpoler les variables `{compteur}` ;
+- les tests `tests/i18n-admin.test.ts` et `tests/i18n-site.test.ts` échouent si un caractère arabe,
+  une variante `rtl:` ou l'ancienne enseigne réapparaît dans le code ;
+- les données saisies (produits, catégories, fournisseurs) restent dans leur langue de saisie.
 
 ## Navigation
 
@@ -111,19 +102,20 @@ auxquels il n'a pas droit.
 | --- | --- |
 | `/admin` | tableau de bord : chiffre d'affaires encaissé, commandes par statut, paiements à vérifier, stocks faibles, meilleures ventes, dernières commandes, alertes de configuration |
 | `/admin/produits` | liste filtrable (recherche, inactifs, stock faible, archivés), accès aux fiches |
-| `/admin/produits/nouveau`, `/admin/produits/[id]` | création / édition : prix FCFA, promotion avec fenêtre de dates, stock, seuil d'alerte, précommande, catégorie, marque, mots-clés, caractéristiques, photos, archivage |
+| `/admin/produits/nouveau`, `/admin/produits/[id]` | création / édition : prix de vente et **prix d'achat** FCFA (bénéfice net affiché en direct), promotion avec fenêtre de dates, stock, seuil d'alerte, précommande, catégorie, marque, mots-clés, caractéristiques, photos, archivage |
 | `/admin/stock` | ajustements de stock avec motif obligatoire (delta ou valeur cible) et historique des mouvements |
 | `/admin/categories` | catégories (arborescence) et marques |
 | `/admin/commandes` | recherche (numéro, client, téléphone), filtres statut / paiement / ville / période, pagination |
 | `/admin/messages` | demandes reçues via le formulaire de contact : coordonnées du client, message, prise en charge, clôture, réouverture |
 | `/admin/commandes/[id]` | détail, articles, historique horodaté, changement de statut, vérification du paiement (confirmer / refuser avec justification), expédition et suivi, note interne |
 | `/admin/paiements` | paiements à vérifier, historique des confirmations, mode Wave actif |
-| `/admin/livraison` | zones, frais, seuil de gratuité, délai, retrait, activation |
-| `/admin/parametres` | coordonnées, horaires, géolocalisation (latitude / longitude), numéro Wave, paiement à la livraison (activation + plafond), réservation, textes légaux, état des intégrations (sans afficher les secrets) |
+| `/admin/livraison` | zones, frais, seuil de gratuité, délai, activation |
+| `/admin/parametres` | coordonnées, horaires, compte Wave et compte marchand, paiement à la livraison (activation + plafond), réservation, textes légaux, état des intégrations (sans afficher les secrets) |
 | `/admin/import` | import CSV (simulation puis import), import de photos en masse, affectation des photos, réindexation visuelle |
 | `/admin/utilisateurs` | création de comptes internes, rôles, activation/désactivation |
 | `/admin/journal` | journal d'audit, recherche par action, opérateur ou entité |
-| `/admin/statistiques` | ventes, répartition des paiements et livraisons, meilleures ventes, recherches sans résultat |
+| `/admin/statistiques` | ventes, **bénéfice net total et par produit**, répartition des paiements et livraisons, recherches sans résultat |
+| `/admin/stickers` | bibliothèque de vignettes (« Garantie 12 mois », « -20 % ») et affectation à tout le catalogue, à une recherche ou à une sélection |
 
 ## Règles de gestion clés
 

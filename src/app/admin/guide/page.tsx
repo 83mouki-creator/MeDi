@@ -22,7 +22,7 @@ import {
 import { getAdminI18n } from '@/lib/i18n/admin-server';
 import { can, getCurrentUser } from '@/lib/auth';
 import { ORDER_STATUS_LABELS } from '@/lib/order-status';
-import { PICKUP_HOLD_HOURS, OUTSIDE_DALOA_MAX_DAYS, FINAL_SALE_NOTICE } from '@/lib/store-policy';
+import { OUTSIDE_DALOA_MAX_DAYS, FINAL_SALE_NOTICE } from '@/lib/store-policy';
 import { getStoreSettings } from '@/lib/settings';
 import {
   GUIDE_GESTURES,
@@ -73,7 +73,7 @@ export default async function AdminGuidePage() {
           <p className="flex items-center gap-2 text-[11px] font-bold uppercase tracking-[0.16em] text-accent-300">
             <BookOpen className="size-3.5" aria-hidden /> {t('Guide de l’équipe')}
           </p>
-          <h1 className="mt-2 text-2xl font-extrabold tracking-tight sm:text-3xl">{t('Comment utiliser le site MeDi Shop')}</h1>
+          <h1 className="mt-2 text-2xl font-extrabold tracking-tight sm:text-3xl">{t('Comment utiliser le site Perokado')}</h1>
           <p className="mt-1 max-w-2xl text-sm text-navy-200">
             {t('Ce guide tient en cinq minutes. Il explique le chemin d’une commande, ce que vous faites chaque jour, et quoi faire quand quelque chose bloque. Aucun mot compliqué.')}
           </p>
@@ -88,7 +88,7 @@ export default async function AdminGuidePage() {
               href="/"
               className="inline-flex items-center gap-2 rounded-lg bg-white/10 px-3.5 py-2 text-sm font-semibold text-white ring-1 ring-white/20 hover:bg-white/20"
             >
-              {t('Voir la boutique')} <ArrowRight className="size-4 rtl:-scale-x-100" aria-hidden />
+              {t('Voir la boutique')} <ArrowRight className="size-4" aria-hidden />
             </Link>
           </div>
         </div>
@@ -121,7 +121,7 @@ export default async function AdminGuidePage() {
           <h2 className="text-lg font-extrabold text-navy-950">{t('Comprendre le site en une minute')}</h2>
         </div>
         <p className="mt-2 text-sm text-navy-600">
-          {t('Le site MeDi Shop sert à deux choses : montrer vos produits aux clients, et vous dire exactement ce qu’il faut préparer. Voici le trajet complet, du clic du client jusqu’au colis remis.')}
+          {t('Le site Perokado sert à deux choses : montrer vos produits aux clients, et vous dire exactement ce qu’il faut préparer. Voici le trajet complet, du clic du client jusqu’au colis remis.')}
         </p>
         <ol className="mt-4 grid gap-3 sm:grid-cols-2">
           {GUIDE_INTRO.map((step, index) => (
@@ -137,7 +137,7 @@ export default async function AdminGuidePage() {
           ))}
         </ol>
         <div className="mt-3 flex flex-wrap gap-2 text-xs text-navy-600">
-          <Badge tone="accent">{t('Retrait gardé {hours} h', { hours: PICKUP_HOLD_HOURS })}</Badge>
+          <Badge tone="accent">{t('Livraison à domicile uniquement')}</Badge>
           <Badge tone="neutral">{t('Hors Daloa : {days} jours maximum', { days: OUTSIDE_DALOA_MAX_DAYS })}</Badge>
           <Badge tone="success">{t('Transport hors Daloa convenu sur WhatsApp')}</Badge>
         </div>
@@ -233,7 +233,7 @@ export default async function AdminGuidePage() {
         <div className="mt-3 flex flex-wrap items-center gap-3 rounded-xl border border-navy-100 bg-navy-50/50 p-3 text-xs text-navy-700">
           <Languages className="size-4 shrink-0 text-accent-700" aria-hidden />
           <p className="min-w-0 flex-1">
-            {t('Langue : le bouton « العربية / Français » change l’administration en arabe, sans toucher à la langue vue par les clients. Le sélecteur de la boutique (FR / EN / ع) règle la vitrine séparément.')}
+            {t('Langue : le site et l’administration sont entièrement en français. Il n’y a plus de sélecteur de langue à régler : tout le monde voit les mêmes textes.')}
           </p>
         </div>
       </Card>
@@ -266,10 +266,10 @@ export default async function AdminGuidePage() {
               <summary className="flex cursor-pointer list-none items-center gap-2 text-sm font-semibold text-navy-900">
                 <CircleHelp className="size-4 shrink-0 text-accent-600" aria-hidden />
                 <span className="min-w-0 flex-1">{t(item.q)}</span>
-                <ArrowRight className="size-4 shrink-0 text-navy-300 transition-transform group-open:rotate-90 rtl:-scale-x-100" aria-hidden />
+                <ArrowRight className="size-4 shrink-0 text-navy-300 transition-transform group-open:rotate-90" aria-hidden />
               </summary>
               <p className="mt-2 ps-6 text-xs leading-relaxed text-navy-600">
-                {t(item.a, { hours: PICKUP_HOLD_HOURS })}
+                {t(item.a)}
               </p>
             </details>
           ))}

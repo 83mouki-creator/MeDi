@@ -51,6 +51,20 @@ export const env = {
     },
   },
 
+  /**
+   * Encaissement mobile money / carte (Wave, portefeuilles, agrégateur PSP).
+   *
+   * `merchantNumber` est le numéro marchand communiqué aux clients en mode
+   * manuel (Wave marchand, compte marchand PSP). `merchantLabel` est le nom
+   * affiché à côté de ce numéro (ex. « Wave », « Orange Money »).
+   */
+  psp: {
+    /** Numéro / compte marchand affiché au client. */
+    merchantNumber: optional('PSP_MERCHANT_NUMBER'),
+    /** Nom du prestataire, en clair. */
+    merchantLabel: optional('PSP_MERCHANT_LABEL'),
+  },
+
   storage: {
     driver: (optional('STORAGE_DRIVER', 'local') as 'local' | 'cloudinary'),
     localDir: optional('STORAGE_LOCAL_DIR', 'public/uploads'),
@@ -107,8 +121,8 @@ export const env = {
     },
   },
 
-  sessionCookieName: 'medi_session',
-  cartCookieName: 'medi_cart',
+  sessionCookieName: 'perokado_session',
+  cartCookieName: 'perokado_cart',
   sessionTtlDays: 30,
 };
 

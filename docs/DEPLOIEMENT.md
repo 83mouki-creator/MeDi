@@ -34,7 +34,7 @@ DIRECT_URL="postgresql://…" npm run db:migrate
 Aucun compte n'est créé par les migrations et aucun mot de passe par défaut n'existe.
 
 ```bash
-MEDI_ADMIN_EMAIL="direction@exemple.ci" MEDI_ADMIN_PASSWORD="…" MEDI_ADMIN_ROLE=OWNER npm run admin:create
+PEROKADO_ADMIN_EMAIL="direction@exemple.ci" PEROKADO_ADMIN_PASSWORD="…" PEROKADO_ADMIN_ROLE=OWNER npm run admin:create
 ```
 
 Exécuter cette commande depuis un poste de confiance avec `DATABASE_URL` pointant sur la production,

@@ -65,7 +65,7 @@ export default async function AccountOverview() {
                       {siteOrderStatusLabel(t, order.status as OrderStatus)}
                     </Badge>
                     <span className="text-sm font-bold">{formatFCFA(order.total)}</span>
-                    <ArrowRight className="size-4 text-navy-400 rtl:rotate-180" aria-hidden />
+                    <ArrowRight className="size-4 text-navy-400" aria-hidden />
                   </div>
                 </Link>
               </li>

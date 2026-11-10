@@ -1,11 +1,18 @@
 'use client';
 
 import { createContext, useContext, useMemo, type ReactNode } from 'react';
-import { adminDir, translate, type AdminLocale, type AdminTranslator } from '@/lib/i18n/admin';
+import { translate, type AdminTranslator } from '@/lib/i18n/admin';
 
+/**
+ * Contexte de langue des composants clients de l'administration.
+ *
+ * L'administration est en français seulement : le contexte existe pour que les
+ * formulaires interactifs continuent d'appeler `t()` (interpolation des
+ * variables `{clé}`), sans jamais changer de langue ni de sens de lecture.
+ */
 type AdminI18nValue = {
-  locale: AdminLocale;
-  dir: 'ltr' | 'rtl';
+  locale: 'fr';
+  dir: 'ltr';
   t: AdminTranslator;
 };
 
@@ -15,19 +22,14 @@ const AdminI18nContext = createContext<AdminI18nValue>({
   t: (text) => text,
 });
 
-/**
- * Contexte de langue des composants clients de l'administration.
- * Les pages serveur appellent `getAdminI18n()` directement ; ce fournisseur
- * sert aux formulaires interactifs (fiche produit, réglages, filtres…).
- */
-export function AdminI18nProvider({ locale, children }: { locale: AdminLocale; children: ReactNode }) {
+export function AdminI18nProvider({ children }: { locale?: 'fr'; children: ReactNode }) {
   const value = useMemo<AdminI18nValue>(
     () => ({
-      locale,
-      dir: adminDir(locale),
-      t: (text, vars) => translate(locale, text, vars),
+      locale: 'fr',
+      dir: 'ltr',
+      t: (text, vars) => translate('fr', text, vars),
     }),
-    [locale],
+    [],
   );
   return <AdminI18nContext.Provider value={value}>{children}</AdminI18nContext.Provider>;
 }

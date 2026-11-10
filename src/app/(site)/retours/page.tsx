@@ -7,13 +7,13 @@ import { RETURNS_FAQ, RETURNS_FAQ_FALLBACK_MESSAGE } from '@/lib/returns-faq';
 import { FaqSection } from '@/components/faq-section';
 import { Alert, Card } from '@/components/ui/primitives';
 import { getSiteI18n } from '@/lib/i18n/site-server';
-import { FINAL_SALE_NOTICE, OUTSIDE_DALOA_MAX_DAYS, PICKUP_HOLD_HOURS, STORE_POLICY_VARS } from '@/lib/store-policy';
+import { FINAL_SALE_NOTICE, OUTSIDE_DALOA_MAX_DAYS, STORE_POLICY_VARS } from '@/lib/store-policy';
 import { PurchaseNotice } from '@/components/purchase-notice';
 
 export const metadata: Metadata = {
   title: 'Retours, échanges et garanties',
   description:
-    'Règle MeDi Shop : une fois le produit livré, ni remboursement, ni échange. Ce qui reste possible avant la remise, et comment joindre le service client.',
+    'Règle Perokado : une fois le produit livré, ni remboursement, ni échange. Ce qui reste possible avant la remise, et comment joindre le service client.',
   alternates: { canonical: '/retours' },
 };
 
@@ -91,11 +91,9 @@ export default async function ReturnsPage() {
         </Card>
         <Card className="p-4 text-sm">
           <Truck className="size-5 text-accent-600" aria-hidden />
-          <h3 className="mt-2 font-bold">{t('Retrait en boutique')}</h3>
+          <h3 className="mt-2 font-bold">{t('Avant la livraison')}</h3>
           <p className="mt-1 text-navy-600">
-            {t('Un colis payé en ligne est gardé {hours} h maximum. Passé ce délai, contactez la boutique : le stock est remis en vente.', {
-              hours: PICKUP_HOLD_HOURS,
-            })}
+            {t('Tant que le colis n’est pas remis au livreur ou au transporteur, la commande peut être modifiée ou annulée sur WhatsApp : les articles réglés par Wave sont alors rendus par le même moyen.')}
           </p>
         </Card>
       </div>
@@ -152,7 +150,7 @@ export default async function ReturnsPage() {
       </p>
 
       <div className="mt-6 flex flex-wrap gap-3 text-sm">
-        <Link href="/livraison" className="font-semibold text-accent-700 underline">{t('Livraison et retrait')}</Link>
+        <Link href="/livraison" className="font-semibold text-accent-700 underline">{t('Livraison et frais')}</Link>
         <Link href="/contact" className="font-semibold text-accent-700 underline">{t('Contact')}</Link>
         <Link href="/cgv" className="font-semibold text-accent-700 underline">{t('Conditions générales de vente')}</Link>
       </div>
