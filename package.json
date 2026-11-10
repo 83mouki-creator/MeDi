@@ -21,14 +21,16 @@
     "import:photos": "tsx --env-file-if-exists=.env.local scripts/import-photos.ts",
     "import:catalog": "tsx --env-file-if-exists=.env.local scripts/import-catalog.ts",
     "reindex:visual": "tsx --env-file-if-exists=.env.local scripts/reindex-visual.ts",
-    "brand:assets": "tsx scripts/make-brand-assets.ts",
+    "brand:assets": "tsx scripts/make-brand-emblem.ts && tsx scripts/make-brand-assets.ts && tsx scripts/make-hero-image.ts",
     "assetlinks": "tsx scripts/make-assetlinks.ts",
     "admin:create": "tsx --env-file-if-exists=.env.local scripts/create-admin.ts",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:setup": "tsx --env-file-if-exists=.env.local scripts/test-db-setup.ts",
     "db:reset": "tsx --env-file-if-exists=.env.local scripts/reset-db.ts",
-    "play:assets": "tsx scripts/make-play-assets.ts"
+    "play:assets": "tsx scripts/make-play-assets.ts",
+    "brand:emblem": "tsx scripts/make-brand-emblem.ts",
+    "brand:hero": "tsx scripts/make-hero-image.ts"
   },
   "dependencies": {
     "clsx": "2.1.1",

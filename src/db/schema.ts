@@ -122,6 +122,7 @@ export const shipmentStatusEnum = pgEnum('shipment_status', [
   'PENDING',
   'DISPATCHED',
   'IN_TRANSIT',
+  'ARRIVED',
   'DELIVERED',
   'RETURNED',
 ]);
@@ -529,17 +530,32 @@ export const shipments = pgTable(
     orderId: text('order_id')
       .notNull()
       .references(() => orders.id, { onDelete: 'cascade' }),
+    /**
+     * Transporteur, tel qu'il doit apparaître au client.
+     *
+     * `COLIS_EXPRESS` est une valeur réservée : c'est l'identifiant du
+     * prestataire branché dans l'administration (voir `src/lib/colis-express.ts`).
+     * Toute autre valeur est un transporteur saisi à la main.
+     */
     carrier: text('carrier'),
+    /** Code de suivi chez le transporteur (Colis Express : `CLI-XXXXXX`). */
     trackingNumber: text('tracking_number'),
+    /** Lien public de suivi, quand le transporteur en fournit un. */
+    trackingUrl: text('tracking_url'),
     fee: numeric('fee', { precision: 12, scale: 2 }).notNull().default('0'),
     status: shipmentStatusEnum('status').notNull().default('PENDING'),
+    /** Ville de destination annoncée au transporteur. */
+    destinationCity: text('destination_city'),
+    /** Dernier statut connu **chez le transporteur** (« En transit », …). */
+    providerStatus: text('provider_status'),
+    providerCheckedAt: timestamp('provider_checked_at', { withTimezone: true }),
     dispatchedAt: timestamp('dispatched_at', { withTimezone: true }),
     deliveredAt: timestamp('delivered_at', { withTimezone: true }),
     notes: text('notes'),
     createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
     updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
   },
-  (t) => [index('shipments_order_idx').on(t.orderId)],
+  (t) => [index('shipments_order_idx').on(t.orderId), index('shipments_tracking_idx').on(t.trackingNumber)],
 );
 
 export const orderStatusHistory = pgTable(

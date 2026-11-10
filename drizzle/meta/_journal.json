@@ -78,6 +78,13 @@
       "when": 1794305500000,
       "tag": "0010_perokado_single_number",
       "breakpoints": true
+    },
+    {
+      "idx": 11,
+      "version": "7",
+      "when": 1794305600000,
+      "tag": "0011_colis_express",
+      "breakpoints": true
     }
   ]
 }

@@ -24,7 +24,8 @@ export type GuideIcon =
   | 'promo'
   | 'print'
   | 'users'
-  | 'journal';
+  | 'journal'
+  | 'truck';
 
 export type GuideSection = { id: string; label: string };
 
@@ -117,6 +118,13 @@ export const GUIDE_ROUTINE: GuideAction[] = [
     permission: 'orders.read',
   },
   {
+    href: '/admin/expeditions',
+    icon: 'truck',
+    title: 'Expédier les colis hors Daloa',
+    text: 'Créez le colis chez Colis Express, puis saisissez ici le code de suivi : le client le voit dans son suivi.',
+    permission: 'delivery.manage',
+  },
+  {
     href: '/admin/messages',
     icon: 'message',
     title: 'Répondre aux messages',
@@ -153,6 +161,13 @@ export const GUIDE_GESTURES: GuideAction[] = [
     title: 'Changer le stock',
     text: 'Pour une pièce : ouvrez la fiche du produit. Pour tout le stock d’un coup : les boutons + et − en haut de la page Stock.',
     permission: 'products.read',
+  },
+  {
+    href: '/admin/expeditions',
+    icon: 'truck',
+    title: 'Enregistrer un colis Colis Express',
+    text: 'Le client a payé et habite hors de Daloa. Ouvrez le guichet Colis Express, créez le colis, puis revenez ici saisir le code CLI-… : le suivi du client s’active tout seul.',
+    permission: 'delivery.manage',
   },
   {
     href: '/admin/bons',

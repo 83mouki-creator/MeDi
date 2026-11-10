@@ -66,8 +66,19 @@ export const BRAND = {
   iconMaskable: '/brand/perokado-icon-maskable-512.png',
   appleTouchIcon: '/brand/apple-touch-icon.png',
   favicon: '/brand/favicon-32.png',
-  /** Emblème vectoriel (filigrane de l'administration). */
+  /**
+   * Emblème 3D (plaque bleu nuit, sac doré, « P » gravé).
+   *
+   * C'est LE dessin de la marque : il porte le liseré doré et la lumière du
+   * rendu d'origine, et se pose aussi bien sur du blanc que sur du bleu nuit.
+   * Il est produit par `npm run brand:emblem` à partir du rendu carré de
+   * `public/brand/source/`.
+   */
+  emblem3d: '/brand/perokado-emblem-3d.png',
+  /** Emblème vectoriel, à plat (filigrane discret, documents imprimés). */
   emblem: '/brand/perokado-emblem.svg',
+  /** Photo du bandeau d'accueil (`npm run brand:hero`). */
+  heroImage: '/brand/fond-accueil.jpg',
   /** Image de partage (Open Graph / Twitter). */
   ogImage: '/brand/perokado-og.png',
 } as const;

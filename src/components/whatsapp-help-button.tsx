@@ -13,6 +13,9 @@ import { getSiteI18n } from '@/lib/i18n/site-server';
  *
  * Composant serveur : le numéro vient des réglages (`/admin/parametres`) et le
  * lien `wa.me` est calculé ici, jamais dans le navigateur.
+ *
+ * Sur mobile, il remonte au-dessus de la barre d'achat de la fiche produit
+ * (`MobileBuyBar`) : deux boutons superposés se gêneraient.
  */
 export async function WhatsAppHelpButton() {
   const [settings, { t }] = await Promise.all([getStoreSettings(), getSiteI18n()]);
@@ -20,7 +23,7 @@ export async function WhatsAppHelpButton() {
   if (!href) return null;
 
   return (
-    <div className="fixed bottom-4 end-4 z-30 print:hidden">
+    <div className="fixed bottom-20 end-3 z-30 print:hidden lg:bottom-4 lg:end-4">
       <a
         href={href}
         target="_blank"

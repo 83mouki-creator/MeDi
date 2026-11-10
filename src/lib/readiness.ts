@@ -64,6 +64,22 @@ export type ReadinessSnapshot = {
     /** Agents et autres comptes internes actifs. */
     activeStaff: number;
   };
+  /**
+   * Ce qui se passe après la commande : expédition, messages, tranquillité du
+   * propriétaire quand il n'est pas devant son écran.
+   */
+  operations: {
+    /** Commandes payées hors Daloa qui attendent un transporteur. */
+    awaitingDispatch: number;
+    /** Expéditions déjà confiées au transporteur et pas encore livrées. */
+    inTransit: number;
+    /** Une clé d'API Colis Express est configurée (statuts synchronisés). */
+    carrierSync: boolean;
+    /** Messages clients sans réponse. */
+    unansweredMessages: number;
+    /** Nombre de tâches automatiques déclarées (voir `vercel.json`). */
+    automations: number;
+  };
   infrastructure: {
     database: boolean;
     /** Wave API configurée (webhooks + vérification automatique). */
@@ -92,7 +108,7 @@ export type ReadinessReport = {
 const phoneLike = (value: string | null) => Boolean(value && value.replace(/\D/g, '').length >= 8);
 
 export function computeReadiness(snapshot: ReadinessSnapshot): ReadinessReport {
-  const { settings, catalog, delivery, infrastructure, staff } = snapshot;
+  const { settings, catalog, delivery, infrastructure, staff, operations } = snapshot;
 
   const checks: ReadinessCheck[] = [
     // ── Ce que la boutique doit fournir ─────────────────────────────────────
@@ -242,6 +258,56 @@ export function computeReadiness(snapshot: ReadinessSnapshot): ReadinessReport {
       status: staff.managerAccounts > 0 ? 'ready' : 'blocking',
       owner: 'boutique',
       href: '/admin/utilisateurs',
+    },
+
+    // ── Ce qui se passe après la commande ───────────────────────────────────
+    {
+      id: 'expeditions',
+      label: 'Colis remis au transporteur',
+      detail:
+        operations.awaitingDispatch === 0
+          ? 'Aucune commande payée n’attend d’être expédiée.'
+          : '{count} commande(s) payée(s) attendent un code de suivi : le client a payé, le colis doit partir.',
+      vars: { count: operations.awaitingDispatch },
+      status: operations.awaitingDispatch === 0 ? 'ready' : 'blocking',
+      owner: 'boutique',
+      href: '/admin/expeditions',
+    },
+    {
+      id: 'suivi-transporteur',
+      label: 'Suivi des colis chez le transporteur',
+      detail: operations.carrierSync
+        ? 'Colis Express est branché en API : le statut des colis se met à jour tout seul.'
+        : operations.inTransit > 0
+          ? '{count} colis en route. Le lien de suivi fonctionne, mais le statut se met à jour à la main : renseignez COLIS_EXPRESS_API_BASE pour l’automatiser.'
+          : 'Le lien de suivi Colis Express fonctionne. La synchronisation automatique des statuts n’est pas branchée (facultatif).',
+      vars: { count: operations.inTransit },
+      status: operations.carrierSync || operations.inTransit === 0 ? 'ready' : 'todo',
+      owner: 'technique',
+      href: '/admin/expeditions',
+    },
+    {
+      id: 'messages',
+      label: 'Questions des clients sans réponse',
+      detail:
+        operations.unansweredMessages === 0
+          ? 'Aucun message client en attente : personne n’est laissé sans réponse.'
+          : '{count} message(s) attendent une réponse. Un client sans réponse n’achète pas deux fois.',
+      vars: { count: operations.unansweredMessages },
+      status: operations.unansweredMessages === 0 ? 'ready' : 'todo',
+      owner: 'boutique',
+      href: '/admin/messages',
+    },
+    {
+      id: 'automatisation',
+      label: 'Tâches qui tournent sans vous',
+      detail:
+        operations.automations > 0
+          ? '{count} tâche(s) planifiée(s) : réservations expirées libérées, paiements suivis, sauvegardes.'
+          : 'Aucune tâche planifiée déclarée : certaines corvées (libération du stock réservé) reposent sur une visite du site.',
+      vars: { count: operations.automations },
+      status: operations.automations > 0 ? 'ready' : 'todo',
+      owner: 'technique',
     },
 
     // ── Ce qui dépend de la configuration technique ─────────────────────────

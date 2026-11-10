@@ -1,11 +1,13 @@
 /**
  * Génération des images de marque Perokado.
  *
- *   python3 scripts/make-brand-vectors.py   # 1. les tracés vectoriels
- *   npm run brand:assets                    # 2. toutes les images dérivées
+ *   python3 scripts/make-brand-vectors.py   # 1. les tracés vectoriels (mot, slogan)
+ *   npm run brand:emblem                    # 2. l'emblème 3D détouré (source carrée)
+ *   npm run brand:assets                    # 3. toutes les images dérivées
  *
  * Entrées (dans public/brand/) :
- *   perokado-emblem.svg          emblème carré « P » doré sur bleu nuit
+ *   perokado-emblem-3d.png       emblème 3D (plaque bleu nuit, sac doré, « P » gravé)
+ *                                produit par `scripts/make-brand-emblem.ts`
  *   perokado-wordmark-navy.svg   mot « Perokado » (fond clair)
  *   perokado-wordmark-white.svg  mot « Perokado » (fond bleu nuit)
  *   perokado-slogan-white.svg    slogan (fond bleu nuit)
@@ -32,6 +34,27 @@ import sharp from 'sharp';
 import type { OverlayOptions } from 'sharp';
 
 const BRAND_DIR = path.join(process.cwd(), 'public', 'brand');
+
+/**
+ * Emblème de la marque : rendu 3D détouré (`scripts/make-brand-emblem.ts`).
+ *
+ * Un seul fichier alimente toutes les déclinaisons — icônes, logo horizontal,
+ * logo empilé, filigrane, image de partage — pour que la marque ne se
+ * « dégrade » jamais d'un support à l'autre.
+ */
+const EMBLEM = 'perokado-emblem-3d.png';
+
+/**
+ * Charge l'emblème à une hauteur donnée (le fichier source fait 1024 × 1024 et
+ * conserve sa transparence : il se pose aussi bien sur le bleu nuit que sur du
+ * blanc, sans liseré).
+ */
+async function emblem(height: number): Promise<Buffer> {
+  return sharp(await readFile(path.join(BRAND_DIR, EMBLEM)))
+    .resize({ height, fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
+    .png()
+    .toBuffer();
+}
 
 const NAVY = '#0e2340';
 const NAVY_DEEP = '#081729';
@@ -98,8 +121,8 @@ async function horizontalLockup(options: {
 }) {
   const { dark, emblemHeight, wordHeight, sloganHeight = 0 } = options;
 
-  const emblem = await renderSvg('perokado-emblem.svg', emblemHeight);
-  const emblemMeta = await meta(emblem);
+  const badge = await emblem(emblemHeight);
+  const emblemMeta = await meta(badge);
 
   // Le mot est rendu à la hauteur voulue ; sa largeur en découle.
   const wordFull = await renderSvg(dark ? 'perokado-wordmark-white.svg' : 'perokado-wordmark-navy.svg', 2400);
@@ -127,7 +150,7 @@ async function horizontalLockup(options: {
   const width = emblemMeta.width + gap + wordWidth;
   const height = Math.max(emblemHeight, textHeight);
   const layers: OverlayOptions[] = [
-    { input: emblem, top: Math.round((height - emblemHeight) / 2), left: 0 },
+    { input: badge, top: Math.round((height - emblemHeight) / 2), left: 0 },
     { input: word, top: Math.round((height - textHeight) / 2), left: emblemMeta.width + gap },
   ];
   if (slogan) {
@@ -146,7 +169,7 @@ async function horizontalLockup(options: {
 
 /** Logo empilé : emblème au-dessus, mot en dessous. */
 async function stackedLockup(dark: boolean) {
-  const emblem = await renderSvg('perokado-emblem.svg', 420);
+  const badge = await emblem(420);
   let word = await renderSvg(dark ? 'perokado-wordmark-white.svg' : 'perokado-wordmark-navy.svg', 760);
   const wordMeta = await meta(word);
   word = await sharp(word)
@@ -159,7 +182,7 @@ async function stackedLockup(dark: boolean) {
     create: { width: 620, height: 420 + gap + wordResized.height, channels: 4, background: { r: 0, g: 0, b: 0, alpha: 0 } },
   })
     .composite([
-      { input: emblem, top: 0, left: Math.round((620 - 420) / 2) },
+      { input: badge, top: 0, left: Math.round((620 - 420) / 2) },
       { input: word, top: 420 + gap, left: 0 },
     ])
     .png()
@@ -170,8 +193,10 @@ async function main() {
   await mkdir(BRAND_DIR, { recursive: true });
 
   // ── 1. Icônes ────────────────────────────────────────────────────────────
-  const emblemSvg = await readFile(path.join(BRAND_DIR, 'perokado-emblem.svg'));
-  const emblemBase = await sharp(emblemSvg, { density: 384 }).resize(1024, 1024).png().toBuffer();
+  const emblemBase = await sharp(await readFile(path.join(BRAND_DIR, EMBLEM)))
+    .resize(1024, 1024, { fit: 'contain', background: { r: 0, g: 0, b: 0, alpha: 0 } })
+    .png()
+    .toBuffer();
 
   await sharp(emblemBase).resize(512, 512).png({ compressionLevel: 9 }).toFile(path.join(BRAND_DIR, 'perokado-icon.png'));
   await sharp(emblemBase).resize(192, 192).png({ compressionLevel: 9 }).toFile(path.join(BRAND_DIR, 'perokado-icon-192.png'));
@@ -180,7 +205,7 @@ async function main() {
 
   // Icône « maskable » : le lanceur Android rogne les bords (cercle, goutte…),
   // le dessin doit donc tenir dans les 72 % centraux — ici, badge plus resserré.
-  const maskableBadge = await sharp(emblemSvg, { density: 384 }).resize(1024, 1024).png().toBuffer();
+  const maskableBadge = emblemBase;
   await sharp({
     create: { width: 512, height: 512, channels: 4, background: { r: 14, g: 35, b: 64, alpha: 1 } },
   })
@@ -239,12 +264,14 @@ async function main() {
       'Fichiers générés — ne pas éditer à la main.',
       '',
       '  1. python3 scripts/make-brand-vectors.py   (tracés vectoriels)',
-      '  2. npm run brand:assets                   (toutes les images dérivées)',
+      '  2. npm run brand:emblem                   (emblème 3D détouré)',
+      '  3. npm run brand:assets                   (toutes les images dérivées)',
       '',
       'perokado-logo-horizontal-blanc.png  → en-tête et pied de page (fond bleu nuit)',
       'perokado-logo-horizontal.png        → documents et fonds clairs',
       'perokado-logo.png                   → logo empilé, fond clair',
       'perokado-logo-blanc.png             → logo empilé, fond sombre',
+      'perokado-emblem-3d.png              → emblème 3D détouré 1024 px',
       'perokado-icon.png                   → icône carrée 512 px',
       'perokado-icon-192.png               → icône 192 px (manifeste Android)',
       'perokado-icon-maskable-512.png      → icône « maskable » 512 px',

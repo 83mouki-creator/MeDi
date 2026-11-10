@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { globSync, readFileSync } from 'node:fs';
+import { existsSync, globSync, readFileSync } from 'node:fs';
 import { BRAND, STORE_WHATSAPP, STORE_WHATSAPP_DIGITS, WHATSAPP_MESSAGES } from '@/lib/brand';
 import { whatsappLink } from '@/lib/settings';
 
@@ -90,15 +90,27 @@ describe('aide accessible depuis tout le site', () => {
 });
 
 describe('identité affichée', () => {
-  it('utilise l’emblème « sac de boutique » aux endroits clés', () => {
-    expect(BRAND.emblem).toBe('/brand/perokado-emblem.svg');
+  it('utilise l’emblème 3D « sac de boutique » aux endroits clés', () => {
+    // L'emblème 3D est le dessin de référence : icônes, filigrane, partage.
+    expect(BRAND.emblem3d).toBe('/brand/perokado-emblem-3d.png');
     expect(BRAND.icon).toBe('/brand/perokado-icon.png');
     // L'administration reprend l'emblème en filigrane, l'en-tête et le pied de
     // page le verrou complet.
     const admin = readFileSync('src/app/admin/layout.tsx', 'utf8');
-    expect(admin).toContain('BRAND.emblem');
+    expect(admin).toContain('BRAND.emblem3d');
     const header = readFileSync('src/components/site-header.tsx', 'utf8');
     expect(header).toContain('BRAND.logoHorizontalWhite');
+    // L'accueil affiche la photo du bandeau par la constante de marque, pour
+    // qu'un changement d'image ne se fasse qu'à un seul endroit.
+    const home = readFileSync('src/app/(site)/page.tsx', 'utf8');
+    expect(home).toContain('BRAND.heroImage');
+    expect(home).not.toContain('fond-quincaillerie');
+  });
+
+  it('les fichiers de marque référencés existent réellement dans public/', () => {
+    for (const file of [BRAND.emblem3d, BRAND.heroImage, BRAND.icon, BRAND.icon192, BRAND.iconMaskable, BRAND.appleTouchIcon, BRAND.favicon, BRAND.ogImage, BRAND.logoHorizontalWhite, BRAND.logoHorizontal, BRAND.logoStacked, BRAND.logoStackedWhite]) {
+      expect(existsSync(`public${file}`), `Fichier de marque manquant : ${file}`).toBe(true);
+    }
   });
 
   it('n’affiche plus l’ancienne enseigne nulle part dans l’interface', () => {

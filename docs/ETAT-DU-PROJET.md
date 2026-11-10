@@ -1,13 +1,17 @@
 # État du projet
 
-Dernière mise à jour : **2026-11-03**.
+Dernière mise à jour : **2026-11-10**.
 
 ## Résumé honnête
 
 La plateforme est **fonctionnelle de bout en bout sur le plan logiciel** : catalogue réel en base,
 recherche texte et visuelle, panier recalculé côté serveur, commandes avec réservation de stock,
 paiement Wave (mode manuel vérifié par un administrateur), espace client, back-office complet,
-migrations versionnées, build de production et **194 tests d'intégration exécutés avec succès**.
+migrations versionnées, build de production et **335 tests d'intégration exécutés avec succès** (32 fichiers).
+
+> La liste à jour de ce qui manque pour vendre sans intervenir est tenue par
+> [`VENDRE-SEUL.md`](VENDRE-SEUL.md) et par l'écran `/admin/pret-a-vendre`, qui la
+> calcule en direct depuis la base.
 
 Elle n'est **pas encore « prête à vendre »** en production, pour des raisons qui ne sont pas du code :
 identifiants Wave (ou validation du mode manuel), coordonnées et mentions légales de la boutique,

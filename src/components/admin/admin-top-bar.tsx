@@ -16,6 +16,7 @@ import {
   Menu,
   MessageSquare,
   Package,
+  PackageCheck,
   Settings,
   ShieldCheck,
   ShoppingBag,
@@ -56,7 +57,8 @@ export type AdminNavItem = {
     | 'notes'
     | 'guide'
     | 'stickers'
-    | 'ready';
+    | 'ready'
+    | 'shipments';
   badge?: 'payments' | 'messages';
   /** Petite phrase qui explique le menu en mots simples. */
   hint?: string;
@@ -82,6 +84,7 @@ const ICONS = {
   notes: Truck,
   guide: BookOpen,
   ready: BadgeCheck,
+  shipments: PackageCheck,
 } as const;
 
 /**

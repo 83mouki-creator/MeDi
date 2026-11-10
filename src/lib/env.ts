@@ -121,6 +121,29 @@ export const env = {
     },
   },
 
+  /**
+   * Colis Express — transporteur des commandes hors de Daloa.
+   *
+   * Le prestataire n'expose pas d'API publique documentée. Deux niveaux :
+   *
+   *  • `trackingBase` : adresse du site public, utilisée pour construire les
+   *    liens de suivi `/suivi.html?code=CLI-XXXXXX`. Fonctionne toujours ;
+   *  • `apiBase` + `apiStatusPath` + `token` : renseignés seulement si le
+   *    prestataire fournit une API. Sans eux, l'administration n'appelle rien
+   *    et se contente d'ouvrir le lien de suivi.
+   */
+  colisExpress: {
+    trackingBase: optional('COLIS_EXPRESS_TRACKING_BASE', 'https://colisexpress-shopin30.vercel.app'),
+    apiBase: optional('COLIS_EXPRESS_API_BASE'),
+    token: optional('COLIS_EXPRESS_TOKEN'),
+    /** Chemin de lecture d'un colis, `{code}` remplacé par le code de suivi. */
+    apiStatusPath: optional('COLIS_EXPRESS_STATUS_PATH', '/api/colis/{code}'),
+    timeoutMs: Number(optional('COLIS_EXPRESS_TIMEOUT_MS', '6000')),
+    get configured() {
+      return Boolean(optional('COLIS_EXPRESS_API_BASE'));
+    },
+  },
+
   sessionCookieName: 'perokado_session',
   cartCookieName: 'perokado_cart',
   sessionTtlDays: 30,
