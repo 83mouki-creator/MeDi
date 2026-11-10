@@ -187,15 +187,6 @@ async function build(product: ManifestProduct) {
   };
 }
 
-/**
- * Une vignette réécrite au même chemin garderait la même URL, donc la même clé
- * dans le cache d'images de Next (indexé sur l'URL) : les visiteurs continueraient
- * de voir l'ancienne version. On suffixe l'URL d'une empreinte du contenu.
- */
-function versionedUrl(url: string, checksum: string) {
-  return `${url.split('?')[0]}?v=${checksum.slice(0, 8)}`;
-}
-
 /** Empreinte grossière d'une image, pour comparer deux bandeaux sans les lire en entier. */
 async function fingerprint(image: Buffer) {
   return sharp(image).resize(160, 30, { fit: 'fill' }).greyscale().raw().toBuffer();
@@ -270,7 +261,6 @@ async function relabel() {
     entry.checksum = createHash('sha256').update(composed).digest('hex');
     entry.width = CANVAS;
     entry.height = CANVAS;
-    entry.url = versionedUrl(entry.url, entry.checksum);
     done += 1;
   }
   await writeFile(IMAGES_INDEX, `${JSON.stringify(index, null, 2)}\n`);
