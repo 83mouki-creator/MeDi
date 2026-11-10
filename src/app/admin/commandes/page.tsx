@@ -45,7 +45,7 @@ export default async function AdminOrdersPage({ searchParams }: { searchParams: 
         <form method="get" className="grid gap-2 sm:grid-cols-2 lg:grid-cols-6">
           <div className="relative lg:col-span-2">
             <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-navy-400" aria-hidden />
-            <Input name="q" defaultValue={get('q') ?? ''} placeholder={t('MED-2026-…, téléphone, nom')} className="pl-9" aria-label={t('Rechercher une commande')} />
+            <Input name="q" defaultValue={get('q') ?? ''} placeholder={t('PER-2026-…, téléphone, nom')} className="pl-9" aria-label={t('Rechercher une commande')} />
           </div>
           <Select name="status" defaultValue={get('status') ?? ''} aria-label={t('Statut')}>
             <option value="">{t('Tous les statuts')}</option>

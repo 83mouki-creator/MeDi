@@ -35,7 +35,7 @@ async function createStaffInvite(overrides: Partial<typeof users.$inferInsert> =
   const id = 'usr_staff_test';
   await db.insert(users).values({
     id,
-    email: 'agent.2250708904891@agents.medi.local',
+    email: 'agent.2250708904891@agents.perokado.local',
     passwordHash: await hashPassword(generateStaffCode()),
     firstName: 'Awa',
     lastName: 'Koné',
@@ -58,7 +58,7 @@ describe('accès du personnel', () => {
     expect(byPhone[0]?.id).toBe(id);
     const byInternational = await lookupUsersByIdentifier('+225 07 08 90 48 91');
     expect(byInternational[0]?.id).toBe(id);
-    const byEmail = await lookupUsersByIdentifier('agent.2250708904891@agents.medi.local');
+    const byEmail = await lookupUsersByIdentifier('agent.2250708904891@agents.perokado.local');
     expect(byEmail[0]?.id).toBe(id);
   });
 
@@ -112,11 +112,11 @@ describe('accès du personnel', () => {
   it('n’autorise qu’un seul compte par numéro de téléphone', async () => {
     await createStaffInvite();
     await expect(
-      createStaffInvite({ id: 'usr_doublon', email: 'autre@agents.medi.local' }),
+      createStaffInvite({ id: 'usr_doublon', email: 'autre@agents.perokado.local' }),
     ).rejects.toThrow();
   });
 
   it('un agent créé sans e-mail réel ne peut pas être joint par e-mail', () => {
-    expect('agent.2250708904891@agents.medi.local'.endsWith('@agents.medi.local')).toBe(true);
+    expect('agent.2250708904891@agents.perokado.local'.endsWith('@agents.perokado.local')).toBe(true);
   });
 });

@@ -30,7 +30,7 @@ et recherche visuelle par photo.
 | Textes, visuels et captures pour la fiche Play Store | [`docs/PLAY-STORE.md`](docs/PLAY-STORE.md) |
 | Inscription des clients (procédure et dépannage) | [`docs/INSCRIPTION.md`](docs/INSCRIPTION.md) |
 | E-mails : Brevo, domaine `.com`, authentification DNS | [`docs/EMAIL.md`](docs/EMAIL.md) |
-| Dossier de la boutique (PDF : présentation, expérience client, étapes restantes) | [`docs/MeDi-dossier-boutique.pdf`](docs/MeDi-dossier-boutique.pdf) — en ligne sur `/dossier/dossier-boutique-medi.pdf`, régénéré par `python3 scripts/make-store-brief.py` |
+| Dossier de la boutique (PDF : présentation, expérience client, étapes restantes) | [`docs/Perokado-dossier-boutique.pdf`](docs/Perokado-dossier-boutique.pdf) — en ligne sur `/dossier/dossier-boutique-perokado.pdf`, régénéré par `python3 scripts/make-store-brief.py` |
 
 ## Stack
 
@@ -85,9 +85,9 @@ et se ferme définitivement une fois le compte créé. Retirer ensuite `ADMIN_SE
 | `npm run import:catalog -- --file=… [--dry-run]` | import CSV du catalogue |
 | `npm run import:photos -- --dir=… [--dry-run] [--assign]` | import en masse des photos |
 | `npm run reindex:visual` | calcule les empreintes visuelles des photos |
-| `npm run test:setup` | prépare la base `medi_test` |
+| `npm run test:setup` | prépare la base `perokado_test` |
 | `npm run test` | exécute la suite Vitest |
-| `npm run brand:assets` | régénère logos et icônes depuis `medi-logo-source.png` |
+| `npm run brand:assets` | régénère logos et icônes depuis les tracés de `scripts/make-brand-vectors.py` |
 | `npm run play:assets` | régénère la bannière Play Store 1024 × 500 |
 
 ## Arborescence

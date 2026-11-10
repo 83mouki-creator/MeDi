@@ -24,7 +24,7 @@ export function LoginForm({ redirectTo }: { redirectTo?: string }) {
         htmlFor="identifier"
         required
         error={state.fieldErrors?.identifier}
-        hint={t('Agents : votre numéro ivoirien suffit (ex. 07 08 90 48 91).')}
+        hint={t('Agents : votre numéro ivoirien suffit (ex. 05 44 01 41 82).')}
       >
         <Input id="identifier" name="identifier" autoComplete="username" required />
       </Field>

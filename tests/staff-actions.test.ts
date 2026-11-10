@@ -34,8 +34,8 @@ beforeEach(async () => {
 });
 
 async function signInAsOwner() {
-  const owner = await createUser({ email: 'patron@medi.test', role: 'OWNER' });
-  await authenticate('patron@medi.test', 'MotDePasseTest123!');
+  const owner = await createUser({ email: 'patron@perokado.test', role: 'OWNER' });
+  await authenticate('patron@perokado.test', 'MotDePasseTest123!');
   return owner;
 }
 
@@ -60,7 +60,7 @@ describe('création d’un agent par l’administrateur', () => {
     );
 
     expect(state.error).toBeUndefined();
-    expect(state.invitation?.code).toMatch(/^MEDI(-[A-HJ-NP-Z2-9]{4}){3}$/);
+    expect(state.invitation?.code).toMatch(/^PERO(-[A-HJ-NP-Z2-9]{4}){3}$/);
     expect(state.invitation?.whatsappLink).toContain('https://wa.me/2250708904891');
     expect(state.invitation?.roleLabel).toBe('Caissier');
 
@@ -95,8 +95,8 @@ describe('création d’un agent par l’administrateur', () => {
   });
 
   it('interdit à un administrateur de créer un compte de son niveau ou supérieur', async () => {
-    await createUser({ email: 'chef@medi.test', role: 'ADMIN' });
-    await authenticate('chef@medi.test', 'MotDePasseTest123!');
+    await createUser({ email: 'chef@perokado.test', role: 'ADMIN' });
+    await authenticate('chef@perokado.test', 'MotDePasseTest123!');
 
     const admin = await createStaffAction(
       {},
@@ -204,7 +204,7 @@ describe('activation par l’agent', () => {
     const disabled = await activateStaffAccessAction({}, form({ code: invitation.code, firstName: 'Awa', lastName: 'Koné', phone: '07 08 90 48 91', password: 'Caisse2026ok', passwordConfirm: 'Caisse2026ok' }));
     expect(disabled.error).toMatch(/désactivé/i);
 
-    const unknown = await activateStaffAccessAction({}, form({ code: 'MEDI-2222-3333-4444', firstName: 'Awa', lastName: 'Koné', phone: '07 08 90 48 91', password: 'Caisse2026ok', passwordConfirm: 'Caisse2026ok' }));
+    const unknown = await activateStaffAccessAction({}, form({ code: 'PERO-2222-3333-4444', firstName: 'Awa', lastName: 'Koné', phone: '07 08 90 48 91', password: 'Caisse2026ok', passwordConfirm: 'Caisse2026ok' }));
     expect(unknown.error).toBeTruthy();
   });
 });
@@ -221,7 +221,7 @@ describe('codes et liens émis par l’administrateur', () => {
   it('refuse à un caissier de régénérer un code', async () => {
     const cashier = await createUser({ role: 'ORDER_MANAGER' });
     await db.update(users).set({ role: 'CASHIER' }).where(eq(users.id, cashier.id));
-    await authenticate('patron@medi.test', 'MotDePasseTest123!').catch(() => undefined);
+    await authenticate('patron@perokado.test', 'MotDePasseTest123!').catch(() => undefined);
     const state = await regenerateStaffCodeAction({}, form({ id: cashier.id }));
     expect(state.error).toMatch(/administrateurs/i);
   });

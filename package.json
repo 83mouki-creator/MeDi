@@ -16,7 +16,7 @@
     "db:seed": "tsx --env-file-if-exists=.env.local scripts/seed.ts",
     "config:store": "tsx --env-file-if-exists=.env.local scripts/store-config.ts",
     "images:products": "tsx scripts/build-product-images.ts",
-    "catalogue:medi": "tsx --env-file-if-exists=.env.local scripts/import-medi.ts",
+    "catalogue:store": "tsx --env-file-if-exists=.env.local scripts/import-catalogue.ts",
     "db:studio": "drizzle-kit studio",
     "import:photos": "tsx --env-file-if-exists=.env.local scripts/import-photos.ts",
     "import:catalog": "tsx --env-file-if-exists=.env.local scripts/import-catalog.ts",

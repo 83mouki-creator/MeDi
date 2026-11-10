@@ -110,7 +110,7 @@ export default async function ReturnsPage() {
 
       <h2 className="mt-7 text-lg font-bold">{t('En cas de problème, dans l’ordre')}</h2>
       <ol className="mt-2 list-decimal space-y-2 ps-5 text-sm text-navy-600">
-        <li>{t('Notez votre numéro de commande (MED-AAAA-NNNNN).')}</li>
+        <li>{t('Notez votre numéro de commande (PER-AAAA-NNNNN).')}</li>
         <li>
           {t('Appelez le service client pendant les heures d’ouverture')}
           {settings.phone ? (

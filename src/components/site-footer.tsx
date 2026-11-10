@@ -6,7 +6,7 @@ import { getStoreSettings, whatsappLink } from '@/lib/settings';
 import { getCategoryTree } from '@/lib/catalog';
 import { getSiteI18n } from '@/lib/i18n/site-server';
 import { OUTSIDE_DALOA_MAX_DAYS, FINAL_SALE_NOTICE_SHORT } from '@/lib/store-policy';
-import { BRAND, BRAND_LOGO_SIZE, STORE_TAGLINE } from '@/lib/brand';
+import { BRAND, BRAND_LOGO_SIZE, WHATSAPP_MESSAGES, STORE_TAGLINE } from '@/lib/brand';
 
 export async function SiteFooter() {
   const [settings, tree, { t }, user] = await Promise.all([
@@ -15,7 +15,8 @@ export async function SiteFooter() {
     getSiteI18n(),
     getCurrentUser(),
   ]);
-  const whatsapp = whatsappLink(settings);
+  // Toujours avec un message prérempli : le client n'a rien à taper.
+  const whatsapp = whatsappLink(settings, WHATSAPP_MESSAGES.help);
 
   return (
     <footer className="mt-16 bg-navy-950 text-navy-200">

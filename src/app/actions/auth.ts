@@ -51,7 +51,7 @@ export async function loginAction(_prev: AuthState, formData: FormData): Promise
     return { fieldErrors: { identifier: 'Adresse e-mail invalide' } };
   }
   if (!isEmail && !normalizeIvorianPhone(identifier).ok && identifier.replace(/\D/g, '').length < 8) {
-    return { fieldErrors: { identifier: 'Numéro ivoirien invalide (ex. 07 08 90 48 91)' } };
+    return { fieldErrors: { identifier: 'Numéro ivoirien invalide (ex. 05 44 01 41 82)' } };
   }
 
   const h = await headers();

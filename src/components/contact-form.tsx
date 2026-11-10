@@ -22,7 +22,7 @@ export function ContactForm({ defaultEmail, defaultName }: { defaultEmail?: stri
   }
 
   return (
-    <form action={action} className="space-y-3">
+    <form action={action} id="formulaire" className="scroll-mt-24 space-y-3">
       {state.message ? <Alert tone="danger">{state.message}</Alert> : null}
 
       <div className="grid gap-3 sm:grid-cols-2">
@@ -39,7 +39,7 @@ export function ContactForm({ defaultEmail, defaultName }: { defaultEmail?: stri
           <Input id="phone" name="phone" type="tel" inputMode="tel" autoComplete="tel" placeholder={t('+225 …')} />
         </Field>
         <Field label={t('Numéro de commande')} htmlFor="orderNumber" hint={t('Si votre demande concerne une commande.')}>
-          <Input id="orderNumber" name="orderNumber" placeholder={t('MED-2026-01024')} />
+          <Input id="orderNumber" name="orderNumber" placeholder={t('PER-2026-01024')} />
         </Field>
       </div>
 

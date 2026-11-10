@@ -28,7 +28,7 @@ import { PurchaseNotice } from '@/components/purchase-notice';
 import { getSiteI18n } from '@/lib/i18n/site-server';
 import { OUTSIDE_DALOA_MAX_DAYS } from '@/lib/store-policy';
 import { ProductStickerList, ProductStickerOverlay } from '@/components/product-sticker';
-import { STORE_NAME } from '@/lib/brand';
+import { STORE_NAME, WHATSAPP_MESSAGES } from '@/lib/brand';
 import { sweepExpiredReservations } from '@/lib/reservations';
 
 type Params = { slug: string };
@@ -77,9 +77,11 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
 
   const images = product.images.length > 0 ? product.images : product.imageUrl ? [{ id: 'main', url: product.imageUrl, alt: product.imageAlt, width: product.imageWidth, height: product.imageHeight }] : [];
   const productUrl = `${env.appUrl.replace(/\/$/, '')}/produit/${product.slug}`;
+  // Message prérempli et contextualisé : la boutique sait immédiatement de quel
+  // article il s'agit, et le client n'a rien à recopier.
   const whatsapp = whatsappLink(
     settings,
-    `Bonjour ${settings.storeName}, je souhaite des informations sur « ${product.name} » (réf. ${product.sku}).`,
+    `${WHATSAPP_MESSAGES.product} « ${product.name} » (réf. ${product.sku}) — ${productUrl}`,
   );
   const visibleStickers = product.stickers ?? [];
 

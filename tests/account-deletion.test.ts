@@ -41,7 +41,7 @@ function form(values: Record<string, string>) {
 }
 
 async function signInAs(role: 'CUSTOMER' | 'OWNER' | 'ADMIN' = 'CUSTOMER') {
-  const email = `suppression-${role.toLowerCase()}@medi.test`;
+  const email = `suppression-${role.toLowerCase()}@perokado.test`;
   const user = await createUser({ email, role });
   await authenticate(email, PASSWORD);
   return user;
@@ -120,7 +120,7 @@ describe('Suppression de compte en libre-service', () => {
     expect(logs).toHaveLength(1);
     expect(logs[0]!.actorEmail).toBeNull();
     expect(logs[0]!.userId).toBeNull();
-    expect(JSON.stringify(logs[0]!.metadata)).not.toContain('suppression-customer@medi.test');
+    expect(JSON.stringify(logs[0]!.metadata)).not.toContain('suppression-customer@perokado.test');
     expect(JSON.stringify(logs[0]!.metadata)).toContain(user.id);
   });
 

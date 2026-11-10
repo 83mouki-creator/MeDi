@@ -58,9 +58,9 @@ signer les messages automatiques, ce qui évite de ternir la réputation de
 | Domaine | Avantages | À savoir |
 | --- | --- | --- |
 | `perokado.com` | marque + ville, se retient au téléphone | le plus long à taper |
-| `medishop-ci.com` | indique la Côte d'Ivoire | le tiret s'oublie à l'oral |
-| `medishops.com` | très court | peut prêter à confusion (« shop's ») |
-| `medishop.com` | idéal… | très probablement déjà pris, et cher |
+| `perokado.ci` | indique la Côte d'Ivoire, court | réservé aux entreprises ivoiriennes (NIC.CI) |
+| `perokado.shop` | dit le commerce | extension moins connue, parfois filtrée à la saisie |
+| `perocado.com` | faute de frappe fréquente | à réserver par sécurité, pas pour envoyer |
 
 **Recommandation : `perokado.com`.** Le nom exact de la boutique est
 « Perokado », la ville est le cœur du commerce : le domaine dit les deux.
@@ -76,7 +76,7 @@ hébergement » dont le DNS n'est pas modifiable.
 
 ### Une fois le domaine acheté
 
-1. **Vercel** → projet `medi-daloa` → *Settings → Domains* → ajouter
+1. **Vercel** → projet `perokado` → *Settings → Domains* → ajouter
    `perokado.com` et `www.perokado.com`, puis suivre les instructions
    (enregistrement `A` pour la racine, `CNAME` pour `www`).
 2. **Vercel** → *Settings → Environment Variables* : `APP_URL` =
@@ -115,8 +115,8 @@ Brevo propose alors deux chemins :
 | Rôle | Type | Nom (hôte) | Valeur | Où la trouver |
 | --- | --- | --- | --- | --- |
 | **Brevo code** | `TXT` | `@` (ou `brevo-code`) | `brevo-code:…` | écran Brevo, bouton *Copy* |
-| **DKIM 1** | `CNAME` | `brevo1._domainkey` | `b1.medishopdaloa-com.dkim.brevo.com` | idem |
-| **DKIM 2** | `CNAME` | `brevo2._domainkey` | `b2.medishopdaloa-com.dkim.brevo.com` | idem |
+| **DKIM 1** | `CNAME` | `brevo1._domainkey` | `b1.perokado-com.dkim.brevo.com` | idem |
+| **DKIM 2** | `CNAME` | `brevo2._domainkey` | `b2.perokado-com.dkim.brevo.com` | idem |
 | **DMARC** | `TXT` | `_dmarc` | `v=DMARC1; p=none; rua=mailto:dmarc@perokado.com` | proposé par Brevo |
 
 > **Ne recopie pas les valeurs ci-dessus telles quelles** : Brevo génère des
@@ -169,7 +169,7 @@ e-mail de confirmation à cette adresse : cliquer sur le lien.
 ### 3.6 Créer la clé API
 
 Haut à droite → **SMTP & API** → onglet **API Keys** →
-*Generate a new API key* → nom `medi-shop-vercel` → copier la clé
+*Generate a new API key* → nom `perokado-vercel` → copier la clé
 (`xkeysib-…`). Elle n'est affichée qu'une fois.
 
 ---
@@ -194,7 +194,7 @@ le prestataire choisi. Ils n'ont aucun effet sur l'envoi.
 
 ## 5. Configurer Vercel
 
-Projet `medi-daloa` → *Settings → Environment Variables*, pour **Production** et
+Projet `perokado` → *Settings → Environment Variables*, pour **Production** et
 **Preview** :
 
 | Nom | Valeur | Obligatoire |

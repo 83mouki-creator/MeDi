@@ -110,7 +110,7 @@ npm run play:assets
 ```
 
 Le script `scripts/make-play-assets.ts` repart du logo blanc
-(`medi-logo-horizontal-blanc.png`), applique le bleu nuit `#0b2545`, le jaune
+(`perokado-logo-horizontal-blanc.png`), applique le bleu nuit `#0E2340`, le jaune
 `#f2b705` et les anneaux dorés, puis écrit la bannière. Après un changement de
 logo : `npm run brand:assets` **puis** `npm run play:assets`.
 
@@ -193,7 +193,7 @@ sur les machines de GitHub. Rien à installer sur le téléphone.
 | --- | --- |
 | `ANDROID_KEYSTORE_BASE64` | contenu de `android.keystore` encodé en base64 |
 | `KEYSTORE_PASSWORD` | mot de passe du fichier `.keystore` |
-| `KEY_PASSWORD` | mot de passe de la clé `medi` (souvent le même) |
+| `KEY_PASSWORD` | mot de passe de la clé `perokado` (souvent le même) |
 
 Pour produire la valeur base64 depuis un téléphone (Termux) :
 
@@ -215,7 +215,7 @@ Depuis un ordinateur (PowerShell) :
    renseigner pour publier une nouvelle version (le code doit **toujours
    augmenter**).
 3. Attendre 5 à 10 minutes.
-4. En bas de la page du run, **Artifacts** → `medi-shop-android-<n°>` :
+4. En bas de la page du run, **Artifacts** → `perokado-android-<n°>` :
    - `app-release-bundle.aab` → à déposer dans la Play Console ;
    - `app-release-signed.apk` → à installer directement sur un téléphone de test.
 

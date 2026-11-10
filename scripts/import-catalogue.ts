@@ -1,13 +1,13 @@
 /**
- * Import du catalogue réel MeDi Shop (photos fournisseur → fiches produits).
+ * Import du catalogue réel Perokado (photos fournisseur → fiches produits).
  *
  * Idempotent : les fiches déjà présentes (par référence) ne sont pas écrasées
  * sauf avec `--update`, afin qu'une modification faite dans /admin ne soit
  * jamais perdue lors d'un redéploiement.
  *
- *   npm run catalogue:medi            # crée ce qui manque
- *   npm run catalogue:medi -- --update
- *   npm run catalogue:medi -- --dry-run
+ *   npm run catalogue:store           # crée ce qui manque
+ *   npm run catalogue:store -- --update
+ *   npm run catalogue:store -- --dry-run
  */
 import 'dotenv/config';
 import { readFile } from 'node:fs/promises';
@@ -25,7 +25,7 @@ const DRY = process.argv.includes('--dry-run');
 const UPDATE = process.argv.includes('--update');
 
 async function main() {
-  console.log(`→ Catalogue réel MeDi Shop${DRY ? ' (simulation)' : ''}`);
+  console.log(`→ Catalogue réel Perokado${DRY ? ' (simulation)' : ''}`);
 
   const manifest = await loadCatalogue();
   const images = JSON.parse(await readFile(path.join('data', 'catalogue', 'images.json'), 'utf8')) as ImageIndex;

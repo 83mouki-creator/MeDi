@@ -29,7 +29,7 @@ doivent donc **toujours** être exécutées via `DIRECT_URL` (`npm run db:migrat
 ## Création
 
 1. Créer un projet Neon dans la région la plus proche des utilisateurs (Europe de l'Ouest par défaut).
-2. Créer la base `medi` (laisser la base `medi_test` pour la suite de tests si vous l'exécutez à distance).
+2. Créer la base `perokado` (laisser la base `perokado_test` pour la suite de tests si vous l'exécutez à distance).
 3. Copier les deux chaînes de connexion dans les variables d'environnement (Vercel + local), avec
    `?sslmode=require`.
 

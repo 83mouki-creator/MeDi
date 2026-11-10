@@ -28,14 +28,14 @@ export function StaffActivationForm() {
         htmlFor="code"
         required
         error={errors.code}
-        hint="Format MEDI-XXXX-XXXX-XXXX. La casse et les tirets sont corrigés automatiquement."
+        hint="Format PERO-XXXX-XXXX-XXXX. La casse et les tirets sont corrigés automatiquement."
       >
         <Input
           id="code"
           name="code"
           value={code}
           onChange={(event) => setCode(formatStaffCodeInput(event.target.value).slice(0, 19))}
-          placeholder="MEDI-XXXX-XXXX-XXXX"
+          placeholder="PERO-XXXX-XXXX-XXXX"
           autoComplete="one-time-code"
           spellCheck={false}
           required
@@ -56,7 +56,7 @@ export function StaffActivationForm() {
         htmlFor="staff-phone"
         required
         error={errors.phone}
-        hint="Le numéro que l’administrateur a enregistré (ex. 07 08 90 48 91)."
+        hint="Le numéro que l’administrateur a enregistré (ex. 05 44 01 41 82)."
       >
         <Input id="staff-phone" name="phone" type="tel" inputMode="tel" autoComplete="tel" required />
       </Field>

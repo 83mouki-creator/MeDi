@@ -77,7 +77,7 @@ export function ProductForm({
             <Input id="name" name="name" defaultValue={product?.name ?? ''} required maxLength={160} />
           </Field>
           <Field label={t('Référence du produit (le code sur l’étiquette)')} htmlFor="sku" required error={state.fieldErrors?.sku}>
-            <Input id="sku" name="sku" defaultValue={product?.sku ?? ''} required maxLength={60} placeholder={t('MED-0001')} />
+            <Input id="sku" name="sku" defaultValue={product?.sku ?? ''} required maxLength={60} placeholder={t('PER-0001')} />
           </Field>
           <Field label={t('Adresse de la page (facultatif)')} htmlFor="slug" error={state.fieldErrors?.slug} hint="Généré automatiquement si vide.">
             <Input id="slug" name="slug" defaultValue={product?.slug ?? ''} maxLength={80} />

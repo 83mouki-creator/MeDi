@@ -30,7 +30,7 @@ export function CsvImportForm() {
       </Field>
 
       <Field label={t('…ou collez le contenu CSV')} htmlFor="csvText">
-        <Textarea id="csvText" name="csvText" rows={5} placeholder={'sku,nom,prix,stock,categorie,marque\nMED-0100,Perceuse 500W,45000,10,Outillage industriel,Bosch'} />
+        <Textarea id="csvText" name="csvText" rows={5} placeholder={'sku,nom,prix,stock,categorie,marque\nPER-0100,Perceuse 500W,45000,10,Outillage industriel,Bosch'} />
       </Field>
 
       <div className="flex flex-wrap gap-2">

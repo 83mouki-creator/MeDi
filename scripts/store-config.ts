@@ -8,7 +8,7 @@
  *   • enseigne      : Perokado
  *   • slogan        : « Tout ce que vous cherchez au même endroit.. »
  *   • horaires      : lundi – samedi 7h30 – 18h00, dimanche fermé
- *   • WhatsApp      : +225 05 44 01 41 82 (aussi compte marchand Wave / PSP)
+ *   • WhatsApp      : +225 05 44 01 41 82 (WhatsApp Business, aussi compte marchand Wave / PSP)
  *   • hors Daloa    : 7 jours maximum selon la ville, transport convenu sur WhatsApp
  *
  * Le retrait en magasin et la géolocalisation ont été RETIRÉS du parcours : la

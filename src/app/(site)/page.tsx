@@ -14,7 +14,7 @@ import { getSiteI18n } from '@/lib/i18n/site-server';
 import { whatsappWithMessage } from '@/lib/store-location';
 import { OUTSIDE_DALOA_MAX_DAYS, FINAL_SALE_NOTICE_SHORT } from '@/lib/store-policy';
 import { DALOA_NEIGHBOURHOOD_COUNT } from '@/lib/daloa';
-import { STORE_TAGLINE } from '@/lib/brand';
+import { STORE_TAGLINE, WHATSAPP_MESSAGES } from '@/lib/brand';
 
 export const metadata: Metadata = {
   title: 'Perokado — Tout ce que vous cherchez au même endroit',
@@ -121,10 +121,8 @@ export default async function HomePage() {
       .catch(() => []),
   ]);
 
-  const whatsappHref = whatsappWithMessage(
-    settings,
-    'Bonjour Perokado, je souhaite des informations sur un produit.',
-  );
+  // Message déjà rédigé : la boutique reçoit une demande formulée.
+  const whatsappHref = whatsappWithMessage(settings, WHATSAPP_MESSAGES.help);
 
   return (
     <>

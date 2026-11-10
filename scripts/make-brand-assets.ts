@@ -200,9 +200,9 @@ async function main() {
   await sharp(await stackedLockup(true)).resize({ width: 900, withoutEnlargement: true }).png({ compressionLevel: 9 }).toFile(path.join(BRAND_DIR, 'perokado-logo-blanc.png'));
 
   // ── 4. Image de partage 1200 × 630 : logo blanc + slogan ─────────────────
-  const ogLockup = await horizontalLockup({ dark: true, emblemHeight: 200, wordHeight: 78, sloganHeight: 24 });
+  const ogLockup = await horizontalLockup({ dark: true, emblemHeight: 232, wordHeight: 92, sloganHeight: 30 });
   const ogLockupMeta = await meta(ogLockup);
-  const ogScale = Math.min(1, 860 / ogLockupMeta.width);
+  const ogScale = Math.min(1, 940 / ogLockupMeta.width);
   const ogLogo = await sharp(ogLockup)
     .resize({ width: Math.round(ogLockupMeta.width * ogScale) })
     .png()
@@ -215,9 +215,9 @@ async function main() {
     .toFile(path.join(BRAND_DIR, 'perokado-og.png'));
 
   // ── 5. Bannière Play Store 1024 × 500, sans transparence, sans texte ─────
-  const play = await horizontalLockup({ dark: true, emblemHeight: 210, wordHeight: 76 });
+  const play = await horizontalLockup({ dark: true, emblemHeight: 250, wordHeight: 86 });
   const playMeta = await meta(play);
-  const playScale = Math.min(1, 700 / playMeta.width);
+  const playScale = Math.min(1, 820 / playMeta.width);
   const playLogo = await sharp(play).resize({ width: Math.round(playMeta.width * playScale) }).png().toBuffer();
   const playLogoMeta = await meta(playLogo);
 

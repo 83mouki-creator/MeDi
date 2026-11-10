@@ -55,9 +55,9 @@ export function StaffForm({ roles }: { roles: RoleOption[] }) {
         htmlFor="staff-phone"
         required
         error={errors.phone}
-        hint={t('Format ivoirien : 07 08 90 48 91 ou +225 07 08 90 48 91.')}
+        hint={t('Format ivoirien : 05 44 01 41 82 ou +225 05 44 01 41 82.')}
       >
-        <Input id="staff-phone" name="phone" type="tel" inputMode="tel" placeholder="07 08 90 48 91" required />
+        <Input id="staff-phone" name="phone" type="tel" inputMode="tel" placeholder="05 44 01 41 82" required />
       </Field>
 
       <Field

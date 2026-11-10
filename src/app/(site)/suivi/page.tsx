@@ -47,7 +47,7 @@ export default async function TrackPage({ searchParams }: { searchParams: Promis
       <Card className="p-6">
         <h1 className="text-xl font-extrabold">{t('Suivre ma commande')}</h1>
         <p className="mt-1 text-sm text-navy-600">
-          {t('Saisissez votre numéro de commande (ex. MED-2026-01000) et le numéro de téléphone utilisé lors de la commande.')}
+          {t('Saisissez votre numéro de commande (ex. PER-2026-01000) et le numéro de téléphone utilisé lors de la commande.')}
         </p>
 
         {error ? (
@@ -61,7 +61,7 @@ export default async function TrackPage({ searchParams }: { searchParams: Promis
         <form action={trackAction} className="mt-5 space-y-3">
           <div>
             <label htmlFor="number" className="mb-1.5 block text-sm font-medium">{t('Numéro de commande')}</label>
-            <Input id="number" name="number" placeholder="MED-2026-01000" required autoComplete="off" dir="ltr" />
+            <Input id="number" name="number" placeholder="PER-2026-01000" required autoComplete="off" dir="ltr" />
           </div>
           <div>
             <label htmlFor="phone" className="mb-1.5 block text-sm font-medium">{t('Téléphone')}</label>

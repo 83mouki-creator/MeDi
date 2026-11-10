@@ -49,7 +49,7 @@ function renderText(text: ActivityText, t: AdminTranslator): string {
  * Journal lisible par toute l'équipe.
  *
  * Pas de code d'action, pas de JSON : une phrase simple par ligne (« Le client a
- * payé la commande MED-0001 »), qui/quand, et les détails techniques repliés
+ * payé la commande PER-0001 »), qui/quand, et les détails techniques repliés
  * dans un bloc fermé pour le support.
  */
 export default async function ActivityPage({ searchParams }: { searchParams: Promise<Record<string, string | string[] | undefined>> }) {

@@ -54,7 +54,7 @@ export default async function TermsPage() {
       <LegalSection title="4. Commande">
         <p>
           La commande est enregistrée après validation du panier et des coordonnées de livraison. Un numéro de commande au format
-          <span className="font-mono"> MED-AAAA-NNNNN</span> est attribué. L’historique horodaté des statuts est consultable dans
+          <span className="font-mono"> PER-AAAA-NNNNN</span> est attribué. L’historique horodaté des statuts est consultable dans
           le suivi de commande.
         </p>
         <p>

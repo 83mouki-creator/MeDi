@@ -150,7 +150,7 @@ describe('workflow GitHub Actions', () => {
     expect(workflow).toContain('bubblewrap update');
     expect(workflow).toContain('bubblewrap build --skipPwaValidation');
     expect(workflow).toContain('--manifest ./android/twa-manifest.json');
-    expect(workflow).toContain('--signingKeyAlias medi');
+    expect(workflow).toContain('--signingKeyAlias perokado');
   });
 
   it('lit la clé et les mots de passe dans les secrets, jamais dans le dépôt', () => {
