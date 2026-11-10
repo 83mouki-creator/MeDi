@@ -30,6 +30,7 @@ const NAV: (AdminNavItem & { permission?: Permission })[] = [
   { href: '/admin/bons', label: 'Bons de livraison', hint: 'Papiers à donner au livreur', icon: 'notes', permission: 'delivery.manage' },
   { href: '/admin/categories', label: 'Rayons et marques', hint: 'Ranger les produits', icon: 'categories', permission: 'products.write' },
   { href: '/admin/import', label: 'Photos et imports', hint: 'Ajouter en grand nombre', icon: 'import', permission: 'catalog.import' },
+  { href: '/admin/expeditions', label: 'Expéditions', hint: 'Colis Express : envoyer et suivre les colis', icon: 'shipments', permission: 'delivery.manage' },
   { href: '/admin/livraison', label: 'Livraisons', hint: 'Zones, frais, transporteurs', icon: 'delivery', permission: 'delivery.manage' },
   { href: '/admin/parametres', label: 'Réglages', hint: 'Téléphone, adresse, horaires', icon: 'settings', permission: 'settings.write' },
   { href: '/admin/utilisateurs', label: 'Comptes et accès', hint: 'Qui travaille ici et ce qu’il peut faire', icon: 'users', permission: 'users.manage' },
@@ -62,7 +63,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
         <div
           aria-hidden
           className="pointer-events-none fixed inset-0 z-0 bg-center bg-no-repeat opacity-[0.045] print:hidden"
-          style={{ backgroundImage: `url('${BRAND.emblem}')`, backgroundSize: 'min(72vw, 540px)' }}
+          style={{ backgroundImage: `url('${BRAND.emblem3d}')`, backgroundSize: 'min(72vw, 540px)' }}
         />
         <div className="relative z-10">
         <AdminTopBar

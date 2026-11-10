@@ -30,7 +30,9 @@ prix n'exige donc aucun nouveau dépôt sur le Play Store.
 | Générateur du fichier de vérification Android | `scripts/make-assetlinks.ts` | `npm run assetlinks` |
 
 Les icônes sont régénérées par `npm run brand:assets` à partir de
-`public/brand/perokado-emblem.svg` : ne les modifie pas à la main.
+`public/brand/perokado-emblem-3d.png` (emblème 3D détouré, produit lui-même par
+`npm run brand:emblem` depuis `public/brand/source/perokado-3d-emblem.png`) :
+ne les modifie pas à la main.
 
 ---
 

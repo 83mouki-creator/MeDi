@@ -81,18 +81,24 @@ export function ProductCardView({ product, className }: { product: ProductCardTy
               <span className="text-xs text-navy-400 line-through">{formatFCFA(base)}</span>
             ) : null}
           </div>
+          {/*
+            Ligne de disponibilité, dans l'esprit des grandes places de marché :
+            quand il reste peu d'articles, on le dit avec le chiffre exact — c'est
+            une information utile, pas une technique de pression (aucun compte à
+            rebours, aucune quantité inventée).
+          */}
           {availability.state === 'OUT_OF_STOCK' ? (
             <p className="mt-1 text-xs font-medium text-danger-500">{t('Indisponible')}</p>
           ) : availability.state === 'PREORDER' ? (
             <p className="mt-1 flex items-center gap-1 text-xs font-medium text-navy-500">
               <ShoppingCart aria-hidden className="size-3.5" /> {t('Précommande')}
             </p>
-          ) : (
-            <p className="mt-1 text-xs text-navy-500">
-              {availability.state === 'LOW_STOCK'
-                ? t('Plus que {count} en stock', { count: availability.available })
-                : t('En stock')}
+          ) : availability.state === 'LOW_STOCK' ? (
+            <p className="mt-1 text-xs font-semibold text-warning-500">
+              {t('Plus que {count} en stock', { count: availability.available })}
             </p>
+          ) : (
+            <p className="mt-1 text-xs text-emerald-700">{t('En stock — expédié de Daloa')}</p>
           )}
         </div>
       </div>

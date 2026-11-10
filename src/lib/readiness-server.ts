@@ -1,6 +1,8 @@
-import { and, eq, gt, ne, sql } from 'drizzle-orm';
+import { readFileSync } from 'node:fs';
+import path from 'node:path';
+import { and, eq, gt, inArray, isNull, ne, sql } from 'drizzle-orm';
 import { db } from '@/db';
-import { categories, deliveryZones, products, productImages, promotions, storeSettings, users } from '@/db/schema';
+import { categories, contactMessages, deliveryZones, orders, products, productImages, promotions, shipments, storeSettings, users } from '@/db/schema';
 import { env } from './env';
 import { storageMode } from './storage';
 import { computeReadiness, type ReadinessCheck, type ReadinessReport, type ReadinessSnapshot } from './readiness';
@@ -105,6 +107,42 @@ export async function getReadinessReport(): Promise<{ report: ReadinessReport; s
     }
   }
 
+  // ── Ce qui se passe après la commande ────────────────────────────────────
+  let awaitingDispatch = 0;
+  let inTransit = 0;
+  let unansweredMessages = 0;
+
+  if (database) {
+    try {
+      const [dispatchRow] = await db
+        .select({ total: sql<number>`count(*)::int` })
+        .from(orders)
+        .where(
+          and(
+            eq(orders.deliveryMethod, 'CARRIER'),
+            eq(orders.paymentStatus, 'PAID'),
+            inArray(orders.status, ['PAYMENT_CONFIRMED', 'PREPARING', 'READY_TO_SHIP']),
+            isNull(orders.trackingNumber),
+          ),
+        );
+      awaitingDispatch = Number(dispatchRow?.total ?? 0);
+
+      const [transitRow] = await db
+        .select({ total: sql<number>`count(*)::int` })
+        .from(shipments)
+        .where(inArray(shipments.status, ['PENDING', 'DISPATCHED', 'IN_TRANSIT', 'ARRIVED']));
+      inTransit = Number(transitRow?.total ?? 0);
+
+      const [messagesRow] = await db
+        .select({ total: sql<number>`count(*)::int` })
+        .from(contactMessages)
+        .where(eq(contactMessages.status, 'NEW'));
+      unansweredMessages = Number(messagesRow?.total ?? 0);
+    } catch (error) {
+      console.error('[readiness] activité illisible', error);
+    }
+  }
+
   const settings = settingsRow;
   const snapshot: ReadinessSnapshot = {
     settings: {
@@ -132,6 +170,13 @@ export async function getReadinessReport(): Promise<{ report: ReadinessReport; s
     },
     delivery: { localZonesWithTariff, nationalZones },
     staff: { managerAccounts, activeStaff },
+    operations: {
+      awaitingDispatch,
+      inTransit,
+      carrierSync: env.colisExpress.configured,
+      unansweredMessages,
+      automations: cronPaths().length,
+    },
     infrastructure: {
       database,
       waveAuto: database && (settings?.waveMode ?? env.wave.mode) === 'AUTO' && env.wave.enabled,
@@ -151,4 +196,21 @@ export async function getReadinessReport(): Promise<{ report: ReadinessReport; s
 /** Points bloquants, dans l'ordre d'affichage — utilisé par le tableau de bord. */
 export function blockingChecks(checks: ReadinessCheck[]): ReadinessCheck[] {
   return checks.filter((check) => check.status === 'blocking');
+}
+
+/**
+ * Tâches planifiées déclarées dans `vercel.json`.
+ *
+ * On lit le fichier plutôt que d'inventer une liste : le diagnostic doit refléter
+ * le déploiement réel, pas une intention. Un fichier absent (développement) donne
+ * zéro tâche, ce qui est exact.
+ */
+export function cronPaths(): { path: string; schedule: string }[] {
+  try {
+    const raw = readFileSync(path.join(process.cwd(), 'vercel.json'), 'utf8');
+    const config = JSON.parse(raw) as { crons?: { path: string; schedule: string }[] };
+    return Array.isArray(config.crons) ? config.crons : [];
+  } catch {
+    return [];
+  }
 }

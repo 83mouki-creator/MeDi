@@ -12,6 +12,7 @@ import { formatDateTime, formatFCFA } from '@/lib/utils';
 import { Alert, Badge, Card } from '@/components/ui/primitives';
 import { ButtonLink } from '@/components/ui/button';
 import { OrderTimeline } from '@/components/order-timeline';
+import { ShipmentTracker } from '@/components/shipment-tracker';
 
 export const metadata: Metadata = { title: 'Suivi de commande', robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
@@ -69,6 +70,11 @@ export default async function TrackOrderPage({
         <h2 className="mb-3 text-sm font-bold">{t('Progression')}</h2>
         <OrderTimeline status={order.status as OrderStatus} history={details.history} />
       </Card>
+
+      {/* Colis confié à un transporteur : le client voit où il en est. */}
+      <div className="mt-4">
+        <ShipmentTracker orderId={order.id} />
+      </div>
 
       <div className="mt-4 grid gap-4 sm:grid-cols-2">
         <Card className="p-4 text-sm">

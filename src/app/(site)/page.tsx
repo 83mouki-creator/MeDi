@@ -14,7 +14,7 @@ import { getSiteI18n } from '@/lib/i18n/site-server';
 import { whatsappWithMessage } from '@/lib/store-location';
 import { OUTSIDE_DALOA_MAX_DAYS, FINAL_SALE_NOTICE_SHORT } from '@/lib/store-policy';
 import { DALOA_NEIGHBOURHOOD_COUNT } from '@/lib/daloa';
-import { STORE_TAGLINE, WHATSAPP_MESSAGES } from '@/lib/brand';
+import { BRAND, STORE_TAGLINE, WHATSAPP_MESSAGES } from '@/lib/brand';
 
 export const metadata: Metadata = {
   title: 'Perokado — Tout ce que vous cherchez au même endroit',
@@ -126,18 +126,29 @@ export default async function HomePage() {
 
   return (
     <>
-      {/* HERO — photo de quincaillerie en fond */}
+      {/* HERO — photo de la quincaillerie en fond */}
       <section className="relative isolate overflow-hidden bg-navy-950 text-white">
         <Image
-          src="/brand/fond-quincaillerie.jpg"
-          alt={t('Intérieur de la quincaillerie Perokado à Daloa : outils et matériaux rangés en rayon')}
+          src={BRAND.heroImage}
+          alt={t('Intérieur de la quincaillerie Perokado à Daloa : rayonnages d’outils et de matériaux, un vendeur conseille un client')}
           fill
           priority
           sizes="100vw"
           className="absolute inset-0 -z-20 object-cover object-center"
         />
+        {/*
+          Deux voiles plutôt qu'un : un dégradé vertical qui assoit le texte, et
+          un dégradé horizontal qui garde la gauche (là où le texte se trouve)
+          sombre tout en laissant la photo respirer à droite. Valeurs mesurées :
+          la zone du titre reste sous 45/255 de luminance, la photo demeure
+          lisible — un voile unique à 90 % rendait l'image invisible.
+        */}
         <div
-          className="absolute inset-0 -z-10 bg-gradient-to-b from-navy-950/90 via-navy-950/80 to-navy-950/95"
+          className="absolute inset-0 -z-10 bg-gradient-to-b from-navy-950/72 via-navy-950/45 to-navy-950/82"
+          aria-hidden
+        />
+        <div
+          className="absolute inset-0 -z-10 bg-gradient-to-r from-navy-950/72 via-navy-950/22 to-transparent"
           aria-hidden
         />
         <div className="container-page grid gap-6 py-10 sm:py-14 lg:grid-cols-[1.15fr_0.85fr] lg:items-center">
@@ -217,6 +228,25 @@ export default async function HomePage() {
               {t('Tout le catalogue')}
             </Link>
           </div>
+          {/*
+            Bandeau de réassurance, dans l'esprit des places de marché : trois
+            informations utiles en une ligne, avant la liste des rayons.
+          */}
+          <ul className="mb-4 grid grid-cols-1 gap-2 sm:grid-cols-3">
+            <li className="flex items-center gap-2 rounded-lg border border-navy-100 bg-white px-3 py-2 text-xs font-semibold text-navy-800">
+              <Truck className="size-4 shrink-0 text-accent-600" aria-hidden />
+              {t('Livraison à domicile — Daloa et toute la Côte d’Ivoire')}
+            </li>
+            <li className="flex items-center gap-2 rounded-lg border border-navy-100 bg-white px-3 py-2 text-xs font-semibold text-navy-800">
+              <ShieldCheck className="size-4 shrink-0 text-accent-600" aria-hidden />
+              {t('Paiement vérifié avant expédition')}
+            </li>
+            <li className="flex items-center gap-2 rounded-lg border border-navy-100 bg-white px-3 py-2 text-xs font-semibold text-navy-800">
+              <MessageCircle className="size-4 shrink-0 text-accent-600" aria-hidden />
+              {t('Un interlocuteur sur WhatsApp, aux heures d’ouverture')}
+            </li>
+          </ul>
+
           {data.roots.length === 0 ? (
             <p className="rounded-lg border border-dashed border-navy-200 bg-white p-4 text-sm text-navy-500">
               {t('Retrouvez toutes nos familles de produits dans le catalogue.')}
