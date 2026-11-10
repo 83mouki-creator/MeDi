@@ -9,6 +9,7 @@
  *   npm run db:local          # démarre et garde le serveur actif
  *   DATABASE_URL=... npm run db:seed
  */
+import net from 'node:net';
 import path from 'node:path';
 import EmbeddedPostgres from 'embedded-postgres';
 import { Client } from 'pg';
@@ -40,7 +41,30 @@ async function main() {
     console.log(`[db] initialisation du cluster dans ${DATA_DIR}…`);
     await pg.initialise();
   }
-  await pg.start();
+  // `pg.start()` échoue sans message quand le port est déjà pris (le serveur
+  // tourne dans un autre terminal) : on le dit clairement au lieu d'afficher
+  // « échec : undefined ».
+  try {
+    await pg.start();
+  } catch {
+    const deja = await new Promise<boolean>((resolve) => {
+      const socket = net.connect({ host: '127.0.0.1', port: PORT }, () => {
+        socket.end();
+        resolve(true);
+      });
+      socket.on('error', () => resolve(false));
+      socket.setTimeout(1500, () => {
+        socket.destroy();
+        resolve(false);
+      });
+    });
+    if (deja) {
+      console.log(`[db] un serveur PostgreSQL local écoute déjà sur 127.0.0.1:${PORT} (base « ${DATABASE} »).`);
+      console.log(`[db] DATABASE_URL=postgres://${USER}:${PASSWORD}@127.0.0.1:${PORT}/${DATABASE}`);
+      return;
+    }
+    throw new Error(`PostgreSQL n’a pas pu démarrer sur le port ${PORT}. Supprimez .localdb/ puis relancez « npm run db:local ».`);
+  }
   console.log(`[db] PostgreSQL démarré sur 127.0.0.1:${PORT} (utilisateur ${USER})`);
 
   // Un cluster créé par une version antérieure du projet peut porter un autre
@@ -92,6 +116,13 @@ async function main() {
 }
 
 main().catch((error) => {
+  // Un serveur déjà lancé par un autre terminal répond « port déjà utilisé » :
+  // c'est le cas normal quand `db:local` tourne en arrière-plan.
+  const message = error instanceof Error ? error.message : String(error ?? '');
+  if (/EADDRINUSE|address already in use/i.test(message)) {
+    console.log('[db] un serveur PostgreSQL local écoute déjà sur ce port — rien à faire.');
+    process.exit(0);
+  }
   console.error('[db] échec :', error);
   process.exit(1);
 });
