@@ -24,6 +24,42 @@ type ImageIndex = Record<string, { url: string; checksum: string; width: number;
 const DRY = process.argv.includes('--dry-run');
 const UPDATE = process.argv.includes('--update');
 
+/**
+ * Enregistre la vignette d'un produit : une seule ligne par produit, en
+ * position 0. Une photo rééditée remplace donc l'ancienne au lieu de s'ajouter
+ * (deux lignes laissaient l'ancienne vignette affichée sur la fiche).
+ */
+async function upsertImage(
+  productId: string,
+  item: { name: string },
+  image: { url: string; checksum: string; width: number; height: number },
+) {
+  const existing = await db
+    .select({ id: productImages.id })
+    .from(productImages)
+    .where(eq(productImages.productId, productId))
+    .limit(1);
+
+  if (existing[0]) {
+    await db
+      .update(productImages)
+      .set({ url: image.url, alt: item.name, position: 0, width: image.width, height: image.height, checksum: image.checksum })
+      .where(eq(productImages.id, existing[0].id));
+  } else {
+    await db.insert(productImages).values({
+      id: newId('img_'),
+      productId,
+      url: image.url,
+      alt: item.name,
+      position: 0,
+      width: image.width,
+      height: image.height,
+      checksum: image.checksum,
+    });
+  }
+  return 1;
+}
+
 async function main() {
   console.log(`→ Catalogue réel Perokado${DRY ? ' (simulation)' : ''}`);
 
@@ -117,6 +153,11 @@ async function main() {
     const isUpdate = Boolean(existing[0]);
 
     if (isUpdate && !UPDATE) {
+      // Fiche existante : on ne touche ni au prix, ni au stock, ni à la
+      // description (le propriétaire a pu les corriger dans /admin), mais la
+      // vignette est rafraîchie — sinon une photo rééditée (nouveau bandeau,
+      // nouvelle prise de vue) n'arriverait jamais en production.
+      if (image && !DRY) imagesLinked += await upsertImage(existing[0]!.id, item, image);
       skipped += 1;
       continue;
     }
@@ -162,31 +203,7 @@ async function main() {
         });
       }
 
-      if (image) {
-        const existingImage = await db
-          .select({ id: productImages.id })
-          .from(productImages)
-          .where(eq(productImages.checksum, image.checksum))
-          .limit(1);
-        if (existingImage[0]) {
-          await db
-            .update(productImages)
-            .set({ productId: productId!, url: image.url, alt: item.name, position: 0, width: image.width, height: image.height })
-            .where(eq(productImages.id, existingImage[0].id));
-        } else {
-          await db.insert(productImages).values({
-            id: newId('img_'),
-            productId: productId!,
-            url: image.url,
-            alt: item.name,
-            position: 0,
-            width: image.width,
-            height: image.height,
-            checksum: image.checksum,
-          });
-        }
-        imagesLinked += 1;
-      }
+      if (image) imagesLinked += await upsertImage(productId!, item, image);
     } else if (isUpdate) {
       updated += 1;
     } else {
