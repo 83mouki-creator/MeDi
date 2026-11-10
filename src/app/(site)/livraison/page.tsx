@@ -16,6 +16,8 @@ import { whatsappWithMessage } from '@/lib/store-location';
 import { OUTSIDE_DALOA_MAX_DAYS, FINAL_SALE_NOTICE, STORE_POLICY_VARS } from '@/lib/store-policy';
 import { DALOA_NEIGHBOURHOODS, bandFromZoneName, neighbourhoodsForBand } from '@/lib/daloa';
 import { PurchaseNotice } from '@/components/purchase-notice';
+import { DeliveryReviewList } from '@/components/reviews';
+import { deliveryRatingSummary, publishedDeliveryReviews } from '@/lib/reviews';
 
 export const metadata: Metadata = {
   title: 'Livraison à Daloa et dans toute la Côte d’Ivoire',
@@ -28,6 +30,10 @@ export const dynamic = 'force-dynamic';
 
 export default async function DeliveryPage() {
   const [settings, { t }] = await Promise.all([getStoreSettings(), getSiteI18n()]);
+  const [deliveryReviews, deliverySummary] = await Promise.all([
+    publishedDeliveryReviews(6).catch(() => []),
+    deliveryRatingSummary().catch(() => ({ count: 0, average: 0, distribution: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 } })),
+  ]);
 
   let zones: (typeof deliveryZones.$inferSelect)[] = [];
   try {
@@ -191,6 +197,12 @@ export default async function DeliveryPage() {
         settings={settings}
         fallbackMessage={RETURNS_FAQ_FALLBACK_MESSAGE}
       />
+
+      {deliveryReviews.length > 0 ? (
+        <div className="mt-6">
+          <DeliveryReviewList reviews={deliveryReviews} summary={deliverySummary} />
+        </div>
+      ) : null}
 
       <div className="mt-6 flex items-center gap-2 rounded-lg bg-navy-50 p-3 text-sm text-navy-700">
         <Info className="size-4 shrink-0" aria-hidden />

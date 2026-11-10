@@ -939,3 +939,98 @@ export const contactMessages = pgTable(
     index('contact_messages_user_idx').on(t.userId),
   ],
 );
+
+// ─── avis clients vérifiés (après livraison) ───
+
+/**
+ * Statut d'un avis.
+ *
+ * `PENDING`  : déposé, personne ne l'a encore lu — il n'est pas public.
+ * `PUBLISHED`: visible sur la fiche produit et dans la moyenne des notes.
+ * `HIDDEN`   : masqué par l'équipe (injure, hors sujet…), mais conservé pour la
+ *              trace et pour que le client ne puisse pas redéposer le même avis.
+ */
+export const reviewStatusEnum = pgEnum('review_status', ['PENDING', 'PUBLISHED', 'HIDDEN']);
+
+/**
+ * Avis d'un client sur un article reçu.
+ *
+ * Un avis n'existe pas sans preuve d'achat : la ligne est toujours rattachée à
+ * une commande **livrée** et à un produit figurant dans cette commande. C'est
+ * cette règle, et non un formulaire ouvert à tous, qui fait la valeur de la note
+ * affichée (comme la mention « achat vérifié »).
+ *
+ * Le nom publié est un prénom + initiale (`Awa K.`) : le nom complet du client
+ * n'est jamais exposé.
+ */
+export const productReviews = pgTable(
+  'product_reviews',
+  {
+    id: text('id').primaryKey(),
+    productId: text('product_id')
+      .notNull()
+      .references(() => products.id, { onDelete: 'cascade' }),
+    orderId: text('order_id')
+      .notNull()
+      .references(() => orders.id, { onDelete: 'cascade' }),
+    orderItemId: text('order_item_id').references(() => orderItems.id, { onDelete: 'set null' }),
+    userId: text('user_id').references(() => users.id, { onDelete: 'set null' }),
+    /** Téléphone canonique de l'acheteur : permet de retrouver ses avis sans compte. */
+    phoneNormalized: text('phone_normalized'),
+    /** Prénom seul (ou pseudonyme choisi) — jamais le nom complet. */
+    authorName: text('author_name').notNull(),
+    /** 1 à 5 étoiles. */
+    rating: integer('rating').notNull(),
+    title: text('title'),
+    comment: text('comment'),
+    status: reviewStatusEnum('status').notNull().default('PENDING'),
+    /** Réponse publique de la boutique (service client). */
+    reply: text('reply'),
+    repliedAt: timestamp('replied_at', { withTimezone: true }),
+    repliedBy: text('replied_by').references(() => users.id, { onDelete: 'set null' }),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    // Un client ne note un article qu'une seule fois par commande.
+    uniqueIndex('product_reviews_order_product_key').on(t.orderId, t.productId),
+    index('product_reviews_product_idx').on(t.productId, t.status, t.createdAt),
+    index('product_reviews_status_idx').on(t.status, t.createdAt),
+  ],
+);
+
+/**
+ * Avis du client sur la **livraison** d'une commande (note + commentaire).
+ *
+ * Distinct des avis produits : on juge ici la promesse de service (délai,
+ * appel du livreur, état du colis), pas la marchandise. Une note par commande.
+ */
+export const orderReviews = pgTable(
+  'order_reviews',
+  {
+    id: text('id').primaryKey(),
+    orderId: text('order_id')
+      .notNull()
+      .references(() => orders.id, { onDelete: 'cascade' }),
+    userId: text('user_id').references(() => users.id, { onDelete: 'set null' }),
+    phoneNormalized: text('phone_normalized'),
+    authorName: text('author_name').notNull(),
+    rating: integer('rating').notNull(),
+    comment: text('comment'),
+    /** Délai tenu ? (null = le client ne s'est pas prononcé) */
+    onTime: boolean('on_time'),
+    status: reviewStatusEnum('status').notNull().default('PENDING'),
+    reply: text('reply'),
+    repliedAt: timestamp('replied_at', { withTimezone: true }),
+    repliedBy: text('replied_by').references(() => users.id, { onDelete: 'set null' }),
+    createdAt: timestamp('created_at', { withTimezone: true }).notNull().defaultNow(),
+    updatedAt: timestamp('updated_at', { withTimezone: true }).notNull().defaultNow(),
+  },
+  (t) => [
+    uniqueIndex('order_reviews_order_key').on(t.orderId),
+    index('order_reviews_status_idx').on(t.status, t.createdAt),
+  ],
+);
+
+export type ProductReview = typeof productReviews.$inferSelect;
+export type OrderReview = typeof orderReviews.$inferSelect;

@@ -10,6 +10,8 @@ import { siteOrderStatusLabel } from '@/lib/i18n/order-labels';
 import { formatDateTime, formatFCFA } from '@/lib/utils';
 import { Badge, Card } from '@/components/ui/primitives';
 import { OrderTimeline } from '@/components/order-timeline';
+import { ReviewRequestPanel } from '@/components/reviews';
+import { reviewContextForOrder, publicAuthorName } from '@/lib/reviews';
 
 export const metadata: Metadata = { title: 'Détail de commande', robots: { index: false, follow: false } };
 
@@ -26,7 +28,7 @@ export default async function AccountOrderDetail({ params }: { params: Promise<{
   const details = await getOrderDetails(order.id);
   if (!details) notFound();
   const totals = orderTotals(order);
-  const { t } = await getSiteI18n();
+  const [{ t }, reviewContext] = await Promise.all([getSiteI18n(), reviewContextForOrder(order.id).catch(() => null)]);
 
   return (
     <div className="space-y-4">
@@ -44,6 +46,14 @@ export default async function AccountOrderDetail({ params }: { params: Promise<{
       <Card className="p-4">
         <OrderTimeline status={order.status as OrderStatus} history={details.history} />
       </Card>
+
+      {reviewContext ? (
+        <ReviewRequestPanel
+          context={reviewContext}
+          token={order.accessToken}
+          defaultAuthor={publicAuthorName(order.customerFirstName, order.customerLastName)}
+        />
+      ) : null}
 
       <Card className="overflow-hidden">
         <h3 className="border-b border-navy-100 bg-navy-50 px-4 py-2 text-sm font-bold">{t('Articles')}</h3>

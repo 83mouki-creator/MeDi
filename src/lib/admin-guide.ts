@@ -25,7 +25,8 @@ export type GuideIcon =
   | 'print'
   | 'users'
   | 'journal'
-  | 'truck';
+  | 'truck'
+  | 'star';
 
 export type GuideSection = { id: string; label: string };
 
@@ -123,6 +124,13 @@ export const GUIDE_ROUTINE: GuideAction[] = [
     title: 'Expédier les colis hors Daloa',
     text: 'Créez le colis chez Colis Express, puis saisissez ici le code de suivi : le client le voit dans son suivi.',
     permission: 'delivery.manage',
+  },
+  {
+    href: '/admin/avis',
+    icon: 'star',
+    title: 'Relire les avis des clients',
+    text: 'Un avis n’apparaît sur le site qu’après votre relecture. Publiez-le, masquez-le, ou répondez : une réponse visible rassure les clients suivants.',
+    permission: 'messages.handle',
   },
   {
     href: '/admin/messages',

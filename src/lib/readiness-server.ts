@@ -2,7 +2,20 @@ import { readFileSync } from 'node:fs';
 import path from 'node:path';
 import { and, eq, gt, inArray, isNull, ne, sql } from 'drizzle-orm';
 import { db } from '@/db';
-import { categories, contactMessages, deliveryZones, orders, products, productImages, promotions, shipments, storeSettings, users } from '@/db/schema';
+import {
+  categories,
+  contactMessages,
+  deliveryZones,
+  orderReviews,
+  orders,
+  productImages,
+  productReviews,
+  products,
+  promotions,
+  shipments,
+  storeSettings,
+  users,
+} from '@/db/schema';
 import { env } from './env';
 import { storageMode } from './storage';
 import { computeReadiness, type ReadinessCheck, type ReadinessReport, type ReadinessSnapshot } from './readiness';
@@ -111,6 +124,7 @@ export async function getReadinessReport(): Promise<{ report: ReadinessReport; s
   let awaitingDispatch = 0;
   let inTransit = 0;
   let unansweredMessages = 0;
+  let pendingReviews = 0;
 
   if (database) {
     try {
@@ -138,6 +152,18 @@ export async function getReadinessReport(): Promise<{ report: ReadinessReport; s
         .from(contactMessages)
         .where(eq(contactMessages.status, 'NEW'));
       unansweredMessages = Number(messagesRow?.total ?? 0);
+
+      // Avis en attente de relecture : deux tables, une seule question posée
+      // au propriétaire (« y a-t-il quelque chose à lire ? »).
+      const [productPending] = await db
+        .select({ total: sql<number>`count(*)::int` })
+        .from(productReviews)
+        .where(eq(productReviews.status, 'PENDING'));
+      const [deliveryPending] = await db
+        .select({ total: sql<number>`count(*)::int` })
+        .from(orderReviews)
+        .where(eq(orderReviews.status, 'PENDING'));
+      pendingReviews = Number(productPending?.total ?? 0) + Number(deliveryPending?.total ?? 0);
     } catch (error) {
       console.error('[readiness] activité illisible', error);
     }
@@ -176,6 +202,7 @@ export async function getReadinessReport(): Promise<{ report: ReadinessReport; s
       carrierSync: env.colisExpress.configured,
       unansweredMessages,
       automations: cronPaths().length,
+      pendingReviews,
     },
     infrastructure: {
       database,

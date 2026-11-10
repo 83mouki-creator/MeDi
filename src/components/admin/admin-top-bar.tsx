@@ -13,6 +13,7 @@ import {
   Download,
   LayoutDashboard,
   LogOut,
+  Star,
   Menu,
   MessageSquare,
   Package,
@@ -58,8 +59,9 @@ export type AdminNavItem = {
     | 'guide'
     | 'stickers'
     | 'ready'
-    | 'shipments';
-  badge?: 'payments' | 'messages';
+    | 'shipments'
+    | 'reviews';
+  badge?: 'payments' | 'messages' | 'reviews';
   /** Petite phrase qui explique le menu en mots simples. */
   hint?: string;
 };
@@ -85,6 +87,7 @@ const ICONS = {
   guide: BookOpen,
   ready: BadgeCheck,
   shipments: PackageCheck,
+  reviews: Star,
 } as const;
 
 /**
@@ -104,6 +107,7 @@ export function AdminTopBar({
   email,
   pendingPayments,
   newMessages,
+  pendingReviews,
 }: {
   items: AdminNavItem[];
   role: string;
@@ -112,6 +116,8 @@ export function AdminTopBar({
   email: string;
   pendingPayments: number;
   newMessages: number;
+  /** Avis clients en attente de relecture (badge du menu « Avis clients »). */
+  pendingReviews: number;
 }) {
   const { t } = useAdminI18n();
   const [open, setOpen] = useState(false);
@@ -285,6 +291,11 @@ export function AdminTopBar({
                     {item.badge === 'messages' && newMessages > 0 ? (
                       <span className="rounded-full bg-navy-700 px-1.5 py-0.5 text-[10px] font-bold text-white">
                         {newMessages}
+                      </span>
+                    ) : null}
+                    {item.badge === 'reviews' && pendingReviews > 0 ? (
+                      <span className="rounded-full bg-amber-500 px-1.5 py-0.5 text-[10px] font-bold text-navy-950">
+                        {pendingReviews}
                       </span>
                     ) : null}
                   </Link>

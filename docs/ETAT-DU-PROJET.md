@@ -7,7 +7,8 @@ Dernière mise à jour : **2026-11-10**.
 La plateforme est **fonctionnelle de bout en bout sur le plan logiciel** : catalogue réel en base,
 recherche texte et visuelle, panier recalculé côté serveur, commandes avec réservation de stock,
 paiement Wave (mode manuel vérifié par un administrateur), espace client, back-office complet,
-migrations versionnées, build de production et **335 tests d'intégration exécutés avec succès** (32 fichiers).
+migrations versionnées, avis clients vérifiés après livraison, build de production et **359 tests d'intégration
+exécutés avec succès** (34 fichiers).
 
 > La liste à jour de ce qui manque pour vendre sans intervenir est tenue par
 > [`VENDRE-SEUL.md`](VENDRE-SEUL.md) et par l'écran `/admin/pret-a-vendre`, qui la
@@ -38,6 +39,12 @@ photos et catalogue réels, configuration du stockage d'images et de la base Neo
   confirmation protégée par jeton, suivi par numéro + téléphone.
 - Espace client : inscription, connexion, déconnexion, profil, mot de passe, adresses, commandes et
   détail, isolation stricte des données.
+- **Avis clients vérifiés** : après livraison, le client note chaque article reçu (1 à 5 étoiles,
+  titre, commentaire, nom affiché en prénom + initiale) **et** la livraison elle-même (note, délai
+  tenu, mot sur le livreur). Dépôt depuis `/suivi/[numéro]` ou l'espace client, sans créer de compte
+  (numéro de commande + jeton de suivi). Relecture obligatoire avant publication ; note moyenne,
+  répartition par étoiles, réponse publique de la boutique, données structurées `AggregateRating`
+  et `Review` sur la fiche produit. Voir [`AVIS-CLIENTS.md`](AVIS-CLIENTS.md).
 - Pages : livraison, paiement, retours, CGV, confidentialité, mentions légales, contact,
   `not-found`, `error`, `sitemap.xml`, `robots.txt`, `/api/health`.
 
@@ -56,7 +63,7 @@ photos et catalogue réels, configuration du stockage d'images et de la base Neo
   recherche, filtres, compteurs et pagination, catégories, marques, commandes (recherche, filtres,
   statuts, paiement, expédition, notes), paiements à vérifier, **demandes clients reçues via le
   formulaire de contact** (prise en charge, clôture, réouverture), zones de livraison, paramètres,
-  import CSV, import de photos, utilisateurs, journal d'activité (recherche), statistiques.
+  import CSV, import de photos, utilisateurs, journal d'activité (recherche), **avis clients** (publication, masquage, réponse), statistiques.
 - Import CSV du catalogue avec simulation, rapport ligne par ligne, mise à jour par référence.
 - Import massif de photos avec empreinte SHA-256, file de validation, rattachement manuel, rejet motivé.
 - **Guide de l'équipe `/admin/guide`** : mode d'emploi du site en six parties (comprendre en une
@@ -88,7 +95,7 @@ photos et catalogue réels, configuration du stockage d'images et de la base Neo
   vérifiés sur les données réelles, classés bloquants / à compléter / en place, avec le lien vers
   l'écran à corriger. Le tableau de bord affiche le nombre de points bloquants.
 - SEO : métadonnées, canoniques, plan du site, robots, données structurées.
-- Build de production et TypeScript strict sans erreur ; 194 tests passants (22 fichiers).
+- Build de production et TypeScript strict sans erreur ; 359 tests passants (34 fichiers).
 
 ## Partiel — code présent, à valider avec les moyens du propriétaire
 

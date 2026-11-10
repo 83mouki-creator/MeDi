@@ -76,6 +76,9 @@ export const ACTION_CATEGORIES: Record<string, ActivityCategoryKey> = {
   'delivery_zone.updated': 'livraison',
   'delivery_zone.disabled': 'livraison',
   'contact.message_status': 'clients',
+  'review.published': 'clients',
+  'review.hidden': 'clients',
+  'review.updated': 'clients',
   'settings.updated': 'reglages',
   'staff.created': 'comptes',
   'staff.access_activated': 'comptes',
@@ -236,6 +239,32 @@ export function describeActivity(
           },
         },
         href: '/admin/commandes',
+      };
+
+    case 'review.published':
+      return {
+        category: 'clients',
+        tone: 'success',
+        title: { key: 'Un avis client a été publié' },
+        detail: { key: 'Il est désormais visible sur la fiche produit et dans la note du service de livraison.' },
+        href: '/admin/avis',
+      };
+
+    case 'review.hidden':
+      return {
+        category: 'clients',
+        tone: 'warning',
+        title: { key: 'Un avis client a été masqué' },
+        detail: { key: 'Il n’apparaît plus sur la boutique, mais reste conservé dans l’administration.' },
+        href: '/admin/avis',
+      };
+
+    case 'review.updated':
+      return {
+        category: 'clients',
+        tone: 'info',
+        title: { key: 'Un avis client a été mis à jour' },
+        href: '/admin/avis',
       };
 
     case 'payment.confirmed':
