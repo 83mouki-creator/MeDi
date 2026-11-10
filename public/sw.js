@@ -10,7 +10,7 @@
  * Aucune requête d'action (POST), aucune page de commande ou d'administration
  * n'est mise en cache.
  */
-const CACHE = 'medi-shop-v1';
+const CACHE = 'perokado-v1';
 const OFFLINE_URL = '/offline';
 
 // Secours minimal si la page /offline n'a pas pu être enregistrée.
@@ -18,10 +18,10 @@ const FALLBACK_HTML =
   '<!doctype html><html lang="fr"><meta charset="utf-8">' +
   '<meta name="viewport" content="width=device-width,initial-scale=1">' +
   '<title>Pas de connexion | Perokado</title>' +
-  '<body style="margin:0;min-height:100vh;display:grid;place-items:center;font-family:system-ui;background:#0b2545;color:#fff;text-align:center;padding:24px">' +
+  '<body style="margin:0;min-height:100vh;display:grid;place-items:center;font-family:system-ui;background:#0e2340;color:#fff;text-align:center;padding:24px">' +
   '<div><h1 style="font-size:20px;margin:0 0 8px">Pas de connexion</h1>' +
   '<p style="margin:0 0 16px;opacity:.8">Vérifiez votre connexion internet, puis réessayez.</p>' +
-  '<a href="/" style="display:inline-block;background:#f2b705;color:#0b2545;font-weight:700;' +
+  '<a href="/" style="display:inline-block;background:#f2b705;color:#0e2340;font-weight:700;' +
   'text-decoration:none;padding:10px 18px;border-radius:10px">Réessayer</a></div></body></html>';
 
 self.addEventListener('install', (event) => {

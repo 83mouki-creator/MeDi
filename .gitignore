@@ -52,3 +52,6 @@ android/*.apk
 *.keystore
 *.jks
 __pycache__/
+
+# Brouillons de travail (variantes de logo, vérifications ponctuelles)
+.tmp/

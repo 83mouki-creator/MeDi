@@ -119,19 +119,19 @@ chaque ouverture : dès qu'un champ est enregistré, le point passe au vert.
 
 ## 7. Langues
 
-- La boutique (ce que voient les clients) : sélecteur **FR / EN / ع** dans
-  l'en-tête. Le choix est mémorisé dans un cookie et s'applique immédiatement.
-- L'administration : bouton **العربية / Français** dans la barre supérieure. Ce
-  réglage est indépendant de la langue de la boutique.
+- La boutique et l'administration sont **en français uniquement** : plus de
+  sélecteur de langue, plus de textes en arabe, plus de variantes RTL.
+- Les prix sont en francs CFA, les dates au format ivoirien, les poids et
+  mesures en unités métriques.
 
 ## 8. Les trois phrases à retenir
 
 1. Rien ne part avant que l'argent soit vérifié par l'équipe.
 2. Un colis, un bon de livraison imprimé, un stock à jour.
-3. Un doute ? Le guide, puis le service client : **+225 07 08 90 48 91**.
+3. Un doute ? Le guide, puis le service client : **+225 05 44 01 41 82** (WhatsApp Business).
 
 ---
 
 *Ce document accompagne la page `/admin/guide`. Les textes affichés dans le site
-sont dans `src/lib/admin-guide.ts` ; chaque phrase y est traduite en arabe, et un
-test le vérifie (`tests/admin-guide.test.ts`).*
+sont dans `src/lib/admin-guide.ts` ; un test vérifie qu'aucune phrase ne contient
+de texte en arabe ni l'ancienne enseigne (`tests/admin-guide.test.ts`).*

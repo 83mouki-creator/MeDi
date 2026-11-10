@@ -56,7 +56,7 @@ export class OrderError extends Error {
 async function nextOrderNumber(tx: Tx) {
   const res = await tx.execute(sql`SELECT nextval('order_number_seq')::int AS n`);
   const n = Number((res.rows[0] as { n: number }).n);
-  return `MED-${new Date().getFullYear()}-${String(n).padStart(5, '0')}`;
+  return `PER-${new Date().getFullYear()}-${String(n).padStart(5, '0')}`;
 }
 
 // ─────────────────────────────── Création de commande ───────────────────────────────
@@ -345,7 +345,7 @@ export async function createOrder(params: {
       status: input.paymentMethod === 'WAVE' ? 'PENDING' : 'PENDING',
       amount: String(total),
       currency: 'XOF',
-      clientReference: `MED-${number}-${newId('')}`,
+      clientReference: `PER-${number}-${newId('')}`,
       expiresAt: new Date(Date.now() + reservationMinutes * 60 * 1000),
       rawPayload: { method: input.paymentMethod },
     });

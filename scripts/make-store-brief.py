@@ -47,11 +47,11 @@ from reportlab.platypus import (
 )
 
 ROOT = Path(__file__).resolve().parent.parent
-OUT = ROOT / "docs" / "MeDi-dossier-boutique.pdf"
-# Le même fichier est publié par le site : https://<domaine>/dossier/dossier-boutique-medi.pdf
-PUBLIC_OUT = ROOT / "public" / "dossier" / "dossier-boutique-medi.pdf"
+OUT = ROOT / "docs" / "Perokado-dossier-boutique.pdf"
+# Le même fichier est publié par le site : https://<domaine>/dossier/dossier-boutique-perokado.pdf
+PUBLIC_OUT = ROOT / "public" / "dossier" / "dossier-boutique-perokado.pdf"
 BUILD = ROOT / ".brief-build"
-LOGO_WHITE = ROOT / "public" / "brand" / "medi-logo-horizontal-blanc.png"
+LOGO_WHITE = ROOT / "public" / "brand" / "perokado-logo-horizontal-blanc.png"
 # Proportions réelles du logo (il s'élargit quand le nom s'allonge).
 with Image.open(LOGO_WHITE) as _logo:
     LOGO_WHITE_RATIO = _logo.size[1] / _logo.size[0]
@@ -587,7 +587,7 @@ STEPS: list[tuple[str, str, list[tuple[str, str, str, str, str]]]] = [
         "Hébergement et nom de domaine professionnel",
         [
             ("Acheter le nom de domaine", "Vous",
-             "medi.ci, medi-daloa.com ou medi-quincaillerie.ci — .ci auprès du NIC.CI, ou OVH, Namecheap, Cloudflare",
+             "perokado.com ou perokado.ci — .ci auprès du NIC.CI, ou OVH, Namecheap, Cloudflare",
              "≈ 12 000 à 25 000 FCFA par an. À prendre au nom de la boutique, pas d'un prestataire.", "attente"),
             ("Le connecter à Vercel", "Prestataire", "Réglages du projet Vercel, côté domaines",
              "15 minutes : le certificat HTTPS est automatique. Il suffit d'accès au gestionnaire DNS.", "pret"),
@@ -744,7 +744,7 @@ def todo(st: dict[str, ParagraphStyle]) -> list[Flowable]:
     story.append(Paragraph("Vos trois décisions de la semaine", st["h2"]))
     decisions = [
         ("Le nom du site",
-         "Quel nom de domaine ? Par exemple medi-daloa.com. Une fois choisi, tout le reste en dépend : "
+         "Quel nom de domaine ? Par exemple perokado.com. Une fois choisi, tout le reste en dépend : "
          "carte de visite, affiche, QR code, liens Wave."),
         ("Le numéro qui encaisse",
          "Quel numéro Wave marchand reçoit l'argent ? Le numéro actuel n'est que provisoire. "
@@ -837,7 +837,7 @@ def todo(st: dict[str, ParagraphStyle]) -> list[Flowable]:
     story.append(Paragraph("Ce qui est déjà livré et testé", st["h2"]))
     delivered = [
         ("Boutique complète", "Accueil, rayons, fiches produits, recherche texte et photo, panier."),
-        ("Commande et suivi", "Livraison ou retrait, paiement Wave ou espèces, suivi par téléphone."),
+        ("Commande et suivi", "Livraison à domicile, paiement Wave ou à la livraison, suivi par téléphone."),
         ("Espace client", "Compte, adresses, historique, réinitialisation de mot de passe."),
         ("Back-office complet", "Produits, stock, commandes, paiements, messages, livraisons, réglages."),
         ("Comptes et rôles", "Codes d'accès à usage unique, sept métiers, droits limités, traçabilité."),

@@ -102,8 +102,8 @@ photos et catalogue réels, configuration du stockage d'images et de la base Neo
 | Élément | Valeur | Où la modifier |
 | --- | --- | --- |
 | Horaires | lundi – samedi 7h30 – 18h00, dimanche fermé | `/admin/parametres` |
-| WhatsApp / téléphone | +225 07 08 90 48 91 | `/admin/parametres` |
-| Numéro marchand Wave | même numéro (provisoire) | `/admin/parametres` |
+| WhatsApp / téléphone | +225 05 44 01 41 82 (WhatsApp Business, aussi compte marchand Wave) | `/admin/parametres` |
+| Numéro marchand Wave | même numéro (WhatsApp Business) | `/admin/parametres` |
 | Logo | fourni par le propriétaire, décliné par `npm run brand:assets` | `public/brand/` |
 | Barème de livraison | arrêté par le prestataire à la demande du propriétaire | `/admin/livraison` |
 
@@ -111,8 +111,9 @@ Ces valeurs sont posées par `npm run config:store`, exécuté à chaque déploi
 le script ne remplit que les champs vides, les modifications faites dans
 `/admin` ne sont donc jamais écrasées (`--force` pour réappliquer).
 
-Barème en vigueur (modifiable) : retrait gratuit · Daloa centre 1 000 FCFA ·
-Daloa périphérie 2 000 FCFA · Abidjan 4 000 · Yamoussoukro 3 000 · Bouaké 4 000 ·
+Barème en vigueur (modifiable) : Daloa centre 1 000 FCFA · Daloa périphérie
+2 000 FCFA · autres villes : transport convenu sur WhatsApp, 7 jours maximum ·
+
 San-Pédro 6 000 · autre ville 5 000 FCFA (expédition en prépaiement).
 
 ## Non configuré — volontairement, faute d'informations

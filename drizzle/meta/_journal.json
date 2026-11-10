@@ -71,6 +71,13 @@
       "when": 1794305350000,
       "tag": "0009_order_item_purchase_price",
       "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "7",
+      "when": 1794305500000,
+      "tag": "0010_perokado_single_number",
+      "breakpoints": true
     }
   ]
 }

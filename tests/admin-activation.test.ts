@@ -9,7 +9,7 @@ const VALID_TOKEN = 'jeton-activation-de-test-0123456789';
 
 const form = (overrides: Record<string, string> = {}) => ({
   token: VALID_TOKEN,
-  name: 'MeDi Shop',
+  name: 'Perokado',
   email: 'direction@exemple.ci',
   password: 'MotDePasse-2026',
   passwordConfirm: 'MotDePasse-2026',
@@ -57,7 +57,7 @@ describe('Activation du premier compte propriétaire', () => {
     const rows = await db.select().from(users).where(eq(users.email, 'direction@exemple.ci'));
     expect(rows).toHaveLength(1);
     expect(rows[0].role).toBe('OWNER');
-    expect(rows[0].firstName).toBe('MeDi Shop');
+    expect(rows[0].firstName).toBe('Perokado');
     expect(rows[0].isActive).toBe(true);
     // Mot de passe haché (scrypt), jamais stocké en clair.
     expect(rows[0].passwordHash).toMatch(/^scrypt\$/);

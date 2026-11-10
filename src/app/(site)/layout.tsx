@@ -1,5 +1,6 @@
 import { SiteHeader } from '@/components/site-header';
 import { SiteFooter } from '@/components/site-footer';
+import { WhatsAppHelpButton } from '@/components/whatsapp-help-button';
 import { SiteI18nProvider } from '@/components/site-i18n';
 
 /**
@@ -22,6 +23,8 @@ export default async function SiteLayout({ children }: { children: React.ReactNo
         {children}
       </main>
       <SiteFooter />
+      {/* Aide WhatsApp toujours visible, message déjà rédigé. */}
+      <WhatsAppHelpButton />
     </SiteI18nProvider>
   );
 }

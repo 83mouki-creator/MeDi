@@ -6,12 +6,22 @@
       <stop offset="0.55" stop-color="#0e2340"/>
       <stop offset="1" stop-color="#081729"/>
     </linearGradient>
-    <radialGradient id="glow" cx="0.28" cy="0.18" r="0.75">
-      <stop offset="0" stop-color="#ffffff" stop-opacity="0.14"/>
+    <linearGradient id="gold" x1="0.1" y1="0" x2="0.35" y2="1">
+      <stop offset="0" stop-color="#ffd75e"/>
+      <stop offset="0.42" stop-color="#f2b705"/>
+      <stop offset="1" stop-color="#d99e00"/>
+    </linearGradient>
+    <radialGradient id="glow" cx="0.26" cy="0.14" r="0.85">
+      <stop offset="0" stop-color="#ffffff" stop-opacity="0.16"/>
       <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
     </radialGradient>
   </defs>
-  <rect width="512" height="512" rx="120" ry="120" fill="url(#badge)"/>
-  <rect width="512" height="512" rx="120" ry="120" fill="url(#glow)"/>
-  <path transform="translate(117.21 404.48) scale(0.42122 -0.42122)" d="M339 252H233V0H62V702H339Q423 702 481.0 673.0Q539 644 568.0 593.0Q597 542 597 476Q597 415 569.0 364.5Q541 314 483.0 283.0Q425 252 339 252ZM423 476Q423 518 399.0 541.0Q375 564 326 564H233V388H326Q375 388 399.0 411.0Q423 434 423 476Z" fill="#f2b705"/>
+  <rect width="512" height="512" rx="116" ry="116" fill="url(#badge)"/>
+  <rect width="512" height="512" rx="116" ry="116" fill="url(#glow)"/>
+  <rect x="1.5" y="1.5" width="509" height="509" rx="115" ry="115" fill="none" stroke="#ffffff" stroke-opacity="0.07" stroke-width="3"/>
+  <path d="M200 196 Q200 126 256 126 Q312 126 312 196" fill="none" stroke="#ffdc7a" stroke-width="24" stroke-linecap="round"/>
+  <rect x="118" y="192" width="276" height="230" rx="38" ry="38" fill="#081729" opacity="0.35"/>
+  <rect x="118" y="182" width="276" height="230" rx="38" ry="38" fill="url(#gold)"/>
+  <rect x="118" y="182" width="276" height="58" rx="38" ry="38" fill="#ffffff" opacity="0.16"/>
+  <path transform="translate(193.30 376.83) scale(0.19028 -0.19028)" d="M339 252H233V0H62V702H339Q423 702 481.0 673.0Q539 644 568.0 593.0Q597 542 597 476Q597 415 569.0 364.5Q541 314 483.0 283.0Q425 252 339 252ZM423 476Q423 518 399.0 541.0Q375 564 326 564H233V388H326Q375 388 399.0 411.0Q423 434 423 476Z" fill="#0e2340"/>
 </svg>

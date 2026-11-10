@@ -17,7 +17,7 @@ Renseignez au minimum `DATABASE_URL`. Pour un développement 100 % local, laisse
 dans `.env.example` adaptée au cluster embarqué, ou utilisez :
 
 ```
-DATABASE_URL="postgres://medi:medi@127.0.0.1:55432/medi"
+DATABASE_URL="postgres://perokado:perokado@127.0.0.1:55432/perokado"
 ```
 
 Puis :
@@ -45,14 +45,14 @@ navigateur : `.env.local` et `.env*` sont ignorés par Git.
 
 `npm run db:local` lance un cluster PostgreSQL dans `.localdb/` (ignoré par Git) :
 
-- port **55432**, utilisateur/mot de passe `medi`/`medi`, base `medi`
+- port **55432**, utilisateur/mot de passe `perokado`/`perokado`, base `perokado`
 - encodage **UTF-8** (accents corrects), fuseau `Africa/Abidjan`
 - réinitialisation complète : `npm run db:reset` puis `npm run db:seed`
 
 ## Tests
 
 ```bash
-npm run test:setup   # crée medi_test et applique les migrations
+npm run test:setup   # crée perokado_test et applique les migrations
 npm run test         # 109 tests d'intégration
 ```
 

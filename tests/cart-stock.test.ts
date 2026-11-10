@@ -94,7 +94,7 @@ describe('commande : contrôle du stock', () => {
         paymentMethod: 'WAVE',
       }) as unknown as CheckoutInput,
     });
-    expect(result.order.number).toMatch(/^MED-\d{4}-\d{5}$/);
+    expect(result.order.number).toMatch(/^PER-\d{4}-\d{5}$/);
   });
 
   it('réserve le stock et refuse la double vente de la dernière unité (concurrence)', async () => {

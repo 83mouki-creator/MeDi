@@ -10,7 +10,7 @@
 # Secrets à créer une seule fois (Settings → Secrets and variables → Actions) :
 #   ANDROID_KEYSTORE_BASE64  contenu de android.keystore encodé en base64
 #   KEYSTORE_PASSWORD        mot de passe du fichier .keystore
-#   KEY_PASSWORD             mot de passe de la clé « medi » (souvent identique)
+#   KEY_PASSWORD             mot de passe de la clé « perokado » (souvent identique)
 #
 # Voir docs/PLAY-STORE.md pour la marche à suivre complète.
 
@@ -137,13 +137,13 @@ jobs:
             --directory ./android \
             --manifest ./android/twa-manifest.json \
             --signingKeyPath ./android.keystore \
-            --signingKeyAlias medi
+            --signingKeyAlias perokado
           ls -lh android/app-release-bundle.aab android/app-release-signed.apk
 
       - name: Publier les fichiers à télécharger
         uses: actions/upload-artifact@v4
         with:
-          name: medi-shop-android-${{ github.run_number }}
+          name: perokado-android-${{ github.run_number }}
           path: |
             android/app-release-bundle.aab
             android/app-release-signed.apk

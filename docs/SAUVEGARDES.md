@@ -17,7 +17,7 @@
 
 ```bash
 # avec pg_dump installé localement, via la connexion DIRECTE
-pg_dump "$DIRECT_URL" --format=custom --no-owner --no-privileges --file="medi-$(date +%F).dump"
+pg_dump "$DIRECT_URL" --format=custom --no-owner --no-privileges --file="perokado-$(date +%F).dump"
 ```
 
 Conserver au minimum : un export hebdomadaire hors du fournisseur, et un export avant chaque
@@ -27,7 +27,7 @@ opération structurante.
 
 ```bash
 # sur une base vide (jamais directement en production sans validation)
-pg_restore --no-owner --no-privileges --dbname="$DIRECT_URL" medi-2026-10-28.dump
+pg_restore --no-owner --no-privileges --dbname="$DIRECT_URL" perokado-2026-10-28.dump
 npm run db:migrate   # vérifie que le schéma est à jour
 ```
 
@@ -43,7 +43,7 @@ commande récente, puis relancer `npm run reindex:visual` si les images ont ét�
 
 ## Procédure de contrôle (à exécuter une fois par trimestre)
 
-1. Restaurer un export sur une base de test (`medi_test`).
+1. Restaurer un export sur une base de test (`perokado_test`).
 2. Lancer `npm run test` contre cette base.
 3. Comparer le nombre de commandes et le chiffre d'affaires encaissé avec la production.
 4. Noter la date, l'opérateur et le résultat dans le registre interne de la boutique.

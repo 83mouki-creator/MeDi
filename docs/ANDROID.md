@@ -20,9 +20,9 @@ prix n'exige donc aucun nouveau dépôt sur le Play Store.
 | Élément | Fichier | Servi à l'adresse |
 | --- | --- | --- |
 | Manifeste de l'application | `src/app/manifest.ts` | `/manifest.webmanifest` |
-| Icône 192 px | `public/brand/medi-icon-192.png` | `/brand/medi-icon-192.png` |
-| Icône 512 px | `public/brand/medi-icon.png` | `/brand/medi-icon.png` |
-| Icône « maskable » (Android) | `public/brand/medi-icon-maskable-512.png` | `/brand/medi-icon-maskable-512.png` |
+| Icône 192 px | `public/brand/perokado-icon-192.png` | `/brand/perokado-icon-192.png` |
+| Icône 512 px | `public/brand/perokado-icon.png` | `/brand/perokado-icon.png` |
+| Icône « maskable » (Android) | `public/brand/perokado-icon-maskable-512.png` | `/brand/perokado-icon-maskable-512.png` |
 | Page hors connexion | `src/app/offline/page.tsx` | `/offline` |
 | Service worker | `public/sw.js` | `/sw.js` |
 | Enregistrement du service worker | `src/components/pwa-register.tsx` | toutes les pages |
@@ -30,7 +30,7 @@ prix n'exige donc aucun nouveau dépôt sur le Play Store.
 | Générateur du fichier de vérification Android | `scripts/make-assetlinks.ts` | `npm run assetlinks` |
 
 Les icônes sont régénérées par `npm run brand:assets` à partir de
-`public/brand/medi-logo-source.png` : ne les modifie pas à la main.
+`public/brand/perokado-emblem.svg` : ne les modifie pas à la main.
 
 ---
 
@@ -73,7 +73,7 @@ bubblewrap doctor
 ### 3.2 Créer le projet
 
 ```bash
-mkdir medi-shop-android && cd medi-shop-android
+mkdir perokado-android && cd perokado-android
 bubblewrap init --manifest https://perokado.vercel.app/manifest.webmanifest
 ```
 
@@ -88,11 +88,11 @@ Réponses à donner :
 | Display mode | `standalone` |
 | Status bar color | `#0b2545` |
 | Splash screen color | `#0b2545` |
-| Icon URL | `/brand/medi-icon.png` (= 512 × 512) |
-| Maskable icon URL | `/brand/medi-icon-maskable-512.png` |
+| Icon URL | `/brand/perokado-icon.png` (= 512 × 512) |
+| Maskable icon URL | `/brand/perokado-icon-maskable-512.png` |
 | Chrome OS | `No` |
 | Signing key | `Create new` |
-| Key store | `android.keystore`, alias `medi` |
+| Key store | `android.keystore`, alias `perokado` |
 | Mots de passe | **à noter et à sauvegarder** (irrécupérables) |
 | versionCode / versionName | `1` / `1.0.0` |
 
@@ -117,7 +117,7 @@ Sans cette étape, l'application affiche le site **avec la barre d'adresse Chrom
 ### 4.1 Empreintes SHA-256
 
 ```bash
-keytool -list -v -keystore android.keystore -alias medi | grep SHA256
+keytool -list -v -keystore android.keystore -alias perokado | grep SHA256
 ```
 
 Une fois l'application publiée, Google la re-signe avec sa propre clé : ajouter
@@ -176,7 +176,7 @@ adb install -r app-release-signed.apk
 1. **Compte développeur** : 25 USD une seule fois (frais Google, hors contrat),
    vérification d'identité sous 1 à 3 jours.
 2. **Éléments à préparer**
-   - icône 512 × 512 : `public/brand/medi-icon.png` ;
+   - icône 512 × 512 : `public/brand/perokado-icon.png` ;
    - *feature graphic* 1024 × 500 (à créer) ;
    - au moins 2 captures d'écran de téléphone ;
    - description courte (80 caractères) et complète (4 000 caractères) ;
@@ -257,7 +257,7 @@ se fait dans `/admin/utilisateurs`, par un compte de niveau supérieur.
 - **Coordonnées de contact** : `contact.email` et `contact.phone` de
   `store/play-listing.json` portent la mention « à compléter ».
 - **Domaine propre** (recommandé) : `perokado.vercel.app` fonctionne, mais un
-  domaine à la boutique (`medishop.ci`, `medishop-daloa.com`…) rend l'application
+  domaine à la boutique (`perokado.com`, `perokado.ci`…) rend l'application
   durable même si l'hébergement change.
 
 > Tout le dépôt Play (textes, visuels, captures, secrets) est décrit pas à pas
@@ -318,8 +318,8 @@ Installer **Termux** (F-Droid ou Play Store), puis :
 ```bash
 pkg update && pkg upgrade
 pkg install git nodejs-lts openjdk-17
-git clone https://github.com/83mouki-creator/MeDi.git
-cd MeDi
+git clone https://github.com/83mouki-creator/Perokado.git
+cd Perokado
 npm install
 ```
 
@@ -327,10 +327,10 @@ Utile pour : `git pull` / `git push`, `npm run assetlinks`, et **générer le
 keystore** une seule fois :
 
 ```bash
-keytool -genkeypair -v -keystore android.keystore -alias medi \
+keytool -genkeypair -v -keystore android.keystore -alias perokado \
   -keyalg RSA -keysize 2048 -validity 10000 \
   -storetype JKS -dname "CN=Perokado, OU=Daloa, O=Perokado, L=Daloa, C=CI"
-keytool -list -v -keystore android.keystore -alias medi | grep SHA256
+keytool -list -v -keystore android.keystore -alias perokado | grep SHA256
 ```
 
 Le fichier `android.keystore` doit être sauvegardé (cloud, clé USB) : **sans lui,

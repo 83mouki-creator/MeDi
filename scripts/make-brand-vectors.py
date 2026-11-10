@@ -125,15 +125,32 @@ def svg(width: float, height: float, body: list[str], view: str | None = None,
 
 
 def emblem(face: Face) -> str:
-    """Badge carré : « P » de Perokado, en doré, sur un fond bleu nuit."""
+    """Emblème de Perokado : un sac de boutique doré, « P » bleu nuit découpé.
+
+    Le dessin doit tenir à toutes les tailles : il est testé à 512 px (icône Play
+    Store), 180 px (iOS), 32 px (favicon) et sur les affiches. Trois choix le
+    rendent lisible partout :
+
+      • **Une seule forme forte** — le sac occupe 62 % du badge, son anse se
+        détache du fond : on reconnaît une boutique même en tout petit.
+      • **Un contraste porté par les valeurs** — or sur bleu nuit : le sac reste
+        visible en niveaux de gris et sur un écran au soleil.
+      • **Le « P » en réserve** (et non en trait) — les contre-formes restent
+        nettes une fois réduites, là où un contour fin disparaîtrait.
+
+    Le « P » est celui de la police de la marque, légèrement agrandi pour occuper
+    le sac, et non un tracé approximatif.
+    """
     size = 512
     commands, advance, (x0, y0, x1, y1) = face.glyph("P")
-    # Hauteur de capitale visée : 58 % du badge, ce qui reste lisible à 32 px.
-    scale = (size * 0.58) / face.cap
+    # Le P occupe 26 % de la hauteur du badge, centré dans le sac.
+    scale = (size * 0.262) / face.cap
     ink_w = (x1 - x0) * scale
-    # Centrage optique sur la boîte d'encre (et non sur l'avance de la lettre).
     left = (size - ink_w) / 2 - x0 * scale
-    baseline = (size + face.cap * scale) / 2
+    baseline = size * 0.605 + (face.cap * scale) / 2
+
+    # Sac : rectangle à coins arrondis, centré, de 276 × 230.
+    bag_x, bag_y, bag_w, bag_h, bag_r = 118, 182, 276, 230, 38
 
     body = [
         "<defs>",
@@ -142,15 +159,35 @@ def emblem(face: Face) -> str:
         f'    <stop offset="0.55" stop-color="{NAVY}"/>',
         f'    <stop offset="1" stop-color="{NAVY_DEEP}"/>',
         "  </linearGradient>",
-        '  <radialGradient id="glow" cx="0.28" cy="0.18" r="0.75">',
-        '    <stop offset="0" stop-color="#ffffff" stop-opacity="0.14"/>',
+        '  <linearGradient id="gold" x1="0.1" y1="0" x2="0.35" y2="1">',
+        '    <stop offset="0" stop-color="#ffd75e"/>',
+        f'    <stop offset="0.42" stop-color="{GOLD}"/>',
+        '    <stop offset="1" stop-color="#d99e00"/>',
+        "  </linearGradient>",
+        '  <radialGradient id="glow" cx="0.26" cy="0.14" r="0.85">',
+        '    <stop offset="0" stop-color="#ffffff" stop-opacity="0.16"/>',
         '    <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>',
         "  </radialGradient>",
         "</defs>",
-        '<rect width="512" height="512" rx="120" ry="120" fill="url(#badge)"/>',
-        '<rect width="512" height="512" rx="120" ry="120" fill="url(#glow)"/>',
+        # Fond
+        '<rect width="512" height="512" rx="116" ry="116" fill="url(#badge)"/>',
+        '<rect width="512" height="512" rx="116" ry="116" fill="url(#glow)"/>',
+        '<rect x="1.5" y="1.5" width="509" height="509" rx="115" ry="115" fill="none" '
+        'stroke="#ffffff" stroke-opacity="0.07" stroke-width="3"/>',
+        # Anse (dessinée avant le sac : elle passe derrière le corps)
+        '<path d="M200 196 Q200 126 256 126 Q312 126 312 196" fill="none" '
+        'stroke="#ffdc7a" stroke-width="24" stroke-linecap="round"/>',
+        # Ombre portée douce, puis le sac
+        f'<rect x="{bag_x}" y="{bag_y + 10}" width="{bag_w}" height="{bag_h}" rx="{bag_r}" '
+        f'ry="{bag_r}" fill="{NAVY_DEEP}" opacity="0.35"/>',
+        f'<rect x="{bag_x}" y="{bag_y}" width="{bag_w}" height="{bag_h}" rx="{bag_r}" '
+        f'ry="{bag_r}" fill="url(#gold)"/>',
+        # Reflet haut du sac (volume, sans dégradé complexe)
+        f'<rect x="{bag_x}" y="{bag_y}" width="{bag_w}" height="58" rx="{bag_r}" ry="{bag_r}" '
+        'fill="#ffffff" opacity="0.16"/>',
+        # Le « P » : poinçon bleu nuit dans l'or
         f'<path transform="translate({left:.2f} {baseline:.2f}) scale({scale:.5f} {-scale:.5f})" '
-        f'd="{commands}" fill="{GOLD}"/>',
+        f'd="{commands}" fill="{NAVY}"/>',
     ]
     return svg(size, size, body, title="Perokado")
 

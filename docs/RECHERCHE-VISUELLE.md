@@ -17,7 +17,7 @@ sur ordinateur, un sélecteur de fichier est proposé.
 
 | `VISION_PROVIDER` | Modèle | Nature | Statut |
 | --- | --- | --- | --- |
-| `local` (défaut) | `medi-local-descriptor-v1` | descripteur perceptif calculé avec sharp : moyennes RGB sur grille, histogrammes de couleurs, densité de contours (67 dimensions) | opérationnel, **non sémantique** |
+| `local` (défaut) | `perokado-local-descriptor-v1` | descripteur perceptif calculé avec sharp : moyennes RGB sur grille, histogrammes de couleurs, densité de contours (67 dimensions) | opérationnel, **non sémantique** |
 | `http` | `VISION_MODEL` (ex. CLIP) | embeddings sémantiques via une API compatible OpenAI (`VISION_API_URL`, `VISION_API_KEY`) | nécessite un service externe configuré |
 | `none` | — | fonctionnalité désactivée explicitement | la page affiche la raison |
 

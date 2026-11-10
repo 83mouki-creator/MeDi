@@ -1,7 +1,7 @@
 /**
  * Chargeur des manifestes de catalogue (un fichier JSON par lot de photos).
  *
- * Les lots sont fusionnés : `data/catalogue/medi-*.json` (hors `images.json`).
+ * Les lots sont fusionnés : `data/catalogue/perokado-*.json` (hors `images.json`).
  * Les catégories déclarées par plusieurs lots sont fusionnées sans doublon.
  */
 import { readdir, readFile } from 'node:fs/promises';
@@ -41,7 +41,7 @@ const DIR = path.join('data', 'catalogue');
 
 export async function loadCatalogue(): Promise<Catalogue> {
   const files = (await readdir(DIR))
-    .filter((name) => name.startsWith('medi-') && name.endsWith('.json'))
+    .filter((name) => name.startsWith('perokado-') && name.endsWith('.json'))
     .sort();
 
   const catalogue: Catalogue = { categories: [], sousCategoriesExistantes: [], produits: [] };

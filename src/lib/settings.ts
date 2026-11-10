@@ -3,7 +3,7 @@ import { eq } from 'drizzle-orm';
 import { db } from '../db';
 import { storeSettings, type StoreSetting } from '../db/schema';
 import { env } from './env';
-import { STORE_NAME, STORE_TAGLINE, STORE_WHATSAPP, STORE_WHATSAPP_DIGITS } from './brand';
+import { STORE_NAME, STORE_TAGLINE, STORE_WHATSAPP, STORE_WHATSAPP_DIGITS, WHATSAPP_MESSAGES } from './brand';
 
 /**
  * Réglages de la boutique. Les informations commerciales (téléphone, adresse,
@@ -125,18 +125,23 @@ export const getStoreSettings = cache(async (): Promise<PublicSettings> => {
 });
 
 /**
- * Lien WhatsApp prêt à l'emploi.
+ * Lien WhatsApp du service client, avec message déjà écrit.
  *
  * Le numéro vient de /admin/parametres ; à défaut, celui de la marque
- * (`+225 05 44 01 41 82`) est utilisé, pour que le bouton d'aide fonctionne dès
- * la première installation.
+ * (`+225 05 44 01 41 82`, le WhatsApp Business) est utilisé, pour que le bouton
+ * d'aide fonctionne dès la première installation.
+ *
+ * Le message est toujours prérempli : le client clique, la conversation
+ * s'ouvre avec le contexte (produit, commande, question) et il n'a plus qu'à
+ * envoyer. Un message vide ne remplace pas le message par défaut.
  */
 export function whatsappLink(
   settings: Pick<PublicSettings, 'whatsapp'>,
-  message = `Bonjour ${STORE_NAME}, je souhaite des informations sur un produit.`,
+  message: string = WHATSAPP_MESSAGES.help,
 ) {
   const raw = settings.whatsapp?.trim() || STORE_WHATSAPP_DIGITS;
   const number = raw.replace(/[^\d]/g, '');
   if (!number) return null;
-  return `https://wa.me/${number}?text=${encodeURIComponent(message)}`;
+  const text = message.trim() || WHATSAPP_MESSAGES.help;
+  return `https://wa.me/${number}?text=${encodeURIComponent(text)}`;
 }

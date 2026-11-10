@@ -13,13 +13,19 @@ import { createHash, randomBytes } from 'node:crypto';
 const CODE_ALPHABET = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789';
 const CODE_GROUPS = 3;
 const CODE_GROUP_SIZE = 4;
-const CODE_PREFIX = 'MEDI';
+const CODE_PREFIX = 'PERO';
+
+/**
+ * Ancien préfixe : les codes déjà remis à l'équipe restent valables à la
+ * saisie. Seule la génération change.
+ */
+const LEGACY_PREFIX = 'MEDI';
 
 export const STAFF_CODE_TTL_HOURS = 24 * 7;
 export const STAFF_PASSWORD_MIN = 10;
 
 /**
- * Code au format `MEDI-XXXX-XXXX-XXXX` (~1,7 · 10¹⁷ combinaisons).
+ * Code au format `PERO-XXXX-XXXX-XXXX` (~1,7 · 10¹⁷ combinaisons).
  * Généré par le module `crypto` : jamais par `Math.random`.
  */
 export function generateStaffCode(): string {
@@ -51,7 +57,7 @@ export function hashStaffCode(code: string): string {
   return createHash('sha256').update(normalizeStaffCode(code)).digest('hex');
 }
 
-/** Saisie tolérante : « medi 7k4p 9qx2 w8mt » → « MEDI-7K4P-9QX2-W8MT ». */
+/** Saisie tolérante : « pero 7k4p 9qx2 w8mt » → « PERO-7K4P-9QX2-W8MT ». */
 export function formatStaffCodeInput(code: string): string {
   const normalized = normalizeStaffCode(code);
   if (normalized.length <= 4) return normalized;
@@ -59,7 +65,8 @@ export function formatStaffCodeInput(code: string): string {
 }
 
 export function isValidStaffCodeShape(code: string): boolean {
-  return /^MEDI[A-Z0-9]{12}$/.test(normalizeStaffCode(code));
+  const normalized = normalizeStaffCode(code);
+  return [CODE_PREFIX, LEGACY_PREFIX].some((prefix) => new RegExp(`^${prefix}[A-Z0-9]{12}$`).test(normalized));
 }
 
 // ───────────────────────────── Téléphone ivoirien ─────────────────────────────
@@ -75,8 +82,8 @@ export type PhoneNormalization =
  * Normalise un numéro ivoirien vers `+225XXXXXXXXXX`.
  *
  * Plan de numérotation ivoirien (10 chiffres) : mobiles `01/05/07` + 8 chiffres,
- * fixes `21/23/25/27` + 8 chiffres. Accepte « 07 08 90 48 91 », « 0708904891 »,
- * « +225 07 08 90 48 91 », « 00225 0708904891 », « 27 20 00 11 22 ».
+ * fixes `21/23/25/27` + 8 chiffres. Accepte « 05 44 01 41 82 », « 0544014182 »,
+ * « +225 05 44 01 41 82 », « 00225 0544014182 », « 27 20 00 11 22 ».
  */
 export function normalizeIvorianPhone(input: unknown): PhoneNormalization {
   const raw = String(input ?? '').trim();

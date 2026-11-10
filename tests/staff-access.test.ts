@@ -14,10 +14,10 @@ import { ROLES, assignableRoleDefinitions, roleDefinition, roleHome, roleLabel, 
 import { assignableRoles } from '@/lib/auth';
 
 describe('codes d’accès du personnel', () => {
-  it('génère un code lisible au format MEDI-XXXX-XXXX-XXXX', () => {
+  it('génère un code lisible au format PERO-XXXX-XXXX-XXXX', () => {
     for (let i = 0; i < 50; i += 1) {
       const code = generateStaffCode();
-      expect(code).toMatch(/^MEDI(-[A-HJ-NP-Z2-9]{4}){3}$/);
+      expect(code).toMatch(/^PERO(-[A-HJ-NP-Z2-9]{4}){3}$/);
       expect(isValidStaffCodeShape(code)).toBe(true);
       // Pas de caractères ambigus au téléphone.
       expect(code.slice(5)).not.toMatch(/[0O1IL]/);
@@ -30,18 +30,23 @@ describe('codes d’accès du personnel', () => {
   });
 
   it('ne stocke qu’un condensat, insensible à la casse et aux séparateurs', () => {
-    const code = 'MEDI-7K4P-9QX2-W8MT';
+    const code = 'PERO-7K4P-9QX2-W8MT';
     const hash = hashStaffCode(code);
     expect(hash).toMatch(/^[0-9a-f]{64}$/);
     expect(hash).not.toContain('7K4P');
-    expect(hashStaffCode(' medi 7k4p 9qx2 w8mt ')).toBe(hash);
-    expect(hashStaffCode('MEDI-7K4P-9QX2-W8MZ')).not.toBe(hash);
+    expect(hashStaffCode(' pero 7k4p 9qx2 w8mt ')).toBe(hash);
+    expect(hashStaffCode('PERO-7K4P-9QX2-W8MZ')).not.toBe(hash);
   });
 
   it('remet en forme la saisie de l’agent', () => {
-    expect(formatStaffCodeInput('medi7k4p9qx2w8mt')).toBe('MEDI-7K4P-9QX2-W8MT');
-    expect(formatStaffCodeInput('MEDI')).toBe('MEDI');
-    expect(isValidStaffCodeShape('MEDI-7K4P-9QX2')).toBe(false);
+    expect(formatStaffCodeInput('pero7k4p9qx2w8mt')).toBe('PERO-7K4P-9QX2-W8MT');
+    expect(formatStaffCodeInput('PERO')).toBe('PERO');
+    expect(isValidStaffCodeShape('PERO-7K4P-9QX2')).toBe(false);
+  });
+
+  it('accepte encore un code émis sous l’ancien préfixe', () => {
+    // Une équipe déjà équipée ne doit pas être bloquée : le code reste valable.
+    expect(isValidStaffCodeShape('MEDI-7K4P-9QX2-W8MT')).toBe(true);
   });
 });
 
@@ -89,15 +94,15 @@ describe('mot de passe et messages du personnel', () => {
       firstName: 'Awa',
       lastName: 'Koné',
       phone: '+2250708904891',
-      code: 'MEDI-7K4P-9QX2-W8MT',
+      code: 'PERO-7K4P-9QX2-W8MT',
       roleLabel: 'Caissier',
       task: 'Caisse du matin',
-      activationUrl: 'https://medi-daloa.vercel.app/connexion/agent',
-      storeName: 'MeDi Shop Daloa',
+      activationUrl: 'https://perokado.vercel.app/connexion/agent',
+      storeName: 'Perokado Daloa',
     });
-    expect(message).toContain('MEDI-7K4P-9QX2-W8MT');
+    expect(message).toContain('PERO-7K4P-9QX2-W8MT');
     expect(message).toContain('Caisse du matin');
-    expect(message).toContain('https://medi-daloa.vercel.app/connexion/agent');
+    expect(message).toContain('https://perokado.vercel.app/connexion/agent');
     expect(message).toContain('usage unique');
   });
 

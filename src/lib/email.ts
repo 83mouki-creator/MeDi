@@ -111,5 +111,7 @@ export function isDeliverableAddress(value: string | null | undefined): boolean 
 
 /** Adresses techniques créées pour le personnel : jamais de courrier sortant. */
 export function isInternalAddress(value: string | null | undefined): boolean {
-  return String(value ?? '').toLowerCase().endsWith('@agents.medi.local');
+  const address = String(value ?? '').toLowerCase();
+  // L'ancien domaine reste reconnu : des comptes agents peuvent l'utiliser.
+  return address.endsWith('@agents.perokado.local') || address.endsWith('@agents.medi.local');
 }

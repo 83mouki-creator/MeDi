@@ -54,7 +54,7 @@ export type VisualSearchResult =
     }
   | { available: false; provider: VisualProviderInfo; reason: string };
 
-export const LOCAL_MODEL_ID = 'medi-local-descriptor-v1';
+export const LOCAL_MODEL_ID = 'perokado-local-descriptor-v1';
 const LOCAL_DIM = 27 + 24 + 16; // 67
 
 // ─────────────────────────── Descripteur local ───────────────────────────

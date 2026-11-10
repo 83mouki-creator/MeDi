@@ -9,7 +9,7 @@ import { getSiteI18n } from '@/lib/i18n/site-server';
 import { SearchBar } from './search-bar';
 import { PromoBanner } from './promo-banner';
 import { SiteCategoryMenu } from './site-category-menu';
-import { BRAND, BRAND_LOGO_SIZE, STORE_TAGLINE_SHORT } from '@/lib/brand';
+import { BRAND, BRAND_LOGO_SIZE, STORE_TAGLINE_SHORT, WHATSAPP_MESSAGES } from '@/lib/brand';
 
 const FALLBACK_CATEGORIES = [
   { slug: 'outillage-industriel', name: 'Outillage industriel' },
@@ -32,10 +32,8 @@ export async function SiteHeader() {
 
   const cartCount = cart.reduce((sum, item) => sum + item.quantity, 0);
   const roots = tree.roots.length > 0 ? tree.roots : FALLBACK_CATEGORIES.map((c, i) => ({ ...c, id: c.slug, productCount: 0, position: i, parentId: null, imageUrl: null }));
-  const whatsapp = whatsappLink(
-    settings,
-    `Bonjour ${settings.storeName}, je souhaite des informations sur un produit.`,
-  );
+  // Message déjà rédigé : le client clique et envoie, sans rien taper.
+  const whatsapp = whatsappLink(settings, WHATSAPP_MESSAGES.help);
 
   return (
     <header className="sticky top-0 z-40 border-b border-navy-800 bg-navy-950 text-white">

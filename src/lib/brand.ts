@@ -15,10 +15,35 @@ export const STORE_TAGLINE = 'Tout ce que vous cherchez au même endroit.';
 /** Même slogan, sans la ponctuation finale (titres, métadonnées). */
 export const STORE_TAGLINE_SHORT = 'Tout ce que vous cherchez au même endroit';
 
-/** Coordonnées publiques de la boutique (surchargées par /admin/parametres). */
+/**
+ * Coordonnées publiques de la boutique (surchargées par /admin/parametres).
+ *
+ * Numéro WhatsApp Business — un seul numéro partout : en-tête, pied de page,
+ * fiches produit, page contact, e-mails, guide d'équipe et fiche Play Store.
+ */
 export const STORE_WHATSAPP = '+225 05 44 01 41 82';
 export const STORE_WHATSAPP_DIGITS = '2250544014182';
 export const STORE_PHONE = '+225 05 44 01 41 82';
+
+/**
+ * Messages préremplis des boutons WhatsApp.
+ *
+ * Le client qui clique n'a rien à écrire : la conversation s'ouvre déjà avec le
+ * bon contexte (produit, commande, question), ce qui évite les « Bonjour » nus
+ * et permet à la boutique de répondre du premier coup.
+ */
+export const WHATSAPP_MESSAGES = {
+  /** Bouton d'aide générique (en-tête, pied de page, page contact). */
+  help: `Bonjour ${STORE_NAME}, je souhaite être aidé(e) par le service client.`,
+  /** Fiche produit : le nom et la référence sont ajoutés par l'appelant. */
+  product: `Bonjour ${STORE_NAME}, je souhaite des informations sur ce produit :`,
+  /** Suivi de commande. */
+  order: `Bonjour ${STORE_NAME}, je souhaite des informations sur ma commande :`,
+  /** Livraison / frais. */
+  delivery: `Bonjour ${STORE_NAME}, je souhaite connaître les frais et le délai de livraison.`,
+  /** Retour ou échange. */
+  returns: `Bonjour ${STORE_NAME}, je souhaite organiser un retour ou un échange.`,
+} as const;
 
 export const STORE_COUNTRY = "Côte d'Ivoire";
 export const STORE_CITY = 'Daloa';

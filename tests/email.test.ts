@@ -20,21 +20,21 @@ import { checkoutInput, createProduct, resetDb } from './helpers';
  */
 
 const store = {
-  name: 'MeDi Shop',
+  name: 'Perokado',
   phone: '+225 07 00 00 00 00',
   whatsapp: '+225 07 00 00 00 00',
-  email: 'contact@medishopdaloa.com',
+  email: 'contact@perokado.com',
   addressLine: 'Daloa, quartier Commerce',
   city: 'Daloa',
   dms: `6°53'04.4"N 6°26'50.9"W`,
-  siteUrl: 'https://medi-daloa.vercel.app',
+  siteUrl: 'https://perokado.vercel.app',
 };
 
 function orderFixture(overrides: Partial<OrderEmailData> = {}): OrderEmailData {
   return {
     kind: 'created',
     number: 'CMD-2026-0042',
-    link: 'https://medi-daloa.vercel.app/commande/CMD-2026-0042?t=jeton-secret',
+    link: 'https://perokado.vercel.app/commande/CMD-2026-0042?t=jeton-secret',
     createdAt: new Date('2026-11-07T09:30:00Z'),
     customerFirstName: 'Awa',
     customerName: 'Awa Koné',
@@ -70,11 +70,11 @@ describe('modèles d’e-mails', () => {
 
   it('e-mail de bienvenue : nom, adresse et lien du compte', () => {
     const mail = welcomeEmail({ firstName: 'Awa', email: 'awa@example.com', store });
-    expect(mail.subject).toContain('MeDi Shop');
+    expect(mail.subject).toContain('Perokado');
     expect(mail.text).toContain('Bonjour Awa,');
     expect(mail.text).toContain('awa@example.com');
-    expect(mail.text).toContain('https://medi-daloa.vercel.app/connexion');
-    expect(mail.html).toContain('https://medi-daloa.vercel.app/compte');
+    expect(mail.text).toContain('https://perokado.vercel.app/connexion');
+    expect(mail.html).toContain('https://perokado.vercel.app/compte');
     expect(mail.html).toContain('#f2b705');
   });
 
@@ -87,7 +87,7 @@ describe('modèles d’e-mails', () => {
   it('réinitialisation : lien, durée de validité et mise en garde', () => {
     const mail = passwordResetEmail({
       firstName: 'Awa',
-      resetUrl: 'https://medi-daloa.vercel.app/reinitialiser-mot-de-passe?token=abc',
+      resetUrl: 'https://perokado.vercel.app/reinitialiser-mot-de-passe?token=abc',
       expiresInMinutes: 60,
       store,
     });
@@ -151,11 +151,11 @@ describe('modèles d’e-mails', () => {
 
   it('aucune adresse de boutique inventée : une valeur absente disparaît', () => {
     const { html } = orderEmail(
-      orderFixture({ store: { name: 'MeDi Shop', siteUrl: 'https://medi-daloa.vercel.app' } }),
+      orderFixture({ store: { name: 'Perokado', siteUrl: 'https://perokado.vercel.app' } }),
     );
     expect(html).not.toContain('Téléphone :');
     expect(html).not.toContain('WhatsApp :');
-    expect(html).toContain('MeDi Shop');
+    expect(html).toContain('Perokado');
   });
 });
 
@@ -181,7 +181,7 @@ async function loadEmailModule(vars: Record<string, string>) {
 
 const payload = {
   to: 'client@example.com',
-  subject: 'MeDi Shop — commande CMD-1',
+  subject: 'Perokado — commande PER-2026-0042',
   text: 'Bonjour, votre commande est enregistrée.',
   html: '<p>Bonjour</p>',
 };
@@ -192,8 +192,8 @@ describe('envoi — Brevo', () => {
     vi.stubGlobal('fetch', fetchMock);
     const { sendEmail, emailStatus } = await loadEmailModule({
       BREVO_API_KEY: 'xkeysib-test',
-      EMAIL_FROM: 'MeDi Shop <no-reply@medishopdaloa.com>',
-      EMAIL_REPLY_TO: 'contact@medishopdaloa.com',
+      EMAIL_FROM: 'Perokado <no-reply@perokado.com>',
+      EMAIL_REPLY_TO: 'contact@perokado.com',
     });
 
     const status = emailStatus();
@@ -207,19 +207,19 @@ describe('envoi — Brevo', () => {
     expect(url).toBe('https://api.brevo.com/v3/smtp/email');
     expect((init.headers as Record<string, string>)['api-key']).toBe('xkeysib-test');
     const body = JSON.parse(String(init.body));
-    expect(body.sender).toEqual({ name: 'MeDi Shop', email: 'no-reply@medishopdaloa.com' });
+    expect(body.sender).toEqual({ name: 'Perokado', email: 'no-reply@perokado.com' });
     expect(body.to).toEqual([{ email: 'client@example.com' }]);
     expect(body.subject).toBe(payload.subject);
     expect(body.textContent).toBe(payload.text);
     expect(body.htmlContent).toBe(payload.html);
-    expect(body.replyTo).toEqual({ email: 'contact@medishopdaloa.com' });
+    expect(body.replyTo).toEqual({ email: 'contact@perokado.com' });
   });
 
   it('remonte le code HTTP de Brevo sans lever', async () => {
     vi.stubGlobal('fetch', vi.fn(async () => new Response('{}', { status: 400 })));
     const { sendEmail } = await loadEmailModule({
       BREVO_API_KEY: 'xkeysib-test',
-      EMAIL_FROM: 'MeDi Shop <no-reply@medishopdaloa.com>',
+      EMAIL_FROM: 'Perokado <no-reply@perokado.com>',
     });
     const result = await sendEmail(payload);
     expect(result.sent).toBe(false);
@@ -231,7 +231,7 @@ describe('envoi — Brevo', () => {
     vi.stubGlobal('fetch', fetchMock);
     const { sendEmail } = await loadEmailModule({
       BREVO_API_KEY: 'xkeysib-test',
-      EMAIL_FROM: 'MeDi Shop <no-reply@medishopdaloa.com>',
+      EMAIL_FROM: 'Perokado <no-reply@perokado.com>',
     });
     const result = await sendEmail({ ...payload, to: 'pas-une-adresse' });
     expect(result.sent).toBe(false);
@@ -245,8 +245,8 @@ describe('envoi — Resend', () => {
     vi.stubGlobal('fetch', fetchMock);
     const { sendEmail, emailStatus } = await loadEmailModule({
       RESEND_API_KEY: 're_test',
-      EMAIL_FROM: 'MeDi Shop <no-reply@medishopdaloa.com>',
-      EMAIL_REPLY_TO: 'contact@medishopdaloa.com',
+      EMAIL_FROM: 'Perokado <no-reply@perokado.com>',
+      EMAIL_REPLY_TO: 'contact@perokado.com',
     });
 
     expect(emailStatus().provider).toBe('resend');
@@ -257,17 +257,17 @@ describe('envoi — Resend', () => {
     expect(url).toBe('https://api.resend.com/emails');
     expect((init.headers as Record<string, string>).Authorization).toBe('Bearer re_test');
     const body = JSON.parse(String(init.body));
-    expect(body.from).toBe('MeDi Shop <no-reply@medishopdaloa.com>');
+    expect(body.from).toBe('Perokado <no-reply@perokado.com>');
     expect(body.to).toEqual(['client@example.com']);
     expect(body.html).toBe(payload.html);
-    expect(body.reply_to).toBe('contact@medishopdaloa.com');
+    expect(body.reply_to).toBe('contact@perokado.com');
   });
 
   it('Brevo est prioritaire quand les deux clés existent', async () => {
     const { emailStatus } = await loadEmailModule({
       BREVO_API_KEY: 'xkeysib-test',
       RESEND_API_KEY: 're_test',
-      EMAIL_FROM: 'MeDi Shop <no-reply@medishopdaloa.com>',
+      EMAIL_FROM: 'Perokado <no-reply@perokado.com>',
     });
     expect(emailStatus().provider).toBe('brevo');
   });
@@ -293,9 +293,9 @@ describe('état du service', () => {
   it('filtre les adresses internes du personnel', async () => {
     const { isInternalAddress, isDeliverableAddress } = await loadEmailModule({
       BREVO_API_KEY: 'xkeysib-test',
-      EMAIL_FROM: 'MeDi Shop <no-reply@medishopdaloa.com>',
+      EMAIL_FROM: 'Perokado <no-reply@perokado.com>',
     });
-    expect(isInternalAddress('agent.0701020304@agents.medi.local')).toBe(true);
+    expect(isInternalAddress('agent.0701020304@agents.perokado.local')).toBe(true);
     expect(isInternalAddress('client@example.com')).toBe(false);
     expect(isDeliverableAddress('client@example.com')).toBe(true);
     expect(isDeliverableAddress('')).toBe(false);
