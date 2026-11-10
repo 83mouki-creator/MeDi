@@ -15,6 +15,7 @@ import {
   Printer,
   ScrollText,
   ShieldCheck,
+  Star,
   Tags,
   Truck,
   Users,
@@ -56,6 +57,7 @@ const ICONS: Record<GuideIcon, typeof Calculator> = {
   users: Users,
   journal: ScrollText,
   truck: Truck,
+  star: Star,
 };
 
 export default async function AdminGuidePage() {

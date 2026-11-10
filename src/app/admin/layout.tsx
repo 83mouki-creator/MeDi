@@ -2,6 +2,7 @@ import { redirect } from 'next/navigation';
 import type { Metadata } from 'next';
 import { getCurrentUser, isStaff, can, type Permission } from '@/lib/auth';
 import { countContactMessages, expiringPaymentsCount } from '@/lib/admin';
+import { pendingReviewCount } from '@/lib/reviews';
 import { getAdminI18n } from '@/lib/i18n/admin-server';
 import { AdminTopBar, type AdminNavItem } from '@/components/admin/admin-top-bar';
 import { AdminI18nProvider } from '@/components/admin/admin-i18n';
@@ -21,6 +22,7 @@ const NAV: (AdminNavItem & { permission?: Permission })[] = [
   { href: '/admin/pret-a-vendre', label: 'Prêt à vendre', hint: 'Ce qui manque pour vendre', icon: 'ready', permission: 'settings.write' },
   { href: '/admin/commandes', label: 'Commandes', hint: 'Qui a commandé quoi', icon: 'orders', permission: 'orders.read' },
   { href: '/admin/messages', label: 'Messages des clients', hint: 'Questions et demandes', icon: 'messages', permission: 'messages.handle', badge: 'messages' },
+  { href: '/admin/avis', label: 'Avis clients', hint: 'Notes sur les produits et la livraison', icon: 'reviews', permission: 'messages.handle', badge: 'reviews' },
   { href: '/admin/paiements', label: 'Encaissements', hint: 'Vérifier l’argent reçu', icon: 'payments', permission: 'payments.read', badge: 'payments' },
   { href: '/admin/produits', label: 'Produits', hint: 'Fiches, prix et photos', icon: 'products', permission: 'products.read' },
   { href: '/admin/stock', label: 'Stock', hint: 'Combien il en reste', icon: 'stock', permission: 'products.read' },
@@ -43,10 +45,11 @@ export default async function AdminLayout({ children }: { children: React.ReactN
   if (!user) redirect('/connexion?redirectTo=/admin');
   if (!isStaff(user.role)) redirect('/compte');
 
-  const [{ t }, pendingPayments, messages] = await Promise.all([
+  const [{ t }, pendingPayments, messages, reviewsPending] = await Promise.all([
     getAdminI18n(),
     expiringPaymentsCount().catch(() => 0),
     countContactMessages().catch(() => ({ newCount: 0, open: 0, total: 0 })),
+    pendingReviewCount().catch(() => 0),
   ]);
 
   const items: AdminNavItem[] = NAV.filter((item) => !item.permission || can(user.role, item.permission)).map(
@@ -73,6 +76,7 @@ export default async function AdminLayout({ children }: { children: React.ReactN
           email={user.email}
           pendingPayments={pendingPayments}
           newMessages={messages.newCount}
+          pendingReviews={reviewsPending}
         />
         <main className="container-page py-5">{children}</main>
         </div>

@@ -6,10 +6,15 @@ import { getOrderDetails, orderTotals } from '@/lib/orders';
 import { can, getCurrentUser, requirePagePermission } from '@/lib/auth';
 import { deliveryMethodLabels, paymentMethodLabels } from '@/lib/delivery';
 import { ORDER_STATUS_LABELS, PAYMENT_STATUS_LABELS, ALLOWED_TRANSITIONS, type OrderStatus } from '@/lib/order-status';
-import { formatDateTime, formatFCFA } from '@/lib/utils';
+import { formatDateTime, formatFCFA, toFcfa } from '@/lib/utils';
 import { Badge, Card } from '@/components/ui/primitives';
 import { OrderTimeline } from '@/components/order-timeline';
 import { OrderStatusForm, PaymentReviewForm, CancelOrderForm } from '@/components/admin/order-actions';
+import { DispatchForm, ShipmentStatusForm, SyncShipmentButton, CopyTrackingLink, WhatsAppTrackingLink } from '@/components/admin/shipment-forms';
+import { shipmentForOrder, customerTrackingLink } from '@/lib/shipments';
+import { env } from '@/lib/env';
+import { COLIS_EXPRESS_LABEL } from '@/lib/colis-express';
+import { getStoreSettings, whatsappLink } from '@/lib/settings';
 import { OrderProgress } from '@/components/admin/order-progress';
 import { saveAdminNoteAction } from '@/app/actions/admin-orders';
 import { Textarea } from '@/components/ui/form';
@@ -32,6 +37,22 @@ export default async function AdminOrderDetail({ params }: { params: Promise<{ i
   const canWrite = can(actor?.role, 'orders.write');
   const isCarrier = order.deliveryMethod === 'CARRIER';
   const paid = order.paymentStatus === 'PAID';
+  // L'expédition se déclare ici même : ouvrir un second écran pour saisir un
+  // code de suivi alors qu'on a la commande sous les yeux n'a aucun sens.
+  const [shipment, settings] = await Promise.all([
+    shipmentForOrder(order.id).catch(() => null),
+    getStoreSettings().catch(() => null),
+  ]);
+  const trackingUrl = shipment ? customerTrackingLink(shipment) : null;
+  const whatsappTracking =
+    shipment?.trackingNumber && trackingUrl && settings
+      ? whatsappLink(
+          settings,
+          `Bonjour, votre commande Perokado est en route. Suivez votre colis avec le code ${shipment.trackingNumber} : ${trackingUrl}`,
+        )?.replace(/wa\.me\/\d+/, `wa.me/${order.phone.replace(/\D/g, '')}`) ?? null
+      : null;
+  const canDispatch = canWrite && paid && order.status !== 'CANCELLED' && order.status !== 'REFUNDED';
+  const needsDispatch = canDispatch && !shipment && (isCarrier || order.status === 'READY_TO_SHIP' || order.status === 'SHIPPED');
 
   return (
     <div className="space-y-4">
@@ -88,6 +109,50 @@ export default async function AdminOrderDetail({ params }: { params: Promise<{ i
             <h2 className="mb-2 text-sm font-bold">{t('Tout ce qui s’est passé sur cette commande')}</h2>
             <OrderTimeline status={order.status as OrderStatus} history={history} />
           </Card>
+
+          {/* Expédition : saisir le code de suivi du transporteur, ou suivre le colis déjà parti. */}
+          {needsDispatch ? (
+            <Card className="border-accent-200 p-4">
+              <h2 className="mb-2 flex items-center gap-2 text-sm font-bold">
+                <Truck className="size-4 text-accent-600" aria-hidden /> {t('Remettre le colis au transporteur')}
+              </h2>
+              <p className="mb-3 text-xs text-navy-600">
+                {t('Saisissez le code de suivi remis au guichet : le client le verra sur son suivi de commande.')}
+              </p>
+              <DispatchForm
+                orderId={order.id}
+                orderNumber={order.number}
+                customerName={`${order.customerFirstName} ${order.customerLastName}`.trim()}
+                city={order.city}
+                defaultFee={toFcfa(order.shippingFee)}
+              />
+            </Card>
+          ) : null}
+
+          {shipment ? (
+            <Card className="p-4">
+              <h2 className="mb-2 flex items-center gap-2 text-sm font-bold">
+                <Truck className="size-4 text-accent-600" aria-hidden /> {t('Expédition en cours')}
+              </h2>
+              <p className="text-xs text-navy-600">
+                {shipment.carrier ?? COLIS_EXPRESS_LABEL} ·{' '}
+                <span className="font-mono font-semibold" dir="ltr">{shipment.trackingNumber ?? t('sans numéro')}</span>
+                {shipment.destinationCity ? ` · ${shipment.destinationCity}` : ''}
+              </p>
+              <div className="mt-2 flex flex-wrap items-center gap-2 text-xs">
+                {trackingUrl ? <CopyTrackingLink url={trackingUrl} /> : null}
+                {whatsappTracking ? <WhatsAppTrackingLink href={whatsappTracking} /> : null}
+                <SyncShipmentButton shipmentId={shipment.id} configured={env.colisExpress.configured} />
+              </div>
+              {canWrite ? (
+                <ShipmentStatusForm
+                  shipmentId={shipment.id}
+                  current={shipment.status as never}
+                  label={t('Étape du colis (retour du transporteur ou du client)')}
+                />
+              ) : null}
+            </Card>
+          ) : null}
 
           {canWrite ? (
             <Card className="p-4">

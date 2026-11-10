@@ -30,6 +30,8 @@ import { OUTSIDE_DALOA_MAX_DAYS } from '@/lib/store-policy';
 import { ProductStickerList, ProductStickerOverlay } from '@/components/product-sticker';
 import { STORE_NAME, WHATSAPP_MESSAGES } from '@/lib/brand';
 import { sweepExpiredReservations } from '@/lib/reservations';
+import { productRatingSummary, publishedReviewsForProduct } from '@/lib/reviews';
+import { ProductReviews, RatingLine } from '@/components/reviews';
 
 type Params = { slug: string };
 
@@ -70,6 +72,12 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
 
   const pricing = computePricing(product);
   const availability = computeAvailability(product, settings.lowStockThreshold);
+  // Avis publiés + note moyenne : deux lectures parallèles, jamais bloquantes
+  // pour l'affichage de la fiche (une erreur retombe sur « pas encore d'avis »).
+  const [reviews, reviewSummary] = await Promise.all([
+    publishedReviewsForProduct(product.id).catch(() => []),
+    productRatingSummary(product.id).catch(() => ({ count: 0, average: 0, distribution: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 } })),
+  ]);
   const related = await getRelatedProducts(
     { id: product.id, categoryId: product.categoryId, brandId: product.brandId },
     8,
@@ -94,6 +102,29 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
     image: images.map((image) => (image.url.startsWith('http') ? image.url : `${env.appUrl.replace(/\/$/, '')}${image.url}`)),
     brand: product.brandName ? { '@type': 'Brand', name: product.brandName } : undefined,
     category: product.categoryName ?? undefined,
+    // La note n'est déclarée que si elle existe réellement : un `aggregateRating`
+    // inventé ou à zéro est pénalisé par Google.
+    aggregateRating:
+      reviewSummary.count > 0
+        ? {
+            '@type': 'AggregateRating',
+            ratingValue: reviewSummary.average,
+            reviewCount: reviewSummary.count,
+            bestRating: 5,
+            worstRating: 1,
+          }
+        : undefined,
+    review:
+      reviews.length > 0
+        ? reviews.slice(0, 5).map((review) => ({
+            '@type': 'Review',
+            author: { '@type': 'Person', name: review.authorName },
+            datePublished: review.createdAt.toISOString().slice(0, 10),
+            reviewRating: { '@type': 'Rating', ratingValue: review.rating, bestRating: 5, worstRating: 1 },
+            reviewBody: review.comment ?? undefined,
+            name: review.title ?? undefined,
+          }))
+        : undefined,
     offers: {
       '@type': 'Offer',
       priceCurrency: 'XOF',
@@ -163,6 +194,11 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
           </div>
 
           <h1 className="mt-2 text-2xl font-extrabold leading-tight tracking-tight sm:text-3xl">{product.name}</h1>
+          {reviewSummary.count > 0 ? (
+            <a href="#avis-title" className="mt-1 inline-block hover:underline">
+              <RatingLine summary={reviewSummary} />
+            </a>
+          ) : null}
           <p className="mt-1 text-xs text-navy-500">
             {t('Réf.')} <span className="font-mono font-semibold text-navy-700">{product.sku}</span>
             {product.categoryName ? <> · {product.categoryName}</> : null}
@@ -320,6 +356,8 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
           </li>
         </ul>
       </section>
+
+      <ProductReviews reviews={reviews} summary={reviewSummary} />
 
       {related.length > 0 ? (
         <section className="mt-10">

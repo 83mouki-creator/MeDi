@@ -79,6 +79,8 @@ export type ReadinessSnapshot = {
     unansweredMessages: number;
     /** Nombre de tâches automatiques déclarées (voir `vercel.json`). */
     automations: number;
+    /** Avis clients en attente de relecture (ils ne sont pas encore publics). */
+    pendingReviews: number;
   };
   infrastructure: {
     database: boolean;
@@ -285,6 +287,18 @@ export function computeReadiness(snapshot: ReadinessSnapshot): ReadinessReport {
       status: operations.carrierSync || operations.inTransit === 0 ? 'ready' : 'todo',
       owner: 'technique',
       href: '/admin/expeditions',
+    },
+    {
+      id: 'avis',
+      label: 'Avis clients à relire',
+      detail:
+        operations.pendingReviews === 0
+          ? 'Aucun avis en attente : tout ce que les clients ont écrit a été lu.'
+          : '{count} avis attendent une relecture. Un client qui a pris le temps de noter mérite une réponse rapide.',
+      vars: { count: operations.pendingReviews },
+      status: operations.pendingReviews === 0 ? 'ready' : 'todo',
+      owner: 'boutique',
+      href: '/admin/avis',
     },
     {
       id: 'messages',

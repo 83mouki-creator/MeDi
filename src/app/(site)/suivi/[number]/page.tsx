@@ -13,6 +13,8 @@ import { Alert, Badge, Card } from '@/components/ui/primitives';
 import { ButtonLink } from '@/components/ui/button';
 import { OrderTimeline } from '@/components/order-timeline';
 import { ShipmentTracker } from '@/components/shipment-tracker';
+import { ReviewRequestPanel } from '@/components/reviews';
+import { reviewContextForOrder, publicAuthorName } from '@/lib/reviews';
 
 export const metadata: Metadata = { title: 'Suivi de commande', robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
@@ -38,7 +40,7 @@ export default async function TrackOrderPage({
   const details = await getOrderDetails(order.id);
   if (!details) notFound();
   const totals = orderTotals(order);
-  const { t } = await getSiteI18n();
+  const [{ t }, reviewContext] = await Promise.all([getSiteI18n(), reviewContextForOrder(order.id).catch(() => null)]);
 
   return (
     <div className="container-page max-w-3xl py-8">
@@ -75,6 +77,21 @@ export default async function TrackOrderPage({
       <div className="mt-4">
         <ShipmentTracker orderId={order.id} />
       </div>
+
+      {/*
+        Avis après livraison : le client est déjà sur la page qui prouve son
+        achat (numéro de commande + téléphone, ou lien reçu à la validation),
+        c'est donc ici — et nulle part ailleurs — que le formulaire a du sens.
+      */}
+      {reviewContext ? (
+        <div className="mt-4">
+          <ReviewRequestPanel
+            context={reviewContext}
+            token={token}
+            defaultAuthor={publicAuthorName(order.customerFirstName, order.customerLastName)}
+          />
+        </div>
+      ) : null}
 
       <div className="mt-4 grid gap-4 sm:grid-cols-2">
         <Card className="p-4 text-sm">

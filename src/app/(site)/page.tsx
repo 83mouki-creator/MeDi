@@ -14,6 +14,8 @@ import { getSiteI18n } from '@/lib/i18n/site-server';
 import { whatsappWithMessage } from '@/lib/store-location';
 import { OUTSIDE_DALOA_MAX_DAYS, FINAL_SALE_NOTICE_SHORT } from '@/lib/store-policy';
 import { DALOA_NEIGHBOURHOOD_COUNT } from '@/lib/daloa';
+import { deliveryRatingSummary, publishedDeliveryReviews } from '@/lib/reviews';
+import { DeliveryReviewList } from '@/components/reviews';
 import { BRAND, STORE_TAGLINE, WHATSAPP_MESSAGES } from '@/lib/brand';
 
 export const metadata: Metadata = {
@@ -119,6 +121,14 @@ export default async function HomePage() {
     listBestSellerProductIds(8)
       .then((ids) => cardsFor(ids))
       .catch(() => []),
+  ]);
+
+  // Avis de livraison publiés : la preuve sociale la plus honnête de la
+  // boutique — elle porte sur le service, pas sur un catalogue qu'elle rédige
+  // elle-même. Rien ne s'affiche tant qu'aucun avis n'a été publié.
+  const [deliveryReviews, deliverySummary] = await Promise.all([
+    publishedDeliveryReviews(4).catch(() => []),
+    deliveryRatingSummary().catch(() => ({ count: 0, average: 0, distribution: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0 } })),
   ]);
 
   // Message déjà rédigé : la boutique reçoit une demande formulée.
@@ -334,6 +344,12 @@ export default async function HomePage() {
               ))}
             </ul>
           </div>
+        </section>
+      ) : null}
+
+      {deliveryReviews.length > 0 ? (
+        <section className="container-page py-6">
+          <DeliveryReviewList reviews={deliveryReviews} summary={deliverySummary} />
         </section>
       ) : null}
 

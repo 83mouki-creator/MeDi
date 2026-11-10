@@ -1,6 +1,6 @@
 # Tests exécutés
 
-Dernière exécution : **2026-11-07** — `npm run test` → **280 tests, 28 fichiers, 280 réussis, 0 échec**
+Dernière exécution : **2026-11-10** — `npm run test` → **359 tests, 34 fichiers, 359 réussis, 0 échec**
 (`npx tsc --noEmit` : aucune erreur ; `npm run build` : compilation réussie).
 
 Base utilisée : `perokado_test` (PostgreSQL local, UTF-8), préparée par `npm run test:setup`.
@@ -38,6 +38,17 @@ Les tests vident leurs tables avant chaque cas : ils ne touchent jamais les donn
 | Expiration automatique des réservations | `orders-flow.test.ts` (+ route `/api/cron/expire-reservations`) | ✔ |
 | Rôles et permissions côté serveur | `authz.test.ts` (matrice 8 permissions × 5 rôles) | ✔ |
 | Isolation des commandes entre clients | `orders-flow.test.ts`, `authz.test.ts` | ✔ |
+| Avis client refusé avant livraison | `reviews.test.ts` (commande non livrée → `ReviewError`, contexte sans formulaire) | ✔ |
+| Avis rattaché à l'achat : article hors commande, jeton invalide | `reviews.test.ts` (`NOT_IN_ORDER`, `NOT_FOUND`) | ✔ |
+| Un seul avis par article et par commande, corrigeable | `reviews.test.ts` (second dépôt → même identifiant, repasse en relecture) | ✔ |
+| Note de livraison unique par commande, délai tenu / non tenu | `reviews.test.ts` | ✔ |
+| Avis invisible et hors moyenne avant publication | `reviews.test.ts` (statut `PENDING`, moyenne à 0) | ✔ |
+| Avis masqué : retiré de la boutique, conservé en base | `reviews.test.ts` | ✔ |
+| Réponse publique de la boutique horodatée et signée | `reviews.test.ts` | ✔ |
+| Nom publié limité au prénom + initiale | `reviews.test.ts` (`publicAuthorName`, 4 cas) | ✔ |
+| Note basse exigeant une explication | `reviews.test.ts` (`validateReviewInput`) | ✔ |
+| Avis conservés après suppression du compte client | `reviews.test.ts` (`user_id` → `NULL`, note intacte) | ✔ |
+| Barre d'achat mobile et bouton WhatsApp qui ne se recouvrent pas | `mobile-buy-bar.test.ts` (6 cas : montage, marge de fin de page, `lg:hidden`, `print:hidden`, ordre des `z-index`) | ✔ |
 | E-mails de bienvenue, de commande, de bon et de réinitialisation | `email.test.ts` (24 cas : contenu, montants, règles de la boutique, absence de valeur inventée, e-mail reconstruit depuis la base) | ✔ |
 | Échappement HTML : un nom de produit piégé ne peut rien injecter | `email.test.ts` (`<script>` → `&lt;script&gt;`) | ✔ |
 | Requête envoyée à Brevo / Resend (expéditeur, HTML, réponse) | `email.test.ts` (corps `sender`, `htmlContent`, `replyTo`, priorité Brevo) | ✔ |

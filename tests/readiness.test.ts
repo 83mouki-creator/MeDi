@@ -26,7 +26,14 @@ function emptySnapshot(): ReadinessSnapshot {
     catalog: { activeProducts: 0, inStockProducts: 0, withPhoto: 0, zeroPrice: 0, categories: 0, activePromotions: 0 },
     delivery: { localZonesWithTariff: 0, nationalZones: 0 },
     staff: { managerAccounts: 1, activeStaff: 0 },
-    operations: { awaitingDispatch: 0, inTransit: 0, carrierSync: false, unansweredMessages: 0, automations: 0 },
+    operations: {
+      awaitingDispatch: 0,
+      inTransit: 0,
+      carrierSync: false,
+      unansweredMessages: 0,
+      automations: 0,
+      pendingReviews: 0,
+    },
     infrastructure: {
       database: true,
       waveAuto: false,
@@ -58,7 +65,14 @@ function readySnapshot(): ReadinessSnapshot {
     catalog: { activeProducts: 146, inStockProducts: 120, withPhoto: 146, zeroPrice: 0, categories: 8, activePromotions: 1 },
     delivery: { localZonesWithTariff: 8, nationalZones: 3 },
     staff: { managerAccounts: 1, activeStaff: 2 },
-    operations: { awaitingDispatch: 0, inTransit: 0, carrierSync: true, unansweredMessages: 0, automations: 2 },
+    operations: {
+      awaitingDispatch: 0,
+      inTransit: 0,
+      carrierSync: true,
+      unansweredMessages: 0,
+      automations: 2,
+      pendingReviews: 0,
+    },
     infrastructure: {
       database: true,
       waveAuto: false,

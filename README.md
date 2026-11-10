@@ -23,6 +23,7 @@ et recherche visuelle par photo.
 | Import du catalogue (CSV) | [`docs/IMPORT-CATALOGUE.md`](docs/IMPORT-CATALOGUE.md) |
 | Paiement Wave (réel et manuel) | [`docs/WAVE.md`](docs/WAVE.md) |
 | Expéditions Colis Express | [`docs/EXPEDITIONS.md`](docs/EXPEDITIONS.md) |
+| Avis clients (produits et livraison) | [`docs/AVIS-CLIENTS.md`](docs/AVIS-CLIENTS.md) |
 | Vendre seul : ce qu'il reste à faire | [`docs/VENDRE-SEUL.md`](docs/VENDRE-SEUL.md) |
 | Recherche visuelle | [`docs/RECHERCHE-VISUELLE.md`](docs/RECHERCHE-VISUELLE.md) |
 | Sauvegardes et restauration | [`docs/SAUVEGARDES.md`](docs/SAUVEGARDES.md) |
