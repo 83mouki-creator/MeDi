@@ -55,6 +55,7 @@ const ICONS: Record<GuideIcon, typeof Calculator> = {
   print: Printer,
   users: Users,
   journal: ScrollText,
+  truck: Truck,
 };
 
 export default async function AdminGuidePage() {

@@ -157,6 +157,78 @@ export function AddToCart({
   );
 }
 
+/**
+ * Barre d'achat collée en bas de l'écran, sur mobile uniquement.
+ *
+ * Sur un téléphone, le prix et le bouton d'achat sortent de l'écran dès qu'on
+ * fait défiler la fiche. Cette barre les garde à portée de pouce, comme sur les
+ * grandes places de marché : prix à gauche, « Ajouter au panier » à droite.
+ *
+ * Elle disparaît à partir de `lg` (l'écran large affiche déjà le bloc d'achat en
+ * permanence), et le bouton d'aide WhatsApp remonte au-dessus d'elle pour ne pas
+ * la recouvrir — voir `WhatsAppHelpButton`.
+ */
+export function MobileBuyBar({
+  productId,
+  available,
+  canOrder,
+  availabilityState,
+  priceLabel,
+  basePriceLabel,
+  discountPercent,
+}: {
+  productId: string;
+  available: number;
+  canOrder: boolean;
+  availabilityState: 'IN_STOCK' | 'LOW_STOCK' | 'OUT_OF_STOCK' | 'PREORDER';
+  priceLabel: string;
+  basePriceLabel: string | null;
+  discountPercent: number;
+}) {
+  const { t } = useSiteI18n();
+  const [state, formAction, pending] = useActionState(addToCartAction, initialState);
+
+  return (
+    <div className="fixed inset-x-0 bottom-0 z-40 border-t border-navy-100 bg-white/95 px-3 py-2 shadow-[0_-6px_20px_rgba(15,23,42,0.10)] backdrop-blur lg:hidden print:hidden">
+      <form action={formAction} className="mx-auto flex max-w-xl items-center gap-3">
+        <input type="hidden" name="productId" value={productId} />
+        <input type="hidden" name="quantity" value={1} />
+        <div className="min-w-0 flex-1">
+          <p className="flex flex-wrap items-baseline gap-1.5">
+            <span className="text-lg font-extrabold leading-tight text-navy-950">{priceLabel}</span>
+            {basePriceLabel ? (
+              <span className="text-[11px] text-navy-400 line-through">{basePriceLabel}</span>
+            ) : null}
+          </p>
+          <p className="truncate text-[11px] font-medium text-navy-500">
+            {discountPercent > 0 ? `-${discountPercent}% · ` : ''}
+            {availabilityState === 'OUT_OF_STOCK'
+              ? t('Indisponible')
+              : availabilityState === 'PREORDER'
+                ? t('Précommande')
+                : availabilityState === 'LOW_STOCK'
+                  ? t('Plus que {count} en stock', { count: available })
+                  : t('En stock')}
+          </p>
+        </div>
+        {canOrder ? (
+          <Button type="submit" size="lg" disabled={pending} className="shrink-0">
+            {pending ? <Loader2 className="size-4 animate-spin" aria-hidden /> : <ShoppingCart className="size-4" aria-hidden />}
+            {t('Ajouter')}
+          </Button>
+        ) : (
+          <span className="shrink-0 rounded-lg bg-navy-100 px-3 py-2 text-xs font-semibold text-navy-600">{t('Épuisé')}</span>
+        )}
+      </form>
+      {state.message ? (
+        <p className={cn('mt-1 text-center text-[11px] font-medium', state.ok ? 'text-emerald-700' : 'text-danger-500')} role="status">
+          {state.message}
+        </p>
+      ) : null}
+    </div>
+  );
+}
+
 // ────────────────────────────── Partage ──────────────────────────────
 
 export function ShareButtons({ name, url, price }: { name: string; url: string; price: number }) {

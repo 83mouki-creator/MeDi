@@ -19,7 +19,7 @@ import { computeAvailability, computePricing } from '@/lib/pricing';
 import { formatFCFA } from '@/lib/utils';
 import { env } from '@/lib/env';
 import { Badge, Card } from '@/components/ui/primitives';
-import { AddToCart, ProductGallery, ShareButtons } from '@/components/product-detail-client';
+import { AddToCart, MobileBuyBar, ProductGallery, ShareButtons } from '@/components/product-detail-client';
 import { ProductRail } from '@/components/product-card';
 import { RecentlyViewed } from '@/components/recently-viewed';
 import { TrackProductView } from '@/components/track-view';
@@ -329,6 +329,21 @@ export default async function ProductPage({ params }: { params: Promise<Params> 
       ) : null}
 
       <RecentlyViewed excludeId={product.id} />
+
+      {/*
+        Sur téléphone, le prix et l'achat restent visibles en bas de l'écran.
+        Une marge basse évite que la barre ne recouvre la fin de la page.
+      */}
+      <div className="h-20 lg:hidden" aria-hidden />
+      <MobileBuyBar
+        productId={product.id}
+        available={availability.available}
+        canOrder={availability.canOrder}
+        availabilityState={availability.state}
+        priceLabel={formatFCFA(pricing.price)}
+        basePriceLabel={product.onPromo ? formatFCFA(pricing.basePrice) : null}
+        discountPercent={pricing.discountPercent}
+      />
 
       <div className="mt-8 flex flex-wrap gap-3">
         <ButtonLink href="/catalogue" variant="outline">{t('Retour au catalogue')}</ButtonLink>
