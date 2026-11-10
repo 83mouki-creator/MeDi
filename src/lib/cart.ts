@@ -6,6 +6,7 @@ import { env } from './env';
 import { computeAvailability, computePricing, type Availability } from './pricing';
 import { toFcfa } from './utils';
 import { getStoreSettings } from './settings';
+import { versionedImageUrl } from './image-url';
 
 export type CartLineInput = { productId: string; quantity: number };
 
@@ -142,7 +143,7 @@ export async function getCartSummary(items?: CartLineInput[]): Promise<CartSumma
   // Image principale récupérée séparément (une seule requête pour toutes les lignes).
   const imageRows = ids.length
     ? await db.execute(sql`
-        SELECT DISTINCT ON (product_id) product_id, url
+        SELECT DISTINCT ON (product_id) product_id, url, checksum
         FROM product_images
         WHERE product_id IN (${sql.join(ids.map((id) => sql`${id}`), sql`, `)})
         ORDER BY product_id, position ASC
@@ -151,7 +152,7 @@ export async function getCartSummary(items?: CartLineInput[]): Promise<CartSumma
 
   const imageById = new Map<string, string>();
   for (const r of imageRows.rows as Record<string, unknown>[]) {
-    imageById.set(String(r.product_id), String(r.url));
+    imageById.set(String(r.product_id), versionedImageUrl(String(r.url), (r.checksum as string | null) ?? null)!);
   }
 
   const result: CartLine[] = [];

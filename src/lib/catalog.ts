@@ -1,6 +1,7 @@
 import { sql, type SQL } from 'drizzle-orm';
 import { db } from '../db';
 import { normalizeText } from './utils';
+import { versionedImageUrl } from './image-url';
 import { stickersForProduct, stickersForProducts, type StickerView } from './stickers';
 
 /** Produit tel qu'affiché dans une grille ou un carrousel. */
@@ -75,7 +76,7 @@ const CARD_COLUMNS = sql`
   CASE WHEN ${PROMO_ACTIVE} THEN p.promo_price ELSE p.price END AS effective_price,
   ${PROMO_ACTIVE} AS on_promo,
   p.stock, p.reserved, p.low_stock_threshold, p.allow_preorder, p.is_featured, p.created_at,
-  pi.url AS image_url, pi.alt AS image_alt, pi.width AS image_width, pi.height AS image_height,
+  pi.url AS image_url, pi.checksum AS image_checksum, pi.alt AS image_alt, pi.width AS image_width, pi.height AS image_height,
   b.name AS brand_name, b.slug AS brand_slug,
   c.name AS category_name, c.slug AS category_slug
 `;
@@ -83,7 +84,7 @@ const CARD_COLUMNS = sql`
 /** Jointure de l'image principale (position la plus basse). */
 const MAIN_IMAGE_JOIN = sql`
   LEFT JOIN LATERAL (
-    SELECT url, alt, width, height FROM product_images
+    SELECT url, checksum, alt, width, height FROM product_images
     WHERE product_id = p.id ORDER BY position ASC, created_at ASC LIMIT 1
   ) pi ON true
 `;
@@ -103,7 +104,7 @@ function mapCard(row: Record<string, unknown>): ProductCard {
     onPromo: Boolean(row.on_promo),
     discountPercent:
       row.on_promo && price > 0 ? Math.round(((price - effectivePrice) / price) * 100) : 0,
-    imageUrl: (row.image_url as string | null) ?? null,
+    imageUrl: versionedImageUrl((row.image_url as string | null) ?? null, row.image_checksum as string | null),
     imageAlt: (row.image_alt as string | null) ?? null,
     imageWidth: row.image_width === null ? null : Number(row.image_width),
     imageHeight: row.image_height === null ? null : Number(row.image_height),
@@ -200,7 +201,7 @@ export async function getProductBySlug(slug: string) {
   const card = mapCard(row);
   const [images, attributes, visibleStickers] = await Promise.all([
     db.execute(sql`
-      SELECT id, url, alt, width, height, position FROM product_images
+      SELECT id, url, checksum, alt, width, height, position FROM product_images
       WHERE product_id = ${card.id} ORDER BY position ASC, created_at ASC
     `),
     db.execute(sql`
@@ -226,7 +227,7 @@ export async function getProductBySlug(slug: string) {
     promoEndsAt: row.promo_ends_at ? new Date(row.promo_ends_at as string).toISOString() : null,
     images: (images.rows as Record<string, unknown>[]).map((i) => ({
       id: String(i.id),
-      url: String(i.url),
+      url: versionedImageUrl(String(i.url), (i.checksum as string | null) ?? null)!,
       alt: (i.alt as string | null) ?? null,
       width: i.width === null ? null : Number(i.width),
       height: i.height === null ? null : Number(i.height),
