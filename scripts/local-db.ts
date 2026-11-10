@@ -2,21 +2,22 @@
  * PostgreSQL local de développement / tests.
  *
  * Lance un vrai serveur PostgreSQL (binaire embarqué) sur le port 55432 avec des
- * données persistées dans `.localdb/`, crée la base `medi` si besoin puis applique
+ * données persistées dans `.localdb/`, crée la base `perokado` si besoin puis applique
  * les migrations. Utile quand aucune instance Neon n'est encore disponible :
  * le schéma, les migrations et les requêtes sont strictement les mêmes.
  *
  *   npm run db:local          # démarre et garde le serveur actif
  *   DATABASE_URL=... npm run db:seed
  */
+import path from 'node:path';
 import EmbeddedPostgres from 'embedded-postgres';
 import { Client } from 'pg';
 import { runMigrations } from '../src/db/migrate';
 
 const PORT = Number(process.env.LOCAL_PG_PORT ?? 55432);
-const USER = process.env.LOCAL_PG_USER ?? 'medi';
-const PASSWORD = process.env.LOCAL_PG_PASSWORD ?? 'medi';
-const DATABASE = process.env.LOCAL_PG_DB ?? 'medi';
+const USER = process.env.LOCAL_PG_USER ?? 'perokado';
+const PASSWORD = process.env.LOCAL_PG_PASSWORD ?? 'perokado';
+const DATABASE = process.env.LOCAL_PG_DB ?? 'perokado';
 const DATA_DIR = process.env.LOCAL_PG_DIR ?? '.localdb/data';
 
 async function main() {
@@ -41,6 +42,20 @@ async function main() {
   }
   await pg.start();
   console.log(`[db] PostgreSQL démarré sur 127.0.0.1:${PORT} (utilisateur ${USER})`);
+
+  // Un cluster créé par une version antérieure du projet peut porter un autre
+  // nom de rôle : on le répare avant de tenter la moindre connexion.
+  if (!fresh) {
+    const { execFileSync } = await import('node:child_process');
+    try {
+      execFileSync(process.execPath, [path.join('node_modules', 'tsx', 'dist', 'cli.mjs'), 'scripts/local-db-role.ts'], {
+        stdio: 'inherit',
+        env: { ...process.env, LOCAL_PG_PORT: String(PORT), LOCAL_PG_USER: USER, LOCAL_PG_PASSWORD: PASSWORD },
+      });
+    } catch {
+      console.error('[db] le rôle PostgreSQL local n’a pas pu être vérifié.');
+    }
+  }
 
   if (fresh) {
     await pg.createDatabase(DATABASE);

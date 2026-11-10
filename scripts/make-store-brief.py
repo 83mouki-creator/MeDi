@@ -3,7 +3,7 @@
 
     python3 scripts/make-store-brief.py
 
-Sortie : docs/MeDi-dossier-boutique.pdf
+Sortie : docs/Perokado-dossier-boutique.pdf
 
 Trois parties :
   1. page de garde — informations de la boutique + QR code vers la boutique ;

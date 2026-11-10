@@ -3,7 +3,7 @@
  *
  *   npm run test:setup
  *
- * - crée la base `medi_test` si elle n'existe pas (sur le cluster local
+ * - crée la base `perokado_test` si elle n'existe pas (sur le cluster local
  *   démarré par `npm run db:local`, ou sur TEST_DATABASE_URL) ;
  * - applique toutes les migrations versionnées du dossier `drizzle/`.
  *
@@ -13,11 +13,11 @@
 import pg from 'pg';
 import { runMigrations } from '../src/db/migrate';
 
-const TEST_URL = process.env.TEST_DATABASE_URL ?? 'postgres://medi:medi@127.0.0.1:55432/medi_test';
+const TEST_URL = process.env.TEST_DATABASE_URL ?? 'postgres://perokado:perokado@127.0.0.1:55432/perokado_test';
 
 function adminUrl(url: string): { admin: string; database: string } {
   const parsed = new URL(url);
-  const database = parsed.pathname.replace(/^\//, '') || 'medi_test';
+  const database = parsed.pathname.replace(/^\//, '') || 'perokado_test';
   parsed.pathname = '/postgres';
   return { admin: parsed.toString(), database };
 }

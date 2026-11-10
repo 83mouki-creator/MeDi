@@ -111,7 +111,7 @@ async function main() {
       const stored = await storeImage({
         file: new File([new Uint8Array(buffer)], entry.name, { type: `image/${metadata.format === 'jpeg' ? 'jpeg' : metadata.format}` }),
         name: slugify(path.basename(entry.name, path.extname(entry.name))),
-        folder: 'medi/import',
+        folder: 'perokado/import',
       });
 
       const mediaId = newId('med_');

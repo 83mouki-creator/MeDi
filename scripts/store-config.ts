@@ -54,7 +54,7 @@ type ZoneSeed = {
  */
 const ZONES: ZoneSeed[] = [
   {
-    id: 'zone_medi_daloa_centre',
+    id: 'zone_perokado_daloa_centre',
     name: 'Daloa — livraison à domicile (centre)',
     city: 'Daloa',
     isLocal: true,
@@ -65,7 +65,7 @@ const ZONES: ZoneSeed[] = [
     neighbourhoods: neighbourhoodsForBand('CENTRE'),
   },
   {
-    id: 'zone_medi_daloa_peripherie',
+    id: 'zone_perokado_daloa_peripherie',
     name: 'Daloa — livraison à domicile (périphérie)',
     city: 'Daloa',
     isLocal: true,
@@ -76,7 +76,7 @@ const ZONES: ZoneSeed[] = [
     neighbourhoods: neighbourhoodsForBand('PERIPHERIE'),
   },
   {
-    id: 'zone_medi_abidjan',
+    id: 'zone_perokado_abidjan',
     name: 'Abidjan — expédition',
     city: 'Abidjan',
     isLocal: false,
@@ -86,7 +86,7 @@ const ZONES: ZoneSeed[] = [
     order: 3,
   },
   {
-    id: 'zone_medi_yamoussoukro',
+    id: 'zone_perokado_yamoussoukro',
     name: 'Yamoussoukro — expédition',
     city: 'Yamoussoukro',
     isLocal: false,
@@ -96,7 +96,7 @@ const ZONES: ZoneSeed[] = [
     order: 4,
   },
   {
-    id: 'zone_medi_bouake',
+    id: 'zone_perokado_bouake',
     name: 'Bouaké — expédition',
     city: 'Bouaké',
     isLocal: false,
@@ -106,7 +106,7 @@ const ZONES: ZoneSeed[] = [
     order: 5,
   },
   {
-    id: 'zone_medi_sanpedro',
+    id: 'zone_perokado_sanpedro',
     name: 'San-Pédro — expédition',
     city: 'San-Pédro',
     isLocal: false,
@@ -116,7 +116,7 @@ const ZONES: ZoneSeed[] = [
     order: 6,
   },
   {
-    id: 'zone_medi_autre',
+    id: 'zone_perokado_autre',
     name: 'Autre ville — Côte d’Ivoire',
     city: 'Autre ville',
     isLocal: false,
@@ -223,7 +223,7 @@ async function main() {
   // car des commandes passées peuvent y faire référence. Liste explicite pour ne
   // jamais toucher aux zones créées plus tard par le propriétaire.
   const LEGACY_ZONE_IDS = [
-    'zone_medi_pickup',
+    'zone_perokado_pickup',
     'zone_pickup_daloa',
     'zone_daloa_domicile',
     'zone_daloa_centre',

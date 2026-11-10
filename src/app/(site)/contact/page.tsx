@@ -139,8 +139,8 @@ export default async function ContactPage() {
         <Card className="p-4 text-sm">
           <h2 className="mb-2 text-sm font-bold">{t('Suivre une commande')}</h2>
           <p className="text-navy-600">
-            {t('Munissez-vous de votre numéro de commande (format')} <span className="font-mono">PER-AAAA-NNNNN</span>{' '}
-            {t('et du numéro de téléphone utilisé lors de l’achat.')}
+            {t('Munissez-vous de votre numéro de commande (format')} <span className="font-mono">PER-AAAA-NNNNN</span>
+            {t(') et du numéro de téléphone utilisé lors de l’achat.')}
           </p>
           <a href="/suivi" className="mt-2 inline-block font-semibold text-accent-700 underline">
             {t('Ouvrir le suivi de commande')}

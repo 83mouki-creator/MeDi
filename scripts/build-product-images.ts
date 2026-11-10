@@ -10,6 +10,10 @@
  *   npx tsx scripts/build-product-images.ts            # toutes les fiches
  *   npx tsx scripts/build-product-images.ts --only=EGWP10022
  *   npx tsx scripts/build-product-images.ts --sheet    # planche de contrôle
+ *   npx tsx scripts/build-product-images.ts --relabel  # redessiner les bandeaux
+ *                                                      # des vignettes existantes
+ *
+ * Le dessin du bandeau vit dans scripts/product-banner.ts.
  */
 import { createHash } from 'node:crypto';
 import { mkdir, readFile, writeFile } from 'node:fs/promises';
@@ -17,16 +21,12 @@ import path from 'node:path';
 import sharp from 'sharp';
 import { loadCatalogue, type ManifestProduct } from './catalogue-data';
 
+import { BANNER_H, CANVAS, bannerSvg, bannerTop, luma } from './product-banner';
+
 const SOURCE_DIR = path.join('data', 'photos-source');
 const OUT_DIR = path.join('public', 'catalogue');
 const IMAGES_INDEX = path.join('data', 'catalogue', 'images.json');
-const CANVAS = 1000;
-const BANNER_H = 180;
 const AREA_H = CANVAS - BANNER_H;
-const NAVY = '#0a1f44';
-const ORANGE = '#f26a1b';
-
-const luma = (r: number, g: number, b: number) => 0.2126 * r + 0.7152 * g + 0.0722 * b;
 
 function option(name: string): string | undefined {
   const prefix = `--${name}=`;
@@ -86,44 +86,6 @@ function findTextTop(darkFrac: number[], H: number) {
   return Math.min(H, y + gap + 1);
 }
 
-function escapeXml(input: string) {
-  return input.replace(/[<>&'"]/g, (c) => ({ '<': '&lt;', '>': '&gt;', '&': '&amp;', "'": '&apos;', '"': '&quot;' })[c]!);
-}
-
-/** Coupe une chaîne à une largeur approximative (DejaVu Sans, facteur 0,52). */
-function fitText(text: string, size: number, maxWidth: number, factor = 0.52) {
-  const maxChars = Math.max(4, Math.floor(maxWidth / (size * factor)));
-  if (text.length <= maxChars) return text;
-  return `${text.slice(0, maxChars - 1).trimEnd()}…`;
-}
-
-function bannerSvg(params: { sku: string; label: string }) {
-  const label = escapeXml(fitText(params.label, 25, 880, 0.5));
-  // La référence est réduite jusqu'à tenir entière : une référence tronquée
-  // serait inutilisable pour retrouver l'article en boutique.
-  const skuMax = 520;
-  const skuSize = Math.max(16, Math.min(30, Math.floor(skuMax / (params.sku.length * 0.64))));
-  const sku = escapeXml(params.sku);
-  return Buffer.from(`
-<svg xmlns="http://www.w3.org/2000/svg" width="${CANVAS}" height="${BANNER_H}">
-  <defs>
-    <linearGradient id="g" x1="0" y1="0" x2="1" y2="0">
-      <stop offset="0%" stop-color="#0a1f44"/>
-      <stop offset="100%" stop-color="#143562"/>
-    </linearGradient>
-  </defs>
-  <rect width="${CANVAS}" height="${BANNER_H}" fill="url(#g)"/>
-  <rect width="${CANVAS}" height="6" fill="${ORANGE}"/>
-  <text x="52" y="80" font-family="DejaVu Sans, Liberation Sans, Helvetica, Arial, sans-serif"
-        font-size="56" font-weight="bold" fill="#ffffff" letter-spacing="1">Perokado</text>
-  <circle cx="206" cy="60" r="7" fill="${ORANGE}"/>
-  <text x="${CANVAS - 52}" y="78" text-anchor="end" font-family="DejaVu Sans, Liberation Sans, Helvetica, Arial, sans-serif"
-        font-size="${skuSize}" font-weight="bold" fill="${ORANGE}" letter-spacing="1">${sku}</text>
-  <line x1="52" y1="102" x2="${CANVAS - 52}" y2="102" stroke="#2a4472" stroke-width="2"/>
-  <text x="52" y="146" font-family="DejaVu Sans, Liberation Sans, Helvetica, Arial, sans-serif"
-        font-size="25" fill="#c9d5e6">${label}</text>
-</svg>`);
-}
 
 async function build(product: ManifestProduct) {
   const file = path.join(SOURCE_DIR, product.sourceFile);
@@ -225,8 +187,57 @@ async function build(product: ManifestProduct) {
   };
 }
 
+/**
+ * Recompose les vignettes déjà publiées : la zone produit est conservée telle
+ * quelle, seul le bandeau est redessiné avec la marque et le libellé actuels.
+ * Utile quand le catalogue photo a été fabriqué avant un changement de marque et
+ * que les photos sources ne sont plus toutes disponibles.
+ */
+async function relabel() {
+  const catalogue = await loadCatalogue();
+  const index = JSON.parse(await readFile(IMAGES_INDEX, 'utf8')) as Record<
+    string,
+    { url: string; checksum: string; width: number; height: number }
+  >;
+  let done = 0;
+  const skipped: string[] = [];
+  for (const product of catalogue.produits) {
+    const entry = index[product.sku];
+    if (!entry) {
+      skipped.push(product.sku);
+      continue;
+    }
+    const file = path.join('public', entry.url.replace(/^\//, ''));
+    const tile = await readFile(file);
+    const { data, info } = await sharp(tile).removeAlpha().raw().toBuffer({ resolveWithObject: true });
+    const px = (x: number, y: number) => {
+      const i = (y * info.width + x) * info.channels;
+      return [data[i] ?? 0, data[i + 1] ?? 0, data[i + 2] ?? 0] as const;
+    };
+    const top = bannerTop(px, info.width, info.height);
+    const area = await sharp(tile).extract({ left: 0, top: 0, width: info.width, height: top }).toBuffer();
+    const banner = await sharp(bannerSvg({ sku: product.sku, label: product.name })).png().toBuffer();
+    const composed = await sharp({ create: { width: CANVAS, height: CANVAS, channels: 3, background: '#ffffff' } })
+      .composite([
+        { input: area, top: 0, left: 0 },
+        { input: banner, top: CANVAS - BANNER_H, left: 0 },
+      ])
+      .webp({ quality: 86, effort: 5 })
+      .toBuffer();
+    await writeFile(file, composed);
+    entry.checksum = createHash('sha256').update(composed).digest('hex');
+    entry.width = CANVAS;
+    entry.height = CANVAS;
+    done += 1;
+  }
+  await writeFile(IMAGES_INDEX, `${JSON.stringify(index, null, 2)}\n`);
+  console.log(`${done} vignette(s) recomposée(s) dans ${OUT_DIR}`);
+  if (skipped.length) console.log(`Sans visuel (ignorées) : ${skipped.join(', ')}`);
+}
+
 async function main() {
   await mkdir(OUT_DIR, { recursive: true });
+  if (process.argv.includes('--relabel')) return relabel();
   const catalogue = await loadCatalogue();
   const only = option('only');
   const products = only ? catalogue.produits.filter((p) => p.sku === only) : catalogue.produits;

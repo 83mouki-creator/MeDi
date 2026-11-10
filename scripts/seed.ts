@@ -368,13 +368,13 @@ async function main() {
 
   // Comptes de démonstration (uniquement si SEED_DEMO=1)
   if (process.env.SEED_DEMO === '1') {
-    const demoPassword = process.env.SEED_DEMO_PASSWORD ?? 'DemoMedi2026!';
+    const demoPassword = process.env.SEED_DEMO_PASSWORD ?? 'PerokadoDemo2026!';
     const accounts = [
       { email: 'proprietaire@perokado.demo', role: 'OWNER' as const, firstName: 'Propriétaire', lastName: 'Perokado (démo)' },
       { email: 'admin@perokado.demo', role: 'ADMIN' as const, firstName: 'Admin', lastName: 'Perokado (démo)' },
-      { email: 'stock@medi.demo', role: 'STOCK_MANAGER' as const, firstName: 'Gestion', lastName: 'Stock (démo)' },
-      { email: 'commandes@medi.demo', role: 'ORDER_MANAGER' as const, firstName: 'Gestion', lastName: 'Commandes (démo)' },
-      { email: 'client@medi.demo', role: 'CUSTOMER' as const, firstName: 'Client', lastName: 'Démonstration' },
+      { email: 'stock@perokado.demo', role: 'STOCK_MANAGER' as const, firstName: 'Gestion', lastName: 'Stock (démo)' },
+      { email: 'commandes@perokado.demo', role: 'ORDER_MANAGER' as const, firstName: 'Gestion', lastName: 'Commandes (démo)' },
+      { email: 'client@perokado.demo', role: 'CUSTOMER' as const, firstName: 'Client', lastName: 'Démonstration' },
     ];
     for (const account of accounts) {
       const existing = await db.select().from(users).where(eq(users.email, account.email)).limit(1);

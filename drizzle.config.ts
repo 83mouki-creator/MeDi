@@ -16,7 +16,7 @@ export default defineConfig({
     url:
       resolveDirectUrl() ||
       resolveDatabaseUrl() ||
-      'postgres://medi:medi@127.0.0.1:55432/medi',
+      'postgres://perokado:perokado@127.0.0.1:55432/perokado',
   },
   verbose: true,
   strict: false,

@@ -6,7 +6,7 @@
  *   npm run assetlinks -- "AA:BB:CC:…" ["11:22:33:…"]
  *
  * Les empreintes sont les **SHA-256** des certificats de signature :
- *   1. celui de TA clé (`keytool -list -v -keystore android.keystore -alias medi`) ;
+ *   1. celui de TA clé (`keytool -list -v -keystore android.keystore -alias perokado`) ;
  *   2. celui de **Play App Signing** (Play Console → Test et publication →
  *      Signature de l'application), indispensable une fois l'app publiée : sans
  *      lui, la barre d'adresse réapparaît en production.
@@ -30,7 +30,7 @@ function normalize(raw: string): string {
     throw new Error(
       `Empreinte invalide (${hex.length} caractères hexadécimaux au lieu de 64) : ${raw}\n` +
         'Attendu : le SHA-256 d’un certificat, par exemple depuis\n' +
-        '  keytool -list -v -keystore android.keystore -alias medi\n' +
+        '  keytool -list -v -keystore android.keystore -alias perokado\n' +
         '(ou l’empreinte « certificat de signature d’application » de la Play Console).',
     );
   }
