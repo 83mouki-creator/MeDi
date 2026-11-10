@@ -2,7 +2,7 @@ import { defineConfig } from 'vitest/config';
 import path from 'node:path';
 
 const TEST_DATABASE_URL =
-  process.env.TEST_DATABASE_URL ?? 'postgres://medi:medi@127.0.0.1:55432/medi_test';
+  process.env.TEST_DATABASE_URL ?? 'postgres://perokado:perokado@127.0.0.1:55432/perokado_test';
 
 export default defineConfig({
   test: {

@@ -116,7 +116,7 @@ lien de réinitialisation du client → l'envoyer par WhatsApp. Le lien est vala
   doublons.
 - L'adresse e-mail est mise en minuscules : `Awa.Kone@Example.CI` et
   `awa.kone@example.ci` désignent le même compte.
-- La session est créée immédiatement (cookie `medi_session`, `httpOnly`) et
+- La session est créée immédiatement (cookie `perokado_session`, `httpOnly`) et
   l'inscription est journalisée (`auth.register`).
 - Tests automatiques : **`tests/registration.test.ts`** — 10 cas (création,
   session, rôle forcé, doublons, mot de passe faible, CGV, normalisation,
