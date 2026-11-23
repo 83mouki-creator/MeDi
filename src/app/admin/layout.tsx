@@ -6,7 +6,7 @@ import { pendingReviewCount } from '@/lib/reviews';
 import { getAdminI18n } from '@/lib/i18n/admin-server';
 import { AdminTopBar, type AdminNavItem } from '@/components/admin/admin-top-bar';
 import { AdminI18nProvider } from '@/components/admin/admin-i18n';
-import { BRAND, STORE_NAME } from '@/lib/brand';
+import { STORE_NAME } from '@/lib/brand';
 
 export const metadata: Metadata = {
   title: `Administration ${STORE_NAME}`,
@@ -60,13 +60,12 @@ export default async function AdminLayout({ children }: { children: React.ReactN
     <AdminI18nProvider>
       <div lang="fr" dir="ltr" className="relative min-h-dvh bg-slate-100">
         {/*
-          Emblème Perokado en filigrane : il habille l'espace de gestion sans gêner la
+          Emblème MeDi Shop en filigrane : il habille l'espace de gestion sans gêner la
           lecture (4,5 % d'opacité, jamais cliquable, jamais imprimé).
         */}
         <div
           aria-hidden
-          className="pointer-events-none fixed inset-0 z-0 bg-center bg-no-repeat opacity-[0.045] print:hidden"
-          style={{ backgroundImage: `url('${BRAND.emblem3d}')`, backgroundSize: 'min(72vw, 540px)' }}
+          className="pointer-events-none fixed inset-0 z-0 bg-[url('/brand/medi-icon.svg')] bg-center bg-no-repeat bg-[length:min(72vw,540px)] opacity-[0.045] print:hidden"
         />
         <div className="relative z-10">
         <AdminTopBar

@@ -108,7 +108,7 @@ describe('avis clients — règles de calcul', () => {
     expect(publicAuthorName('Awa', 'Koné')).toBe('Awa K.');
     expect(publicAuthorName('Awa', null)).toBe('Awa');
     expect(publicAuthorName(null, 'Koné')).toBe('Client K.');
-    expect(publicAuthorName(null, null)).toBe('Client Perokado');
+    expect(publicAuthorName(null, null)).toBe('Client MeDi Shop');
   });
 
   it('a un libellé français pour chaque statut', () => {

@@ -90,7 +90,7 @@ export function clampRating(value: unknown): number {
 export function publicAuthorName(firstName?: string | null, lastName?: string | null): string {
   const first = (firstName ?? '').trim().split(/\s+/)[0] ?? '';
   const initial = (lastName ?? '').trim().charAt(0).toUpperCase();
-  if (!first && !initial) return 'Client Perokado';
+  if (!first && !initial) return 'Client MeDi Shop';
   if (!first) return `Client ${initial}.`;
   return initial ? `${first} ${initial}.` : first;
 }

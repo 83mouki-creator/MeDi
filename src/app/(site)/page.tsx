@@ -19,7 +19,7 @@ import { DeliveryReviewList } from '@/components/reviews';
 import { BRAND, STORE_TAGLINE, WHATSAPP_MESSAGES } from '@/lib/brand';
 
 export const metadata: Metadata = {
-  title: 'Perokado — Tout ce que vous cherchez au même endroit',
+  title: 'MeDi Shop — Tout ce que vous cherchez au même endroit',
   description:
     'Tout ce que vous cherchez au même endroit : outillage professionnel, matériaux de construction et équipement de la maison, livrés à domicile à Daloa et partout en Côte d’Ivoire. Prix en FCFA, stock réel.',
   alternates: { canonical: '/' },
@@ -140,7 +140,7 @@ export default async function HomePage() {
       <section className="relative isolate overflow-hidden bg-navy-950 text-white">
         <Image
           src={BRAND.heroImage}
-          alt={t('Intérieur de la quincaillerie Perokado à Daloa : rayonnages d’outils et de matériaux, un vendeur conseille un client')}
+          alt={t('Intérieur de la quincaillerie MeDi Shop à Daloa : rayonnages d’outils et de matériaux, un vendeur conseille un client')}
           fill
           priority
           sizes="100vw"
@@ -306,7 +306,7 @@ export default async function HomePage() {
 
       {featured.length > 0 ? (
         <Section
-          title={t('Sélection Perokado')}
+          title={t('Sélection MeDi Shop')}
           subtitle={t('Les références mises en avant par la boutique, disponibles immédiatement.')}
           href="/catalogue"
           products={featured}

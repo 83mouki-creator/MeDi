@@ -66,7 +66,7 @@ describe('Langue de l’administration (français uniquement)', () => {
   });
 
   it('n’emploie plus l’ancienne enseigne', () => {
-    const offenders = ADMIN_FILES.filter((file) => /MeDi Shop|MeDi\b/.test(readFileSync(file, 'utf8')) && !file.includes('admin-guide'));
+    const offenders = ADMIN_FILES.filter((file) => /perokado|PERO-/i.test(readFileSync(file, 'utf8')));
     expect(offenders, `Fichiers avec l’ancien nom : ${offenders.join(' | ')}`).toEqual([]);
   });
 });

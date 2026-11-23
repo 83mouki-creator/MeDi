@@ -1,4 +1,4 @@
-# Ouvrir un compte client sur Perokado
+# Ouvrir un compte client sur MeDi Shop
 
 **L'inscription est ouverte.** N'importe qui peut créer un compte client en une
 trentaine de secondes, sans intervention de la boutique : il n'y a ni validation
@@ -11,11 +11,11 @@ immédiatement, et il ne donne **jamais** accès à l'administration.
 
 ### Étape par étape
 
-1. Ouvrir **https://perokado.vercel.app** (site ou application Android : c'est
+1. Ouvrir **https://medi-daloa.vercel.app** (site ou application Android : c'est
    le même chemin).
 2. En haut à droite, appuyer sur **« Compte / Connexion »**, puis sur
    **« Créer un compte »**. Le lien figure aussi en bas de chaque page, dans le
-   pied de page. Adresse directe : **https://perokado.vercel.app/inscription**
+   pied de page. Adresse directe : **https://medi-daloa.vercel.app/inscription**
 3. Remplir le formulaire :
 
    | Champ | Ce qu'il faut saisir |
@@ -52,7 +52,7 @@ téléphone** saisi à l'inscription (format `0701020304` ou `+225 07 01 02 03 0
 
 ## 2. Mot de passe oublié
 
-Page **https://perokado.vercel.app/mot-de-passe-oublie**.
+Page **https://medi-daloa.vercel.app/mot-de-passe-oublie**.
 
 | Situation | Ce qui se passe |
 | --- | --- |
@@ -116,7 +116,7 @@ lien de réinitialisation du client → l'envoyer par WhatsApp. Le lien est vala
   doublons.
 - L'adresse e-mail est mise en minuscules : `Awa.Kone@Example.CI` et
   `awa.kone@example.ci` désignent le même compte.
-- La session est créée immédiatement (cookie `perokado_session`, `httpOnly`) et
+- La session est créée immédiatement (cookie `medi_session`, `httpOnly`) et
   l'inscription est journalisée (`auth.register`).
 - Tests automatiques : **`tests/registration.test.ts`** — 10 cas (création,
   session, rôle forcé, doublons, mot de passe faible, CGV, normalisation,

@@ -1,4 +1,4 @@
--- Perokado — prix d'achat, compte marchand PSP et stickers promotionnels.
+-- MeDi Shop — prix d'achat, compte marchand PSP et stickers promotionnels.
 --
 -- 1. `products.purchase_price` : prix de revient saisi dans l'administration,
 --    utilisé pour calculer le bénéfice net réel. Laissé NULL quand il n'est pas
@@ -8,7 +8,7 @@
 --    paiement (mobile money / carte), affiché au client au moment de payer.
 -- 3. `stickers` + `product_stickers` : vignettes « garantie », « réduction »…
 --    affectées à un ou plusieurs produits, au plus deux par produit.
--- 4. Le nom par défaut de la boutique devient « Perokado ».
+-- 4. Le nom par défaut de la boutique devient « MeDi Shop ».
 
 DO $$ BEGIN
   CREATE TYPE "public"."sticker_tone" AS ENUM('GOLD', 'GREEN', 'RED', 'NAVY', 'WHITE');
@@ -25,7 +25,7 @@ END $$;
 ALTER TABLE "products" ADD COLUMN IF NOT EXISTS "purchase_price" numeric(12, 2);--> statement-breakpoint
 ALTER TABLE "store_settings" ADD COLUMN IF NOT EXISTS "psp_merchant_number" text;--> statement-breakpoint
 ALTER TABLE "store_settings" ADD COLUMN IF NOT EXISTS "psp_merchant_label" text;--> statement-breakpoint
-ALTER TABLE "store_settings" ALTER COLUMN "store_name" SET DEFAULT 'Perokado';--> statement-breakpoint
+ALTER TABLE "store_settings" ALTER COLUMN "store_name" SET DEFAULT 'MeDi Shop';--> statement-breakpoint
 CREATE TABLE IF NOT EXISTS "stickers" (
   "id" text PRIMARY KEY NOT NULL,
   "label" text NOT NULL,
@@ -73,7 +73,7 @@ END $$;
 CREATE INDEX IF NOT EXISTS "product_stickers_sticker_idx" ON "product_stickers" USING btree ("sticker_id");--> statement-breakpoint
 -- Au plus deux stickers par produit : la règle est portée par la base, pas
 -- seulement par le formulaire d'administration.
-CREATE OR REPLACE FUNCTION perokado_max_two_stickers() RETURNS trigger AS $$
+CREATE OR REPLACE FUNCTION medi_max_two_stickers() RETURNS trigger AS $$
 BEGIN
   IF (SELECT count(*) FROM product_stickers WHERE product_id = NEW.product_id) >= 2 THEN
     RAISE EXCEPTION 'Un produit ne peut porter que deux stickers au maximum.';
@@ -86,4 +86,4 @@ DROP TRIGGER IF EXISTS product_stickers_limit ON "product_stickers";
 --> statement-breakpoint
 CREATE TRIGGER product_stickers_limit
   BEFORE INSERT ON "product_stickers"
-  FOR EACH ROW EXECUTE FUNCTION perokado_max_two_stickers();
+  FOR EACH ROW EXECUTE FUNCTION medi_max_two_stickers();

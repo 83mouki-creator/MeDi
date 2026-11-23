@@ -58,7 +58,7 @@ export default async function ShipmentsPage({ searchParams }: { searchParams: Pr
 
   // Message WhatsApp prérempli : le client n'a qu'à appuyer sur « envoyer ».
   const whatsappFor = (phone: string, code: string, url: string) =>
-    whatsappLink(settings, `Bonjour, votre commande Perokado est en route. Suivez votre colis avec le code ${code} : ${url}`)?.replace(
+    whatsappLink(settings, `Bonjour, votre commande MeDi Shop est en route. Suivez votre colis avec le code ${code} : ${url}`)?.replace(
       /wa\.me\/\d+/,
       `wa.me/${phone.replace(/\D/g, '')}`,
     ) ?? null;

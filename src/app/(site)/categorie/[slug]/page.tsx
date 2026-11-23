@@ -24,7 +24,7 @@ export async function generateMetadata({ params }: { params: Promise<Params> }):
     title: category.metaTitle ?? `${category.name} à Daloa`,
     description:
       category.metaDescription ??
-      `Découvrez notre sélection ${category.name.toLowerCase()} chez Perokado : livraison à domicile à Daloa et expédition partout en Côte d'Ivoire. Prix en FCFA, stock réel.`,
+      `Découvrez notre sélection ${category.name.toLowerCase()} chez MeDi Shop : livraison à domicile à Daloa et expédition partout en Côte d'Ivoire. Prix en FCFA, stock réel.`,
     alternates: { canonical: `/categorie/${category.slug}` },
   };
 }

@@ -2,7 +2,7 @@
  * PostgreSQL local de développement / tests.
  *
  * Lance un vrai serveur PostgreSQL (binaire embarqué) sur le port 55432 avec des
- * données persistées dans `.localdb/`, crée la base `perokado` si besoin puis applique
+ * données persistées dans `.localdb/`, crée la base `medi` si besoin puis applique
  * les migrations. Utile quand aucune instance Neon n'est encore disponible :
  * le schéma, les migrations et les requêtes sont strictement les mêmes.
  *
@@ -16,9 +16,9 @@ import { Client } from 'pg';
 import { runMigrations } from '../src/db/migrate';
 
 const PORT = Number(process.env.LOCAL_PG_PORT ?? 55432);
-const USER = process.env.LOCAL_PG_USER ?? 'perokado';
-const PASSWORD = process.env.LOCAL_PG_PASSWORD ?? 'perokado';
-const DATABASE = process.env.LOCAL_PG_DB ?? 'perokado';
+const USER = process.env.LOCAL_PG_USER ?? 'medi';
+const PASSWORD = process.env.LOCAL_PG_PASSWORD ?? 'medi';
+const DATABASE = process.env.LOCAL_PG_DB ?? 'medi';
 const DATA_DIR = process.env.LOCAL_PG_DIR ?? '.localdb/data';
 
 async function main() {

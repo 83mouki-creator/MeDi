@@ -20,32 +20,31 @@ prix n'exige donc aucun nouveau dépôt sur le Play Store.
 | Élément | Fichier | Servi à l'adresse |
 | --- | --- | --- |
 | Manifeste de l'application | `src/app/manifest.ts` | `/manifest.webmanifest` |
-| Icône 192 px | `public/brand/perokado-icon-192.png` | `/brand/perokado-icon-192.png` |
-| Icône 512 px | `public/brand/perokado-icon.png` | `/brand/perokado-icon.png` |
-| Icône « maskable » (Android) | `public/brand/perokado-icon-maskable-512.png` | `/brand/perokado-icon-maskable-512.png` |
+| Icône 192 px | `public/brand/medi-icon-192.png` | `/brand/medi-icon-192.png` |
+| Icône 512 px | `public/brand/medi-icon.png` | `/brand/medi-icon.png` |
+| Icône « maskable » (Android) | `public/brand/medi-icon-maskable-512.png` | `/brand/medi-icon-maskable-512.png` |
 | Page hors connexion | `src/app/offline/page.tsx` | `/offline` |
 | Service worker | `public/sw.js` | `/sw.js` |
 | Enregistrement du service worker | `src/components/pwa-register.tsx` | toutes les pages |
 | En-têtes (`Content-Type`, cache du service worker) | `next.config.ts` | `/sw.js`, `/.well-known/assetlinks.json` |
 | Générateur du fichier de vérification Android | `scripts/make-assetlinks.ts` | `npm run assetlinks` |
 
-Les icônes sont régénérées par `npm run brand:assets` à partir de
-`public/brand/perokado-emblem-3d.png` (emblème 3D détouré, produit lui-même par
-`npm run brand:emblem` depuis `public/brand/source/perokado-3d-emblem.png`) :
-ne les modifie pas à la main.
+Les icônes et images de partage sont régénérées par `npm run brand:assets` à
+partir du logo fourni (`public/brand/medi-logo.svg` et consorts) : ne les
+modifie pas à la main.
 
 ---
 
 ## 2. Vérifier que le site est « installable »
 
 ```bash
-curl -s https://perokado.vercel.app/manifest.webmanifest | head -20
-curl -sI https://perokado.vercel.app/sw.js
+curl -s https://medi-daloa.vercel.app/manifest.webmanifest | head -20
+curl -sI https://medi-daloa.vercel.app/sw.js
 ```
 
 Dans Chrome sur ordinateur : F12 → onglet **Application**.
 
-- *Manifest* : nom « Perokado », `display: standalone`, 3 icônes lues sans erreur ;
+- *Manifest* : nom « MeDi Shop », `display: standalone`, 3 icônes lues sans erreur ;
 - *Service workers* : `sw.js` **activated and is running**.
 
 Sur un téléphone Android, Chrome propose alors « Installer l'application ».
@@ -75,26 +74,26 @@ bubblewrap doctor
 ### 3.2 Créer le projet
 
 ```bash
-mkdir perokado-android && cd perokado-android
-bubblewrap init --manifest https://perokado.vercel.app/manifest.webmanifest
+mkdir medi-android && cd medi-android
+bubblewrap init --manifest https://medi-daloa.vercel.app/manifest.webmanifest
 ```
 
 Réponses à donner :
 
 | Question | Réponse |
 | --- | --- |
-| Domain | `perokado.vercel.app` |
-| Application name | `Perokado` |
-| Short name | `Perokado` |
-| **Application ID** | `ci.perokado.app` — **définitif, ne changera plus jamais** |
+| Domain | `medi-daloa.vercel.app` |
+| Application name | `MeDi Shop` |
+| Short name | `MeDi Shop` |
+| **Application ID** | `ci.medishop.app` — **définitif, ne changera plus jamais** |
 | Display mode | `standalone` |
-| Status bar color | `#0b2545` |
-| Splash screen color | `#0b2545` |
-| Icon URL | `/brand/perokado-icon.png` (= 512 × 512) |
-| Maskable icon URL | `/brand/perokado-icon-maskable-512.png` |
+| Status bar color | `#0E2340` |
+| Splash screen color | `#0E2340` |
+| Icon URL | `/brand/medi-icon.png` (= 512 × 512) |
+| Maskable icon URL | `/brand/medi-icon-maskable-512.png` |
 | Chrome OS | `No` |
 | Signing key | `Create new` |
-| Key store | `android.keystore`, alias `perokado` |
+| Key store | `android.keystore`, alias `medi` |
 | Mots de passe | **à noter et à sauvegarder** (irrécupérables) |
 | versionCode / versionName | `1` / `1.0.0` |
 
@@ -119,7 +118,7 @@ Sans cette étape, l'application affiche le site **avec la barre d'adresse Chrom
 ### 4.1 Empreintes SHA-256
 
 ```bash
-keytool -list -v -keystore android.keystore -alias perokado | grep SHA256
+keytool -list -v -keystore android.keystore -alias medi | grep SHA256
 ```
 
 Une fois l'application publiée, Google la re-signe avec sa propre clé : ajouter
@@ -133,7 +132,7 @@ npm run assetlinks -- "AA:BB:CC:…" "11:22:33:…"
 ```
 
 La commande vérifie les empreintes (64 caractères hexadécimaux) et écrit
-`public/.well-known/assetlinks.json` avec le paquet `ci.perokado.app`.
+`public/.well-known/assetlinks.json` avec le paquet `ci.medishop.app`.
 Nom de paquet différent ? `ANDROID_PACKAGE_NAME=… npm run assetlinks -- "…"`.
 
 Puis déployer le site (commit + `main`).
@@ -141,15 +140,15 @@ Puis déployer le site (commit + `main`).
 ### 4.3 Vérifier
 
 ```bash
-curl -s https://perokado.vercel.app/.well-known/assetlinks.json
-npx @bubblewrap/cli validate --url https://perokado.vercel.app
+curl -s https://medi-daloa.vercel.app/.well-known/assetlinks.json
+npx @bubblewrap/cli validate --url https://medi-daloa.vercel.app
 ```
 
 ```text
-https://digitalassetlinks.googleapis.com/v1/statements:list?source.web.site=https://perokado.vercel.app&relation=delegate_permission/common.handle_all_urls
+https://digitalassetlinks.googleapis.com/v1/statements:list?source.web.site=https://medi-daloa.vercel.app&relation=delegate_permission/common.handle_all_urls
 ```
 
-La réponse doit citer `ci.perokado.app`. Si elle est vide, la barre d'adresse
+La réponse doit citer `ci.medishop.app`. Si elle est vide, la barre d'adresse
 restera affichée.
 
 ---
@@ -178,15 +177,15 @@ adb install -r app-release-signed.apk
 1. **Compte développeur** : 25 USD une seule fois (frais Google, hors contrat),
    vérification d'identité sous 1 à 3 jours.
 2. **Éléments à préparer**
-   - icône 512 × 512 : `public/brand/perokado-icon.png` ;
+   - icône 512 × 512 : `public/brand/medi-icon.png` ;
    - *feature graphic* 1024 × 500 (à créer) ;
    - au moins 2 captures d'écran de téléphone ;
    - description courte (80 caractères) et complète (4 000 caractères) ;
-   - politique de confidentialité : `https://perokado.vercel.app/confidentialite` ;
-   - page de suppression de compte : `https://perokado.vercel.app/supprimer-mon-compte` ;
+   - politique de confidentialité : `https://medi-daloa.vercel.app/confidentialite` ;
+   - page de suppression de compte : `https://medi-daloa.vercel.app/supprimer-mon-compte` ;
    - **un compte client de démonstration** pour l'équipe de revue (jamais le
      compte propriétaire).
-3. **Créer l'application** : nom `Perokado`, langue `Français (France)`, type
+3. **Créer l'application** : nom `MeDi Shop`, langue `Français (France)`, type
    *Application*, **gratuite**.
 4. **Renseigner les blocs de « Configuration de l'application »** : accès à
    l'application, publicités (non), classification du contenu, public cible
@@ -240,7 +239,7 @@ Dans la Play Console, rubrique **Sécurité des données → Suppression de comp
 indiquer :
 
 - URL de la demande de suppression :
-  `https://perokado.vercel.app/supprimer-mon-compte`
+  `https://medi-daloa.vercel.app/supprimer-mon-compte`
 - Données supprimées : nom, e-mail, téléphone, mot de passe, adresses.
 - Données conservées : historique de commandes (obligations comptables et
   garanties), détaché du compte.
@@ -258,8 +257,8 @@ se fait dans `/admin/utilisateurs`, par un compte de niveau supérieur.
   section 3) et à ranger dans `store/screenshots/`.
 - **Coordonnées de contact** : `contact.email` et `contact.phone` de
   `store/play-listing.json` portent la mention « à compléter ».
-- **Domaine propre** (recommandé) : `perokado.vercel.app` fonctionne, mais un
-  domaine à la boutique (`perokado.com`, `perokado.ci`…) rend l'application
+- **Domaine propre** (recommandé) : `medi-daloa.vercel.app` fonctionne, mais un
+  domaine à la boutique (`medishopdaloa.com`, `medi.ci`…) rend l'application
   durable même si l'hébergement change.
 
 > Tout le dépôt Play (textes, visuels, captures, secrets) est décrit pas à pas
@@ -320,8 +319,8 @@ Installer **Termux** (F-Droid ou Play Store), puis :
 ```bash
 pkg update && pkg upgrade
 pkg install git nodejs-lts openjdk-17
-git clone https://github.com/83mouki-creator/Perokado.git
-cd Perokado
+git clone https://github.com/83mouki-creator/MeDi Shop.git
+cd MeDi Shop
 npm install
 ```
 
@@ -329,10 +328,10 @@ Utile pour : `git pull` / `git push`, `npm run assetlinks`, et **générer le
 keystore** une seule fois :
 
 ```bash
-keytool -genkeypair -v -keystore android.keystore -alias perokado \
+keytool -genkeypair -v -keystore android.keystore -alias medi \
   -keyalg RSA -keysize 2048 -validity 10000 \
-  -storetype JKS -dname "CN=Perokado, OU=Daloa, O=Perokado, L=Daloa, C=CI"
-keytool -list -v -keystore android.keystore -alias perokado | grep SHA256
+  -storetype JKS -dname "CN=MeDi Shop, OU=Daloa, O=MeDi Shop, L=Daloa, C=CI"
+keytool -list -v -keystore android.keystore -alias medi | grep SHA256
 ```
 
 Le fichier `android.keystore` doit être sauvegardé (cloud, clé USB) : **sans lui,
@@ -345,7 +344,7 @@ pas sous Termux. La solution est de faire compiler par GitHub, depuis le
 navigateur du téléphone :
 
 1. le manifeste est déjà versionné : `android/twa-manifest.json` (package
-   `ci.perokado.app`, nom, icônes, couleurs, raccourcis) ;
+   `ci.medishop.app`, nom, icônes, couleurs, raccourcis) ;
 2. ajouter le keystore en secret : *Settings → Secrets and variables → Actions*,
    secret `ANDROID_KEYSTORE_BASE64` = contenu de `android.keystore` encodé en
    base64 (`base64 -w0 android.keystore`), plus `KEYSTORE_PASSWORD` et

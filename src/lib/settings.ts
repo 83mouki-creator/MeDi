@@ -128,7 +128,7 @@ export const getStoreSettings = cache(async (): Promise<PublicSettings> => {
  * Lien WhatsApp du service client, avec message déjà écrit.
  *
  * Le numéro vient de /admin/parametres ; à défaut, celui de la marque
- * (`+225 05 44 01 41 82`, le WhatsApp Business) est utilisé, pour que le bouton
+ * (`+225 07 08 90 48 91`, le WhatsApp Business) est utilisé, pour que le bouton
  * d'aide fonctionne dès la première installation.
  *
  * Le message est toujours prérempli : le client clique, la conversation

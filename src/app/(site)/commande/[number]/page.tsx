@@ -220,7 +220,7 @@ export default async function OrderConfirmationPage({ params, searchParams }: Pr
             (() => {
               const link = whatsappWithMessage(
                 settings,
-                t('Bonjour Perokado, je souhaite convenir du prix du transport pour ma commande {number} à destination de {city}.', {
+                t('Bonjour MeDi Shop, je souhaite convenir du prix du transport pour ma commande {number} à destination de {city}.', {
                   number: order.number,
                   city: order.city,
                 }),

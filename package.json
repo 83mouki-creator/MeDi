@@ -1,8 +1,8 @@
 {
-  "name": "perokado",
+  "name": "medi",
   "version": "1.0.0",
   "private": true,
-  "description": "Perokado — plateforme e-commerce quincaillerie, industrie, bâtiment et équipement domestique à Daloa (Côte d'Ivoire)",
+  "description": "MeDi Shop — plateforme e-commerce quincaillerie, industrie, bâtiment et équipement domestique à Daloa (Côte d'Ivoire)",
   "scripts": {
     "dev": "next dev",
     "build": "next build",
@@ -16,21 +16,19 @@
     "db:seed": "tsx --env-file-if-exists=.env.local scripts/seed.ts",
     "config:store": "tsx --env-file-if-exists=.env.local scripts/store-config.ts",
     "images:products": "tsx scripts/build-product-images.ts",
-    "catalogue:store": "tsx --env-file-if-exists=.env.local scripts/import-catalogue.ts",
+    "catalogue:store": "tsx --env-file-if-exists=.env.local scripts/import-medi.ts",
     "db:studio": "drizzle-kit studio",
     "import:photos": "tsx --env-file-if-exists=.env.local scripts/import-photos.ts",
     "import:catalog": "tsx --env-file-if-exists=.env.local scripts/import-catalog.ts",
     "reindex:visual": "tsx --env-file-if-exists=.env.local scripts/reindex-visual.ts",
-    "brand:assets": "tsx scripts/make-brand-emblem.ts && tsx scripts/make-brand-assets.ts && tsx scripts/make-hero-image.ts",
+    "brand:assets": "tsx scripts/make-brand-assets.ts",
     "assetlinks": "tsx scripts/make-assetlinks.ts",
     "admin:create": "tsx --env-file-if-exists=.env.local scripts/create-admin.ts",
     "test": "vitest run",
     "test:watch": "vitest",
     "test:setup": "tsx --env-file-if-exists=.env.local scripts/test-db-setup.ts",
     "db:reset": "tsx --env-file-if-exists=.env.local scripts/reset-db.ts",
-    "play:assets": "tsx scripts/make-play-assets.ts",
-    "brand:emblem": "tsx scripts/make-brand-emblem.ts",
-    "brand:hero": "tsx scripts/make-hero-image.ts"
+    "play:assets": "tsx scripts/make-play-assets.ts"
   },
   "dependencies": {
     "clsx": "2.1.1",

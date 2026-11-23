@@ -1,5 +1,5 @@
 /**
- * Import du catalogue réel Perokado (photos fournisseur → fiches produits).
+ * Import du catalogue réel MeDi Shop (photos fournisseur → fiches produits).
  *
  * Idempotent : les fiches déjà présentes (par référence) ne sont pas écrasées
  * sauf avec `--update`, afin qu'une modification faite dans /admin ne soit
@@ -61,7 +61,7 @@ async function upsertImage(
 }
 
 async function main() {
-  console.log(`→ Catalogue réel Perokado${DRY ? ' (simulation)' : ''}`);
+  console.log(`→ Catalogue réel MeDi Shop${DRY ? ' (simulation)' : ''}`);
 
   const manifest = await loadCatalogue();
   const images = JSON.parse(await readFile(path.join('data', 'catalogue', 'images.json'), 'utf8')) as ImageIndex;

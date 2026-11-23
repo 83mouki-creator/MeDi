@@ -113,7 +113,7 @@ photos et catalogue réels, configuration du stockage d'images et de la base Neo
 | Élément | Valeur | Où la modifier |
 | --- | --- | --- |
 | Horaires | lundi – samedi 7h30 – 18h00, dimanche fermé | `/admin/parametres` |
-| WhatsApp / téléphone | +225 05 44 01 41 82 (WhatsApp Business, aussi compte marchand Wave) | `/admin/parametres` |
+| WhatsApp / téléphone | +225 07 08 90 48 91 aussi compte marchand Wave) | `/admin/parametres` |
 | Numéro marchand Wave | même numéro (WhatsApp Business) | `/admin/parametres` |
 | Logo | fourni par le propriétaire, décliné par `npm run brand:assets` | `public/brand/` |
 | Barème de livraison | arrêté par le prestataire à la demande du propriétaire | `/admin/livraison` |

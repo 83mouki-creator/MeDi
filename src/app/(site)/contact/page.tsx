@@ -10,7 +10,7 @@ import { WHATSAPP_MESSAGES } from '@/lib/brand';
 export const metadata: Metadata = {
   title: 'Contact et service client',
   description:
-    'Contactez Perokado à Daloa : question sur un produit, disponibilité, suivi de commande, facture ou demande de devis.',
+    'Contactez MeDi Shop à Daloa : question sur un produit, disponibilité, suivi de commande, facture ou demande de devis.',
   alternates: { canonical: '/contact' },
 };
 
@@ -139,7 +139,7 @@ export default async function ContactPage() {
         <Card className="p-4 text-sm">
           <h2 className="mb-2 text-sm font-bold">{t('Suivre une commande')}</h2>
           <p className="text-navy-600">
-            {t('Munissez-vous de votre numéro de commande (format')} <span className="font-mono">PER-AAAA-NNNNN</span>
+            {t('Munissez-vous de votre numéro de commande (format')} <span className="font-mono">MED-AAAA-NNNNN</span>
             {t(') et du numéro de téléphone utilisé lors de l’achat.')}
           </p>
           <a href="/suivi" className="mt-2 inline-block font-semibold text-accent-700 underline">

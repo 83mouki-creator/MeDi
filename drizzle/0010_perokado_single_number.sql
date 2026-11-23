@@ -1,4 +1,4 @@
--- Perokado — un seul numéro, partout.
+-- MeDi Shop — un seul numéro, partout.
 --
 -- Le numéro WhatsApp Business de la boutique (+225 05 44 01 41 82) devient aussi
 -- le numéro marchand Wave / prestataire de paiement. Sans cette reprise, la base
@@ -37,5 +37,5 @@ UPDATE "store_settings"
 -- L'enseigne ne doit plus apparaître nulle part, y compris dans une base où la
 -- valeur aurait été ressaisie à la main avec l'ancien nom.
 UPDATE "store_settings"
-   SET "store_name" = 'Perokado'
+   SET "store_name" = 'MeDi Shop'
  WHERE lower(btrim(coalesce("store_name", ''))) IN ('medi shop', 'medi', 'medi shop daloa', '');

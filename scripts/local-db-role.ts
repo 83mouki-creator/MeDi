@@ -3,7 +3,7 @@
  *
  * `initdb` crée le superutilisateur du cluster ; si le cluster a été initialisé
  * par une version antérieure du projet (utilisateur `medi`), le nom du rôle ne
- * correspond plus à celui attendu (`perokado`) et toute connexion est refusée.
+ * correspond plus à celui attendu (`medi`) et toute connexion est refusée.
  * On se connecte alors avec l'ancien rôle, on crée le nouveau avec le bon mot de
  * passe et on lui donne les droits — puis on vérifie que la connexion passe.
  *
@@ -13,8 +13,8 @@ import { Client } from 'pg';
 
 const HOST = '127.0.0.1';
 const PORT = Number(process.env.LOCAL_PG_PORT ?? 55432);
-const USER = process.env.LOCAL_PG_USER ?? 'perokado';
-const PASSWORD = process.env.LOCAL_PG_PASSWORD ?? 'perokado';
+const USER = process.env.LOCAL_PG_USER ?? 'medi';
+const PASSWORD = process.env.LOCAL_PG_PASSWORD ?? 'medi';
 /** Rôles des clusters initialisés avant le renommage de la boutique. */
 const LEGACY_USERS = ['medi'];
 

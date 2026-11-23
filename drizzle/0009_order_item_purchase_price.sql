@@ -1,4 +1,4 @@
--- Perokado — prix d'achat figé au moment de la commande.
+-- MeDi Shop — prix d'achat figé au moment de la commande.
 --
 -- `products.purchase_price` peut changer à tout moment (nouveau tarif
 -- fournisseur). Sans copie sur la ligne de commande, le bénéfice d'une vente

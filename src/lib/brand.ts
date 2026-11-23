@@ -7,7 +7,7 @@
  * marque, elles, se régénèrent avec `npm run brand:assets`.
  */
 
-export const STORE_NAME = 'Perokado';
+export const STORE_NAME = 'MeDi Shop';
 
 /** Slogan officiel, avec son point final : il fait partie de la marque. */
 export const STORE_TAGLINE = 'Tout ce que vous cherchez au même endroit.';
@@ -18,12 +18,12 @@ export const STORE_TAGLINE_SHORT = 'Tout ce que vous cherchez au même endroit';
 /**
  * Coordonnées publiques de la boutique (surchargées par /admin/parametres).
  *
- * Numéro WhatsApp Business — un seul numéro partout : en-tête, pied de page,
+ * Numéro WhatsApp — un seul numéro partout : en-tête, pied de page,
  * fiches produit, page contact, e-mails, guide d'équipe et fiche Play Store.
  */
-export const STORE_WHATSAPP = '+225 05 44 01 41 82';
-export const STORE_WHATSAPP_DIGITS = '2250544014182';
-export const STORE_PHONE = '+225 05 44 01 41 82';
+export const STORE_WHATSAPP = '+225 07 08 90 48 91';
+export const STORE_WHATSAPP_DIGITS = '2250708904891';
+export const STORE_PHONE = '+225 07 08 90 48 91';
 
 /**
  * Messages préremplis des boutons WhatsApp.
@@ -49,42 +49,35 @@ export const STORE_COUNTRY = "Côte d'Ivoire";
 export const STORE_CITY = 'Daloa';
 
 /**
- * Images de marque. Elles sont produites par `npm run brand:assets` à partir des
- * tracés vectoriels de `scripts/make-brand-vectors.py`.
+ * Images de marque. Le logo est le visuel fourni par la boutique ; les déclinaisons
+ * (blanc, fond clair, icônes, image de partage) se régénèrent avec
+ * `npm run brand:assets` à partir des tracés de `public/brand/*.svg`
+ * (voir `scripts/make-brand-assets.ts`).
  */
 export const BRAND = {
   /** En-tête et pied de page (fond bleu nuit). */
-  logoHorizontalWhite: '/brand/perokado-logo-horizontal-blanc.png',
+  logoHorizontalWhite: '/brand/medi-logo-horizontal-blanc.png',
   /** Documents et fonds clairs. */
-  logoHorizontal: '/brand/perokado-logo-horizontal.png',
+  logoHorizontal: '/brand/medi-logo-horizontal.png',
   /** Versions empilées (e-mails, factures). */
-  logoStacked: '/brand/perokado-logo.png',
-  logoStackedWhite: '/brand/perokado-logo-blanc.png',
+  logoStacked: '/brand/medi-logo.png',
+  logoStackedWhite: '/brand/medi-logo-blanc.png',
   /** Icônes. */
-  icon: '/brand/perokado-icon.png',
-  icon192: '/brand/perokado-icon-192.png',
-  iconMaskable: '/brand/perokado-icon-maskable-512.png',
+  icon: '/brand/medi-icon.png',
+  icon192: '/brand/medi-icon-192.png',
+  iconMaskable: '/brand/medi-icon-maskable-512.png',
   appleTouchIcon: '/brand/apple-touch-icon.png',
   favicon: '/brand/favicon-32.png',
-  /**
-   * Emblème 3D (plaque bleu nuit, sac doré, « P » gravé).
-   *
-   * C'est LE dessin de la marque : il porte le liseré doré et la lumière du
-   * rendu d'origine, et se pose aussi bien sur du blanc que sur du bleu nuit.
-   * Il est produit par `npm run brand:emblem` à partir du rendu carré de
-   * `public/brand/source/`.
-   */
-  emblem3d: '/brand/perokado-emblem-3d.png',
-  /** Emblème vectoriel, à plat (filigrane discret, documents imprimés). */
-  emblem: '/brand/perokado-emblem.svg',
-  /** Photo du bandeau d'accueil (`npm run brand:hero`). */
-  heroImage: '/brand/fond-accueil.jpg',
+  /** Emblème vectoriel (filigrane de l'administration, documents imprimés). */
+  emblem: '/brand/medi-icon.svg',
+  /** Photo du bandeau d'accueil. */
+  heroImage: '/brand/fond-quincaillerie.jpg',
   /** Image de partage (Open Graph / Twitter). */
-  ogImage: '/brand/perokado-og.png',
+  ogImage: '/brand/medi-og.png',
 } as const;
 
 /** Dimensions du logo horizontal, pour éviter tout décalage de mise en page. */
-export const BRAND_LOGO_SIZE = { width: 515, height: 132 } as const;
+export const BRAND_LOGO_SIZE = { width: 1069, height: 200 } as const;
 
 /** Couleur de marque (bleu nuit), reprise par le manifeste et le thème. */
 export const BRAND_NAVY = '#0e2340';

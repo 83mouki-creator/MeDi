@@ -2,7 +2,7 @@
  * Bandeau bas des vignettes produit.
  *
  * Le bandeau identifie la boutique sur chaque photo du catalogue : emblème
- * Perokado (sac doré, « P » bleu nuit en réserve), nom de la boutique, référence
+ * MeDi Shop (sac doré, « P » bleu nuit en réserve), nom de la boutique, référence
  * lisible pour retrouver l'article en boutique, puis la désignation.
  *
  * Il est isolé ici parce qu'il sert à deux moments : la fabrication initiale des
@@ -72,7 +72,7 @@ export function bannerSvg(params: { sku: string; label: string }) {
   <rect width="${CANVAS}" height="6" fill="${ORANGE}"/>
   ${emblem(62, 46, 22)}
   <text x="124" y="74" font-family="DejaVu Sans, Liberation Sans, Helvetica, Arial, sans-serif"
-        font-size="50" font-weight="bold" fill="#ffffff" letter-spacing="1">Perokado</text>
+        font-size="50" font-weight="bold" fill="#ffffff" letter-spacing="1">MeDi Shop</text>
   <text x="${CANVAS - 52}" y="70" text-anchor="end" font-family="DejaVu Sans, Liberation Sans, Helvetica, Arial, sans-serif"
         font-size="${skuSize}" font-weight="bold" fill="${ORANGE}" letter-spacing="1">${sku}</text>
   <line x1="52" y1="102" x2="${CANVAS - 52}" y2="102" stroke="#2a4472" stroke-width="2"/>

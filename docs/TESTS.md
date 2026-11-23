@@ -3,7 +3,7 @@
 Dernière exécution : **2026-11-10** — `npm run test` → **359 tests, 34 fichiers, 359 réussis, 0 échec**
 (`npx tsc --noEmit` : aucune erreur ; `npm run build` : compilation réussie).
 
-Base utilisée : `perokado_test` (PostgreSQL local, UTF-8), préparée par `npm run test:setup`.
+Base utilisée : `medi_test` (PostgreSQL local, UTF-8), préparée par `npm run test:setup`.
 Les tests vident leurs tables avant chaque cas : ils ne touchent jamais les données de la boutique.
 
 ## Couverture par exigence
@@ -53,7 +53,7 @@ Les tests vident leurs tables avant chaque cas : ils ne touchent jamais les donn
 | Échappement HTML : un nom de produit piégé ne peut rien injecter | `email.test.ts` (`<script>` → `&lt;script&gt;`) | ✔ |
 | Requête envoyée à Brevo / Resend (expéditeur, HTML, réponse) | `email.test.ts` (corps `sender`, `htmlContent`, `replyTo`, priorité Brevo) | ✔ |
 | Panne du fournisseur : aucune commande annulée, aucune levée d'exception | `email.test.ts` (`Brevo HTTP 400` remonté sans lever) ; envoi différé (`email-queue.test` dans `email.test.ts`) | ✔ |
-| Aucun envoi vers les adresses techniques du personnel | `email.test.ts` (`@agents.perokado.local`) | ✔ |
+| Aucun envoi vers les adresses techniques du personnel | `email.test.ts` (`@agents.medi.local`) | ✔ |
 | Le bon peut être renvoyé par e-mail (jeton ou compte) | `email.test.ts` (branchement page + action + limite de débit) | ✔ |
 | Mots de passe : scrypt, sel, jamais en clair | `authz.test.ts` | ✔ |
 | Téléversement d'image : type réel, taille, normalisation WebP, empreinte | `uploads-visual.test.ts` | ✔ |

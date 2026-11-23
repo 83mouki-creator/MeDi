@@ -69,7 +69,7 @@ describe('Langue de la vitrine (français uniquement)', () => {
   });
 
   it('n’emploie plus l’ancienne enseigne sur la vitrine', () => {
-    const offenders = SITE_FILES.filter((file) => /MeDi Shop|MeDi\b/.test(readFileSync(file, 'utf8')));
+    const offenders = SITE_FILES.filter((file) => /perokado|PERO-/i.test(readFileSync(file, 'utf8')));
     expect(offenders, `Fichiers avec l’ancien nom : ${offenders.join(' | ')}`).toEqual([]);
   });
 });

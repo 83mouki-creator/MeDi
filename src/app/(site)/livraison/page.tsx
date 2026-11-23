@@ -47,7 +47,7 @@ export default async function DeliveryPage() {
   const faqStructuredData = faqJsonLd(DELIVERY_FAQ, settings, (text) => t(text, STORE_POLICY_VARS));
   const transportLink = whatsappWithMessage(
     settings,
-    'Bonjour Perokado, je souhaite connaître le prix du transport et le délai pour une livraison hors Daloa.',
+    'Bonjour MeDi Shop, je souhaite connaître le prix du transport et le délai pour une livraison hors Daloa.',
   );
 
   // Quartiers rattachés à chaque zone locale : c'est la liste que voit le client.

@@ -6,7 +6,7 @@ import { LegalPage, LegalSection } from '@/components/legal-page';
 export const metadata: Metadata = {
   title: 'Conditions générales de vente',
   description:
-    'Conditions de vente Perokado : commande, prix en FCFA, disponibilité, paiement, livraison à Daloa et hors Daloa, retours.',
+    'Conditions de vente MeDi Shop : commande, prix en FCFA, disponibilité, paiement, livraison à Daloa et hors Daloa, retours.',
   alternates: { canonical: '/cgv' },
 };
 
@@ -18,7 +18,7 @@ export default async function TermsPage() {
   return (
     <LegalPage
       title="Conditions générales de vente"
-      intro="Les présentes conditions s’appliquent à toute commande passée sur le site Perokado. Elles décrivent les modalités de commande, de paiement, de livraison et de retour applicables à la boutique."
+      intro="Les présentes conditions s’appliquent à toute commande passée sur le site MeDi Shop. Elles décrivent les modalités de commande, de paiement, de livraison et de retour applicables à la boutique."
     >
       <LegalSection title="1. Vendeur">
         <p>
@@ -54,7 +54,7 @@ export default async function TermsPage() {
       <LegalSection title="4. Commande">
         <p>
           La commande est enregistrée après validation du panier et des coordonnées de livraison. Un numéro de commande au format
-          <span className="font-mono"> PER-AAAA-NNNNN</span> est attribué. L’historique horodaté des statuts est consultable dans
+          <span className="font-mono"> MED-AAAA-NNNNN</span> est attribué. L’historique horodaté des statuts est consultable dans
           le suivi de commande.
         </p>
         <p>

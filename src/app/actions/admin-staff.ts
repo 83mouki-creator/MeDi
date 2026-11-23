@@ -64,7 +64,7 @@ export type StaffState = {
 };
 
 // Domaine technique des comptes agents : jamais de courrier sortant.
-const INTERNAL_MAIL_DOMAIN = 'agents.perokado.local';
+const INTERNAL_MAIL_DOMAIN = 'agents.medi.local';
 
 function internalEmail(phoneDigits: string) {
   return `agent.${phoneDigits}@${INTERNAL_MAIL_DOMAIN}`;
@@ -129,7 +129,7 @@ export async function createStaffAction(_prev: StaffState, formData: FormData): 
 
   const phone = normalizeIvorianPhone(phoneInput);
   if (!phone.ok) {
-    fieldErrors.phone = 'Numéro ivoirien invalide. Format attendu : 05 44 01 41 82.';
+    fieldErrors.phone = 'Numéro ivoirien invalide. Format attendu : 07 08 90 48 91.';
   }
 
   if (Object.keys(fieldErrors).length > 0) {
@@ -244,12 +244,12 @@ export async function activateStaffAccessAction(_prev: StaffState, formData: For
   const confirm = String(formData.get('passwordConfirm') ?? '');
 
   const fieldErrors: Record<string, string> = {};
-  if (!isValidStaffCodeShape(codeInput)) fieldErrors.code = 'Code incomplet : format PERO-XXXX-XXXX-XXXX.';
+  if (!isValidStaffCodeShape(codeInput)) fieldErrors.code = 'Code incomplet : format MEDI-XXXX-XXXX-XXXX.';
   if (firstName.length < 2) fieldErrors.firstName = 'Indiquez votre prénom.';
   if (lastName.length < 2) fieldErrors.lastName = 'Indiquez votre nom.';
 
   const phone = normalizeIvorianPhone(phoneInput);
-  if (!phone.ok) fieldErrors.phone = 'Numéro ivoirien invalide (ex. 05 44 01 41 82).';
+  if (!phone.ok) fieldErrors.phone = 'Numéro ivoirien invalide (ex. 07 08 90 48 91).';
 
   const passwordError = validateStaffPassword(password, confirm);
   if (passwordError) fieldErrors.password = passwordError;
@@ -402,7 +402,7 @@ export async function issuePasswordResetLinkAction(_prev: StaffState, formData: 
   let emailDelivered = false;
   let emailError: string | undefined;
   if (emailStatus().configured && !target.email.endsWith(`@${INTERNAL_MAIL_DOMAIN}`)) {
-    const result = await sendEmail({ to: target.email, subject: 'Perokado — réinitialisation de votre mot de passe', text: message });
+    const result = await sendEmail({ to: target.email, subject: 'MeDi Shop — réinitialisation de votre mot de passe', text: message });
     emailDelivered = result.sent;
     emailError = result.error;
   }

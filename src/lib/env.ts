@@ -144,8 +144,8 @@ export const env = {
     },
   },
 
-  sessionCookieName: 'perokado_session',
-  cartCookieName: 'perokado_cart',
+  sessionCookieName: 'medi_session',
+  cartCookieName: 'medi_cart',
   sessionTtlDays: 30,
 };
 

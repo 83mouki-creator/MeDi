@@ -1,4 +1,4 @@
-# Perokado sur le Play Store — textes, visuels et fabrication de l'application
+# MeDi Shop sur le Play Store — textes, visuels et fabrication de l'application
 
 Ce document rassemble tout ce qu'il faut pour déposer l'application Android :
 les **textes** prêts à copier, les **visuels** (dont la bannière 1024 × 500),
@@ -14,12 +14,12 @@ Pour la partie technique (Bubblewrap, Digital Asset Links, publication), voir
 
 | | Adresse |
 | --- | --- |
-| Boutique | https://perokado.vercel.app |
-| Administration | https://perokado.vercel.app/admin |
-| Politique de confidentialité | https://perokado.vercel.app/confidentialite |
-| Suppression de compte (obligatoire sur Play) | https://perokado.vercel.app/supprimer-mon-compte |
+| Boutique | https://medi-daloa.vercel.app |
+| Administration | https://medi-daloa.vercel.app/admin |
+| Politique de confidentialité | https://medi-daloa.vercel.app/confidentialite |
+| Suppression de compte (obligatoire sur Play) | https://medi-daloa.vercel.app/supprimer-mon-compte |
 
-Package Android : `ci.perokado.app` · Nom affiché : **Perokado**
+Package Android : `ci.medishop.app` · Nom affiché : **MeDi Shop**
 
 ---
 
@@ -32,7 +32,7 @@ ci-dessous tels quels.
 ### Nom de l'application (30 caractères max)
 
 ```
-Perokado
+MeDi Shop
 ```
 
 ### Description courte (80 caractères max)
@@ -44,7 +44,7 @@ Tout ce que vous cherchez au même endroit : outillage, quincaillerie, maison.
 ### Description complète (4 000 caractères max)
 
 ```text
-Perokado — tout ce que vous cherchez au même endroit, livré chez vous.
+MeDi Shop — tout ce que vous cherchez au même endroit, livré chez vous.
 
 Outillage, matériaux de construction, plomberie, électricité, peinture, visserie et équipement de la maison : le catalogue de la boutique est là, avec ses prix en francs CFA.
 
@@ -82,7 +82,7 @@ Pas de publicité, pas de revente de données. Le compte sert uniquement à trai
 ### Nouveautés de cette version (500 caractères max)
 
 ```
-Nouvelle identité Perokado, livraison à domicile uniquement, vignettes de garantie et de réduction sur les produits, interface entièrement en français.
+Nouvelle identité MeDi Shop, livraison à domicile uniquement, vignettes de garantie et de réduction sur les produits, interface entièrement en français.
 ```
 
 ### Champs de contact
@@ -98,7 +98,7 @@ boutique avant le dépôt (Play exige une adresse e-mail de contact publique).
 
 | Visuel | Format | État | Fichier |
 | --- | --- | --- | --- |
-| Icône de l'application | PNG 512 × 512, sans transparence | **prêt** | `public/brand/perokado-icon.png` |
+| Icône de l'application | PNG 512 × 512, sans transparence | **prêt** | `public/brand/medi-icon.png` |
 | Bannière (feature graphic) | PNG 1024 × 500, sans transparence | **prêt** | `public/brand/play-feature-graphic.png` |
 | Captures d'écran téléphone | 2 minimum, 8 maximum | **à faire** | `store/screenshots/` |
 | Bannière de la page « Test fermé » | facultatif | non requis | — |
@@ -110,7 +110,7 @@ npm run play:assets
 ```
 
 Le script `scripts/make-play-assets.ts` repart du logo blanc
-(`perokado-logo-horizontal-blanc.png`), applique le bleu nuit `#0E2340`, le jaune
+(`medi-logo-horizontal-blanc.png`), applique le bleu nuit `#0E2340`, le jaune
 `#f2b705` et les anneaux dorés, puis écrit la bannière. Après un changement de
 logo : `npm run brand:assets` **puis** `npm run play:assets`.
 
@@ -142,7 +142,7 @@ image sobre, le nom de l'application est déjà affiché par la fiche).
 
 ### Méthode A — avec un téléphone Android (la plus vraie)
 
-1. Ouvrir **https://perokado.vercel.app** dans Chrome.
+1. Ouvrir **https://medi-daloa.vercel.app** dans Chrome.
 2. Se mettre en **français** (langue par défaut) et en mode clair.
 3. Descendre la barre d'état si besoin, puis capturer avec **Power + Volume bas**
    (sur la plupart des téléphones).
@@ -155,7 +155,7 @@ image sobre, le nom de l'application est déjà affiché par la fiche).
 
 ### Méthode B — avec un ordinateur, sans téléphone (recommandée)
 
-1. Ouvrir https://perokado.vercel.app dans **Chrome** (ou Edge).
+1. Ouvrir https://medi-daloa.vercel.app dans **Chrome** (ou Edge).
 2. `F12` → icône **appareil** (Ctrl + Maj + M) pour passer en mode mobile.
 3. En haut, choisir **iPhone 12 Pro** ou « Responsive », largeur **1080**,
    hauteur **2400**, zoom **100 %**.
@@ -193,7 +193,7 @@ sur les machines de GitHub. Rien à installer sur le téléphone.
 | --- | --- |
 | `ANDROID_KEYSTORE_BASE64` | contenu de `android.keystore` encodé en base64 |
 | `KEYSTORE_PASSWORD` | mot de passe du fichier `.keystore` |
-| `KEY_PASSWORD` | mot de passe de la clé `perokado` (souvent le même) |
+| `KEY_PASSWORD` | mot de passe de la clé `medi` (souvent le même) |
 
 Pour produire la valeur base64 depuis un téléphone (Termux) :
 
@@ -215,7 +215,7 @@ Depuis un ordinateur (PowerShell) :
    renseigner pour publier une nouvelle version (le code doit **toujours
    augmenter**).
 3. Attendre 5 à 10 minutes.
-4. En bas de la page du run, **Artifacts** → `perokado-android-<n°>` :
+4. En bas de la page du run, **Artifacts** → `medi-android-<n°>` :
    - `app-release-bundle.aab` → à déposer dans la Play Console ;
    - `app-release-signed.apk` → à installer directement sur un téléphone de test.
 
@@ -242,7 +242,7 @@ Depuis un ordinateur (PowerShell) :
 3. **AAB** — workflow GitHub Actions, artefact téléchargé.
 4. **Fiche Play** — nom, descriptions (section 1), icône, bannière, captures.
 5. **Sécurité des données** — déclarer les données collectées et l'URL de
-   suppression `https://perokado.vercel.app/supprimer-mon-compte`.
+   suppression `https://medi-daloa.vercel.app/supprimer-mon-compte`.
 6. **Compte client de démonstration** — créé sur `/inscription`, identifiants
    notés dans la fiche pour les testeurs Google.
 7. **Test fermé** — 12 testeurs, 14 jours consécutifs.
