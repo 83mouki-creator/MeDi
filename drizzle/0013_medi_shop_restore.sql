@@ -1,10 +1,10 @@
--- MeDi Shop — retour de l'enseigne d'origine (annulation de la parenthèse « Perokado »).
+-- MeDi Shop — restauration des réglages de la boutique.
 --
--- « Perokado » disparaît : la boutique redevient **MeDi Shop**, avec son numéro
--- historique +225 07 08 90 48 91 (WhatsApp), utilisé aussi pour Wave / compte
--- marchand. La mise à jour ne touche que les valeurs posées par la parenthèse
--- Perokado : une valeur choisie ensuite dans /admin/parametres n'est jamais
--- écrasée. Le slogan « Tout ce que vous cherchez au même endroit. » est conservé.
+-- La boutique redevient **MeDi Shop**, avec son numéro historique
+-- +225 07 08 90 48 91 (WhatsApp), utilisé aussi pour Wave / compte marchand.
+-- La mise à jour ne touche que les valeurs posées sous l'ancienne enseigne :
+-- une valeur choisie ensuite dans /admin/parametres n'est jamais écrasée.
+-- Le slogan « Tout ce que vous cherchez au même endroit. » est conservé.
 
 UPDATE "store_settings"
    SET "store_name" = 'MeDi Shop'

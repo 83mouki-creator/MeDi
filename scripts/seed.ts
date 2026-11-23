@@ -368,7 +368,13 @@ async function main() {
 
   // Comptes de démonstration (uniquement si SEED_DEMO=1)
   if (process.env.SEED_DEMO === '1') {
-    const demoPassword = process.env.SEED_DEMO_PASSWORD ?? 'MediDemo2026!';
+    // Aucune valeur par défaut : un mot de passe publié dans le code serait
+    // connu de tous. SEED_DEMO_PASSWORD est obligatoire.
+    const demoPassword = process.env.SEED_DEMO_PASSWORD;
+    if (!demoPassword) {
+      console.error('❌ SEED_DEMO=1 sans SEED_DEMO_PASSWORD : définissez un mot de passe de démonstration explicite.');
+      process.exit(1);
+    }
     const accounts = [
       { email: 'proprietaire@medi.demo', role: 'OWNER' as const, firstName: 'Propriétaire', lastName: 'MeDi Shop (démo)' },
       { email: 'admin@medi.demo', role: 'ADMIN' as const, firstName: 'Admin', lastName: 'MeDi Shop (démo)' },
@@ -394,7 +400,7 @@ async function main() {
         isActive: true,
       });
     }
-    console.log(`   Comptes de démonstration créés — mot de passe : ${demoPassword}`);
+    console.log('   Comptes de démonstration créés (mot de passe : celui de SEED_DEMO_PASSWORD).');
     console.log('   ⚠️  Comptes de DÉMONSTRATION uniquement : supprimez-les avant la mise en production.');
   }
 

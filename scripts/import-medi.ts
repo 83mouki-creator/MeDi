@@ -28,6 +28,10 @@ const UPDATE = process.argv.includes('--update');
  * Enregistre la vignette d'un produit : une seule ligne par produit, en
  * position 0. Une photo rééditée remplace donc l'ancienne au lieu de s'ajouter
  * (deux lignes laissaient l'ancienne vignette affichée sur la fiche).
+ *
+ * L'empreinte visuelle (recherche par photo) est recalculée quand la photo
+ * change : une vignette rééditée invalide l'ancienne empreinte, que le
+ * `reindex:visual` du déploiement régénère aussitôt.
  */
 async function upsertImage(
   productId: string,
@@ -35,15 +39,28 @@ async function upsertImage(
   image: { url: string; checksum: string; width: number; height: number },
 ) {
   const existing = await db
-    .select({ id: productImages.id })
+    .select({ id: productImages.id, checksum: productImages.checksum })
     .from(productImages)
     .where(eq(productImages.productId, productId))
     .limit(1);
 
   if (existing[0]) {
+    const checksumChanged = existing[0].checksum !== image.checksum;
     await db
       .update(productImages)
-      .set({ url: image.url, alt: item.name, position: 0, width: image.width, height: image.height, checksum: image.checksum })
+      .set({
+        url: image.url,
+        alt: item.name,
+        position: 0,
+        width: image.width,
+        height: image.height,
+        checksum: image.checksum,
+        // Photo rééditée : l'empreinte stockée correspond à l'ancienne image.
+        // On l'efface pour que le prochain reindex:visual la recalcule.
+        ...(checksumChanged
+          ? { embedding: null, embeddingModel: null, embeddingDim: null, embeddingAt: null }
+          : {}),
+      })
       .where(eq(productImages.id, existing[0].id));
   } else {
     await db.insert(productImages).values({

@@ -15,12 +15,6 @@ const CODE_GROUPS = 3;
 const CODE_GROUP_SIZE = 4;
 const CODE_PREFIX = 'MEDI';
 
-/**
- * Ancien préfixe « PERO- » : les codes déjà remis à l’équipe restent
- * valables à la saisie. Seule la génération change.
- */
-const LEGACY_PREFIX = 'PERO';
-
 export const STAFF_CODE_TTL_HOURS = 24 * 7;
 export const STAFF_PASSWORD_MIN = 10;
 
@@ -66,7 +60,7 @@ export function formatStaffCodeInput(code: string): string {
 
 export function isValidStaffCodeShape(code: string): boolean {
   const normalized = normalizeStaffCode(code);
-  return [CODE_PREFIX, LEGACY_PREFIX].some((prefix) => new RegExp(`^${prefix}[A-Z0-9]{12}$`).test(normalized));
+  return new RegExp(`^${CODE_PREFIX}[A-Z0-9]{12}$`).test(normalized);
 }
 
 // ───────────────────────────── Téléphone ivoirien ─────────────────────────────

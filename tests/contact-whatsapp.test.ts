@@ -23,8 +23,7 @@ describe('numéro unique de la boutique', () => {
   });
 
   it('n’affiche plus le numéro « 05 44 01 41 82 » nulle part dans l’interface', () => {
-    // Le numéro +225 05 44 01 41 82 datait de la parenthèse Perokado ;
-    // MeDi Shop utilise de nouveau +225 07 08 90 48 91.
+    // Ce numéro datait de l'ancienne parenthèse ; MeDi Shop utilise de nouveau +225 07 08 90 48 91.
     const offenders = UI_FILES.filter((file) => /05 44 01 41 82|0544014182/.test(readFileSync(file, 'utf8')));
     expect(offenders, `Ancien numéro encore affiché : ${offenders.join(' | ')}`).toEqual([]);
   });

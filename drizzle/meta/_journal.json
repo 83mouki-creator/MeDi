@@ -55,14 +55,14 @@
       "idx": 7,
       "version": "7",
       "when": 1794305272876,
-      "tag": "0007_perokado_costs_stickers",
+      "tag": "0007_costs_stickers",
       "breakpoints": true
     },
     {
       "idx": 8,
       "version": "7",
       "when": 1794305298531,
-      "tag": "0008_perokado_identity",
+      "tag": "0008_store_identity",
       "breakpoints": true
     },
     {
@@ -76,7 +76,7 @@
       "idx": 10,
       "version": "7",
       "when": 1794305500000,
-      "tag": "0010_perokado_single_number",
+      "tag": "0010_single_number",
       "breakpoints": true
     },
     {
@@ -98,6 +98,13 @@
       "version": "7",
       "when": 1795404845056,
       "tag": "0013_medi_shop_restore",
+      "breakpoints": true
+    },
+    {
+      "idx": 14,
+      "version": "7",
+      "when": 1795473691584,
+      "tag": "0014_refresh_visual_embeddings",
       "breakpoints": true
     }
   ]

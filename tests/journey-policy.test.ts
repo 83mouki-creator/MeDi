@@ -21,18 +21,7 @@ const SITE_FILES = [
   ...globSync('src/app/(site)/**/*.tsx'),
   ...globSync('src/components/*.tsx'),
   ...globSync('src/lib/*.ts'),
-// staff-access.ts connaît légalement l'ancien préfixe « PERO- » : il accepte
-// encore les codes déjà remis à l'équipe, seule la génération change.
-// email.ts reconnaît légalement l'ancien domaine interne @agents.perokado.local :
-// des comptes agents créés pendant la parenthèse l'utilisent encore. La chaîne
-// n'est jamais affichée : elle sert uniquement à classer ces adresses internes.
-].filter(
-  (file) =>
-    !file.includes('/admin') &&
-    !file.includes('store-location') &&
-    !file.endsWith('staff-access.ts') &&
-    !file.endsWith('email.ts'),
-);
+].filter((file) => !file.includes('/admin') && !file.includes('store-location'));
 
 /** Fichiers d'interface : on y cherche des textes affichés au client. */
 const UI_FILES = [...globSync('src/app/(site)/**/*.tsx'), ...globSync('src/components/*.tsx')];
