@@ -44,9 +44,10 @@ describe('codes d’accès du personnel', () => {
     expect(isValidStaffCodeShape('MEDI-7K4P-9QX2')).toBe(false);
   });
 
-  it('accepte encore un code émis sous l’ancien préfixe', () => {
-    // Une équipe déjà équipée en codes « PERO-… » ne doit pas être bloquée : le code reste valable.
-    expect(isValidStaffCodeShape('PERO-7K4P-9QX2-W8MT')).toBe(true);
+  it('refuse un code émis sous un préfixe inconnu', () => {
+    // Seul le préfixe généré est accepté.
+    expect(isValidStaffCodeShape('PERO-7K4P-9QX2-W8MT')).toBe(false);
+    expect(isValidStaffCodeShape('MEDI-7K4P-9QX2-W8MT')).toBe(true);
   });
 });
 
