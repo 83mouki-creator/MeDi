@@ -32,7 +32,7 @@ sensible, pas seulement dans l'interface. Les actions d'administration sont jour
 npm run admin:create -- --email=direction@exemple.ci --role=OWNER --name="Direction"
 ```
 
-Le mot de passe est demandé en interactif (ou via `PEROKADO_ADMIN_PASSWORD` pour un pipeline). Règles :
+Le mot de passe est demandé en interactif (ou via `MEDI_ADMIN_PASSWORD` pour un pipeline). Règles :
 12 caractères minimum, majuscule, minuscule, chiffre, caractère spécial. Un compte existant est mis à
 jour (rôle, mot de passe, réactivation) et l'opération est journalisée.
 

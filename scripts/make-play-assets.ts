@@ -12,16 +12,16 @@
  *   - pas de texte : le nom est déjà dessiné dans le logo, et Google recommande
  *     une bannière sobre (le texte est ajouté par la fiche elle-même).
  *
- * L'image est composée à partir de `perokado-logo-horizontal-blanc.png`, produit par
+ * L'image est composée à partir de `medi-logo-horizontal-blanc.png`, produit par
  * `scripts/make-brand-assets.ts` : mêmes couleurs que le logo (bleu nuit
- * #0b2545, jaune #f2b705), même tracé, aucune retouche du dessin d'origine.
+ * #0e2340, jaune #f2b705), même tracé, aucune retouche du dessin d'origine.
  */
 import { readFile, mkdir } from 'node:fs/promises';
 import path from 'node:path';
 import sharp from 'sharp';
 
 const BRAND_DIR = path.join(process.cwd(), 'public', 'brand');
-const LOGO = path.join(BRAND_DIR, 'perokado-logo-horizontal-blanc.png');
+const LOGO = path.join(BRAND_DIR, 'medi-logo-horizontal-blanc.png');
 const OUTPUT = path.join(BRAND_DIR, 'play-feature-graphic.png');
 
 const WIDTH = 1024;

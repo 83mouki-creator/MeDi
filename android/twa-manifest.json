@@ -1,8 +1,8 @@
 {
-  "packageId": "ci.perokado.app",
-  "host": "perokado.vercel.app",
-  "name": "Perokado",
-  "launcherName": "Perokado",
+  "packageId": "ci.medishop.app",
+  "host": "medi-daloa.vercel.app",
+  "name": "MeDi Shop",
+  "launcherName": "MeDi Shop",
   "display": "standalone",
   "themeColor": "#0E2340",
   "themeColorDark": "#0E2340",
@@ -13,12 +13,12 @@
   "backgroundColor": "#0E2340",
   "enableNotifications": false,
   "startUrl": "/",
-  "iconUrl": "https://perokado.vercel.app/brand/perokado-icon.png",
-  "maskableIconUrl": "https://perokado.vercel.app/brand/perokado-icon-maskable-512.png",
+  "iconUrl": "https://medi-daloa.vercel.app/brand/medi-icon.png",
+  "maskableIconUrl": "https://medi-daloa.vercel.app/brand/medi-icon-maskable-512.png",
   "splashScreenFadeOutDuration": 300,
   "signingKey": {
     "path": "./android.keystore",
-    "alias": "perokado"
+    "alias": "medi"
   },
   "appVersionName": "1.0.0",
   "appVersionCode": 2,
@@ -26,24 +26,24 @@
     {
       "name": "Catalogue",
       "shortName": "Catalogue",
-      "url": "https://perokado.vercel.app/catalogue",
-      "chosenIconUrl": "https://perokado.vercel.app/brand/perokado-icon-192.png"
+      "url": "https://medi-daloa.vercel.app/catalogue",
+      "chosenIconUrl": "https://medi-daloa.vercel.app/brand/medi-icon-192.png"
     },
     {
       "name": "Mon panier",
       "shortName": "Panier",
-      "url": "https://perokado.vercel.app/panier",
-      "chosenIconUrl": "https://perokado.vercel.app/brand/perokado-icon-192.png"
+      "url": "https://medi-daloa.vercel.app/panier",
+      "chosenIconUrl": "https://medi-daloa.vercel.app/brand/medi-icon-192.png"
     },
     {
       "name": "Suivre ma commande",
       "shortName": "Suivi",
-      "url": "https://perokado.vercel.app/suivi",
-      "chosenIconUrl": "https://perokado.vercel.app/brand/perokado-icon-192.png"
+      "url": "https://medi-daloa.vercel.app/suivi",
+      "chosenIconUrl": "https://medi-daloa.vercel.app/brand/medi-icon-192.png"
     }
   ],
   "generatorApp": "unknown",
-  "webManifestUrl": "https://perokado.vercel.app/manifest.webmanifest",
+  "webManifestUrl": "https://medi-daloa.vercel.app/manifest.webmanifest",
   "fallbackType": "customtabs",
   "features": {},
   "alphaDependencies": {
@@ -52,7 +52,7 @@
   "enableSiteSettingsShortcut": true,
   "isChromeOSOnly": false,
   "isMetaQuest": false,
-  "fullScopeUrl": "https://perokado.vercel.app/",
+  "fullScopeUrl": "https://medi-daloa.vercel.app/",
   "minSdkVersion": 21,
   "orientation": "portrait",
   "fingerprints": [],

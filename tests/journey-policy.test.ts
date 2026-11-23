@@ -7,7 +7,7 @@ import { BRAND, BRAND_LOGO_SIZE, STORE_NAME, STORE_TAGLINE, STORE_WHATSAPP_DIGIT
  *
  * Trois décisions structurent le site et ne doivent pas se perdre au fil des
  * modifications :
- *   1. **Perokado** est la seule enseigne, avec son slogan exact ;
+ *   1. **MeDi Shop** est la seule enseigne, avec son slogan exact ;
  *   2. la vente se fait en **livraison à domicile uniquement** (ni retrait en
  *      magasin, ni carte, ni coordonnées GPS) ;
  *   3. la vitrine **et** l'administration sont en français, sans sélecteur de
@@ -21,19 +21,21 @@ const SITE_FILES = [
   ...globSync('src/app/(site)/**/*.tsx'),
   ...globSync('src/components/*.tsx'),
   ...globSync('src/lib/*.ts'),
-].filter((file) => !file.includes('/admin') && !file.includes('store-location'));
+// staff-access.ts connaît légalement l'ancien préfixe « PERO- » : il accepte
+// encore les codes déjà remis à l'équipe, seule la génération change.
+].filter((file) => !file.includes('/admin') && !file.includes('store-location') && !file.endsWith('staff-access.ts'));
 
 /** Fichiers d'interface : on y cherche des textes affichés au client. */
 const UI_FILES = [...globSync('src/app/(site)/**/*.tsx'), ...globSync('src/components/*.tsx')];
 
 describe('identité de la boutique', () => {
   it('porte l’enseigne et le slogan exacts demandés', () => {
-    expect(STORE_NAME).toBe('Perokado');
+    expect(STORE_NAME).toBe('MeDi Shop');
     expect(STORE_TAGLINE).toBe('Tout ce que vous cherchez au même endroit.');
   });
 
   it('utilise le WhatsApp de la boutique, aussi compte marchand', () => {
-    expect(STORE_WHATSAPP_DIGITS).toBe('2250544014182');
+    expect(STORE_WHATSAPP_DIGITS).toBe('2250708904891');
   });
 
   it('expose les fichiers de marque réellement présents', () => {
@@ -41,17 +43,17 @@ describe('identité de la boutique', () => {
       expect(existsSync(`public${path}`), `fichier absent : ${path}`).toBe(true);
     }
     // Format du verrou horizontal, utilisé partout dans le site.
-    expect(BRAND_LOGO_SIZE).toEqual({ width: 515, height: 132 });
+    expect(BRAND_LOGO_SIZE).toEqual({ width: 1069, height: 200 });
   });
 
   it('n’emploie plus l’ancienne enseigne nulle part dans la vitrine', () => {
-    const offenders = SITE_FILES.filter((file) => /MeDi Shop|\bMeDi\b/.test(readFileSync(file, 'utf8')));
+    const offenders = SITE_FILES.filter((file) => /perokado|PERO-/i.test(readFileSync(file, 'utf8')));
     expect(offenders, `Ancienne enseigne : ${offenders.join(' | ')}`).toEqual([]);
   });
 
   it('n’emploie plus l’ancienne enseigne dans l’administration', () => {
     const adminFiles = [...globSync('src/app/admin/**/*.tsx'), ...globSync('src/components/admin/*.tsx')];
-    const offenders = adminFiles.filter((file) => /MeDi Shop|\bMeDi\b/.test(readFileSync(file, 'utf8')));
+    const offenders = adminFiles.filter((file) => /perokado|PERO-/i.test(readFileSync(file, 'utf8')));
     expect(offenders, `Ancienne enseigne : ${offenders.join(' | ')}`).toEqual([]);
   });
 });

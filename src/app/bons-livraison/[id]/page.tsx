@@ -7,7 +7,7 @@ import { formatFCFA, toFcfa } from '@/lib/utils';
 import { FINAL_SALE_NOTICE } from '@/lib/store-policy';
 import { PrintButton } from '@/components/print-button';
 
-export const metadata: Metadata = { title: 'Bon de livraison — Perokado', robots: { index: false, follow: false } };
+export const metadata: Metadata = { title: 'Bon de livraison — MeDi Shop', robots: { index: false, follow: false } };
 export const dynamic = 'force-dynamic';
 
 const PAYMENT_LABELS: Record<string, string> = {
@@ -52,7 +52,7 @@ export default async function DeliveryNotePage({ params }: { params: Promise<{ i
         </div>
 
         <header className="border-b border-dashed border-navy-300 pb-2 text-center">
-          <p className="text-base font-extrabold tracking-tight">Perokado</p>
+          <p className="text-base font-extrabold tracking-tight">MeDi Shop</p>
           <p className="text-[11px]">{settings.city} — {settings.country}</p>
           <p className="mt-1 font-bold uppercase tracking-wide">Bon de livraison</p>
           <p className="font-mono text-[12px]">{order.number}</p>
@@ -134,7 +134,7 @@ export default async function DeliveryNotePage({ params }: { params: Promise<{ i
           <span className="border-t border-navy-400 pt-1">Signature client</span>
         </div>
 
-        <p className="mt-3 text-center text-[9px] text-navy-500">Merci de votre confiance — Perokado</p>
+        <p className="mt-3 text-center text-[9px] text-navy-500">Merci de votre confiance — MeDi Shop</p>
       </div>
     </div>
   );

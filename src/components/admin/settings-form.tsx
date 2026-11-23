@@ -104,7 +104,7 @@ export function SettingsForm({
               name="pspMerchantNumber"
               type="tel"
               defaultValue={settings.pspMerchantNumber ?? ''}
-              placeholder="+225 05 44 01 41 82"
+              placeholder="+225 07 08 90 48 91"
             />
           </Field>
           <Field label={t('Libellé du compte marchand')} htmlFor="pspMerchantLabel">

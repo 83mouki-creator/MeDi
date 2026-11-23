@@ -92,6 +92,13 @@
       "when": 1794400000000,
       "tag": "0012_avis_clients",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1795404845056,
+      "tag": "0013_medi_shop_restore",
+      "breakpoints": true
     }
   ]
 }

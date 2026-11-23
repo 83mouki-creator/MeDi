@@ -15,7 +15,7 @@ export const metadata: Metadata = {
     'équipement de la maison et électroménager à Daloa. Prix en FCFA, paiement Wave et livraison à domicile.',
   applicationName: STORE_NAME,
   keywords: [
-    'Perokado',
+    'MeDi Shop',
     'quincaillerie Daloa',
     'outillage Côte d’Ivoire',
     'matériaux construction Daloa',

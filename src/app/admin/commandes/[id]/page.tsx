@@ -48,7 +48,7 @@ export default async function AdminOrderDetail({ params }: { params: Promise<{ i
     shipment?.trackingNumber && trackingUrl && settings
       ? whatsappLink(
           settings,
-          `Bonjour, votre commande Perokado est en route. Suivez votre colis avec le code ${shipment.trackingNumber} : ${trackingUrl}`,
+          `Bonjour, votre commande MeDi Shop est en route. Suivez votre colis avec le code ${shipment.trackingNumber} : ${trackingUrl}`,
         )?.replace(/wa\.me\/\d+/, `wa.me/${order.phone.replace(/\D/g, '')}`) ?? null
       : null;
   const canDispatch = canWrite && paid && order.status !== 'CANCELLED' && order.status !== 'REFUNDED';

@@ -51,7 +51,7 @@ describe('vignettes du catalogue', () => {
 
   it('dessine le bandeau avec l’emblème et le nom de la boutique', () => {
     const source = readFileSync('scripts/product-banner.ts', 'utf8');
-    expect(source).toContain('Perokado');
+    expect(source).toContain('MeDi Shop');
     expect(source).toContain('emblem');
   });
 
@@ -60,7 +60,7 @@ describe('vignettes du catalogue', () => {
       const source = readFileSync(file, 'utf8')
         .replace(/\/\*[\s\S]*?\*\//g, '')
         .replace(/\/\/.*$/gm, '');
-      expect(source.toLowerCase(), file).not.toContain('medi shop');
+      expect(source.toLowerCase(), file).not.toContain('perokado');
     }
   });
 });

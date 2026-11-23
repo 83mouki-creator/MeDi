@@ -7,7 +7,7 @@ import { whatsappLink } from '@/lib/settings';
  * Garde-fous du contact client.
  *
  * Trois promesses au client, vérifiées ici pour qu'aucune refonte ne les casse :
- *   1. **un seul numéro** — le WhatsApp Business `+225 05 44 01 41 82`, partout ;
+ *   1. **un seul numéro** — le WhatsApp de la boutique `+225 07 08 90 48 91`, partout ;
  *   2. **un message déjà écrit** — le bouton ouvre la conversation préremplie,
  *      le client n'a plus qu'à appuyer sur « envoyer » ;
  *   3. **un bouton toujours à portée** — l'aide est accessible depuis toutes les
@@ -17,13 +17,15 @@ import { whatsappLink } from '@/lib/settings';
 const UI_FILES = [...globSync('src/app/(site)/**/*.tsx'), ...globSync('src/components/*.tsx')];
 
 describe('numéro unique de la boutique', () => {
-  it('est le WhatsApp Business +225 05 44 01 41 82', () => {
-    expect(STORE_WHATSAPP).toBe('+225 05 44 01 41 82');
-    expect(STORE_WHATSAPP_DIGITS).toBe('2250544014182');
+  it('est le numéro WhatsApp de la boutique +225 07 08 90 48 91', () => {
+    expect(STORE_WHATSAPP).toBe('+225 07 08 90 48 91');
+    expect(STORE_WHATSAPP_DIGITS).toBe('2250708904891');
   });
 
-  it('a remplacé l’ancien numéro de test partout dans l’interface', () => {
-    const offenders = UI_FILES.filter((file) => /07 08 90 48 91|0708904891/.test(readFileSync(file, 'utf8')));
+  it('n’affiche plus le numéro « 05 44 01 41 82 » nulle part dans l’interface', () => {
+    // Le numéro +225 05 44 01 41 82 datait de la parenthèse Perokado ;
+    // MeDi Shop utilise de nouveau +225 07 08 90 48 91.
+    const offenders = UI_FILES.filter((file) => /05 44 01 41 82|0544014182/.test(readFileSync(file, 'utf8')));
     expect(offenders, `Ancien numéro encore affiché : ${offenders.join(' | ')}`).toEqual([]);
   });
 
@@ -59,7 +61,7 @@ describe('boutons WhatsApp', () => {
 
   it('citent la boutique dans le message', () => {
     for (const message of Object.values(WHATSAPP_MESSAGES)) {
-      expect(message).toContain('Perokado');
+      expect(message).toContain('MeDi Shop');
     }
   });
 });
@@ -90,32 +92,33 @@ describe('aide accessible depuis tout le site', () => {
 });
 
 describe('identité affichée', () => {
-  it('utilise l’emblème 3D « sac de boutique » aux endroits clés', () => {
-    // L'emblème 3D est le dessin de référence : icônes, filigrane, partage.
-    expect(BRAND.emblem3d).toBe('/brand/perokado-emblem-3d.png');
-    expect(BRAND.icon).toBe('/brand/perokado-icon.png');
+  it('utilise le logo « MeDi Shop » aux endroits clés', () => {
+    // Le logo fourni par la boutique est le dessin de référence : icônes,
+    // filigrane, verrou horizontal dans l’en-tête et le pied de page.
+    expect(BRAND.emblem).toBe('/brand/medi-icon.svg');
+    expect(BRAND.icon).toBe('/brand/medi-icon.png');
     // L'administration reprend l'emblème en filigrane, l'en-tête et le pied de
     // page le verrou complet.
     const admin = readFileSync('src/app/admin/layout.tsx', 'utf8');
-    expect(admin).toContain('BRAND.emblem3d');
+    expect(admin).toContain('medi-icon.svg');
     const header = readFileSync('src/components/site-header.tsx', 'utf8');
     expect(header).toContain('BRAND.logoHorizontalWhite');
     // L'accueil affiche la photo du bandeau par la constante de marque, pour
     // qu'un changement d'image ne se fasse qu'à un seul endroit.
     const home = readFileSync('src/app/(site)/page.tsx', 'utf8');
     expect(home).toContain('BRAND.heroImage');
-    expect(home).not.toContain('fond-quincaillerie');
+    expect(BRAND.heroImage).toBe('/brand/fond-quincaillerie.jpg');
   });
 
   it('les fichiers de marque référencés existent réellement dans public/', () => {
-    for (const file of [BRAND.emblem3d, BRAND.heroImage, BRAND.icon, BRAND.icon192, BRAND.iconMaskable, BRAND.appleTouchIcon, BRAND.favicon, BRAND.ogImage, BRAND.logoHorizontalWhite, BRAND.logoHorizontal, BRAND.logoStacked, BRAND.logoStackedWhite]) {
+    for (const file of [BRAND.emblem, BRAND.heroImage, BRAND.icon, BRAND.icon192, BRAND.iconMaskable, BRAND.appleTouchIcon, BRAND.favicon, BRAND.ogImage, BRAND.logoHorizontalWhite, BRAND.logoHorizontal, BRAND.logoStacked, BRAND.logoStackedWhite]) {
       expect(existsSync(`public${file}`), `Fichier de marque manquant : ${file}`).toBe(true);
     }
   });
 
   it('n’affiche plus l’ancienne enseigne nulle part dans l’interface', () => {
     const adminFiles = [...globSync('src/app/admin/**/*.tsx'), ...globSync('src/components/admin/*.tsx')];
-    const offenders = [...UI_FILES, ...adminFiles].filter((file) => /MeDi Shop|\bMeDi\b/.test(readFileSync(file, 'utf8')));
+    const offenders = [...UI_FILES, ...adminFiles].filter((file) => /perokado|PEROKADO|PERO-/i.test(readFileSync(file, 'utf8')));
     expect(offenders, `Ancienne enseigne : ${offenders.join(' | ')}`).toEqual([]);
   });
 });

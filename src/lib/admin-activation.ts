@@ -51,7 +51,7 @@ export async function adminActivationStatus(token: string | null | undefined): P
 
 export type OwnerCreationInput = {
   token: string;
-  /** Nom affiché dans l'interface (ex. « Perokado »). */
+  /** Nom affiché dans l'interface (ex. « MeDi Shop »). */
   name: string;
   email: string;
   password: string;

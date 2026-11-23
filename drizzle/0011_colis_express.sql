@@ -1,4 +1,4 @@
--- Perokado — expéditions suivies chez Colis Express.
+-- MeDi Shop — expéditions suivies chez Colis Express.
 --
 -- Le transporteur branché dans l'administration renvoie un code de suivi
 -- (`CLI-XXXXXX`) qu'on ne peut pas deviner : il est saisi (ou créé) depuis

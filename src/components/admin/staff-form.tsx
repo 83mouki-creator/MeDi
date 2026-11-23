@@ -16,7 +16,7 @@ export type RoleOption = { value: string; label: string; description: string; ho
  * Création d'un agent par un administrateur.
  *
  * Il n'y a **pas** de mot de passe ici : l'administrateur saisit l'identité, le
- * téléphone ivoirien et la tâche ; Perokado génère un code à usage unique, l'envoie
+ * téléphone ivoirien et la tâche ; MeDi Shop génère un code à usage unique, l'envoie
  * par WhatsApp et l'affiche une seule fois pour transmission manuelle.
  */
 export function StaffForm({ roles }: { roles: RoleOption[] }) {
@@ -55,9 +55,9 @@ export function StaffForm({ roles }: { roles: RoleOption[] }) {
         htmlFor="staff-phone"
         required
         error={errors.phone}
-        hint={t('Format ivoirien : 05 44 01 41 82 ou +225 05 44 01 41 82.')}
+        hint={t('Format ivoirien : 07 08 90 48 91 ou +225 07 08 90 48 91.')}
       >
-        <Input id="staff-phone" name="phone" type="tel" inputMode="tel" placeholder="05 44 01 41 82" required />
+        <Input id="staff-phone" name="phone" type="tel" inputMode="tel" placeholder="07 08 90 48 91" required />
       </Field>
 
       <Field

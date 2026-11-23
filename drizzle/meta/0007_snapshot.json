@@ -3568,7 +3568,7 @@
           "type": "text",
           "primaryKey": false,
           "notNull": true,
-          "default": "'Perokado'"
+          "default": "'MeDi Shop'"
         },
         "tagline": {
           "name": "tagline",

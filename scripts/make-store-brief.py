@@ -1,9 +1,9 @@
 #!/usr/bin/env python3
-"""Génère le dossier PDF de la boutique Perokado.
+"""Génère le dossier PDF de la boutique MeDi Shop.
 
     python3 scripts/make-store-brief.py
 
-Sortie : docs/Perokado-dossier-boutique.pdf
+Sortie : docs/MeDi-dossier-boutique.pdf
 
 Trois parties :
   1. page de garde — informations de la boutique + QR code vers la boutique ;
@@ -47,16 +47,16 @@ from reportlab.platypus import (
 )
 
 ROOT = Path(__file__).resolve().parent.parent
-OUT = ROOT / "docs" / "Perokado-dossier-boutique.pdf"
-# Le même fichier est publié par le site : https://<domaine>/dossier/dossier-boutique-perokado.pdf
-PUBLIC_OUT = ROOT / "public" / "dossier" / "dossier-boutique-perokado.pdf"
+OUT = ROOT / "docs" / "MeDi-dossier-boutique.pdf"
+# Le même fichier est publié par le site : https://<domaine>/dossier/dossier-boutique-medi.pdf
+PUBLIC_OUT = ROOT / "public" / "dossier" / "dossier-boutique-medi.pdf"
 BUILD = ROOT / ".brief-build"
-LOGO_WHITE = ROOT / "public" / "brand" / "perokado-logo-horizontal-blanc.png"
+LOGO_WHITE = ROOT / "public" / "brand" / "medi-logo-horizontal-blanc.png"
 # Proportions réelles du logo (il s'élargit quand le nom s'allonge).
 with Image.open(LOGO_WHITE) as _logo:
     LOGO_WHITE_RATIO = _logo.size[1] / _logo.size[0]
 
-STORE_URL = "https://perokado.vercel.app"
+STORE_URL = "https://medi-daloa.vercel.app"
 GENERATED = "Novembre 2026"
 
 # Charte de la boutique (voir src/app/globals.css)
@@ -77,7 +77,7 @@ INK = colors.HexColor("#1F2937")
 # Informations de la boutique, telles qu'enregistrées dans /admin/parametres
 # (voir scripts/store-config.ts et docs/ETAT-DU-PROJET.md).
 STORE = {
-    "name": "Perokado",
+    "name": "MeDi Shop",
     "sector": "Quincaillerie — outillage, plomberie, électricité, peinture",
     "city": "Daloa, Côte d'Ivoire",
     "hours": "Lundi au samedi : 7h30 – 18h00 · Dimanche : fermé",
@@ -234,7 +234,7 @@ class Brief(BaseDocTemplate):
         canv.line(doc.leftMargin, top, w - doc.rightMargin, top)
         canv.setFont("DejaVu-Bold", 8)
         canv.setFillColor(NAVY)
-        canv.drawString(doc.leftMargin, top + 3.5 * mm, "Perokado  ·  dossier de la boutique")
+        canv.drawString(doc.leftMargin, top + 3.5 * mm, "MeDi Shop  ·  dossier de la boutique")
         canv.setFont("DejaVu", 8)
         canv.setFillColor(GREY_LIGHT)
         canv.drawRightString(w - doc.rightMargin, top + 3.5 * mm, GENERATED)
@@ -254,7 +254,7 @@ def cover(st: dict[str, ParagraphStyle]) -> list[Flowable]:
     story.append(RLImage(pil(LOGO_WHITE), width=64 * mm, height=64 * mm * LOGO_WHITE_RATIO))
     story.append(Spacer(1, 7 * mm))
     story.append(Paragraph("DOSSIER DE LA BOUTIQUE", st["cover_kicker"]))
-    story.append(Paragraph("Tout ce qu'il faut savoir<br/>sur Perokado en ligne", st["cover_title"]))
+    story.append(Paragraph("Tout ce qu'il faut savoir<br/>sur MeDi Shop en ligne", st["cover_title"]))
     story.append(Paragraph(
         "Comment la boutique fonctionne pour vos clients, comment l'équipe la fait vivre, "
         "et ce qu'il reste à mettre en place avant l'ouverture au public.",
@@ -290,7 +290,7 @@ def cover(st: dict[str, ParagraphStyle]) -> list[Flowable]:
         [
             [Paragraph("Ouvrir la boutique", st["qr_caption"])],
             [RLImage(qr_png(STORE_URL), width=44 * mm, height=44 * mm)],
-            [Paragraph("perokado.vercel.app", st["qr_url"])],
+            [Paragraph("medi-daloa.vercel.app", st["qr_url"])],
             [Paragraph("Scannez avec l'appareil photo<br/>du téléphone.", st["qr_url"])],
         ],
         colWidths=[52 * mm],
@@ -334,7 +334,7 @@ def cover(st: dict[str, ParagraphStyle]) -> list[Flowable]:
     story.append(Rule(174 * mm))
     story.append(Spacer(1, 3.5 * mm))
     story.append(Paragraph(
-        "Document préparé pour la direction de Perokado. Les informations commerciales ci-dessus "
+        "Document préparé pour la direction de MeDi Shop. Les informations commerciales ci-dessus "
         "proviennent des réglages de la boutique et se modifient à tout moment dans "
         "<b>/admin/parametres</b>. Le QR code ouvre la version en ligne actuelle — il sera "
         "régénéré au nom de domaine définitif.",
@@ -587,7 +587,7 @@ STEPS: list[tuple[str, str, list[tuple[str, str, str, str, str]]]] = [
         "Hébergement et nom de domaine professionnel",
         [
             ("Acheter le nom de domaine", "Vous",
-             "perokado.com ou perokado.ci — .ci auprès du NIC.CI, ou OVH, Namecheap, Cloudflare",
+             "medi.ci, medi-daloa.com ou medi-quincaillerie.ci — .ci auprès du NIC.CI, ou OVH, Namecheap, Cloudflare",
              "≈ 12 000 à 25 000 FCFA par an. À prendre au nom de la boutique, pas d'un prestataire.", "attente"),
             ("Le connecter à Vercel", "Prestataire", "Réglages du projet Vercel, côté domaines",
              "15 minutes : le certificat HTTPS est automatique. Il suffit d'accès au gestionnaire DNS.", "pret"),
@@ -744,7 +744,7 @@ def todo(st: dict[str, ParagraphStyle]) -> list[Flowable]:
     story.append(Paragraph("Vos trois décisions de la semaine", st["h2"]))
     decisions = [
         ("Le nom du site",
-         "Quel nom de domaine ? Par exemple perokado.com. Une fois choisi, tout le reste en dépend : "
+         "Quel nom de domaine ? Par exemple medi-daloa.com. Une fois choisi, tout le reste en dépend : "
          "carte de visite, affiche, QR code, liens Wave."),
         ("Le numéro qui encaisse",
          "Quel numéro Wave marchand reçoit l'argent ? Le numéro actuel n'est que provisoire. "
@@ -837,7 +837,7 @@ def todo(st: dict[str, ParagraphStyle]) -> list[Flowable]:
     story.append(Paragraph("Ce qui est déjà livré et testé", st["h2"]))
     delivered = [
         ("Boutique complète", "Accueil, rayons, fiches produits, recherche texte et photo, panier."),
-        ("Commande et suivi", "Livraison à domicile, paiement Wave ou à la livraison, suivi par téléphone."),
+        ("Commande et suivi", "Livraison ou retrait, paiement Wave ou espèces, suivi par téléphone."),
         ("Espace client", "Compte, adresses, historique, réinitialisation de mot de passe."),
         ("Back-office complet", "Produits, stock, commandes, paiements, messages, livraisons, réglages."),
         ("Comptes et rôles", "Codes d'accès à usage unique, sept métiers, droits limités, traçabilité."),
@@ -893,8 +893,8 @@ def main() -> None:
         rightMargin=18 * mm,
         topMargin=20 * mm,
         bottomMargin=18 * mm,
-        title="Perokado — dossier de la boutique",
-        author="Perokado",
+        title="MeDi Shop — dossier de la boutique",
+        author="MeDi Shop",
         subject="Informations boutique, expérience client et étapes restantes",
         creator="scripts/make-store-brief.py",
     )

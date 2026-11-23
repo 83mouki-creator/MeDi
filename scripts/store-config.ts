@@ -5,10 +5,12 @@
  *   npm run config:store -- --force # réapplique toutes les valeurs ci-dessous
  *
  * Ces valeurs ont été COMMUNIQUÉES PAR LE PROPRIÉTAIRE de la boutique :
- *   • enseigne      : Perokado
- *   • slogan        : « Tout ce que vous cherchez au même endroit.. »
+ *   • enseigne      : MeDi Shop
+ *   • slogan        : « Tout ce que vous cherchez au même endroit. »
  *   • horaires      : lundi – samedi 7h30 – 18h00, dimanche fermé
- *   • WhatsApp      : +225 05 44 01 41 82 (WhatsApp Business, aussi compte marchand Wave / PSP)
+ *   • WhatsApp      : +225 07 08 90 48 91
+ *   • numéro Wave   : le numéro WhatsApp ci-dessus (solution provisoire)
+ *   • adresse exacte : 6°53'04.4"N 6°26'50.9"W (relevé Google Maps)
  *   • hors Daloa    : 7 jours maximum selon la ville, transport convenu sur WhatsApp
  *
  * Le retrait en magasin et la géolocalisation ont été RETIRÉS du parcours : la
@@ -54,7 +56,7 @@ type ZoneSeed = {
  */
 const ZONES: ZoneSeed[] = [
   {
-    id: 'zone_perokado_daloa_centre',
+    id: 'zone_medi_daloa_centre',
     name: 'Daloa — livraison à domicile (centre)',
     city: 'Daloa',
     isLocal: true,
@@ -65,7 +67,7 @@ const ZONES: ZoneSeed[] = [
     neighbourhoods: neighbourhoodsForBand('CENTRE'),
   },
   {
-    id: 'zone_perokado_daloa_peripherie',
+    id: 'zone_medi_daloa_peripherie',
     name: 'Daloa — livraison à domicile (périphérie)',
     city: 'Daloa',
     isLocal: true,
@@ -76,7 +78,7 @@ const ZONES: ZoneSeed[] = [
     neighbourhoods: neighbourhoodsForBand('PERIPHERIE'),
   },
   {
-    id: 'zone_perokado_abidjan',
+    id: 'zone_medi_abidjan',
     name: 'Abidjan — expédition',
     city: 'Abidjan',
     isLocal: false,
@@ -86,7 +88,7 @@ const ZONES: ZoneSeed[] = [
     order: 3,
   },
   {
-    id: 'zone_perokado_yamoussoukro',
+    id: 'zone_medi_yamoussoukro',
     name: 'Yamoussoukro — expédition',
     city: 'Yamoussoukro',
     isLocal: false,
@@ -96,7 +98,7 @@ const ZONES: ZoneSeed[] = [
     order: 4,
   },
   {
-    id: 'zone_perokado_bouake',
+    id: 'zone_medi_bouake',
     name: 'Bouaké — expédition',
     city: 'Bouaké',
     isLocal: false,
@@ -106,7 +108,7 @@ const ZONES: ZoneSeed[] = [
     order: 5,
   },
   {
-    id: 'zone_perokado_sanpedro',
+    id: 'zone_medi_sanpedro',
     name: 'San-Pédro — expédition',
     city: 'San-Pédro',
     isLocal: false,
@@ -116,7 +118,7 @@ const ZONES: ZoneSeed[] = [
     order: 6,
   },
   {
-    id: 'zone_perokado_autre',
+    id: 'zone_medi_autre',
     name: 'Autre ville — Côte d’Ivoire',
     city: 'Autre ville',
     isLocal: false,
@@ -223,7 +225,7 @@ async function main() {
   // car des commandes passées peuvent y faire référence. Liste explicite pour ne
   // jamais toucher aux zones créées plus tard par le propriétaire.
   const LEGACY_ZONE_IDS = [
-    'zone_perokado_pickup',
+    'zone_medi_pickup',
     'zone_pickup_daloa',
     'zone_daloa_domicile',
     'zone_daloa_centre',

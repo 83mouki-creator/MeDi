@@ -1,16 +1,16 @@
-# Fabrique l'application Android de Perokado (fichier .aab pour le Play Store)
+# Fabrique l'application Android de MeDi Shop (fichier .aab pour le Play Store)
 # sans avoir besoin d'un ordinateur : tout se lance depuis le navigateur du
 # téléphone (GitHub → Actions → « Application Android (AAB) » → Run workflow).
 #
 # L'application est une Trusted Web Activity : c'est le site
-# https://perokado.vercel.app affiché en plein écran, sans barre d'adresse.
+# https://medi-daloa.vercel.app affiché en plein écran, sans barre d'adresse.
 # Bubblewrap a besoin du SDK Android et de Gradle : c'est la machine GitHub qui
 # les installe, pas vous.
 #
 # Secrets à créer une seule fois (Settings → Secrets and variables → Actions) :
 #   ANDROID_KEYSTORE_BASE64  contenu de android.keystore encodé en base64
 #   KEYSTORE_PASSWORD        mot de passe du fichier .keystore
-#   KEY_PASSWORD             mot de passe de la clé « perokado » (souvent identique)
+#   KEY_PASSWORD             mot de passe de la clé « medi » (souvent identique)
 #
 # Voir docs/PLAY-STORE.md pour la marche à suivre complète.
 
@@ -137,13 +137,13 @@ jobs:
             --directory ./android \
             --manifest ./android/twa-manifest.json \
             --signingKeyPath ./android.keystore \
-            --signingKeyAlias perokado
+            --signingKeyAlias medi
           ls -lh android/app-release-bundle.aab android/app-release-signed.apk
 
       - name: Publier les fichiers à télécharger
         uses: actions/upload-artifact@v4
         with:
-          name: perokado-android-${{ github.run_number }}
+          name: medi-shop-android-${{ github.run_number }}
           path: |
             android/app-release-bundle.aab
             android/app-release-signed.apk

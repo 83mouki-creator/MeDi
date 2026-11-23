@@ -1,4 +1,4 @@
--- Perokado — avis clients vérifiés (produit + livraison).
+-- MeDi Shop — avis clients vérifiés (produit + livraison).
 --
 -- Deux tables, deux questions distinctes :
 --   product_reviews  « cet article tient-il ses promesses ? » — une note par

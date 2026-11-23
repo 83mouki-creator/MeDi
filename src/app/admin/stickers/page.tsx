@@ -9,7 +9,7 @@ import { StickerAssignForm, StickerForm, StickerIntro, StickerList } from '@/com
 
 export const dynamic = 'force-dynamic';
 
-export const metadata = { title: 'Stickers produits — Perokado' };
+export const metadata = { title: 'Stickers produits — MeDi Shop' };
 
 /**
  * Administration des stickers produits.

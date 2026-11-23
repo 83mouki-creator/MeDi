@@ -16,7 +16,7 @@ import { translate } from '@/lib/i18n/admin';
 import { ORDER_STATUS_LABELS } from '@/lib/order-status';
 
 /**
- * Le guide « Comment utiliser le site Perokado » vit dans `/admin/guide`.
+ * Le guide « Comment utiliser le site MeDi Shop » vit dans `/admin/guide`.
  *
  * La page passe ses textes à `t()` de façon dynamique : un simple scan du code
  * ne verrait pas les phrases. Ces tests lisent donc directement les données du
@@ -73,7 +73,7 @@ describe('Guide « Comment utiliser le site »', () => {
     expect(broken, `Variables modifiées : ${broken.join(' | ')}`).toEqual([]);
   });
 
-  it('nomme la boutique Perokado, jamais l’ancienne enseigne', () => {
+  it('nomme la boutique MeDi Shop, jamais l’ancienne enseigne', () => {
     const wrong = allGuideStrings().filter((text) => /MeDi/.test(text));
     expect(wrong, `Ancienne enseigne dans le guide : ${wrong.join(' | ')}`).toEqual([]);
   });

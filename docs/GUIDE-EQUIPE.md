@@ -1,4 +1,4 @@
-# Guide de l'équipe — comment utiliser le site Perokado
+# Guide de l'équipe — comment utiliser le site MeDi Shop
 
 Ce guide existe en deux endroits :
 
@@ -14,7 +14,7 @@ j'ouvre le site ce matin ?*
 
 ## 1. Comprendre le site en une minute
 
-Le site Perokado sert à deux choses : montrer les produits aux clients, et dire à
+Le site MeDi Shop sert à deux choses : montrer les produits aux clients, et dire à
 l'équipe exactement ce qu'il faut préparer.
 
 1. **Le client choisit et commande.** Il parcourt le catalogue, met des articles
@@ -128,7 +128,7 @@ chaque ouverture : dès qu'un champ est enregistré, le point passe au vert.
 
 1. Rien ne part avant que l'argent soit vérifié par l'équipe.
 2. Un colis, un bon de livraison imprimé, un stock à jour.
-3. Un doute ? Le guide, puis le service client : **+225 05 44 01 41 82** (WhatsApp Business).
+3. Un doute ? Le guide, puis le service client : **+225 07 08 90 48 91** (WhatsApp Business).
 
 ---
 

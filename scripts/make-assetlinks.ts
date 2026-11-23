@@ -6,18 +6,18 @@
  *   npm run assetlinks -- "AA:BB:CC:…" ["11:22:33:…"]
  *
  * Les empreintes sont les **SHA-256** des certificats de signature :
- *   1. celui de TA clé (`keytool -list -v -keystore android.keystore -alias perokado`) ;
+ *   1. celui de TA clé (`keytool -list -v -keystore android.keystore -alias medi`) ;
  *   2. celui de **Play App Signing** (Play Console → Test et publication →
  *      Signature de l'application), indispensable une fois l'app publiée : sans
  *      lui, la barre d'adresse réapparaît en production.
  *
  * Le nom de paquet peut être changé avec `ANDROID_PACKAGE_NAME` (par défaut
- * `ci.perokado.app`, celui donné à `bubblewrap init`).
+ * `ci.medishop.app`, celui donné à `bubblewrap init`).
  */
 import { mkdir, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 
-const PACKAGE_NAME = process.env.ANDROID_PACKAGE_NAME?.trim() || 'ci.perokado.app';
+const PACKAGE_NAME = process.env.ANDROID_PACKAGE_NAME?.trim() || 'ci.medishop.app';
 const OUTPUT = path.join(process.cwd(), 'public', '.well-known', 'assetlinks.json');
 
 /** Nettoie une empreinte : majuscules, deux-points tous les deux caractères. */
@@ -30,7 +30,7 @@ function normalize(raw: string): string {
     throw new Error(
       `Empreinte invalide (${hex.length} caractères hexadécimaux au lieu de 64) : ${raw}\n` +
         'Attendu : le SHA-256 d’un certificat, par exemple depuis\n' +
-        '  keytool -list -v -keystore android.keystore -alias perokado\n' +
+        '  keytool -list -v -keystore android.keystore -alias medi\n' +
         '(ou l’empreinte « certificat de signature d’application » de la Play Console).',
     );
   }
@@ -81,9 +81,9 @@ async function main() {
   for (const fingerprint of fingerprints) console.log(`  empreinte   : ${fingerprint}`);
   console.log('');
   console.log('Vérification après déploiement :');
-  console.log('  npx @bubblewrap/cli validate --url https://perokado.vercel.app');
+  console.log('  npx @bubblewrap/cli validate --url https://medi-daloa.vercel.app');
   console.log(
-    '  https://digitalassetlinks.googleapis.com/v1/statements:list?source.web.site=https://perokado.vercel.app&relation=delegate_permission/common.handle_all_urls',
+    '  https://digitalassetlinks.googleapis.com/v1/statements:list?source.web.site=https://medi-daloa.vercel.app&relation=delegate_permission/common.handle_all_urls',
   );
 }
 
